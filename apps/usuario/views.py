@@ -20,7 +20,7 @@ def usuario_view(request):
 def usuario_opciones(request):
    # """
    #  Args:
-   #  	Se recibe un request una vez validado el lgin
+   #  	Se recibe un request una vez validado el login
    #  Returns:
    #  	html:Se renderiza una pagina con las opciones que se realiza sobre un usuario
    #  """

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'apps.login',
     'apps.usuario',
     'apps.proyecto',
-    'apps.roles'
+    'apps.rol',
+    'guardian',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -149,6 +150,9 @@ AUTHENTICATION_BACKENDS = (
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+
+    # Configuracion necesaria para el guardian 
+    'guardian.backends.ObjectPermissionBackend',
 )
 
 SITE_ID = 1

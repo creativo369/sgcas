@@ -19,12 +19,14 @@ from django.urls import path, include
 
 from apps.login.views import login_view
 from apps.usuario.views import usuario_view
-from django.contrib.auth.views import LoginView, logout_then_login
+
+from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', login_view),
     path('account/', include('apps.usuario.urls', namespace = 'usuario')),
-    path('logout/',logout_then_login, name='logout'),
+    path('logout/',logout_then_login, name = "logout"),
+    path('rol/', include(('apps.rol.urls', 'rol'), namespace = 'rol')),
 ]

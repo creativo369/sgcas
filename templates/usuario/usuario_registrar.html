@@ -1,9 +1,10 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-	<form method="post">
+	<form method="POST">
 		{% csrf_token %}
 		{{form.as_p}}   
-		<button type="submit"> Guardar </button>
+		<button type="submit" class="btn btn-success">Guardar</button>
+		<a class="btn btn-secondary" href="{% url 'usuario:usuario_lista' %}">Cancelar</a>
 	</form>
 {% endblock content %}
