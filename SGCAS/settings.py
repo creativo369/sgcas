@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.usuario',
     'apps.proyecto',
     'apps.rol',
+    'apps.tipo_item',
     'guardian',
     'allauth',
     'allauth.account',
