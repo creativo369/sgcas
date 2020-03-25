@@ -40,15 +40,16 @@
 	        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Rol</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">Tipo de item</a>
+	        <a class="nav-link" href="{% url 'tipo_item:tipo_item_opciones' %}">Tipo de item</a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="{% url 'logout' %}">Salir</a>
 	      </li>
 	    </ul>
-	    <form class="form-inline my-2 my-lg-0">
+	    <form class="form-inline my-2 my-lg-0" class="nav-item">
 	      <input class="form-control mr-sm-2" type="text" placeholder="Buscar">
 	      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+	      <!-- <a class="nav-link" href="{% url 'logout' %}">Salir</a> -->
 	    </form>
 	  </div>
 	</nav>

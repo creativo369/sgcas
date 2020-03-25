@@ -22,7 +22,7 @@
 		      <td>{{usuario.last_name}}</td>
 		      <td>{{usuario.groups.all.0}}</td>
 		      <td>
-		       <a type="button" class="btn btn-info" href="{% url 'usuario:usuario_editar' usuario.id %}">Editar</a>
+		       <a type="button" class="btn btn-warning" href="{% url 'usuario:usuario_editar' usuario.id %}">Editar</a>
            <a type="button" class="btn btn-danger" href="{% url 'usuario:usuario_eliminar' usuario.id %}">Eliminar</a>
           </td>
 		    </tr>

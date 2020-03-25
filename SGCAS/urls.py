@@ -29,4 +29,5 @@ urlpatterns = [
     path('account/', include('apps.usuario.urls', namespace = 'usuario')),
     path('logout/',logout_then_login, name = "logout"),
     path('rol/', include(('apps.rol.urls', 'rol'), namespace = 'rol')),
+    path('tipo_item/', include(('apps.tipo_item.urls', 'tipo_item'), namespace = 'tipo_item')),
 ]
