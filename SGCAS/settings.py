@@ -13,8 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from django.urls import reverse_lazy
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'apps.login',
     'apps.usuario',
     'apps.proyecto',
     'apps.rol',
@@ -48,7 +47,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SGCAS.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -93,17 +94,8 @@ DATABASES = {
         'PASSWORD': 'admin2',
         'HOST': 'localhost',
         'PORT': 5432,
-        },
-    'produccion':{
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'produccion',
-        'USER': 'postgres',
-        'PASSWORD': 'admin2',
-        'HOST': 'localhost',
-        'PORT': 5432,
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -123,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -136,7 +127,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -156,8 +146,25 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-SITE_ID = 1
+LOGIN_URL='/account/login'
 
+#La url a donde se dirige una vez realizado el login
 LOGIN_REDIRECT_URL = '/account'
 
-LOGIN_URL = '/'
+#The URL (or URL name) to return to after the user logs out. This is the counterpart to Django’s
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
+#The user is required to hand over an e-mail address when signing up.
+ACCOUNT_EMAIL_REQUIRED=True
+
+#When set to “mandatory” the user is blocked from logging in until the email address is verified.
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+#The user is required to enter a username when signing up.
+ACCOUNT_USERNAME_REQUIRED=True
+
+#Attempt to bypass the signup form by using fields (e.g. username, email) retrieved from the social account provider.
+SOCIALACCOUNT_AUTO_SIGNUP=False
+
+#Indicates whether or not the access tokens are stored in the database.
+SOCIALACCOUNT_STORE_TOKENS = True

@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/login/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +67,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/ramon/is2-v.IT02" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager">
@@ -116,10 +121,10 @@
       <screen x="60" y="27" width="1306" height="741" />
     </state>
     <state x="426" y="202" width="563" height="397" key="#com.intellij.fileTypes.FileTypeChooser/60.27.1306.741@60.27.1306.741" timestamp="1584545052641" />
-    <state x="496" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1584580983845">
+    <state x="496" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1585623494420">
       <screen x="60" y="27" width="1306" height="741" />
     </state>
-    <state x="496" y="155" width="424" height="491" key="FileChooserDialogImpl/60.27.1306.741@60.27.1306.741" timestamp="1584580983845" />
+    <state x="496" y="155" width="424" height="491" key="FileChooserDialogImpl/60.27.1306.741@60.27.1306.741" timestamp="1585623494420" />
     <state width="263" height="500" key="HiddenNamespacesPopup" timestamp="1584543336567">
       <screen x="60" y="27" width="1306" height="741" />
     </state>
