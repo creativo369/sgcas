@@ -1,6 +1,8 @@
-from django.urls import path,include,reverse_lazy
 from django.conf.urls import url
-from apps.usuario.views import usuario_opciones, usuario_view, UsuarioLista, RegistrarUsuario , ActualizarUsuario , EliminarUsuario
+from django.urls import path
+
+from apps.usuario.views import usuario_opciones, usuario_view, UsuarioLista, RegistrarUsuario, ActualizarUsuario, \
+    EliminarUsuario
 
 app_name='administracion'
 

@@ -17,9 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 
-
-from django.contrib.auth.views import logout_then_login
-
+# from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +25,7 @@ urlpatterns = [
     path('', include('apps.usuario.urls', namespace='usuario')),
     path('rol/', include(('apps.rol.urls', 'rol'), namespace='rol')),
     path('tipo_item/', include(('apps.tipo_item.urls', 'tipo_item'), namespace='tipo_item')),
+    path('mensajes/', include(('apps.mensajes.urls', 'mensajes'), namespace='mensajes')),
 ]
 
 """

@@ -26,7 +26,7 @@ SECRET_KEY = 'nayi!!*seyd)t#+m)2@l&7m3^!6j=*$vytuxb86ig1#pq(=khl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sgcas.localhost', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -42,11 +42,11 @@ INSTALLED_APPS = [
     'apps.proyecto',
     'apps.rol',
     'apps.tipo_item',
+    'apps.mensajes',
     'guardian',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
 ]
 
@@ -60,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.usuario.middleware.RolMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SGCAS.urls'
@@ -76,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.mensajes.context_processors.count_inactive_users'
             ],
         },
     },
@@ -134,6 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -146,25 +150,37 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-LOGIN_URL='/account/login'
+##Configuraciones para el envio de mail
+from .email_info import *
 
-#La url a donde se dirige una vez realizado el login
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
+EMAIL_BACKEND = EMAIL_BACKEND ##Solo para desarrollo, comentar para produccion
+
+LOGIN_URL = '/account/login'
+
+# La url a donde se dirige una vez realizado el login
 LOGIN_REDIRECT_URL = '/account'
 
-#The URL (or URL name) to return to after the user logs out. This is the counterpart to Django’s
+# The URL (or URL name) to return to after the user logs out. This is the counterpart to Django’s
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
-#The user is required to hand over an e-mail address when signing up.
-ACCOUNT_EMAIL_REQUIRED=True
+# The user is required to hand over an e-mail address when signing up.
+ACCOUNT_EMAIL_REQUIRED = True
 
-#When set to “mandatory” the user is blocked from logging in until the email address is verified.
+# When set to “mandatory” the user is blocked from logging in until the email address is verified.
 # ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
-#The user is required to enter a username when signing up.
-ACCOUNT_USERNAME_REQUIRED=True
+# The user is required to enter a username when signing up.
+ACCOUNT_USERNAME_REQUIRED = True
 
-#Attempt to bypass the signup form by using fields (e.g. username, email) retrieved from the social account provider.
-SOCIALACCOUNT_AUTO_SIGNUP=False
+# Attempt to bypass the signup form by using fields (e.g. username, email) retrieved from the social account provider.
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
-#Indicates whether or not the access tokens are stored in the database.
+# Indicates whether or not the access tokens are stored in the database.
 SOCIALACCOUNT_STORE_TOKENS = True
+
+

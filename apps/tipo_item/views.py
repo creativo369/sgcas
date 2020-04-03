@@ -1,31 +1,68 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from guardian.decorators import permission_required
+from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm
 from apps.tipo_item.models import TipoItem
 from django.views.generic import ListView, DeleteView
 from django.urls import reverse_lazy
 
-# Create your views here.
+
+@login_required
+@permission_required('tipo_item.add_tipo_item')
 def crear_tipo_item(request):
-	if request.method == 'POST':
-		form = TipoItemForm(request.POST)
-		if form.is_valid():
-			form.save()
-		return redirect('tipo_item:tipo_item_opciones')
-	else:
-		form = TipoItemForm()
+    """
+    Permite la creacion de instancias de modelo TipoItem.
+    :param request: Recibe un request por parte de un usuario.
+    :return:  Retorna una instancia del modelo TipoItem.
+    """
+    if request.method == 'POST':
+        form = TipoItemForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('tipo_item:tipo_item_opciones')
+    else:
+        form = TipoItemForm()
 
-	return render(request, 'tipo_item/tipo_item_crear.html', {'form':form})
+    return render(request, 'tipo_item/tipo_item_crear.html', {'form': form})
 
+
+@login_required
+@permission_required('tipo_item.view_tipo_item')
 def tipo_item_opciones(request):
-	return render(request, 'tipo_item/tipo_item_opciones.html')
+    """
+    Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo TipoItem.
+    :param request:Recibe un request por parte de un usuario.
+    :return: Renderiza la plantilla usuario_home.html que es el home del sistema
+    """
+
+    return render(request, 'tipo_item/tipo_item_opciones.html')
 
 
-class TipoItemLista(ListView):
-	model = TipoItem
-	template_name = 'tipo_item/tipo_item_lista.html'
+class TipoItemLista(PermissionRequiredMixin, ListView):
+    """
+    Permite la visualizacion en lista de todas las intancias del modelo TipoItem
+    :param PermissionRequiredMixin: Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.
+    :param ListView: Recibe una vista generica de tipo ListView para vistas basadas en clases.
+    :return: Una vista de todas las intancias a traves del archivo tipo_item_lista.html.
+    """
+    model = TipoItem
+    template_name = 'tipo_item/tipo_item_lista.html'
+    permission_required = 'tipo_item.view_tipo_item'
 
-class TipoItemEliminar(DeleteView):
-	model = TipoItem
-	template_name = 'tipo_item/tipo_item_eliminar.html'
-	# permission_required = 'auth.delete_user'
-	success_url = reverse_lazy('tipo_item:tipo_item_lista')
+    # La lista a mostrar estara por orden ascendente
+    class Meta:
+        ordering = ['-id']
+
+
+class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
+    """
+    Permite la eliminacion instancias de modelos TipoItem.
+    :param PermissionRequiredMixin: Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.
+    :param DeleteView: Recibe una vista generica de tipo DeleteView para vistas basadas en clases.
+    :return: Elimina una instancia del modelo TipoItem del sistema.
+    """
+    model = TipoItem
+    template_name = 'tipo_item/tipo_item_eliminar.html'
+    permission_required = 'tipo_item.delete_tipo_item'
+    success_url = reverse_lazy('tipo_item:tipo_item_lista')
