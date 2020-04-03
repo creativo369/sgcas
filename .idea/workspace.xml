@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SGCAS/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/proyecto/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tipo_item/tipo_item_lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tipo_item/tipo_item_lista.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +110,7 @@
       <workItem from="1585841707497" duration="26218000" />
       <workItem from="1585890389611" duration="2314000" />
       <workItem from="1585899738380" duration="6949000" />
-      <workItem from="1585923496701" duration="11520000" />
+      <workItem from="1585923496701" duration="12552000" />
     </task>
     <servers />
   </component>

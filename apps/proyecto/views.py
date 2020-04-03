@@ -49,7 +49,7 @@ class CrearProyecto(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         self.object = form.save(commit=False)
         self.object.user = self.request.user  # intuimos quien es el creador del proyecto = gerente
         self.object.save()  # (el que esta logeado y crea el proyecto)
-        form.save_m2m()#Para guardar as relaciones many to many
+        form.save_m2m()  # Para guardar as relaciones many to many
         return HttpResponseRedirect(self.get_success_url())
 
 
