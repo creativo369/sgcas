@@ -5,22 +5,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/tipo_item/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/tipo_item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/tipo_item/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/tipo_item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/usuario/usuario_eliminar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/usuario/usuario_eliminar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/usuario/usuario_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/usuario/usuario_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/usuario/usuario_lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/usuario/usuario_lista.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/allauth/templates/account/account_inactive.html" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/allauth/templates/account/account_inactive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/django/contrib/auth/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/django/contrib/auth/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/tipo_item/tipo_item_lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tipo_item/tipo_item_lista.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +120,8 @@
       <workItem from="1585830334995" duration="10538000" />
       <workItem from="1585841707497" duration="26218000" />
       <workItem from="1585890389611" duration="2314000" />
-      <workItem from="1585899738380" duration="6401000" />
+      <workItem from="1585899738380" duration="6949000" />
+      <workItem from="1585923496701" duration="11520000" />
     </task>
     <servers />
   </component>
@@ -154,9 +149,9 @@
       <screen x="60" y="27" width="1306" height="741" />
     </state>
     <state x="202" y="31" width="1022" height="737" key="SettingsEditor/60.27.1306.741@60.27.1306.741" timestamp="1584539914260" />
-    <state x="369" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1585899745221">
+    <state x="369" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1585923914635">
       <screen x="60" y="27" width="1306" height="741" />
     </state>
-    <state x="369" y="225" key="com.intellij.ide.util.TipDialog/60.27.1306.741@60.27.1306.741" timestamp="1585899745221" />
+    <state x="369" y="225" key="com.intellij.ide.util.TipDialog/60.27.1306.741@60.27.1306.741" timestamp="1585923914635" />
   </component>
 </project>

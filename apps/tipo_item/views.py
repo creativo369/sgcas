@@ -4,7 +4,7 @@ from guardian.decorators import permission_required
 from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm
 from apps.tipo_item.models import TipoItem
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 
@@ -65,4 +65,17 @@ class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     model = TipoItem
     template_name = 'tipo_item/tipo_item_eliminar.html'
     permission_required = 'tipo_item.delete_tipo_item'
+    success_url = reverse_lazy('tipo_item:tipo_item_lista')
+
+class TipoItemModificar(PermissionRequiredMixin, UpdateView):
+    """
+    Permite la modificacion de informacion de una instancia de modelo TipoItem.
+    :param PermissionRequiredMixin: Maneja multiple permisos, de la libreria guardian.mixins.
+    :param UpdateView: Recibe una vista generica de tipo UpdateView para vistas basadas en clases.
+    :return: Modficia na instancia del modelo TipoItem, luego se redirige a la lista de tipo de items.
+    """
+    model = TipoItem
+    template_name = 'usuario/usuario_registrar.html'
+    form_class = TipoItemForm
+    permission_required = 'tipo_item.change_tipo_item'
     success_url = reverse_lazy('tipo_item:tipo_item_lista')

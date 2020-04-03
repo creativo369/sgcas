@@ -26,6 +26,7 @@ urlpatterns = [
     path('rol/', include(('apps.rol.urls', 'rol'), namespace='rol')),
     path('tipo_item/', include(('apps.tipo_item.urls', 'tipo_item'), namespace='tipo_item')),
     path('mensajes/', include(('apps.mensajes.urls', 'mensajes'), namespace='mensajes')),
+    path('proyecto/', include(('apps.proyecto.urls', 'proyecto'), namespace='proyecto')),
 ]
 
 """

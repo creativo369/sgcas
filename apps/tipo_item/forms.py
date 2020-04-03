@@ -13,10 +13,10 @@ class TipoItemForm(forms.ModelForm):
 
 		labels = {
 			'nombre': 'Nombre',
-			'descripcion': 'Descripcion'
+			'descripcion': 'Descripcion',
 		}
 
 		widgets = {
 			'nombre': forms.TextInput(attrs = {'class': 'form-control'}),
-			'descripcion': forms.TextInput(attrs = {'clas': 'form-control'}),
+			'descripcion': forms.TextInput(attrs = {'class': 'form-control'}),
 		}
