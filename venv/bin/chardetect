@@ -1,4 +1,4 @@
-#!/home/alex/PycharmProjects/SGCAS/venv/bin/python
+#!/home/victor/Projects/SGCAS/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
