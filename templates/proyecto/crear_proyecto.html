@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+{% block title %} Nuevo Proyecto {% endblock%}
+{{ form.non_field_error }}
+{% block content %}
+	<div class = "class_container_form">
+		<form method="post" action="">
+			{% csrf_token %}
+			{{form.as_p}}
+			<input class="btn btn-success" type="submit" value="crear">
+		</form>
+	</div>
+{% endblock %}
