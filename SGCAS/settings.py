@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'SGCAS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'desarrollo',
+        'NAME': 'development',
         'USER': 'postgres',
-        'PASSWORD': 'admin2',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': 5432,
     },
