@@ -20,7 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SGCAS/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +145,10 @@
       <workItem from="1586574277426" duration="199000" />
       <workItem from="1586574503374" duration="125000" />
       <workItem from="1586574646216" duration="327000" />
+      <workItem from="1586576003118" duration="155000" />
+      <workItem from="1586618496908" duration="95000" />
+      <workItem from="1586649618418" duration="841000" />
+      <workItem from="1586704851776" duration="21000" />
     </task>
     <servers />
   </component>
@@ -161,10 +168,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="293" y="59" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586564300974">
+    <state x="293" y="59" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586649696080">
       <screen x="42" y="27" width="1324" height="741" />
     </state>
-    <state x="293" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/42.27.1324.741@42.27.1324.741" timestamp="1586564300974" />
+    <state x="293" y="59" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/42.27.1324.741@42.27.1324.741" timestamp="1586649696080" />
     <state x="308" y="59" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/60.27.1306.741@60.27.1306.741" timestamp="1584543324302" />
     <state x="426" y="202" width="701" height="397" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585865616616">
       <screen x="60" y="27" width="1306" height="741" />
@@ -179,10 +186,10 @@
       <screen x="60" y="27" width="1306" height="741" />
     </state>
     <state width="263" height="500" key="HiddenNamespacesPopup/60.27.1306.741@60.27.1306.741" timestamp="1584543336567" />
-    <state x="186" y="31" width="1022" height="737" key="SettingsEditor" timestamp="1586574612460">
+    <state x="186" y="31" width="1022" height="737" key="SettingsEditor" timestamp="1586618581567">
       <screen x="42" y="27" width="1324" height="741" />
     </state>
-    <state x="186" y="31" width="1022" height="737" key="SettingsEditor/42.27.1324.741@42.27.1324.741" timestamp="1586574612460" />
+    <state x="186" y="31" width="1022" height="737" key="SettingsEditor/42.27.1324.741@42.27.1324.741" timestamp="1586618581567" />
     <state x="202" y="31" width="1022" height="737" key="SettingsEditor/60.27.1306.741@60.27.1306.741" timestamp="1584539914260" />
     <state x="369" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1585923914635">
       <screen x="60" y="27" width="1306" height="741" />

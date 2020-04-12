@@ -98,6 +98,14 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 5432,
     },
+    'production': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'production',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    },
 }
 
 # Password validation
@@ -135,8 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-# STATIC_ROOT = os.path.join(BASE_DIR, "static/")#Para produccion
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)  						# Para desarollo
+STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")		# Para produccion
 
 
 AUTHENTICATION_BACKENDS = (
