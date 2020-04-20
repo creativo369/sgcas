@@ -20,45 +20,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/victor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SGCAS/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/usuario/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/doctrees/environment.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/doctrees/index.doctree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/.buildinfo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/.nojekyll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_sources/index.rst.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/ajax-loader.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/alabaster.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/basic.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/comment-bright.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/comment-close.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/comment.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/doctools.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/documentation_options.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/down-pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/file.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/language_data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/minus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/plus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/pygments.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/searchtools.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/underscore.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/up-pressed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/_static/websupport.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/genindex.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/objects.inv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/build/html/searchindex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/make.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/source/conf.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/source/index.rst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/INSTALLER" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/METADATA" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/RECORD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/WHEEL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3-1.25.8.dist-info/top_level.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/connectionpool.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/connectionpool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/contrib/pyopenssl.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/contrib/pyopenssl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/contrib/securetransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/contrib/securetransport.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/poolmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/poolmanager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/retry.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/retry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/ssl_.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/ssl_.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/timeout.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/timeout.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/url.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.7/site-packages/urllib3/util/url.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - postgres@localhost" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="PostgreSQL - postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-      </path>
-    </expand>
-    <select />
-  </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="SGCAS" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -83,14 +111,18 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/IS2-Equipo07" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.stylelint" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RunManager">
     <configuration name="SGCAS" type="Python.DjangoServer" factoryName="Django server">
@@ -118,7 +150,7 @@
     </configuration>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -149,6 +181,20 @@
       <workItem from="1586618496908" duration="95000" />
       <workItem from="1586649618418" duration="841000" />
       <workItem from="1586704851776" duration="21000" />
+      <workItem from="1586737676734" duration="17000" />
+      <workItem from="1586805845067" duration="7383000" />
+      <workItem from="1586821498208" duration="599000" />
+      <workItem from="1586974061473" duration="6417000" />
+      <workItem from="1587060674251" duration="8932000" />
+      <workItem from="1587071849119" duration="104000" />
+      <workItem from="1587080433014" duration="26000" />
+      <workItem from="1587081029041" duration="1071000" />
+      <workItem from="1587135763819" duration="1064000" />
+      <workItem from="1587150171818" duration="16000" />
+      <workItem from="1587255185770" duration="232000" />
+      <workItem from="1587308060436" duration="4226000" />
+      <workItem from="1587391007566" duration="603000" />
+      <workItem from="1587392762357" duration="2075000" />
     </task>
     <servers />
   </component>
@@ -168,6 +214,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="333" y="79" width="732" height="644" key="#Inspections" timestamp="1587310152252">
+      <screen x="42" y="27" width="1324" height="741" />
+    </state>
+    <state x="333" y="79" width="732" height="644" key="#Inspections/42.27.1324.741@42.27.1324.741" timestamp="1587310152252" />
     <state x="293" y="59" width="800" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586649696080">
       <screen x="42" y="27" width="1324" height="741" />
     </state>
@@ -177,19 +227,23 @@
       <screen x="60" y="27" width="1306" height="741" />
     </state>
     <state x="426" y="202" width="701" height="397" key="#com.intellij.fileTypes.FileTypeChooser/60.27.1306.741@60.27.1306.741" timestamp="1585865616616" />
-    <state x="484" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1586574533778">
+    <state x="537" y="158" width="309" height="489" key="EnvironmentVariablesDialog" timestamp="1587309677267">
       <screen x="42" y="27" width="1324" height="741" />
     </state>
-    <state x="484" y="155" key="FileChooserDialogImpl/42.27.1324.741@42.27.1324.741" timestamp="1586574533778" />
+    <state x="537" y="158" width="309" height="489" key="EnvironmentVariablesDialog/42.27.1324.741@42.27.1324.741" timestamp="1587309677267" />
+    <state x="484" y="155" width="424" height="491" key="FileChooserDialogImpl" timestamp="1587255206803">
+      <screen x="42" y="27" width="1324" height="741" />
+    </state>
+    <state x="484" y="155" width="424" height="491" key="FileChooserDialogImpl/42.27.1324.741@42.27.1324.741" timestamp="1587255206803" />
     <state x="496" y="155" width="424" height="491" key="FileChooserDialogImpl/60.27.1306.741@60.27.1306.741" timestamp="1585869655576" />
     <state width="263" height="500" key="HiddenNamespacesPopup" timestamp="1584543336567">
       <screen x="60" y="27" width="1306" height="741" />
     </state>
     <state width="263" height="500" key="HiddenNamespacesPopup/60.27.1306.741@60.27.1306.741" timestamp="1584543336567" />
-    <state x="186" y="31" width="1022" height="737" key="SettingsEditor" timestamp="1586618581567">
+    <state x="186" y="31" width="1022" height="737" key="SettingsEditor" timestamp="1587309760047">
       <screen x="42" y="27" width="1324" height="741" />
     </state>
-    <state x="186" y="31" width="1022" height="737" key="SettingsEditor/42.27.1324.741@42.27.1324.741" timestamp="1586618581567" />
+    <state x="186" y="31" width="1022" height="737" key="SettingsEditor/42.27.1324.741@42.27.1324.741" timestamp="1587309760047" />
     <state x="202" y="31" width="1022" height="737" key="SettingsEditor/60.27.1306.741@60.27.1306.741" timestamp="1584539914260" />
     <state x="369" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1585923914635">
       <screen x="60" y="27" width="1306" height="741" />

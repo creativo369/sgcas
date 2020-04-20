@@ -143,9 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)  						# Para desarollo
-STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")		# Para produccion
-
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)  						# Para desarollo
+STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")  # Para produccion
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -158,7 +157,7 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-##Configuraciones para el envio de mail
+# Configurationes para el envio de mail
 from .email_info import *
 
 EMAIL_USE_TLS = EMAIL_USE_TLS
@@ -166,7 +165,7 @@ EMAIL_HOST = EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_PORT = EMAIL_PORT
-EMAIL_BACKEND = EMAIL_BACKEND ##Solo para desarrollo, comentar para produccion
+EMAIL_BACKEND = EMAIL_BACKEND  # Solo para desarrollo, comentar para produccion
 
 LOGIN_URL = '/account/login'
 
@@ -190,5 +189,3 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 
 # Indicates whether or not the access tokens are stored in the database.
 SOCIALACCOUNT_STORE_TOKENS = True
-
-
