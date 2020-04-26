@@ -1,11 +1,17 @@
 from django.db import models
+from multiselectfield import MultiSelectField
 
+ATTRIBUTES = [
+    ('Boolean', 'Boolean'),
+    ('Char', 'Char'),
+    ('Date', 'Date'),
+    ('Numerico', 'Numerico'),
+]
 
 class TipoItem(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
-    # atributos = boolean, char, date, numerico
+    atributos = MultiSelectField(choices=ATTRIBUTES)
 
-    # archivo = models.
-    def _str__(self):
-        return '{}'.format(self.TipoItem.nombre)
+    def __str__(self):
+        return self.nombre

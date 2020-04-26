@@ -38,16 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'multiselectfield',
     'apps.usuario',
     'apps.proyecto',
     'apps.rol',
     'apps.tipo_item',
+    'apps.item',
     'apps.mensajes',
+    'apps.comite',
     'guardian',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
 ]
 
 SITE_ID = 1
@@ -61,7 +65,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.usuario.middleware.RolMiddleware',
-
 ]
 
 ROOT_URLCONF = 'SGCAS.urls'
@@ -107,7 +110,6 @@ DATABASES = {
         'PORT': 5432,
     },
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -143,8 +145,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)  						# Para desarollo
-STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")  # Para produccion
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)                       # for development
+# STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")  # for production
+
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -153,11 +156,11 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 
-    # Configuracion necesaria para el guardian 
+    # Configuracion necesaria para el guardian
     'guardian.backends.ObjectPermissionBackend',
 )
 
-# Configurationes para el envio de mail
+##Configuraciones para el envio de mail
 from .email_info import *
 
 EMAIL_USE_TLS = EMAIL_USE_TLS
@@ -165,7 +168,7 @@ EMAIL_HOST = EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_PORT = EMAIL_PORT
-EMAIL_BACKEND = EMAIL_BACKEND  # Solo para desarrollo, comentar para produccion
+EMAIL_BACKEND = EMAIL_BACKEND  ##Solo para desarrollo, comentar para produccion
 
 LOGIN_URL = '/account/login'
 

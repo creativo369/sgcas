@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
-from apps.tipo_item.views import tipo_item_opciones, crear_tipo_item, TipoItemLista, TipoItemEliminar, TipoItemModificar
+from apps.tipo_item.views import tipo_item_opciones, crear_tipo_item, TipoItemLista, TipoItemEliminar, \
+    TipoItemModificar, func
 
 urlpatterns = [
     url(r'^opciones/', tipo_item_opciones, name='tipo_item_opciones'),
@@ -7,4 +8,5 @@ urlpatterns = [
     url(r'^lista/', TipoItemLista.as_view(), name='tipo_item_lista'),
     url(r'^eliminar/(?P<pk>\d+)/$', TipoItemEliminar.as_view(), name='tipo_item_eliminar'),
     url(r'^editar/(?P<pk>\d+)/$', TipoItemModificar.as_view(), name='tipo_item_modificar'),
+    # url(r'^editar/(?P<id>\d+)/$', func, name='tipo_item_modificar'),
 ]

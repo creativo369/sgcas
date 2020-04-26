@@ -1,17 +1,15 @@
 from django.urls import path, include
 from django.conf.urls import url
 
-from apps.proyecto.views import home, success, CrearProyecto, \
-ListaProyecto, ActualizarProyecto, EliminarProyecto
+from apps.proyecto.views import manage_projects, create, list, update, delete, success, detail
 
 app_name='proyecto'
-
 urlpatterns=[
-	path('',home, name='home'),
-	url(r'^crear-Proyecto/$', CrearProyecto.as_view(), name='crear_proyecto'),
-	url(r'^listado_proyectos/$',ListaProyecto.as_view(), name='listado_proyecto'),
-	url(r'^sucess/$',success,name='success'),
-	url(r'^editar_proyecto/(?P<pk>\d+)/$',ActualizarProyecto.as_view(),name='editar_proyecto'),
-	url(r'^eliminar_proyecto/(?P<pk>\d+)/$',EliminarProyecto.as_view(),name='eliminar_proyecto'),
-
+	path('',manage_projects, name='manage_projects'),
+	url(r'^crear-proyecto/$', create.as_view(), name='create'),
+	url(r'^listado-proyecto/$',list.as_view(), name='list'),
+	url(r'^editar-proyecto/(?P<pk>\d+)/$',update.as_view(),name='update'),
+	url(r'^eliminar-proyecto/(?P<pk>\d+)/$',delete.as_view(),name='delete'),
+	url(r'^operacion-exitosa/$',success,name='success'),
+	url(r'^detalles-proyecto/(?P<pk>\d+)/$',detail.as_view(),name='detail'),
 ]

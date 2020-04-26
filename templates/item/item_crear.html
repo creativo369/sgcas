@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% else %}
+            <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+                <div class="card-header">
+                    {% if object %}
+                        <strong>Actualización del Item {{ item.nombre }} - Configuración básica</strong>
+                    {% else %}
+                        <strong>Registro de Item - Configuración básica</strong>
+                    {% endif %}
+                </div>
+                <div class="card-body card-block">
+                    <form action="#" method="post" enctype=" multipart
+                    /form-data" class="form-horizontal"
+                    ">
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.nombre.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.nombre }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.descripcion.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.estado.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.estado }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.costo.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.costo }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.usuarios_a_cargo.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.usuarios_a_cargo }}</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Siguiente</button>
+                        {#                            <a class="btn btn-secondary" href="{% url 'item:item_opciones' %}">Cancelar</a>#}
+                    </div>
+            </form>
+            </div>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}

@@ -21,6 +21,27 @@
 </head>
 <body>
 
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #1a1a1a !important;
+        color: white;
+        text-align: center;
+        text-transform: uppercase;
+        padding-top: 20px;
+    }
+    p {
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+    }
+    p:hover{
+        color:#FFFFFF;
+    }
+</style>
+
 {% block navbar %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="{% url 'usuario:usuario_home' %}">SGCAS</a>
@@ -39,7 +60,7 @@
                                     class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'proyecto:home' %}">Proyecto</a>
+                        <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Proyecto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Rol</a>
@@ -48,9 +69,12 @@
                         <a class="nav-link" href="{% url 'tipo_item:tipo_item_opciones' %}">Tipo de item</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'item:item_opciones' %}">Item</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
                                 class="badge badge-primary badge-pill">
-                            {% if count_inactive_users != 0%}
+                            {% if count_inactive_users != 0 %}
                                 {{ count_inactive_users }}
                             {% else %}{% endif %}
                         </span></a>
@@ -75,7 +99,13 @@
 </div>
 
 {% block footer %}
-    <!-- <h1>Este es el block footer</h1> -->
+{#    <div class="footer">#}
+{#        <blockquote class="blockquote text-center">#}
+{#            <p class="mb-0">Sistema de Gestión de Artefactos de Software</p>#}
+{#            <p class="mb-0">Equipo 07</p>#}
+{#            <footer class="blockquote-footer">Ingeniería de Software II, Año 2020</footer>#}
+{#        </blockquote>#}
+{#    </div>#}
 {% endblock footer %}
 </body>
 </html>

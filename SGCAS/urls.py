@@ -24,11 +24,12 @@ urlpatterns = [
     url(r'^account/', include('allauth.urls')),
     path('', include('apps.usuario.urls', namespace='usuario')),
     path('rol/', include(('apps.rol.urls', 'rol'), namespace='rol')),
+    path('item/', include(('apps.item.urls', 'item'), namespace='item')),
     path('tipo_item/', include(('apps.tipo_item.urls', 'tipo_item'), namespace='tipo_item')),
     path('mensajes/', include(('apps.mensajes.urls', 'mensajes'), namespace='mensajes')),
-    path('proyecto/', include(('apps.proyecto.urls', 'proyecto'), namespace='proyecto')),
+    path('gestion-proyecto/', include(('apps.proyecto.urls', 'proyecto'), namespace='proyecto')),
+    path('comite/', include(('apps.comite.urls', 'comite'), namespace='comite')),
 ]
-
 """
     path("signup/", views.signup, name="account_signup"),
     path("login/", views.login, name="account_login"),

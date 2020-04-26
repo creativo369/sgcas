@@ -3,3 +3,5 @@ psycopg2-binary
 django-allauth
 django-guardian~=2.2.0
 Django~=3.0.5
+Pyrebase
+django-multiselectfield==0.1.12
