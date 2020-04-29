@@ -9,6 +9,13 @@ class FormularioProyecto(forms.ModelForm):
 
     # Para read - only los fields nombre y estado
 
+    def __init__(self, *args, **kwargs):
+        super(FormularioProyecto, self).__init__(*args, **kwargs)
+        campos = ['estado', 'fecha_creacion']
+        for field in campos:
+            self.fields[field].required = False
+            self.fields[field].disabled = True
+
     class Meta:
         model = Proyecto
         fields = [
@@ -33,8 +40,8 @@ class FormularioProyecto(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'form-control',
                                                  'placeholder': 'Agregue una descripción al proyecto'}),
             'miembros': forms.CheckboxSelectMultiple(),
-            'estado': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'fecha_creacion': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'estado': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_creacion': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -49,7 +56,7 @@ class FormularioProyectoUpdate(FormularioProyecto):
         super(FormularioProyectoUpdate, self).__init__(*args, **kwargs)
 
         # fields representa los campos que no son editables de acuerdo al estado del proyecto
-        fields = ['nombre', 'estado','fecha_creacion']
+        fields = ['nombre', 'estado', 'fecha_creacion']
         if 'instance' in kwargs:
             # No se permite la modificacion del nombre del proyecto si su estado es pendiente
             if kwargs['instance'].estado == 'Pendiente':
@@ -59,4 +66,3 @@ class FormularioProyectoUpdate(FormularioProyecto):
 
     class Meta(FormularioProyecto.Meta):
         model = Proyecto
-

@@ -11,7 +11,6 @@ item_estado = [
     ('LineaBase', 'Línea base'),
 ]
 
-
 class Item(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
@@ -19,9 +18,10 @@ class Item(models.Model):
     estado = models.CharField(max_length=30, choices=item_estado, default='Desarrollo')
     costo = models.PositiveIntegerField()
     usuarios_a_cargo = models.ManyToManyField(User, blank=True)
+    archivo = models.FileField(null=True, blank=True)
     tipo_item = models.ForeignKey(TipoItem, on_delete=models.CASCADE, null=True, default='')
     boolean = models.BooleanField(default=False)
-    char = models.CharField(max_length=10, default='', blank=True)
+    char = models.CharField(max_length=100, default='', blank=True)
     date = models.DateField(null=True, blank=True)
     numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 

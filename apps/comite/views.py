@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from .models import Comite
 from .forms import FormularioComite
 from SGCAS.decorators import administrator_only
+from ..proyecto.models import Proyecto
 
 
 @login_required
@@ -43,17 +44,24 @@ class create(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     :return: Crea una instancia del modelo proyecto y lo guarda en la base de datos.
     """
     model = Comite
-    form_class = FormularioComite
+    # form_class = FormularioComite
     permission_required = 'comite.add_comite'
     template_name = 'comite/create.html'
     success_url = reverse_lazy('comite:success')
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user  # intuimos que el creador del comite va ser el primer integrante
-        self.object.save()
-        form.save_m2m()  # Para guardar as relaciones manytomany
-        return HttpResponseRedirect(self.get_success_url())
+    def get(self, request, *args, **kwargs):
+        form = FormularioComite(_id=kwargs.pop('_id'))
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        id_proyecto = kwargs.pop('_id') #Gurdamos en una variable el id del proyecto
+        form = FormularioComite(request.POST, _id=id_proyecto)
+        if form.is_valid():
+            comite = form.save(commit=False)
+            comite.proyecto = Proyecto.objects.get(id=id_proyecto)  # Establece el foreign key con proyecto
+            comite.save()
+            form.save_m2m()
+        return redirect(self.success_url)
 
 
 class list(ListView, LoginRequiredMixin, PermissionRequiredMixin):
@@ -84,7 +92,7 @@ class update(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     form_class = FormularioComite
     permission_required = 'comite.change_comite'
 
-    #success_url = reverse_lazy('comite:detail')
+    # success_url = reverse_lazy('comite:detail')
     def form_valid(self, form):
         object = form.save()
         return redirect('comite:detail', pk=object.pk)

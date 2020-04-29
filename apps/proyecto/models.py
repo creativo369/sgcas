@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 import datetime
 from django.core.exceptions import ValidationError
 from django.db.models import Choices
-from model_utils.fields import MonitorField, StatusField
 
 
 class Proyecto(models.Model):

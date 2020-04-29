@@ -21,9 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/rol/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/proyecto/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/proyecto/detail.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -148,6 +148,9 @@
       <workItem from="1587738981144" duration="21887000" />
       <workItem from="1587824573577" duration="17064000" />
       <workItem from="1587922040741" duration="4799000" />
+      <workItem from="1588034857315" duration="5094000" />
+      <workItem from="1588100045072" duration="274000" />
+      <workItem from="1588103509204" duration="1826000" />
     </task>
     <servers />
   </component>

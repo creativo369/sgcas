@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -6,17 +7,35 @@ from apps.item.forms import ItemForm, ItemUpdateForm, ItemImportarTipoItemForm, 
 from apps.item.models import Item
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy
+import pyrebase
+from datetime import date
+from django.core.files.storage import FileSystemStorage
+from apps.tipo_item.models import TipoItem
 
-# Configuracion para el Firebase
-firebase_config = {
-    "apiKey": "AIzaSyBOoFqZqkV7SpkMMN_ZXqm7SXBRW08dMus",
-    "authDomain": "sgcas-f6ab6.firebaseapp.com",
-    "databaseURL": "https://sgcas-f6ab6.firebaseio.com",
-    "projectId": "sgcas-f6ab6",
-    "storageBucket": "sgcas-f6ab6.appspot.com",
-    "messagingSenderId": "206850965617",
-    "appId": "1:206850965617:web:7b6265bb6e26e6a9ccdbd0"
-}
+firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
+storage = firebase.storage()
+
+
+def crear_item(request):
+    """
+    Permite la creacion de instancias de modelo Item.
+    :param request: Recibe un request por parte de un usuario.
+    :return:  Retorna una instancia del modelo Item.
+    """
+    print('funcion crear_item')
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        # file = request.FILES['file']
+        fs = FileSystemStorage()  # Referencia a la libreria propia de django
+        # fs.save(file.name, file)  # Guarda localmente
+        # print(file.name + ' se ha guardado en el sistema')
+        if form.is_valid():
+            form.save()
+        return redirect('item:item_lista')
+    else:
+        form = ItemForm()
+
+    return render(request, 'item/item_crear.html', {'form': form})
 
 
 class ItemCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
@@ -31,10 +50,30 @@ class ItemCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     form_class = ItemForm
     permission_required = 'item.add_item'
     template_name = 'item/item_crear.html'
+    success_url = reverse_lazy('item:item_lista')
 
-    def form_valid(self, form):
-        object = form.save()
-        return redirect('item:importar_tipo_item', pk=object.pk)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.tipo_item = TipoItem.objects.first()
+            object.save()
+
+            if request.FILES:
+                ##ALMACENAMIENTO FIREBASE
+                path_local = 'media/' + object.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+                path_on_cloud = str(
+                    date.today()) + '/' + object.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+                storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
+                ##
+
+            return redirect('item:importar_tipo_item', pk=object.pk)
+        else:
+            return render(request, self.template_name, {'form': form})
 
 
 class ImportarTipoItem(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
@@ -124,6 +163,25 @@ class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
     template_name = 'item/item_crear.html'
     form_class = ItemUpdateForm
     permission_required = 'item.change_item'
+
+    # def get(self, request, *args, **kwargs):
+    #     form = self.form_class
+    #     return render(request, self.template_name, {'form': form})
+    #
+    # def post(self, request, *args, **kwargs):
+    #     form = self.form_class(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         object = form.save()
+    #         if request.FILES:
+    #             ##ALMACENAMIENTO FIREBASE
+    #             path_local = 'media/' + object.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+    #             path_on_cloud = str(
+    #                 date.today()) + '/' + object.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+    #             storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
+    #             ##
+    #         return redirect('item:importar_tipo_item', pk=object.pk)
+    #     else:
+    #         return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
         object = form.save()

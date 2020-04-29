@@ -6,7 +6,8 @@ from apps.comite.views import create, list, update, delete, success, detail, man
 app_name = 'comite'
 urlpatterns = [
     path('', manage_comite, name='manage_comite'),
-    url(r'^crear-comite/$', create.as_view(), name='create'),
+    # url(r'^crear-comite/(?P<_id>\d+)/$', crear_comision, name='create'),
+    url(r'^crear-comite/(?P<_id>\d+)/$', create.as_view(), name='create'),
     url(r'^listado-comite/$', list.as_view(), name='list'),
     url(r'^editar-comite/(?P<pk>\d+)/$', update.as_view(), name='update'),
     url(r'^eliminar-comite/(?P<pk>\d+)/$', delete.as_view(), name='delete'),

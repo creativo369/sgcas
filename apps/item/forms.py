@@ -6,9 +6,8 @@ from apps.tipo_item.models import TipoItem
 class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
-        if 'instance' in kwargs:
-            self.fields['estado'].required = False
-            self.fields['estado'].disabled = True
+        self.fields['estado'].required = False
+        self.fields['estado'].disabled = True
 
     class Meta:
         model = Item
@@ -19,6 +18,7 @@ class ItemForm(forms.ModelForm):
             'estado',
             'costo',
             'usuarios_a_cargo',
+            'archivo'
         ]
         labels = {  # las etiquetas que tendra para visualizarse en el navegador
             'nombre': 'Nombre del Item',
@@ -26,6 +26,7 @@ class ItemForm(forms.ModelForm):
             'estado': 'Estado',
             'costo': 'Costo',
             'usuarios_a_cargo': 'Usuarios a cargo',
+            'archivo': 'Archivo'
         }
         widgets = {  # los aparatos o elementos de captura de información del formulario
             'nombre': forms.TextInput(attrs={'class': 'form-control',
@@ -37,6 +38,7 @@ class ItemForm(forms.ModelForm):
             'costo': forms.NumberInput(
                 attrs={'class': 'form-control', 'placeholder': 'Cantidad de horas estimativas, ejemplo: 7'}),
             'usuarios_a_cargo': forms.CheckboxSelectMultiple(),
+            'archivo': forms.FileInput()
         }
 
 
@@ -77,11 +79,11 @@ class ItemAtributosForm(ItemForm):
         super(ItemAtributosForm, self).__init__(*args, **kwargs)
         fields_not_required = ('nombre', 'descripcion', 'estado', 'costo', 'usuarios_a_cargo', 'tipo_item')
 
-        #No se hacen seleccionables los atributos que no le corresponden al item segun su tipo de item
+        # No se hacen seleccionables los atributos que no le corresponden al item segun su tipo de item
         if 'instance' in kwargs:
             attr_list = str(kwargs['instance'].tipo_item.atributos).split(',')
 
-            #La lista de atributos se pasan a minuscula y se borran todos los espacios
+            # La lista de atributos se pasan a minuscula y se borran todos los espacios
             for i in range(len(attr_list)):
                 attr_list[i] = (attr_list[i].lower()).strip()
 
@@ -144,10 +146,10 @@ class ItemUpdateForm(ItemForm):
     # Para read-only los fields nombre y estado
     def __init__(self, *args, **kwargs):
         super(ItemUpdateForm, self).__init__(*args, **kwargs)
-        #fields representa los campos que no son editables de acuerdo al estado del item
+        # fields representa los campos que no son editables de acuerdo al estado del item
         fields = ['estado']
         if 'instance' in kwargs:
-            #No se permite la modificacion del nombre del item si su estado no es desarrollo
+            # No se permite la modificacion del nombre del item si su estado no es desarrollo
             if kwargs['instance'].estado == 'Desarrollo':
                 fields.append('nombre')
             for field in fields:
