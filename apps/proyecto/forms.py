@@ -60,11 +60,11 @@ class FormularioProyectoUpdate(FormularioProyecto):
         fields = ['nombre', 'fecha_creacion', 'estado']
         if 'instance' in kwargs:
             # No se permite la modificacion del nombre del proyecto si su estado es pendiente
-           # if kwargs['instance'].estado == 'Pendiente' or kwargs['instance'].estado == 'Iniciado' or \
-               #     kwargs['instance'].estado == 'Finalizado' or kwargs['instance'].estado == 'Cancelado':
-                for field in fields:
-                    self.fields[field].required = False
-                    self.fields[field].disabled = True
+            # if kwargs['instance'].estado == 'Pendiente' or kwargs['instance'].estado == 'Iniciado' or \
+            #     kwargs['instance'].estado == 'Finalizado' or kwargs['instance'].estado == 'Cancelado':
+            for field in fields:
+                self.fields[field].required = False
+                self.fields[field].disabled = True
 
     class Meta(FormularioProyecto.Meta):
         model = Proyecto
@@ -76,12 +76,25 @@ class ChangeProject(forms.ModelForm):
         super(ChangeProject, self).__init__(*args, **kwargs)
         # fields representa los campos que no son editables de acuerdo al estado del proyecto
         fields = ['nombre', 'descripcion', 'fecha_creacion', 'miembros']
-        if 'instance' in kwargs:
-            # No se permite la modificacion del nombre del proyecto si su estado es pendiente
-            # if kwargs['instance'].estado == 'Pendiente':
-            for field in fields:
-                self.fields[field].required = False
-                self.fields[field].disabled = True
+        # No se permite la modificacion del nombre del proyecto si su estado es pendiente
+        if kwargs['instance'].estado == 'Pendiente':
+            estado_proyectonew = [
+                ('Pendiente', 'Pendiente'),
+                ('Iniciado', 'Iniciado'),
+                ('Cancelado', 'Cancelado'),
+            ]
+            self.fields['estado'].choices = estado_proyectonew
+        else:
+            estado_proyectonew = [
+                ('Iniciado', 'Iniciado'),
+                ('Cancelado', 'Cancelado'),
+                ('Finalizado', 'Finalizado'),
+            ]
+            self.fields['estado'].choices = estado_proyectonew
+
+        for field in fields:
+            self.fields[field].required = False
+            self.fields[field].disabled = True
 
     class Meta:
         model = Proyecto

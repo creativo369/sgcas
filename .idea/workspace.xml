@@ -21,24 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/proyecto/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comite/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comite/delete.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comite/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/manage_comite.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comite/success.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comite/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comite/update.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/proyecto/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/proyecto/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/proyecto/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/proyecto/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/proyecto/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/proyecto/update.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +152,7 @@
       <workItem from="1588103509204" duration="1826000" />
       <workItem from="1588168678847" duration="22975000" />
       <workItem from="1588256883795" duration="16508000" />
-      <workItem from="1588342420453" duration="4869000" />
+      <workItem from="1588342420453" duration="8342000" />
     </task>
     <servers />
   </component>

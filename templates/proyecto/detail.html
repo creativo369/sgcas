@@ -32,7 +32,10 @@
         </tbody>
     </table>
     <a type="button" class="btn btn-secondary" href="{% url 'proyecto:list' %}">Salir</a>
-    <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
-    <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
-    <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
+    {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado'%}
+        <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
+        <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
+        <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
+    {% endif %}
+
 {% endblock content %}
