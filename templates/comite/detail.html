@@ -1,31 +1,27 @@
 {% extends 'base/base.html' %}
-{% block title %} Detalles del proyecto {% endblock %}
+{% block title %} Detalles del Comit&eacute; {% endblock %}
 {% block content %}
     <table class="table table-hover">
-  <thead>
-    <tr>
-        <th scope="col">Nombre del Comité</th>
-        <th scope="col">Descripci&oacute;n del Comité</th>
-        <th scope="col">Miembros del Comité</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% if object %}
-    <tr>
-        <td>{{ object.nombre }}</td>
-        <td>{{ object.descripcion }}</td>
-        <td>
-            {% for miembro in object.miembros.all %}
-                {{ miembro }},
-            {% endfor %}
-        </td>
-    </tr>
-    {% else %}
-    	<h2>No se encontraron registros de comites.</h2>
-    {% endif %}
-  </tbody>
-</table>
-    <a type="button" class="btn btn-link" href="{% url 'comite:list' %}">Salir</a>
-    <a type="button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
-    <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}" >Eliminar</a>
+        <thead>
+        <tr>
+            <th scope="col">Nombre del Comité</th>
+            <th scope="col">Descripci&oacute;n del Comité</th>
+            <th scope="col">Miembros del Comité</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ comite.nombre }}</td>
+            <td>{{ comite.descripcion }}</td>
+            <td>
+                {% for miembro in comite.miembros.all %}
+                    {{ miembro }},
+                {% endfor %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a type="button" class="btn btn-secondary" href="#" onclick="window.history.back()">Regresar al Proyecto</a>
+    <a type=" button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
+    <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}">Eliminar</a>
 {% endblock content %}

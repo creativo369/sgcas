@@ -1,27 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 
 from .models import Comite
-from .forms import FormularioComite
-from SGCAS.decorators import administrator_only
+from .forms import FormularioComite, FormularioComiteUpdate
 from ..proyecto.models import Proyecto
-
-
-@login_required
-def manage_comite(request):
-    """
-    Recibe una petición a la pagina de proyecto por parte de un cliente, esta vista basada en una función retorna
-    la pagina principal para la gestión de proyectos.
-
-    :param : request
-    :return: retorna la plantilla de gestión de proyectos
-    """
-    return render(request, 'comite/manage_comite.html')
 
 
 @login_required
@@ -34,7 +20,7 @@ def success(request):
     return render(request, 'comite/success.html')
 
 
-class create(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     """
     Permite la visualizacion en una plantilla para la definición de un proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -44,41 +30,46 @@ class create(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     :return: Crea una instancia del modelo proyecto y lo guarda en la base de datos.
     """
     model = Comite
-    # form_class = FormularioComite
     permission_required = 'comite.add_comite'
     template_name = 'comite/create.html'
-    success_url = reverse_lazy('comite:success')
+    template_detail = 'comite/detail.html'
+    success_url = 'proyecto:detail'
+
 
     def get(self, request, *args, **kwargs):
-        form = FormularioComite(_id=kwargs.pop('_id'))
-        return render(request, self.template_name, {'form': form})
+        """
+        Obtiene el formulario de creación de un comité
+        :param request: recibe la petición del cliente que solicita crear un comite para la instancia del proyecto
+        :param args:
+        :param kwargs: Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto
+        :return: el formulario , la plantilla donde se va desplegar el formulario de creación
+        """
+        comite_query = Comite.objects.filter(proyecto=Proyecto.objects.get(id=kwargs.get('_id')))
+        if not comite_query.exists():
+            form = FormularioComite(_id=kwargs.pop('_id'))
+            return render(request, self.template_name, {'formulario': form})
+        else:
+            return render(request, self.template_detail, {'comite': comite_query.first()})
 
     def post(self, request, *args, **kwargs):
-        id_proyecto = kwargs.pop('_id') #Gurdamos en una variable el id del proyecto
+        """
+        Almacena los datos obtenidos del formulario en la base de datos
+        :param request:
+        :param args:
+        :param kwargs: Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto
+        :return: Redirige a la plantilla de Operación exitosa de la creación de un comité
+        """
+        id_proyecto = kwargs.pop('_id')  # Guardamos en una variable el id del proyecto
         form = FormularioComite(request.POST, _id=id_proyecto)
         if form.is_valid():
             comite = form.save(commit=False)
             comite.proyecto = Proyecto.objects.get(id=id_proyecto)  # Establece el foreign key con proyecto
             comite.save()
             form.save_m2m()
-        return redirect(self.success_url)
+        return redirect(self.success_url, pk=id_proyecto)
 
 
-class list(ListView, LoginRequiredMixin, PermissionRequiredMixin):
-    """
-    Permite la visualizacion de los proyectos.
-    :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
-    debe poseer el permiso correspondiente de visualizar proyectos.
-    :param LoginRequiredMixin: Requiere estar logueado, de la libreria django.contrib.auth.mixins
-    :param ListView: Recibe una vista generica de tipo ListView para vistas basadas en clases.
-    :return: Una vista de todos los proyectos.
-    """
-    model = Comite
-    permission_required = 'comite.view_comite'
-    template_name = 'comite/list.html'
-
-
-class update(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
+class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     """
     Permite la actualizacion una instancia de modelo Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -89,16 +80,16 @@ class update(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     """
     model = Comite
     template_name = 'comite/update.html'
-    form_class = FormularioComite
+    form_class = FormularioComiteUpdate
     permission_required = 'comite.change_comite'
+    success_url = reverse_lazy('proyecto:list')
 
-    # success_url = reverse_lazy('comite:detail')
     def form_valid(self, form):
-        object = form.save()
-        return redirect('comite:detail', pk=object.pk)
+        comite = form.save()
+        return redirect(self.success_url)
 
 
-class delete(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
+class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
     Permite suprimir una instancia del modelo de Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -110,10 +101,10 @@ class delete(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     model = Comite
     template_name = 'comite/delete.html'
     permission_required = 'comite.delete_comite'
-    success_url = reverse_lazy('comite:list')
+    success_url = reverse_lazy('proyecto:list')
 
 
-class detail(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
+class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
     Despliega los detalles de una instancia del modelo de Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario

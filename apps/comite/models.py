@@ -5,6 +5,10 @@ from apps.proyecto.models import Proyecto
 
 
 class Comite(models.Model):
+    """
+        Clase que modela el concepto de un comite para los proyectos.
+    """
+
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
     miembros = models.ManyToManyField(User, blank=True)

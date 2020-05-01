@@ -1,14 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 
 from .models import Proyecto
-from .forms import FormularioProyecto, FormularioProyectoUpdate
-from SGCAS.decorators import administrator_only
+from .forms import FormularioProyecto, FormularioProyectoUpdate, ChangeProject
 
 
 @login_required
@@ -33,7 +33,17 @@ def success(request):
     return render(request, 'proyecto/success.html')
 
 
-class create(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+@login_required
+def change_state(request, pk):
+    proyecto = get_object_or_404(Proyecto, id=pk)
+    form = ChangeProject(request.POST or None, instance=proyecto)
+    if form.is_valid():
+        form.save()
+        return redirect('proyecto:list')
+    return render(request, 'proyecto/change.html', {'form': form,'proyecto':proyecto})
+
+
+class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     """
     Permite la visualizacion en una plantilla para la definición de un proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -56,7 +66,7 @@ class create(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class list(ListView, LoginRequiredMixin, PermissionRequiredMixin):
+class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     """
     Permite la visualizacion de los proyectos.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -70,7 +80,7 @@ class list(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     template_name = 'proyecto/list.html'
 
 
-class update(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
+class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     """
     Permite la actualizacion una instancia de modelo Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -90,7 +100,7 @@ class update(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         return redirect('proyecto:detail', pk=object.pk)
 
 
-class delete(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
+class DeleteProject(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
     Permite suprimir una instancia del modelo de Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -105,7 +115,7 @@ class delete(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     success_url = reverse_lazy('proyecto:list')
 
 
-class detail(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
+class DetailProject(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
     Despliega los detalles de una instancia del modelo de Proyecto.
     :param PermissionRequiredMixin: Libreria que gestiona el permiso para la creación de proyectos.El usuario

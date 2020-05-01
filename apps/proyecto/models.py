@@ -2,23 +2,26 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 from django.core.exceptions import ValidationError
-from django.db.models import Choices
+
+estado_proyecto = [
+    ('Pendiente', 'Pendiente'),
+    ('Iniciado', 'Iniciado'),
+    ('Cancelado', 'Cancelado'),
+    ('Finalizado', 'Finalizado'),
+]
 
 
 class Proyecto(models.Model):
     """
     Clase que modela el concepto de Proyecto
     """
-    # ESTADOS = Choices('pendiente', 'iniciado', 'finalizado', 'cancelado')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gerente')
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
     fecha_creacion = models.DateField(default=datetime.date.today)
     ultima_modificacion = models.DateTimeField(auto_now=True)
-    # estado = StatusField()
-    # estado_cambiado= MonitorField(monitor='estado', when=['pendiente'])
-    estado = models.CharField(max_length=30, default="Pendiente")
+    estado = models.CharField(max_length=30, choices=estado_proyecto, default="Pendiente")
     slug = models.CharField(max_length=50, default="")
     miembros = models.ManyToManyField(User, blank=True)
 

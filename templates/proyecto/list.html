@@ -18,8 +18,10 @@
                     <td>{{ proyecto.user }}</td>
                     <td>{{ proyecto.estado }}</td>
                     <td>
-                        <a type="button" class="btn btn-info" href="{% url 'proyecto:detail' proyecto.id %}">Ver
+                        <a type="button" class="btn btn-info" href="{% url 'proyecto:detail' proyecto.id %}">Más
                             Detalles</a>
+                        <a type="button" class="btn btn-info" href="{% url 'proyecto:change' proyecto.id %}">
+                            Transici&oacute;n del Proyecto</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -28,6 +30,6 @@
         {% endif %}
         </tbody>
     </table>
-    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Regresar a Gestión de
+    <a type="button" class="btn btn-secondary" href="{% url 'proyecto:manage_projects' %}">Regresar a Gestión de
         Proyectos</a>
 {% endblock content %}
