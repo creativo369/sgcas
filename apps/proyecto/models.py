@@ -47,3 +47,11 @@ class Proyecto(models.Model):
         self.validate_unique()
         self.slug = self.nombre.replace(" ", "_").lower()
         super(Proyecto, self).save(*args, **kwargs)
+
+    class Meta:
+        permissions = [
+            ("Can add proyecto", "Puede crear un proyecto"),
+            ("Can change proyecto", "Puede editar el proyecto"),
+            ("Can delete proyecto", "Puede eliminar un proyecto"),
+            ("Can view proyecto", "Puede visualizar un proyecto"),
+        ]

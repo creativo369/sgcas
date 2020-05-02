@@ -16,3 +16,11 @@ class Comite(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        permissions = [
+            ("Can add comite", "Puede crear un comité"),
+            ("Can change comite", "Puede editar el comité"),
+            ("Can delete comite", "Puede eliminar un comité"),
+            ("Can view comite", "Puede visualizar un comité"),
+        ]

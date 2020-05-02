@@ -12,3 +12,11 @@ class Usuario(models.Model):
 
     def __str__(self):
         return '{}'.format(self.Usuario.nombres)
+
+    class Meta:
+        permissions = [
+            ("Can add usuario", "Puede registrar un usuario"),
+            ("Can change usuario", "Puede modificar el usuario"),
+            ("Can delete usuario", "Puede eliminar un usuario"),
+            ("Can view usuario", "Puede visualizar un usuario"),
+        ]

@@ -25,6 +25,13 @@ class Item(models.Model):
     date = models.DateField(null=True, blank=True)
     numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+    class Meta:
+        permissions = [
+            ("Can add item", "Puede crear un item"),
+            ("Can change item", "Puede editar el item"),
+            ("Can delete item", "Puede eliminar un item"),
+            ("Can view item", "Puede visualizar un item"),
+        ]
 # ASIGNACION DE ATRIBUTOS
 # Nombre
 # Descripcion
