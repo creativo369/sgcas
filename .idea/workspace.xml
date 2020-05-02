@@ -20,6 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/apps/comite/migrations/0005_auto_20200501_2013.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/comite/migrations/0006_auto_20200501_2026.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/item/migrations/0003_auto_20200501_2013.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/item/migrations/0004_auto_20200501_2026.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/proyecto/migrations/0011_auto_20200501_2001.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/tipo_item/migrations/0002_auto_20200501_2013.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/tipo_item/migrations/0003_auto_20200501_2026.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/usuario/migrations/0002_auto_20200501_2015.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/usuario/migrations/0003_auto_20200501_2026.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/comite/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/models.py" afterDir="false" />
@@ -157,7 +166,7 @@
       <workItem from="1588256883795" duration="16508000" />
       <workItem from="1588342420453" duration="10339000" />
       <workItem from="1588362879982" duration="2732000" />
-      <workItem from="1588440256573" duration="1804000" />
+      <workItem from="1588440256573" duration="2585000" />
     </task>
     <servers />
   </component>
