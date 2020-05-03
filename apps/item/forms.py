@@ -1,13 +1,17 @@
 from django import forms
+
+from apps.fase.models import Fase
 from apps.item.models import Item
 from apps.tipo_item.models import TipoItem
 
 
 class ItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        id_fase = kwargs.pop('id_fase')
         super(ItemForm, self).__init__(*args, **kwargs)
         self.fields['estado'].required = False
         self.fields['estado'].disabled = True
+        self.fields['usuarios_a_cargo'].queryset = Fase.objects.get(id=id_fase).miembros.all()
 
     class Meta:
         model = Item
@@ -34,7 +38,7 @@ class ItemForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'class': 'form-control',
                                                  'placeholder': 'Agregue una breve descripción', 'rows': 4,
                                                  'cols': 15}),
-            'estado': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
             'costo': forms.NumberInput(
                 attrs={'class': 'form-control', 'placeholder': 'Cantidad de horas estimativas, ejemplo: 7'}),
             'usuarios_a_cargo': forms.CheckboxSelectMultiple(),
@@ -42,7 +46,7 @@ class ItemForm(forms.ModelForm):
         }
 
 
-class ItemImportarTipoItemForm(ItemForm):
+class ItemImportarTipoItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ItemImportarTipoItemForm, self).__init__(*args, **kwargs)
@@ -73,7 +77,7 @@ class ItemImportarTipoItemForm(ItemForm):
         }
 
 
-class ItemAtributosForm(ItemForm):
+class ItemAtributosForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ItemAtributosForm, self).__init__(*args, **kwargs)
@@ -87,10 +91,7 @@ class ItemAtributosForm(ItemForm):
             for i in range(len(attr_list)):
                 attr_list[i] = (attr_list[i].lower()).strip()
 
-            print(attr_list)
-
             if 'boolean' not in attr_list:
-                print('Boolean esta')
                 self.fields['boolean'].required = False
                 self.fields['boolean'].disabled = True
 
@@ -99,7 +100,6 @@ class ItemAtributosForm(ItemForm):
                 self.fields['char'].disabled = True
 
             if 'date' not in attr_list:
-                print('hola mundo')
                 self.fields['date'].required = False
                 self.fields['date'].disabled = True
 
@@ -141,11 +141,13 @@ class ItemAtributosForm(ItemForm):
         }
 
 
-class ItemUpdateForm(ItemForm):
+class ItemUpdateForm(forms.ModelForm):
 
     # Para read-only los fields nombre y estado
     def __init__(self, *args, **kwargs):
+        id_fase = kwargs.pop('id_fase')
         super(ItemUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['usuarios_a_cargo'].queryset = Fase.objects.get(id=id_fase).miembros.all()
         # fields representa los campos que no son editables de acuerdo al estado del item
         fields = ['estado']
         if 'instance' in kwargs:
@@ -155,6 +157,39 @@ class ItemUpdateForm(ItemForm):
             for field in fields:
                 self.fields[field].required = False
                 self.fields[field].disabled = True
+
+    class Meta(ItemForm.Meta):
+        model = Item
+
+
+class ItemCambiarEstado(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        fields_not_required = ('nombre', 'descripcion', 'costo', 'usuarios_a_cargo')
+        super(ItemCambiarEstado, self).__init__(*args, **kwargs)
+        if kwargs['instance'].estado == 'Desarrollo':
+            item_estado = [
+                ('Desarrollo', 'Desarrollo'),
+                ('Aprobado', 'Aprobado'),
+                ('Desactivado', 'Desactivado'),
+            ]
+            self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Revision':
+            item_estado = [
+                ('Revision', 'Revision'),
+                ('Aprobado', 'Aprobado'),
+                ('Desactivado', 'Desactivado'),
+            ]
+            self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Aprobado':
+            item_estado = [
+                ('Aprobado', 'Aprobado'),
+                ('Desactivado', 'Desactivado'),
+            ]
+            self.fields['estado'].choices = item_estado
+        for field in fields_not_required:
+            self.fields[field].required = False
+            self.fields[field].disabled = True
 
     class Meta(ItemForm.Meta):
         model = Item

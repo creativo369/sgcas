@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
-from apps.item.forms import ItemForm, ItemUpdateForm, ItemImportarTipoItemForm, ItemAtributosForm
+
+from apps.fase.models import Fase
+from apps.item.forms import ItemForm, ItemUpdateForm, ItemImportarTipoItemForm, ItemAtributosForm, ItemCambiarEstado
 from apps.item.models import Item
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView
 from django.urls import reverse_lazy
@@ -16,97 +18,53 @@ firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
 
 
-def crear_item(request):
+def crear_item_basico(request, id_fase):
     """
     Permite la creacion de instancias de modelo Item.
     :param request: Recibe un request por parte de un usuario.
     :return:  Retorna una instancia del modelo Item.
     """
-    print('funcion crear_item')
     if request.method == 'POST':
-        form = ItemForm(request.POST, request.FILES)
-        # file = request.FILES['file']
-        fs = FileSystemStorage()  # Referencia a la libreria propia de django
-        # fs.save(file.name, file)  # Guarda localmente
-        # print(file.name + ' se ha guardado en el sistema')
+        form = ItemForm(request.POST, request.FILES, id_fase=id_fase)
         if form.is_valid():
-            form.save()
-        return redirect('item:item_lista')
-    else:
-        form = ItemForm()
-
-    return render(request, 'item/item_crear.html', {'form': form})
-
-
-class ItemCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
-    """
-    Permite la creacion de una instancia de un objeto Item
-    :param CreateView: Recibe una vista generica de tipo ListView para vistas basadas en clases.
-    :param LoginRequiredMixin: Acceso controlado por logueo, de la libreria auth.mixins.
-    :param PermissionRequiredMixin: Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.
-    :return: Una instancia de objeto Item.
-    """
-    model = Item
-    form_class = ItemForm
-    permission_required = 'item.add_item'
-    template_name = 'item/item_crear.html'
-    success_url = reverse_lazy('item:item_lista')
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            object = form.save(commit=False)
-            object.tipo_item = TipoItem.objects.first()
-            object.save()
+            item = form.save(commit=False)
+            item.fase = Fase.objects.get(id=id_fase)
+            item.save()
+            form.save_m2m()
 
             if request.FILES:
                 ##ALMACENAMIENTO FIREBASE
-                path_local = 'media/' + object.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+                path_local = 'media/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
                 path_on_cloud = str(
-                    date.today()) + '/' + object.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+                    date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
                 storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
                 ##
 
-            return redirect('item:importar_tipo_item', pk=object.pk)
-        else:
-            return render(request, self.template_name, {'form': form})
+            return redirect('item:importar_tipo_item', pk=item.pk)
+    else:
+        form = ItemForm(id_fase=id_fase)
+    return render(request, 'item/item_crear.html', {'form': form})
 
 
-class ImportarTipoItem(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
-    """
-    Permite la importacion de una instancia de un objeto Tipo de Item a una instancia de objeto Item
-    :param UpdateView: Recibe una vista generica de tipo UpdateView para vistas basadas en clases.
-    :param LoginRequiredMixin: Acceso controlado por logueo, de la libreria auth.mixins.
-    :param PermissionRequiredMixin: Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.
-    :return: Una instancia de Item enlazado con una instancia de Tipo de Item.
-    """
-    model = Item
-    form_class = ItemImportarTipoItemForm
-    permission_required = 'item.change_item'
-    template_name = 'item/item_importar_tipo_item.html'
-
-    def form_valid(self, form):
-        object = form.save()
-        return redirect('item:set_atributos', pk=object.pk)
+def item_importar_ti(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    form = ItemImportarTipoItemForm(request.POST or None, instance=item)
+    if form.is_valid():
+        item = form.save()
+        return redirect('item:set_atributos', pk=item.id)
+    return render(request, 'item/item_importar_tipo_item.html', {'form': form,
+                                                                 'tipo_item': TipoItem.objects.all().exists(),
+                                                                 'fase': item.fase})
 
 
-class SetAtributos(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
-    """
-    Permite agregar los atributos de Tipo de Item a una instancia de Item al que fue relacionado.
-    :param UpdateView: Recibe una vista generica de tipo UpdateView para vistas basadas en clases.
-    :param LoginRequiredMixin: Acceso controlado por logueo, de la libreria auth.mixins.
-    :param PermissionRequiredMixin: Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.
-    :return: Una instancia de objeto Item, relacionado con su Tipo de Item y sus atributos seteados.
-    """
-    model = Item
-    form_class = ItemAtributosForm
-    permission_required = 'item.change_item'
-    template_name = 'item/item_atributos_tipo_item.html'
-    success_url = reverse_lazy('item:item_lista')
+def item_set_atributos(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    form = ItemAtributosForm(request.POST or None, instance=item)
+    if form.is_valid():
+        form.save()
+        return redirect('item:item_lista', id_fase=Item.objects.get(id=pk).fase.pk)
+    return render(request, 'item/item_atributos_tipo_item.html', {'form': form,
+                                                                  'fase': item.fase})
 
 
 @login_required
@@ -118,6 +76,55 @@ def item_opciones(request):
     """
 
     return render(request, 'item/item_opciones.html')
+
+
+def item_lista_fase(request, id_fase):
+    return render(request, 'item/item_lista.html', {'items': Item.objects.filter(fase=Fase.objects.get(id=id_fase)),
+                                                    'proyecto': Fase.objects.get(id=id_fase).proyecto})
+
+
+def item_eliminar(request, pk):
+    item = Item.objects.get(id=pk)
+    id_fase = item.fase.pk
+    item.delete()
+    return redirect('item:item_lista', id_fase=id_fase)
+
+
+def item_modificar_basico(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    id_fase = item.fase.pk
+    form = ItemUpdateForm(request.POST or None, instance=item, id_fase=id_fase)
+    if form.is_valid():
+        item = form.save()
+        return redirect('item:item_modificar_import_ti', pk=item.pk)
+    return render(request, 'item/item_crear.html', {'form': form})
+
+
+def item_modificar_ti(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    form = ItemImportarTipoItemForm(request.POST or None, instance=item)
+    if form.is_valid():
+        item = form.save()
+        return redirect('item:item_modificar_atr_ti', pk=item.pk)
+    return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
+
+
+def item_modificar_atributos(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    form = ItemAtributosForm(request.POST or None, instance=item)
+    if form.is_valid():
+        form.save()
+        return redirect('item:item_lista', id_fase=item.fase.pk)
+    return render(request, 'item/item_atributos_tipo_item.html', {'form': form})
+
+
+def item_cambiar_estado(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    form = ItemCambiarEstado(request.POST or None, instance=item)
+    if form.is_valid():
+        form.save()
+        return redirect('item:item_lista', id_fase=item.fase.pk)
+    return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
 
 
 class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):

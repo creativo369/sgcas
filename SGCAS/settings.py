@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'multiselectfield',
     'apps.usuario',
     'apps.proyecto',
+    'apps.fase',
+    'apps.linea_base',
     'apps.comite',
     'apps.rol',
     'apps.tipo_item',

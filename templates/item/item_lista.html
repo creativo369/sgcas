@@ -1,5 +1,17 @@
 {% extends 'base/base.html' %}
 
+{% block extrajs %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+{% endblock extrajs %}
+
 {% block content %}
     <table class="table table-hover">
         <thead>
@@ -10,36 +22,46 @@
             <th scope="col">Estado</th>
             <th scope="col">Fecha de Creacion</th>
             <th scope="col">Archivo</th>
-            <th scope="col">Opciones</th>
+            <th scope="col" style="text-align: center">Opciones</th>
         </tr>
         </thead>
         <tbody>
-        {% if object_list %}
-            {% for Item in object_list %}
-                <tr>
-                    <td>{{ Item.id }}</td>
-                    <td>{{ Item.nombre }}</td>
-                    <td>{{ Item.descripcion }}</td>
-                    <td>{{ Item.estado }}</td>
-                    <td>{{ Item.fecha_creacion }}</td>
-                    <td>
-                        {% if Item.archivo %}
-                            <a href="{{ Item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver archivo</a>
-                        {% else %}
-                            No adjunto.
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-warning"
-                           href="{% url 'item:item_modificar' Item.id %}">Editar</a>
-                        <a type="button" class="btn btn-danger"
-                           href="{% url 'item:item_eliminar' Item.id %}">Eliminar</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        {% else %}
-            <h2>No se encontraron registros de items.</h2>
-        {% endif %}
+        {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.estado }}</td>
+                <td>{{ item.fecha_creacion }}</td>
+                <td>
+                    {% if item.archivo %}
+                        <a href="{{ item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
+                            archivo</a>
+                    {% else %}
+                        No adjunto.
+                    {% endif %}
+                </td>
+                <td>
+                    <a type="button" class="btn btn-warning"
+                       href="{% url 'item:item_modificar' item.id %}">Editar</a>
+                    <a type="submit" class="btn btn-danger"
+                       href="{% url 'item:item_eliminar' item.id %}">Eliminar</a>
+                    <div class="dropdown" style="display: inline">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Mas
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Detalles</a>
+                            <a class="dropdown-item" href="{% url 'item:item_cambiar_estado' item.id %}">Cambiar
+                                estado</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
+    <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' _id=proyecto.id %}">Volver a lista de fases</a>
 {% endblock content %}

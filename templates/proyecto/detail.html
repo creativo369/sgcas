@@ -1,5 +1,16 @@
 {% extends 'base/base.html' %}
 {% block title %} Detalles del proyecto {% endblock %}
+{% block extrajs %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+{% endblock extrajs %}
 {% block content %}
     <table class="table table-hover">
         <thead>
@@ -13,18 +24,18 @@
         </tr>
         </thead>
         <tbody>
-        {% if proyecto %}
+        {% if object %}
             <tr>
-                <td>{{ proyecto.nombre }}</td>
-                <td>{{ proyecto.descripcion }}</td>
-                <td>{{ proyecto.estado }}</td>
+                <td>{{ object.nombre }}</td>
+                <td>{{ object.descripcion }}</td>
+                <td>{{ object.estado }}</td>
                 <td>
-                    {% for miembro in proyecto.miembros.all %}
+                    {% for miembro in object.miembros.all %}
                         {{ miembro }},
                     {% endfor %}
                 </td>
-                <td>{{ proyecto.fecha_creacion }}</td>
-                <td>{{ proyecto.ultima_modificacion }}</td>
+                <td>{{ object.fecha_creacion }}</td>
+                <td>{{ object.ultima_modificacion }}</td>
             </tr>
         {% else %}
             <h2>No se encontraron registros de proyectos.</h2>
@@ -36,6 +47,18 @@
         <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
         <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
         <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
+        {% if proyecto.estado != 'Pendiente' %}
+            <div class="dropdown" style="display: inline">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Fases
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'fase:crear_fase' _id=proyecto.id %}">Crear fase</a>
+            <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
+        </div>
+    </div>
+        {% endif %}
     {% endif %}
 
 {% endblock content %}

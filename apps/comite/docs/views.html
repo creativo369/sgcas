@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>views.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>views.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h3><span id="importación-de-las-librerias-utilizadas-de-django" href="importación-de-las-librerias-utilizadas-de-django"> Importación de las librerias utilizadas de Django </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.mixins</span> <span class="kn">import</span> <span class="n">LoginRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">guardian.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">DetailView</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <h3><span id="importación-de-los-codigos-fuentes-de-la-aplicación" href="importación-de-los-codigos-fuentes-de-la-aplicación"> Importación de los codigos fuentes de la aplicación </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Comite</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">FormularioComite</span><span class="p">,</span> <span class="n">FormularioComiteUpdate</span>
+<span class="kn">from</span> <span class="nn">..proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Todas las vistas para la aplicación del Modulo Comité
+Actualmente se despliega en las plantillas 5 vistas:</p>
+<ol>
+<li><strong>success</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#success">views.py</a> )</li>
+<li><strong>CreateComite</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#createcomite">views.py</a> )</li>
+<li><strong>UpdateComite</strong> - modificar una instancia del modelo comité (Ir a la sección:  <a href="views.html#updatecomite">views.py</a> )</li>
+<li><strong>DeleteComite </strong> - suprimir una instancia del modelo comité (Ir a la sección:  <a href="views.html#deletecomite">views.py</a> )</li>
+<li><strong>DetailComite </strong> - ver detalles de una instancia del modelo comité (Ir a la sección:  <a href="views.html#detailcomite">views.py</a> )</li>
+</ol>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h3><span id="success" href="success"> success </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@login_required</span>
+<span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Una vista basada en función donde indica la creación exitosa de una operacion sobre comites.<br/>
+<strong>:param request:</strong> recibe la petición del cliente.<br/>
+<strong>:return:</strong> plantilla mostrando la operación exitosa.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/success.html&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h3><span id="createcomite" href="createcomite"> createcomite </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CreateComite</span><span class="p">(</span><span class="n">CreateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Permite la visualizacion en una plantilla para la definición de un comite.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de comites.El usuario
+debe poseer el permiso correspondiente de crear comite.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere que el usuario este logueado en el sistema.<br/>
+<strong>:param CreateView:</strong> Recibe una vista generica de tipo CreateView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Crea una instancia del modelo comite y lo guarda en la base de datos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.add_comite&#39;</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/create.html&#39;</span>
+    <span class="n">template_detail</span> <span class="o">=</span> <span class="s1">&#39;comite/detail.html&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="s1">&#39;proyecto:detail&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Obtiene el formulario de creación de un comité<br/>
+<strong>:param request:</strong> recibe la petición del cliente que solicita crear un comite para la instancia del proyecto<br/>
+:param args:<br/>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto<br/>
+<strong>:return:</strong> el formulario , la plantilla donde se va desplegar el formulario de creación<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">comite_query</span> <span class="o">=</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">comite_query</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">FormularioComite</span><span class="p">(</span><span class="n">_id</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;formulario&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_detail</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;comite&#39;</span><span class="p">:</span> <span class="n">comite_query</span><span class="o">.</span><span class="n">first</span><span class="p">()})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Almacena los datos obtenidos del formulario en la base de datos<br/>
+<strong>:param request:</strong> La petición del cliente<br/>
+<strong>:param args:</strong><br/>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto<br/>
+<strong>:return:</strong> Redirige a la plantilla de Operación exitosa de la creación de un comité<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">id_proyecto</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">)</span>  <span class="c1"># Guardamos en una variable el id del proyecto</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">FormularioComite</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">_id</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">comite</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">comite</span><span class="o">.</span><span class="n">proyecto</span> <span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span>  <span class="c1"># Establece el foreign key con proyecto</span>
+            <span class="n">comite</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save_m2m</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <h3><span id="updatecomite" href="updatecomite"> updatecomite </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Permite la actualizacion una instancia de modelo comite.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de comites.El usuario
+debe poseer el permiso correspondiente de modificación de comites.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Actualiza una instancia del modelo comite, luego se redirige a la lista de proyectos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/update.html&#39;</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">FormularioComiteUpdate</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.change_comite&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Función que valida el formulario y lo guarda y redirige a una plantilla en caso de ser exitosa<br/>
+<strong>:param form:</strong> Recibe el formulario<br/>
+<strong>:return:</strong> Retorna la creación exitosa del formulario<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">comite</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <h3><span id="deletecomite" href="deletecomite"> deletecomite </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DeleteComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Permite suprimir una instancia del modelo de Comite.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de comite.El usuario
+debe poseer el permiso correspondiente de eliminar comite.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Eliminar una instancia del modelo comite, luego se redirige a la lista de proyectos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/delete.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.delete_comite&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <h3><span id="detailcomite" href="detailcomite"> detailcomite </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DetailComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Despliega los detalles de una instancia del modelo de Proyecto.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de eliminar proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param DetailView:</strong> Recibe una vista generica de tipo DetailView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Despliega los detalles de una instancia del modelo Proyecto.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/detail.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.view_comite&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;comite:list&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p><strong>Atras</strong> :  <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
+1.admin   :  <a href="admin.html">admin.py</a><br/>
+2.apps    :  <a href="apps.html">apps.py</a><br/>
+3.forms   :  <a href="forms.html">forms.py</a><br/>
+4.models  :  <a href="models.html">models.py</a><br/>
+5.tests   :  <a href="tests.html">tests.py</a><br/>
+6.urls    :  <a href="urls.html">urls.py</a><br/>
+7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

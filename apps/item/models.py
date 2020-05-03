@@ -1,15 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+
+from apps.fase.models import Fase
 from apps.tipo_item.models import TipoItem
 
 item_estado = [
+    ('Desarrollo', 'Desarrollo'),
     ('Aprobado', 'Aprobado'),
     ('Desactivado', 'Desactivado'),
     ('Revision', 'Revisión'),
-    ('Desarrollo', 'Desarrollo'),
     ('LineaBase', 'Línea base'),
 ]
+
 
 class Item(models.Model):
     nombre = models.CharField(max_length=50)
@@ -19,19 +22,16 @@ class Item(models.Model):
     costo = models.PositiveIntegerField()
     usuarios_a_cargo = models.ManyToManyField(User, blank=True)
     archivo = models.FileField(null=True, blank=True)
+    fase = models.ForeignKey(Fase, on_delete=models.CASCADE, null=True)
     tipo_item = models.ForeignKey(TipoItem, on_delete=models.CASCADE, null=True, default='')
     boolean = models.BooleanField(default=False)
     char = models.CharField(max_length=100, default='', blank=True)
     date = models.DateField(null=True, blank=True)
     numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    class Meta:
-        permissions = [
-            ("Can add item", "Puede crear un item"),
-            ("Can change item", "Puede editar el item"),
-            ("Can delete item", "Puede eliminar un item"),
-            ("Can view item", "Puede visualizar un item"),
-        ]
+    def __str__(self):
+        return self.nombre
+
 # ASIGNACION DE ATRIBUTOS
 # Nombre
 # Descripcion

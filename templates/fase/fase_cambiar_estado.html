@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% else %}
+            <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+            <div class="card-header">
+                <strong>Cambio de estado - Fase {{ fase.nombre }}</strong>
+            </div>
+            <div class="card-body card-block">
+                <form action="#" method="post" enctype=" multipart
+                    /form-data" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.estado.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.estado }}</div>
+                    </div>
+                    <div class="text-center">
+                        <p style="color: #1a1a1a"><small>Si no aparece la opcion 'Cerrada' es porque no se cumplen los requisitos para cerrar la fase.</small></p>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}
+

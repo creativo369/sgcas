@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<div class="list-group">
+	  <a href="{% url 'linea_base:crear_linea' %}" class="list-group-item list-group-item-action">Crear linea base</a>
+	  <a href="{% url 'linea_base:linea_lista' %}" class="list-group-item list-group-item-action">Lista de lineas base</a>
+	</div>
+{% endblock content %}

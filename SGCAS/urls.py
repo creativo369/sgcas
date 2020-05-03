@@ -29,7 +29,10 @@ urlpatterns = [
     path('mensajes/', include(('apps.mensajes.urls', 'mensajes'), namespace='mensajes')),
     path('gestion-proyecto/', include(('apps.proyecto.urls', 'proyecto'), namespace='proyecto')),
     path('comite/', include(('apps.comite.urls', 'comite'), namespace='comite')),
+    path('fase/', include(('apps.fase.urls', 'fase'), namespace='fase')),
+    path('linea_base/', include(('apps.linea_base.urls', 'linea_base'), namespace='linea_base')),
 ]
+
 """
     path("signup/", views.signup, name="account_signup"),
     path("login/", views.login, name="account_login"),

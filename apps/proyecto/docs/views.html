@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>views.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>views.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.mixins</span> <span class="kn">import</span> <span class="n">LoginRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">guardian.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">ListView</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">DetailView</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>**Importamos los codigos fuentes de la aplicación para la creación de vistas</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">FormularioProyecto</span><span class="p">,</span> <span class="n">FormularioProyectoUpdate</span><span class="p">,</span> <span class="n">ChangeProject</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Todas las vistas para la aplicación del Modulo Proyecto
+Actualmente se despliega en las plantillas 5 vistas:</p>
+<ol>
+<li><strong>manage_projects</strong> - vista que despliega gestión de proyectos (Ir a la sección:  <a href="views.html#manage_projects">views.py</a> )<br/></li>
+<li><strong>success</strong> - vista que despliega la operación exitosa de la definición de un proyecto (Ir a la sección:  <a href="views.html#success">views.py</a> )<br/></li>
+<li><strong>change_state</strong> - vista que despliega el cambio de estado de un proyecto (Ir a la sección:  <a href="views.html#change_state">views.py</a> )<br/></li>
+<li><strong>CreateProject </strong> - vista que despliega el formulario para definición de proyectos (Ir a la sección:  <a href="views.html#createproject">views.py</a> )<br/></li>
+<li><strong>ListProject </strong> - vista que despliega el listado de proyectos (Ir a la sección:  <a href="views.html#listproject">views.py</a> )<br/></li>
+<li><strong>UpdateProject </strong> - vista que despliega la opción de actualizar un proyecto (Ir a la sección:  <a href="views.html#updateproject">views.py</a> )<br/></li>
+<li><strong>DeleteProject </strong> - vista que despliega el borrado de un proyecto (Ir a la sección:  <a href="views.html#deleteproject">views.py</a> )<br/></li>
+<li><strong>DetailProject </strong> - vista que despliega los detalles referentes a un proyecto (Ir a la sección:  <a href="views.html#detailproject">views.py</a> )<br/></li>
+</ol>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@login_required</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h3><span id="manage_projects" href="manage_projects"> manage_projects </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">manage_projects</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Recibe una petición a la pagina de proyecto por parte de un cliente, esta vista basada en una función retorna
+la pagina principal para la gestión de proyectos.<br/>
+<strong>:param:</strong> request<br/>
+<strong>:return:</strong> retorna la plantilla de gestión de proyectos<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;proyecto/manage_projects.html&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@login_required</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h3><span id="success" href="success"> success </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">success</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Una vista basada en función donde indica la creación exitosa de una operacion sobre proyectos.<br/>
+<strong>:param request:</strong> recibe la petición del cliente.<br/>
+<strong>:return:</strong> plantilla mostrando la operación exitosa.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;proyecto/success.html&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@login_required</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <h3><span id="change_state" href="change_state"> change_state </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">change_state</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Vista basada en función donde desplegamos en una plantilla las diferentes transaciónes que pasa un proyecto <br/>
+para el registro de sus cambios de estado. <br/>
+<strong>:param request:</strong> Solicitud del cliente para el cambio de estado <br/>
+<strong>:param pk:</strong> Recibe la instancia del modelo proyecto a ser cambiado <br/>
+<strong>:return:</strong> Realiza el cambio de estado , guarda en la base de datos y retorna el proyecto con su nuevo estado.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">ChangeProject</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">proyecto</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;proyecto/change.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <h3><span id="createproject" href="createproject"> createproject </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CreateProject</span><span class="p">(</span><span class="n">CreateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Permite la visualizacion en una plantilla para la definición de un proyecto.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de crear proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere que el usuario este logueado en el sistema.<br/>
+<strong>:param CreateView:</strong> Recibe una vista generica de tipo CreateView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Crea una instancia del modelo proyecto y lo guarda en la base de datos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">FormularioProyecto</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;proyecto.add_proyecto&#39;</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto/create.html&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:success&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Función de validación de los registros de un formulario y ademas guarda los datos que se obtuvieron en los cambpos en la base de datos<br/>
+<strong>:param form:</strong> recibe el formulario form<br/>
+<strong>:return:</strong> guarda los datos en la base de datos y redirige a una plantilla de Operación exitosa<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>  <span class="c1"># intuimos que el creador del proyecto va ser el gerente</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">save_m2m</span><span class="p">()</span>  <span class="c1"># Para guardar as relaciones manytomany</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_success_url</span><span class="p">())</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <h3><span id="listproject" href="listproject"> listproject </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ListProject</span><span class="p">(</span><span class="n">ListView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Permite la visualizacion de los proyectos.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de visualizar proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param ListView:</strong> Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Una vista de todos los proyectos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;proyecto.view_proyecto&#39;</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto/list.html&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <h3><span id="updateproject" href="updateproject"> updateproject </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateProject</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Permite la actualizacion una instancia de modelo Proyecto.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de modificación de proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Actualiza una instancia del modelo Proyecto, luego se redirige a la lista de proyectos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto/update.html&#39;</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">FormularioProyectoUpdate</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;proyecto.change_proyecto&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Función que valida los campos requeridos fueron completados y los guarda en la base de datos<br/>
+<strong>:param form:</strong> recibe el formulario con los datos <br/>
+<strong>:return:</strong> redirige a la instancia del modelo proyecto en la plantilla de detalles de proyecto<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nb">object</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;proyecto:detail&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <h3><span id="deleteproject" href="deleteproject"> deleteproject </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DeleteProject</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Permite suprimir una instancia del modelo de Proyecto.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de eliminar proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Eliminar una instancia del modelo Proyecto, luego se redirige a la lista de proyectos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto/delete.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;proyecto.delete_proyecto&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <h3><span id="detailproject" href="detailproject"> detailproject </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">DetailProject</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>Despliega los detalles de una instancia del modelo de Proyecto.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
+debe poseer el permiso correspondiente de eliminar proyectos.<br/>
+<strong>:param LoginRequiredMixin:</strong> Requiere estar logueado, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param DetailView:</strong> Recibe una vista generica de tipo DetailView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Despliega los detalles de una instancia del modelo Proyecto.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto/detail.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;proyecto.view_proyecto&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p><strong>Ir al principio </strong> : <a href="admin.html">admin.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>=== Indice de la documentación de la Aplicación Proyecto  === <br/>
+1.admin   :  <a href="admin.html">admin.py</a><br/>
+2.apps    :  <a href="apps.html">apps.py</a><br/>
+3.forms   :  <a href="forms.html">forms.py</a><br/>
+4.models  :  <a href="models.html">models.py</a><br/>
+5.tests   :  <a href="tests.html">tests.py</a><br/>
+6.urls    :  <a href="urls.html">urls.py</a><br/>
+7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
