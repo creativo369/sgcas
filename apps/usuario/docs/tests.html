@@ -20,7 +20,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span></pre></div>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -29,10 +30,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Create your tests here.</p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UsuarioTestCrear</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -40,6 +41,78 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username_modificado</span> <span class="o">=</span> <span class="s1">&#39;username-modificado&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user-test&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario creado OK&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_usuario_crear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;user-test&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario-test_usuario_crear OK&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_usuario_modificar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">username_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;username_modificado&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">username_anterior</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario-test_usuario_modificar OK&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_usuario</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario borrado OK&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Usuario  === <br/>
 1.apps        :  <a href="apps.html">apps.py</a><br/>

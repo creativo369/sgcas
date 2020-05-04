@@ -55,6 +55,17 @@ class ComiteTestEditar(TestComiteSetUp):
         self.assertNotEqual(self.comite.nombre, descripcion_anterior)
         print('Comite-test_editar_descripcion OK')
 
+
+class ComiteTestEliminar(TestComiteSetUp):
+    def setUp(self):
+        super(ComiteTestEliminar, self).setUp()
+        self.id_comite = self.comite.id
+
+    def __del__(self):
+        print('Comite borrado OK')
+
+    def test_eliminar_comite(self):
+        self.comite.delete()
 # **Volver atras** : [[models.py]]
 
 # **Ir a la documentación de URLS del modulo comité** : [[urls.py]]
