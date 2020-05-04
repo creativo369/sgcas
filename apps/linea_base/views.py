@@ -66,3 +66,13 @@ def lista_items_linea_base(request, pk):
 def eliminar_lb(request, pk, id_fase):
     get_object_or_404(LineaBase, pk=pk).delete()
     return redirect('linea_base:linea_lista', id_fase=id_fase)
+
+# **Volver atras** : [[urls.py]]
+
+# === Indice de la documentación de la Aplicación linea base  === <br/>
+# 1.apps    : [[apps.py]]<br/>
+# 2.forms   : [[forms.py]]<br/>
+# 3.models  : [[models.py]]<br/>
+# 4.tests   : [[tests.py]]<br/>
+# 5.urls    : [[urls.py]]<br/>
+# 6.views   : [[views.py]]<br/>

@@ -7,11 +7,11 @@ from guardian.mixins import PermissionRequiredMixin
 from apps.fase.models import Fase
 from apps.item.forms import ItemForm, ItemUpdateForm, ItemImportarTipoItemForm, ItemAtributosForm, ItemCambiarEstado
 from apps.item.models import Item
-from django.views.generic import ListView, DeleteView, UpdateView, CreateView
+from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 import pyrebase
 from datetime import date
-from django.core.files.storage import FileSystemStorage
+
 from apps.tipo_item.models import TipoItem
 
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
@@ -43,7 +43,8 @@ def crear_item_basico(request, id_fase):
             return redirect('item:importar_tipo_item', pk=item.pk)
     else:
         form = ItemForm(id_fase=id_fase)
-    return render(request, 'item/item_crear.html', {'form': form})
+
+    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
 def item_importar_ti(request, pk):
@@ -97,7 +98,7 @@ def item_modificar_basico(request, pk):
     if form.is_valid():
         item = form.save()
         return redirect('item:item_modificar_import_ti', pk=item.pk)
-    return render(request, 'item/item_crear.html', {'form': form})
+    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
 def item_modificar_ti(request, pk):
@@ -171,25 +172,6 @@ class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
     form_class = ItemUpdateForm
     permission_required = 'item.change_item'
 
-    # def get(self, request, *args, **kwargs):
-    #     form = self.form_class
-    #     return render(request, self.template_name, {'form': form})
-    #
-    # def post(self, request, *args, **kwargs):
-    #     form = self.form_class(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         object = form.save()
-    #         if request.FILES:
-    #             ##ALMACENAMIENTO FIREBASE
-    #             path_local = 'media/' + object.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
-    #             path_on_cloud = str(
-    #                 date.today()) + '/' + object.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
-    #             storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
-    #             ##
-    #         return redirect('item:importar_tipo_item', pk=object.pk)
-    #     else:
-    #         return render(request, self.template_name, {'form': form})
-
     def form_valid(self, form):
         object = form.save()
         return redirect('item:item_modificar_import_ti', pk=object.pk)
@@ -226,3 +208,14 @@ class ItemModificarAtrTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin
     form_class = ItemAtributosForm
     permission_required = 'item.change_item'
     success_url = reverse_lazy('item:item_lista')
+
+# **Atras** : [[urls.py]]
+
+# === Indice de la documentación de la Aplicación item  === <br/>
+# 1.admin   : [[admin.py]]<br/>
+# 2.apps    : [[apps.py]]<br/>
+# 3.forms   : [[forms.py]]<br/>
+# 4.models  : [[models.py]]<br/>
+# 5.tests   : [[tests.py]]<br/>
+# 6.urls    : [[urls.py]]<br/>
+# 7.views   : [[views.py]]<br/>

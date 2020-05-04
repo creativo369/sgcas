@@ -19,7 +19,7 @@ class FormularioComite(forms.ModelForm):
         self.fields['miembros'].queryset = Proyecto.objects.get(
             id=_id).miembros.all()  # Se filtra el queryset para miembros
 
-    # **Clase Meta para para el despliegue en una plantila de los campos necesarios del modelo**
+    # **Clase Meta para para el despliegue en una plantilla de los campos necesarios del modelo**
     class Meta:
         model = Comite
         # **Campos requeridos para la definición de un comité**

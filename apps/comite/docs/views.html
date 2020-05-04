@@ -128,7 +128,7 @@ debe poseer el permiso correspondiente de crear comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p>Obtiene el formulario de creación de un comité<br/>
+      <p>Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité<br/>
 <strong>:param request:</strong> recibe la petición del cliente que solicita crear un comite para la instancia del proyecto<br/>
 :param args:<br/>
 <strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto<br/>
@@ -311,7 +311,7 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/detail.html&#39;</span>
     <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.view_comite&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;comite:list&#39;</span><span class="p">)</span></pre></div>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;comite:detail&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

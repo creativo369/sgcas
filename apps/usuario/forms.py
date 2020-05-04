@@ -3,22 +3,22 @@ from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.conf import settings
 
-##Mientras tanto no se admiten password
+# Mientras tanto no se admiten password
 inactivo_previo = False
 
+
 class UserForm(forms.ModelForm):
-    # password = forms.CharField(widget=forms.PasswordInput)
     roles = forms.ModelChoiceField(queryset=Group.objects.all())
 
-    # widget=forms.CheckboxSelectMultiple como argumento para aceptar checkbox multiples.
     class Meta:
         model = User
+        # Campos del modelo Rol
         fields = [
             'first_name', 'last_name',
             'email', 'username',
             'roles', 'is_active'
         ]
-
+        # etiquetas de los campos del formulario
         labels = {
             'first_name': 'Nombres',
             'last_name': 'Apellidos',
@@ -30,6 +30,11 @@ class UserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('instance'):
+            """
+            Constructor que se encarga de filtrar solo los usuarios habilitados y activos en el sistema.<br/>
+            **:param args:**<br/>
+            **:param kwargs:** diccionario de la referencia (_id) de cada instancia del modelo usuario<br/>
+            """
             # Se obtiene el argumento kword si existe, o se lo inicializa
             # como un diccionario si no existe
             initial = kwargs.setdefault('initial', {})
@@ -48,11 +53,13 @@ class UserForm(forms.ModelForm):
             forms.ModelForm.__init__(self, *args, **kwargs)
 
     def save(self):
-        # password = self.cleaned_data.pop('password')
+        """
+        Guarda el formulario .<br/>
+        :return:
+        """
         roles = self.cleaned_data.pop('roles')
         u = super().save()
         u.groups.set([roles])
-        # u.set_password(password)
         u.save()
 
         if u.is_active and inactivo_previo:
@@ -66,3 +73,12 @@ class UserForm(forms.ModelForm):
                 fail_silently=False,
             )
         return u
+
+# === Indice de la documentación de la Aplicación Usuario  === <br/>
+# 1.apps        : [[apps.py]]<br/>
+# 2.forms       : [[forms.py]]<br/>
+# 3.middleware  : [[middleware.py]]<br/>
+# 4.models      : [[models.py]]<br/>
+# 5.tests       : [[tests.py]]<br/>
+# 6.urls        : [[urls.py]]<br/>
+# 7.views       : [[views.py]]<br/>

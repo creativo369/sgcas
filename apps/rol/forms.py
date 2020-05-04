@@ -3,7 +3,9 @@ from django import forms
 from django.db.models import Q
 
 
+# ** Clase que despliega el formulario de registro de un rol **
 class GroupForm(forms.ModelForm):
+    # ** Despliega un filtro de los permisos en el sistema **
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
         Q(codename__icontains='logentry')
         | Q(name='Puede crear un proyecto')
@@ -28,6 +30,7 @@ class GroupForm(forms.ModelForm):
         | Q(name='Puede visualizar un tipo de item')
     ))
 
+    # los campos del formulario
     class Meta:
         model = Group
         fields = [
@@ -35,7 +38,14 @@ class GroupForm(forms.ModelForm):
             'permissions',
         ]
 
-    labels = {
+    labels = {  # etiquetas para el campo.
         'name': 'Nombre del rol',
         'permissions': 'Permisos',
     }
+
+# === Indice de la documentación de la Aplicación rol  === <br/>
+# 1.apps     : [[apps.py]]<br/>
+# 2.forms    : [[forms.py]]<br/>
+# 3.tests    : [[tests.py]]<br/>
+# 4.urls     : [[urls.py]]<br/>
+# 5.views    : [[views.py]]<br/>
