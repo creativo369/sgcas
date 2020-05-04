@@ -1,7 +1,6 @@
 # === Importación de las librerias utilizadas de Django ===
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
-from guardian.decorators import permission_required
 from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 from apps.tipo_item.models import TipoItem
@@ -22,7 +21,7 @@ Actualmente se despliega en las plantillas 5 vistas:
 
 
 @login_required
-@permission_required('tipo_item.add_tipo_item')
+@permission_required('tipo_item.crear_tipo_item')
 # === creartipo ===
 def crear_tipo_item(request):
     """
@@ -42,7 +41,7 @@ def crear_tipo_item(request):
 
 
 @login_required
-@permission_required('tipo_item.view_tipo_item')
+@permission_required('tipo_item.ver_tipo_item')
 # === gestiontipo ===
 def tipo_item_opciones(request):
     """
@@ -64,7 +63,7 @@ class TipoItemLista(PermissionRequiredMixin, ListView):
     """
     model = TipoItem
     template_name = 'tipo_item/tipo_item_lista.html'
-    permission_required = 'tipo_item.view_tipo_item'
+    permission_required = 'tipo_item.listar_tipo_item'
 
     # La lista a mostrar estara por orden ascendente
     class Meta:
@@ -81,7 +80,7 @@ class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     """
     model = TipoItem
     template_name = 'tipo_item/tipo_item_eliminar.html'
-    permission_required = 'tipo_item.delete_tipo_item'
+    permission_required = 'tipo_item.eliminar_tipo_item'
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 
@@ -96,7 +95,7 @@ class TipoItemModificar(PermissionRequiredMixin, UpdateView):
     model = TipoItem
     template_name = 'tipo_item/tipo_item_modificar.html'
     form_class = TipoItemUpdateForm
-    permission_required = 'tipo_item.change_tipo_item'
+    permission_required = 'tipo_item.eliminar_tipo_item'
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 # === Indice de la documentación de la Aplicación Comité  === <br/>

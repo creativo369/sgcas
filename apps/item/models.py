@@ -4,6 +4,7 @@ import datetime
 
 from apps.fase.models import Fase
 from apps.tipo_item.models import TipoItem
+
 # **Estados existentes de un item**
 """
 1.En Desarrollo : el item se encuentra disponible para su edición 
@@ -26,16 +27,16 @@ class Item(models.Model):
     # 1. **nombre**: Campo para dar asignar un nombre al item.<br/>
     # 2. **descripción**: Campo para describir brevemente información respecto al item.<br/>
     # 3. **fecha_creacion**: campo para registrar la fecha de creación de un item.<br/>
-    # 3. **estado**: campo que registra los distintos estados que pueda tener un item.<br/>
-    # 3. **costo**: campo que registra el costo de un item.<br/>
-    # 3. **usuarios_a_cargo**: Relación de MuchosAmuchos con los miembros de una para estar a cargo de ese item.<br/>
-    # 3. **archivo**: campo que almacena un archivo adjunto al item.<br/>
-    # 3. **fase**: Relación con la fase donde va a corresponder.<br/>
-    # 3. **tipo_item**: campo donde asigna un tipo de item .<br/>
-    # 3. **boolean**: atributo boolean.<br/>
-    # 3. **char**: atributo char.<br/>
-    # 3. **date**: atributo date.<br/>
-    # 3. **numerico**: atributo numerico.<br/>
+    # 4. **estado**: campo que registra los distintos estados que pueda tener un item.<br/>
+    # 5. **costo**: campo que registra el costo de un item.<br/>
+    # 6. **usuarios_a_cargo**: Relación de MuchosAmuchos con los miembros de una para estar a cargo de ese item.<br/>
+    # 7. **archivo**: campo que almacena un archivo adjunto al item.<br/>
+    # 8. **fase**: Relación con la fase donde va a corresponder.<br/>
+    # 9. **tipo_item**: campo donde asigna un tipo de item .<br/>
+    # 10. **boolean**: atributo boolean.<br/>
+    # 11. **char**: atributo char.<br/>
+    # 12. **date**: atributo date.<br/>
+    # 13. **numerico**: atributo numerico.<br/>
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
     fecha_creacion = models.DateField(default=datetime.date.today)
@@ -49,6 +50,24 @@ class Item(models.Model):
     char = models.CharField(max_length=100, default='', blank=True)
     date = models.DateField(null=True, blank=True)
     numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_item", "crear_item"),
+            ("aprobar_item", "aprobar_item"),
+            ("editar_item", "editar_item"),
+            ("eliminar_item", "eliminar_item"),
+            ("relacionar_item", "relacionar_item"),
+            ("ver_item", "ver_item"),
+            ("item_modificar_atributos", "item_modificar_atributos"),
+            ("cambiar_estado_item", "cambiar_estado_item"),
+            ("item_modificar_ti", "item_modificar_ti"),
+            ("item_modificar_atributos_ti", "item_modificar_atributos_ti"),
+            ("item_modificar_import_ti", "item_modificar_import_ti"),
+            ("listar_item_de_fase", "listar_item_de_fase"),
+            ("calcular_impacto", "calcular_impacto"),
+        ]
 
     def __str__(self):
         """

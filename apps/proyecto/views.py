@@ -77,7 +77,7 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     """
     model = Proyecto
     form_class = FormularioProyecto
-    permission_required = 'proyecto.add_proyecto'
+    permission_required = 'proyecto.crear_proyecto'
     template_name = 'proyecto/create.html'
     success_url = reverse_lazy('proyecto:success')
 
@@ -105,7 +105,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     **:return:** Una vista de todos los proyectos.<br/>
     """
     model = Proyecto
-    permission_required = 'proyecto.view_proyecto'
+    permission_required = 'proyecto.ver_proyecto'
     template_name = 'proyecto/list.html'
 
 
@@ -122,7 +122,7 @@ class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     model = Proyecto
     template_name = 'proyecto/update.html'
     form_class = FormularioProyectoUpdate
-    permission_required = 'proyecto.change_proyecto'
+    permission_required = 'proyecto.editar_proyecto'
 
     def form_valid(self, form):
         """
@@ -146,7 +146,7 @@ class DeleteProject(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
     model = Proyecto
     template_name = 'proyecto/delete.html'
-    permission_required = 'proyecto.delete_proyecto'
+    permission_required = 'proyecto.eliminar_proyecto'
     success_url = reverse_lazy('proyecto:list')
 
 
@@ -162,7 +162,7 @@ class DetailProject(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
     model = Proyecto
     template_name = 'proyecto/detail.html'
-    permission_required = 'proyecto.view_proyecto'
+    permission_required = 'proyecto.detalles_proyecto'
     success_url = reverse_lazy('proyecto:list')
 
 # **Volver atras** : [[urls.py]]

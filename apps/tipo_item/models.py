@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+
 # === Atributos de un tipo de item ===
 ATTRIBUTES = [
     ('Boolean', 'Boolean'),
@@ -17,6 +18,19 @@ class TipoItem(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
     atributos = MultiSelectField(choices=ATTRIBUTES)
+
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de los permisos por defecto que  trae django
+        permissions = [
+            ("crear_tipo_item", "crear_tipo_item"),
+            ("adjuntar_tipo_item", "adjuntar_tipo_item"),
+            ("listar_tipo_item", "listar_tipo_item"),
+            ("editar_tipo_item", "editar_tipo_item"),
+            ("eliminar_tipo_item", "eliminar_tipo_item"),
+            ("importar_tipo_item", "importar_tipo_item"),
+            ("ver_tipo_item", "ver_tipo_item"),
+
+        ]
 
     def __str__(self):
         return self.nombre

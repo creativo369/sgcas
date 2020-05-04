@@ -17,7 +17,7 @@ Actualmente se despliega en las plantillas 5 vistas:
 5. **Eliminar un rol ** - se puede eliminar un rol (Ir a la sección: [[views.py#eliminarrol]] )
 """
 @login_required
-@permission_required('auth.add_group')
+@permission_required('usuario.crear_rol')
 # === crearrol ===
 def crear_rol_view(request):
     """
@@ -36,7 +36,7 @@ def crear_rol_view(request):
 
 
 @login_required
-@permission_required('auth.view_group')
+@permission_required('usuario.ver_rol')
 # === rolopciones ===
 def rol_opciones(request):
     """
@@ -56,7 +56,7 @@ class ListaRol(PermissionRequiredMixin, ListView):
     """
     model = Group
     template_name = 'rol/rol_lista.html'
-    permission_required = 'auth.change_group'
+    permission_required = 'usuario.listar_rol'
 
     # La lista a mostrar estara por orden ascendente
     class Meta:
@@ -72,7 +72,7 @@ class EditarRol(PermissionRequiredMixin, UpdateView):
     """
     model = Group
     form_class = GroupForm
-    permission_required = 'auth.change_group'
+    permission_required = 'usuario.editar_rol'
     template_name = 'rol/rol_editar.html'
     success_url = reverse_lazy('rol:rol_lista')
 
@@ -86,7 +86,7 @@ class EliminarRol(PermissionRequiredMixin, DeleteView):
     """
     model = Group
     template_name = 'rol/rol_eliminar.html'
-    permission_required = 'auth.delete_group'
+    permission_required = 'usuario.eliminar_rol'
     success_url = reverse_lazy('rol:rol_lista')
 
 

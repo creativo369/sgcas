@@ -68,7 +68,7 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
     model = User
     template_name = 'usuario/usuario_registrar.html'
     form_class = UserForm
-    permission_required = 'auth.add_user'
+    permission_required = 'usuario.crear_usuario'
 
     def for_valid(self, form):
         response = super(RegistrarUsuario, self).form_valid(form)
@@ -92,7 +92,7 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     model = User
     template_name = 'usuario/usuario_registrar.html'
     form_class = UserForm
-    permission_required = 'auth.change_user'
+    permission_required = 'usuario.editar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
 # === eliminarusuario ===
@@ -105,7 +105,7 @@ class EliminarUsuario(PermissionRequiredMixin, DeleteView):
     """
     model = User
     template_name = 'usuario/usuario_eliminar.html'
-    permission_required = 'auth.delete_user'
+    permission_required = 'usuario.eliminar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
 # === Indice de la documentación de la Aplicación Usuario  === <br/>

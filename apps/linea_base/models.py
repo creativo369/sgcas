@@ -32,6 +32,19 @@ class LineaBase(models.Model):
     fase = models.ForeignKey(Fase, on_delete=models.CASCADE, default=None, null=True)
     items = models.ManyToManyField(Item, blank=True, related_name="LineaBase")
 
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_linea_base", "crear_linea_base"),
+            ("cerrar_linea_base", "cerrar_linea_base"),
+            ("ver_linea_base", "ver_linea_base"),
+            ("editar_linea_base", "editar_linea_base"),
+            ("agregar_item_linea_base", "agregar_item_linea_base"),
+            ("quitar_item_linea_base", "quitar_item_linea_base"),
+            ("listar_item_linea_base", "listar_item_linea_base"),
+            ("estado_linea_base", "estado_linea_base"),
+        ]
+
     def __str__(self):
         """
         **Función para asignar un alias al modelo linea base**<br/>

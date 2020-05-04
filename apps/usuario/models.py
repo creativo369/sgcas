@@ -16,6 +16,24 @@ class Usuario(models.Model):
     roles = models.CharField(max_length=50)
     estado = models.BooleanField(default=False)
 
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_usuario", "crear_usuario"),
+            ("editar_usuario", "editar_usuario"),
+            ("agregrar_usuario_proyecto", "agregrar_usuario_proyecto"),
+            ("eliminar_usuario", "eliminar_usuario"),
+            ("crear_rol", "crear_rol"),
+            ("eliminar_rol", "eliminar_rol"),
+            ("asignar_rol", "asignar_rol"),
+            ("ver_rol", "ver_rol"),
+            ("listar_rol", "listar_rol"),
+            ("editar_rol", "editar_rol"),
+            ("agregar_usuario_fase", "agregar_usuario_fase"),
+            ("quitar_usuario_proyecto", "quitar_usuario_proyecto"),
+            ("quitar_usuario_fase", "quitar_usuario_fase"),
+        ]
+
     def __str__(self):
         """
         **Función para asignar un alias al modelo Usuario**<br/>

@@ -45,7 +45,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     **:return:** Crea una instancia del modelo comite y lo guarda en la base de datos.<br/>
     """
     model = Comite
-    permission_required = 'comite.add_comite'
+    permission_required = 'comite.crear_comite'
     template_name = 'comite/create.html'
     template_detail = 'comite/detail.html'
     success_url = 'proyecto:detail'
@@ -96,7 +96,7 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     model = Comite
     template_name = 'comite/update.html'
     form_class = FormularioComiteUpdate
-    permission_required = 'comite.change_comite'
+    permission_required = 'comite.editar_comite'
     success_url = reverse_lazy('proyecto:list')
 
     def form_valid(self, form):
@@ -121,7 +121,7 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
     model = Comite
     template_name = 'comite/delete.html'
-    permission_required = 'comite.delete_comite'
+    permission_required = 'comite.eliminar_comite'
     success_url = reverse_lazy('proyecto:list')
 
 
@@ -137,7 +137,7 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
     model = Comite
     template_name = 'comite/detail.html'
-    permission_required = 'comite.view_comite'
+    permission_required = 'comite.ver_comite'
     success_url = reverse_lazy('comite:detail')
 
 # **Atras** : [[urls.py]]

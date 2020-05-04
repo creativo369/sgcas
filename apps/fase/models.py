@@ -24,12 +24,27 @@ class Fase(models.Model):
     miembros = models.ManyToManyField(User, blank=False)
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, default=None, null=True)
 
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_fase", "crear_fase"),
+            ("aprobar_fase", "aprobar_fase"),
+            ("editar_fase", "editar_fase"),
+            ("eliminar_fase", "eliminar_fase"),
+            ("listar_fase", "listar_fase"),
+            ("cambio_estado_fase", "cambio_estado_fase"),
+            ("ver_fase", "ver_fase"),
+            ("detalles_fase", "detalles_fase"),
+        ]
+
     def __str__(self):
         """
         **Función para asignar un alias al modelo Comité**<br/>
         **:return:** el nombre fase<br/>
         """
         return '{}'.format(self.nombre)
+
+
 
 # **Volver atras** : [[forms.py]]
 

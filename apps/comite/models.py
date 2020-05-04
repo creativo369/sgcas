@@ -24,12 +24,17 @@ class Comite(models.Model):
         return self.nombre
 
     class Meta:
-        # **Clase Meta que personaliza los permisos que tendra un comité para gestionar en un rol**
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
-            ("Can add comite", "Puede crear un comité"),
-            ("Can change comite", "Puede editar el comité"),
-            ("Can delete comite", "Puede eliminar un comité"),
-            ("Can view comite", "Puede visualizar un comité"),
+            ("crear_comite", "crear_comite"),
+            ("eliminar_comite", "eliminar_comite"),
+            ("ver_comite", "ver_comite"),
+            ("editar_comite", "editar_comite"),
+            ("listar_comite", "listar_comite"),
+            ("agregar_comite_proyecto", "agregar_comite_proyecto"),
+            ("quitar_comite_proyecto", "quitar_comite_proyecto"),
+            ("agregar_usuario_comite", "agregar_usuario_comite"),
+            ("quitar_usuario_comite", "quitar_usuario_comite"),
         ]
 # **Volver atras** : [[forms.py]]
 

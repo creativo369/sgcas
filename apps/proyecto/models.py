@@ -31,6 +31,19 @@ class Proyecto(models.Model):
     slug = models.CharField(max_length=50, default="")
     miembros = models.ManyToManyField(User, blank=True)
 
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_proyecto", "crear_proyecto"),
+            ("iniciar_proyecto", "iniciar_proyecto"),
+            ("finalizar_proyecto", "finalizar_proyecto"),
+            ("cancelar_proyecto", "cancelar_proyecto"),
+            ("ver_proyecto", "ver_proyecto"),
+            ("eliminar_proyecto", "eliminar_proyecto"),
+            ("editar_proyecto", "editar_proyecto"),
+            ("detalles_proyecto", "detalles_proyecto"),
+        ]
+
     def __str__(self):
         """
         Función que retorna el nombre del modelo a una instancia llamada "proyecto"<br/>
@@ -58,14 +71,6 @@ class Proyecto(models.Model):
         self.slug = self.nombre.replace(" ", "_").lower()
         super(Proyecto, self).save(*args, **kwargs)
 
-    class Meta:
-        # **Clase Meta que personaliza los permisos que tendra un proyecto para gestionar en un rol**
-        permissions = [
-            ("Can add proyecto", "Puede crear un proyecto"),
-            ("Can change proyecto", "Puede editar el proyecto"),
-            ("Can delete proyecto", "Puede eliminar un proyecto"),
-            ("Can view proyecto", "Puede visualizar un proyecto"),
-        ]
 
 # **Volver atras** : [[forms.py]]
 

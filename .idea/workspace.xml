@@ -21,53 +21,25 @@
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/docs/forms.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/docs/forms.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/docs/views.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/fase/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/docs/views.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/fase/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/fase/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/item/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/docs/views.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/linea_base/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/docs/views.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/linea_base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/linea_base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/mensajes/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/mensajes/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/mensajes/context_processors.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/mensajes/context_processors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/mensajes/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/mensajes/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/mensajes/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/mensajes/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/mensajes/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/mensajes/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/proyecto/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/rol/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/rol/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/tipo_item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/tipo_item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/middleware.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/usuario/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/usuario/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/item/item_crear.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/item/item_crear.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +172,8 @@
       <workItem from="1588362879982" duration="2732000" />
       <workItem from="1588440256573" duration="10277000" />
       <workItem from="1588515587270" duration="3117000" />
-      <workItem from="1588525484165" duration="25892000" />
+      <workItem from="1588525484165" duration="29613000" />
+      <workItem from="1588563648240" duration="2243000" />
     </task>
     <servers />
   </component>
