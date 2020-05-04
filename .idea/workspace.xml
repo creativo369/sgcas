@@ -22,6 +22,7 @@
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/docs/tests.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/docs/tests.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/comite/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,7 +158,7 @@
       <workItem from="1588515587270" duration="3117000" />
       <workItem from="1588525484165" duration="29613000" />
       <workItem from="1588563648240" duration="3632000" />
-      <workItem from="1588598738343" duration="7435000" />
+      <workItem from="1588598738343" duration="7832000" />
     </task>
     <servers />
   </component>
