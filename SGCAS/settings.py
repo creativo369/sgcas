@@ -23,7 +23,7 @@ SECRET_KEY = 'nayi!!*seyd)t#+m)2@l&7m3^!6j=*$vytuxb86ig1#pq(=khl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sgcas.localhost', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['SGCAS', '127.0.0.1']
 
 # Application definition
 
@@ -77,7 +77,7 @@ FIREBASE_CONFIG = {
     "appId": "1:87120322887:web:7864648c8b0706afcfac62"
 }
 
-#Para los archivos locales
+# Para los archivos locales
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -157,11 +157,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT = os.path.join(BASE_DIR, "static/")#Para produccion
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)                       # for development
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)  # for development
 # STATIC_ROOT = os.path.join(BASE_DIR, "/home/victor/Projects/SGCAS/static/")  # for production
 
 AUTHENTICATION_BACKENDS = (

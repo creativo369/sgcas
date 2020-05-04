@@ -21,25 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/comite/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/docs/views.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/fase/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/fase/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/docs/views.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/docs/views.html" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/docs/views.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/linea_base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/linea_base/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/proyecto/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/proyecto/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/rol/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/rol/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/tipo_item/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/tipo_item/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usuario/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usuario/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/comite/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/comite/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +156,8 @@
       <workItem from="1588440256573" duration="10277000" />
       <workItem from="1588515587270" duration="3117000" />
       <workItem from="1588525484165" duration="29613000" />
-      <workItem from="1588563648240" duration="2243000" />
+      <workItem from="1588563648240" duration="3632000" />
+      <workItem from="1588598738343" duration="7435000" />
     </task>
     <servers />
   </component>
