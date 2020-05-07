@@ -1,8 +1,2 @@
-bin
-var
-lib
-lib64
-__pycache__
-venv
-*.DS_Store
-*.db
+__pycache__/
+venv/

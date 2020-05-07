@@ -20,7 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="830a892d-9e89-4171-9cb9-207fc2bce0b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/item/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/item/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SGCAS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SGCAS/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +157,10 @@
       <workItem from="1588515587270" duration="3117000" />
       <workItem from="1588525484165" duration="29613000" />
       <workItem from="1588563648240" duration="3632000" />
-      <workItem from="1588598738343" duration="12153000" />
+      <workItem from="1588598738343" duration="13614000" />
+      <workItem from="1588715993966" duration="2040000" />
+      <workItem from="1588809687917" duration="978000" />
+      <workItem from="1588813175388" duration="109000" />
     </task>
     <servers />
   </component>

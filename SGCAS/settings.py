@@ -23,7 +23,7 @@ SECRET_KEY = 'nayi!!*seyd)t#+m)2@l&7m3^!6j=*$vytuxb86ig1#pq(=khl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['SGCAS', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -107,20 +107,20 @@ WSGI_APPLICATION = 'SGCAS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'development',
+        'NAME': 'developersIS2',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': 5432,
     },
-    'production': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'production',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': 5432,
-    },
+    # 'production': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'production',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'admin',
+    #     'HOST': 'localhost',
+    #     'PORT': 5432,
+    # },
 }
 
 # Password validation
@@ -175,7 +175,7 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-##Configuraciones para el envio de mail
+# Configuraciones para el envio de mail
 from .email_info import *
 
 EMAIL_USE_TLS = EMAIL_USE_TLS
