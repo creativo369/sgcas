@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% block title %} Detalles del Comit&eacute; {% endblock %}
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre del Comité</th>
+            <th scope="col">Descripci&oacute;n del Comité</th>
+            <th scope="col">Miembros del Comité</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ comite.nombre }}</td>
+            <td>{{ comite.descripcion }}</td>
+            <td>
+                {% for miembro in comite.miembros.all %}
+                    {{ miembro }},
+                {% endfor %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a type="button" class="btn btn-secondary" href="#" onclick="window.history.back()">Regresar al Proyecto</a>
+    <a type=" button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
+    <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}">Eliminar</a>
+{% endblock content %}

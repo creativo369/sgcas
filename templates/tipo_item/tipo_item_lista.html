@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Atributos</th>
+            <th scope="col">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if object_list %}
+            {% for TipoItem in object_list %}
+                <tr>
+                    <td>{{ TipoItem.id }}</td>
+                    <td>{{ TipoItem.nombre }}</td>
+                    <td>{{ TipoItem.descripcion }}</td>
+                    <td>{{ TipoItem.atributos }}</td>
+                    <td>
+                        <a type="button" class="btn btn-warning"
+                           href="{% url 'tipo_item:tipo_item_modificar' TipoItem.id %}">Editar</a>
+                        <a type="button" class="btn btn-danger"
+                           href="{% url 'tipo_item:tipo_item_eliminar' TipoItem.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h2>No se encontraron registros de tipos de items.</h2>
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock content %}

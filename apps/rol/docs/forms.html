@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>forms.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>forms.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong> Clase que despliega el formulario de registro de un rol </strong></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">GroupForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p><strong> Despliega un filtro de los permisos en el sistema </strong></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">permissions</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelMultipleChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">Q</span><span class="p">(</span><span class="n">codename__icontains</span><span class="o">=</span><span class="s1">&#39;logentry&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede crear un proyecto&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede editar el proyecto&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede eliminar un proyecto&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede visualizar un proyecto&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede crear un comité&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede editar el comité&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede eliminar un comité&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede visualizar un comité&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede crear un item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede editar el item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede eliminar un item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede visualizar un item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede crear un usuario&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede editar el usuario&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede eliminar un usuario&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede visualizar un usuario&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede crear un tipo de item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede editar el tipo de item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede eliminar un tipo de item&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Puede visualizar un tipo de item&#39;</span><span class="p">)</span>
+    <span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>los campos del formulario</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Group</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;permissions&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># etiquetas para el campo.</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Nombre del rol&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="s1">&#39;Permisos&#39;</span><span class="p">,</span>
+    <span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>=== Indice de la documentación de la Aplicación rol  === <br/>
+1.apps     :  <a href="apps.html">apps.py</a><br/>
+2.forms    :  <a href="forms.html">forms.py</a><br/>
+3.tests    :  <a href="tests.html">tests.py</a><br/>
+4.urls     :  <a href="urls.html">urls.py</a><br/>
+5.views    :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

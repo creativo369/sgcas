@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>urls.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>urls.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h3><span id="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py" href="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py"> Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+<span class="kn">from</span> <span class="nn">apps.tipo_item.views</span> <span class="kn">import</span> <span class="n">tipo_item_opciones</span><span class="p">,</span> <span class="n">crear_tipo_item</span><span class="p">,</span> <span class="n">TipoItemLista</span><span class="p">,</span> <span class="n">TipoItemEliminar</span><span class="p">,</span> \
+    <span class="n">TipoItemModificar</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong>Vistas basadas en clases</strong></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p><strong>1.Opciones :</strong> Vista que despliega la gestión de tipo de item<br/>
+<strong>2.Crear tipo item :</strong> Vista que despliega la creación de un tipo de item<br/>
+<strong>3.Listar tipo de item :</strong> Vista que despliega la lista de tipo de item<br/>
+<strong>4.Eliminar tipo de item :</strong> Vista que despliega eliminar tipo de item<br/>
+<strong>5.Editar tipo de item :</strong> Vista que despliega edicion de un tipo de item<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^opciones/&#39;</span><span class="p">,</span> <span class="n">tipo_item_opciones</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tipo_item_opciones&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/&#39;</span><span class="p">,</span> <span class="n">crear_tipo_item</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;crear_tipo_item&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/&#39;</span><span class="p">,</span> <span class="n">TipoItemLista</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tipo_item_lista&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">TipoItemEliminar</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tipo_item_eliminar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">TipoItemModificar</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;tipo_item_modificar&#39;</span><span class="p">),</span>
+<span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
+1.apps    :  <a href="apps.html">apps.py</a><br/>
+2.forms   :  <a href="forms.html">forms.py</a><br/>
+3.models  :  <a href="models.html">models.py</a><br/>
+4.tests   :  <a href="tests.html">tests.py</a><br/>
+5.urls    :  <a href="urls.html">urls.py</a><br/>
+6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

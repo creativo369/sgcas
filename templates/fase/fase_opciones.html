@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<div class="list-group">
+	  <a href="{% url 'fase:crear_fase' %}" class="list-group-item list-group-item-action">Crear fase</a>
+	  <a href="{% url 'fase:fase_lista' %}" class="list-group-item list-group-item-action">Lista de fases</a>
+	</div>
+{% endblock content %}

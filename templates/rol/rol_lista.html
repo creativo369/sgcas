@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Rol</th>
+      <th scope="col">Permisos</th>
+      <th scope="col">Opciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if object_list %}
+    	{% for rol in object_list %}
+			<tr>
+		      <td>{{rol.id}}</td>
+		      <td>{{rol.name}}</td>
+          <td>
+            {% for p in rol.permissions.all %}
+              {% if forloop.first %}
+                {{ p.name }}
+              {% else %}
+                , {{ p.name }}
+              {% endif %}
+            {% endfor %}
+          </td>
+		      <td>
+           <!-- <a type="button" class="btn btn-warning" href="#">Permisos</a> -->
+		       <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id %}">Editar</a>
+           <a type="button" class="btn btn-danger" href="{% url 'rol:rol_eliminar' rol.id %}">Eliminar</a>
+          </td>
+		    </tr>
+    	{% endfor %}
+    {% else %}
+    	<h2>No se encontraron registros de roles.</h2>
+    {% endif %}
+  </tbody>
+</table> 
+{% endblock content %}
