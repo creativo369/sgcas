@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% else %}
+            <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+                <div class="card-header">
+                    {% if not item.tipo_item %}
+                        <strong>Registro de Item - Importación de Tipo de Item</strong>
+                    {% else %}
+                        <strong>Actualización de Item - Importación de Tipo de Item</strong>
+                    {% endif %}
+                </div>
+                <div class="card-body card-block">
+                    {% if tipo_item or item.tipo_item %}
+                        <form action="#" method="post" enctype=" multipart
+                    /form-data" class="form-horizontal">
+                            <div class="row form-group">
+                                <div class="col col-md-3">{{ form.tipo_item.label }}</div>
+                                <div class="col-12 col-md-9">{{ form.tipo_item }}</div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success">Siguiente</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <h1 style="text-align: center">No se encontraron Tipos de Item</h1>
+                        <h5 style="text-align: center"><small class="text-muted">Se debe crear al menos un tipo de item
+                            para
+                            asignar los atributos.</small></h5>
+                        <div class="text-center">
+                            <a class="btn btn-success" href="{% url 'item:item_lista' id_fase=fase.id %}">Aceptar y
+                                guardar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}
+

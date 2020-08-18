@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% block title %} Comit&eacute; {% endblock %}
+{{ form.non_field_error }}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <strong>Formulario de Registro</strong>
+            </div>
+            <div class="card-body card-block">
+                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ formulario.nombre.label }}:</div>
+                        <div class="col-12 col-md-9">{{ formulario.nombre }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ formulario.descripcion.label }}:</div>
+                        <div class="col-12 col-md-9">{{ formulario.descripcion }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">Agregar miembros al comit&eacute;:</div>
+                        <div class="">{{ formulario.miembros }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Crear</button>
+                            <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
+                        </div>
+                    </div>
+            </div>
+    </form>
+{% endblock %}
+

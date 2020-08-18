@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% block title %} Editar Fase {% endblock%}
+
+{% block content %}
+	<div class = "class_container_form">
+		<form method="post" action="">
+		{% csrf_token %}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+          {% if fase.estado != "Cerrada" %}
+            <div class="card">
+                <div class="card-header">
+                    <strong>Formulario de Registro</strong>
+                </div>
+                <div class="card-body card-block">
+                    <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.nombre.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.nombre }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.descripcion.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.estado.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.estado }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.miembros_fase.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.miembros_fase }}</div>
+                        </div>                        
+                        <div class="text-center">
+                            <button type="submit", class="btn btn-success">Actualizar</button>
+                            <a href="#" class="btn btn-danger" onclick="window.history.back()">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+          {% else %}
+              <h2> No esta permitido hacer modificaciones a la fase de {{ fase.nombre }}.</h2>
+          {% endif %}
+      {% endif %}
+  </form>
+	</div>
+{% endblock %}
