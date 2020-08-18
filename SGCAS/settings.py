@@ -23,7 +23,7 @@ SECRET_KEY = 'nayi!!*seyd)t#+m)2@l&7m3^!6j=*$vytuxb86ig1#pq(=khl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['SGCAS', '127.0.0.1']
+ALLOWED_HOSTS = ['SGCAS', '127.0.0.1','localhost']
 
 # Application definition
 
@@ -107,15 +107,7 @@ WSGI_APPLICATION = 'SGCAS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'development',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': 5432,
-    },
-    'production': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'production',
+        'NAME': 'desarrollo',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
