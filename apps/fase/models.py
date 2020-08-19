@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.usuario.models import User
 from apps.proyecto.models import Proyecto
 import datetime
 
@@ -36,6 +36,8 @@ class Fase(models.Model):
             ("ver_fase", "ver_fase"),
             ("detalles_fase", "detalles_fase"),
         ]
+        verbose_name = 'Fase'
+        verbose_name_plural = 'Fases'
 
     def __str__(self):
         """
@@ -43,8 +45,6 @@ class Fase(models.Model):
         **:return:** el nombre fase<br/>
         """
         return '{}'.format(self.nombre)
-
-
 
 # **Volver atras** : [[forms.py]]
 

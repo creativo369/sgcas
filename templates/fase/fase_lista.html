@@ -1,19 +1,19 @@
 {% extends 'base/base.html' %}
-
-{% block extrajs %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-{% endblock extrajs %}
+{% block title %} Listar fases {% endblock%}
 
 {% block content %}
     <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
+<form method="GET" action="{% url 'fase:search' proyecto.id %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre o de la descripci&oacute;n de la fase." name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -25,8 +25,8 @@
         </tr>
         </thead>
         <tbody>
-        {% if fases_proyecto %}
-            {% for fase in fases_proyecto %}
+        {% if page_obj %}
+            {% for fase in page_obj %}
                 <tr>
                     <td>{{ fase.nombre }}</td>
                     <td>{{ fase.descripcion }}</td>
@@ -83,6 +83,25 @@
         {% endif %}
         </tbody>
     </table>
+
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
     <a type="button" class="btn btn-link" href="{% url 'proyecto:detail' proyecto.id %}">Volver al proyecto</a>
 {% endblock content %}
 

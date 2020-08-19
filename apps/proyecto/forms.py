@@ -1,6 +1,8 @@
 # === Importamos las librerias necesarias para la implementación de un Formulario ===
 from django import forms
 from .models import Proyecto
+from django.db.models import Q
+from apps.usuario.models import User
 
 
 # === Clase para abstraer en un formulario el registro de un Proyecto ===<br/>
@@ -16,7 +18,9 @@ class FormularioProyecto(forms.ModelForm):
         **:param kwargs:** Un diccionario del formulario de registro del proyecto<br/>
         """
         super(FormularioProyecto, self).__init__(*args, **kwargs)
-        campos = ['fecha_creacion', 'estado']
+        self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True)).exclude(username='AnonymousUser')
+        #queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
+        campos = ['fecha_creacion', 'estado']        
         for field in campos:
             self.fields[field].required = False
             self.fields[field].disabled = True
@@ -32,6 +36,7 @@ class FormularioProyecto(forms.ModelForm):
             'estado',
 
         ]
+
         # Las etiquetas que tendrá para visualizarse en el navegador<br/>
         labels = {
             'nombre': 'Nombre del Proyecto',

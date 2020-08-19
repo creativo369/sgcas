@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+
+from apps.usuario.models import User
 import datetime
 from django.core.exceptions import ValidationError
 
@@ -11,7 +12,6 @@ estado_proyecto = [
     ('Finalizado', 'Finalizado'),
 ]
 
-
 # **Clase que modela el concepto de Proyecto**
 class Proyecto(models.Model):
     # 1. **user**: Campo para dar asignar implicitamente al gerente como creador del proyecto.<br/>
@@ -22,13 +22,13 @@ class Proyecto(models.Model):
     # 6. **estado**: atributo que llevara el registro por los diferentes estados que pasara el proyecto.<br/>
     # 7. **slug**: atributo que establece que el proyecto sea unico.<br/>
     # 8. **miembros**: cambio que establece la relación de un proyecto y miembros ( guarda la asignación de los miembros).<br/>
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gerente')
+    gerente = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gerente')
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
     fecha_creacion = models.DateField(default=datetime.date.today)
     ultima_modificacion = models.DateTimeField(auto_now=True)
     estado = models.CharField(max_length=30, choices=estado_proyecto, default="Pendiente")
-    slug = models.CharField(max_length=50, default="")
+    slug = models.CharField('Slug', max_length=100, blank=False, null=False)
     miembros = models.ManyToManyField(User, blank=True)
 
     class Meta:
@@ -43,6 +43,8 @@ class Proyecto(models.Model):
             ("editar_proyecto", "editar_proyecto"),
             ("detalles_proyecto", "detalles_proyecto"),
         ]
+        verbose_name = 'Proyecto'
+        verbose_name_plural = 'Proyectos'
 
     def __str__(self):
         """
@@ -70,7 +72,6 @@ class Proyecto(models.Model):
         self.validate_unique()
         self.slug = self.nombre.replace(" ", "_").lower()
         super(Proyecto, self).save(*args, **kwargs)
-
 
 # **Volver atras** : [[forms.py]]
 

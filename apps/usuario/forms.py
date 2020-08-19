@@ -1,7 +1,10 @@
 from django import forms
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.mail import send_mail
-from django.conf import settings
+# from django.conf import settings
+from SGCAS.settings import base
+
+from apps.usuario.models import User
 
 # Mientras tanto no se admiten password
 inactivo_previo = False
@@ -25,7 +28,22 @@ class UserForm(forms.ModelForm):
             'email': 'Correo electronico',
             'username': 'Usuario',
             'roles': 'Roles',
-            'is_active': 'Cuenta activa'
+            'is_active': 'Estado de la Cuenta'
+        }
+        widgets = {  # los aparatos o elementos de captura de información del formulario
+            'first_name': forms.Textarea(attrs={'class': 'form-control',
+                                                'placeholder': 'Introduzca los nombres',
+                                                'rows': 1,
+                                                'cols': 10}),
+            'last_name': forms.Textarea(attrs={'class': 'form-control',
+                                               'placeholder': 'Introduzca los apellidos',
+                                               'rows': 1,
+                                               'cols': 10}),
+            'email': forms.Textarea(attrs={'class': 'form-control',
+                                           'placeholder': 'Introduzca el correo',
+                                           'rows': 1,
+                                           'cols': 10}),
+            'estado': forms.Select(attrs={'class': 'form-control'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -64,15 +82,34 @@ class UserForm(forms.ModelForm):
 
         if u.is_active and inactivo_previo:
             subject = 'Registro SGCAS'
-            message = 'Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS'
+            message = 'Hola '+ u.username + '!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS'
             send_mail(
                 subject,
                 message,
-                settings.EMAIL_HOST_USER,
-                [u.email, settings.EMAIL_HOST_USER],
+                base.EMAIL_HOST_USER,
+                [u.email, base.EMAIL_HOST_USER],
                 fail_silently=False,
             )
         return u
+
+
+class FormularioUsuarioActivar(UserForm):
+    # **Clase que modela el formulario de la definición de un usuario a ser usado en la plantilla**<br/>
+
+    # Para read - only los fields que se presentan en la siguiente lista.<br/>
+    def __init__(self, *args, **kwargs):
+        super(FormularioUsuarioActivar, self).__init__(*args, **kwargs)
+
+        # fields representa los campos que no son editables de acuerdo al estado del proyecto<br/>
+        fields = ['first_name', 'last_name', 'email', 'username']
+        if 'instance' in kwargs:
+            # No se permite la modificacion del nombre ,apellidos , correo electronico , Usuario<br/>
+            for field in fields:
+                self.fields[field].required = False
+                self.fields[field].disabled = True
+
+    class Meta(UserForm.Meta):
+        model = User
 
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 1.apps        : [[apps.py]]<br/>

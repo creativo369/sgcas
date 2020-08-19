@@ -1,9 +1,23 @@
 # === Código fuente que registra la aplicación Proyecto en Django ===
 from django.contrib import admin
 from .models import Proyecto
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+
+class ProyectoResource(resources.ModelResource):
+    class Meta:
+        model = Proyecto
+
+
+class ProyectoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    search_fields = ['descripcion']
+    list_display = ('gerente', 'descripcion', 'fecha_creacion', 'ultima_modificacion', 'estado',)
+    resource_class = ProyectoResource
+
 
 # Registra la aplicación en Django
-admin.site.register(Proyecto)
+admin.site.register(Proyecto, ProyectoAdmin)
 
 # **Ir a la documentación del registro de la Aplicación en Django** :[[apps.py]]
 

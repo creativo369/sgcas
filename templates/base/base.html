@@ -1,20 +1,18 @@
 {% load static %}
-<!doctype html>
+{% load i18n %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/team7.ico' %}">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
-
-    {% block extrajs %}
-    {% endblock extrajs %}
-
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    {% block extracss %}
+    {% endblock %}
     <title>{% block title %}SGCAS{% endblock %}</title>
-
 </head>
 <body>
 
@@ -54,9 +52,7 @@
                 {% if request.user.is_active %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Usuario
-
-                            <span
-                                    class="sr-only">(current)</span></a>
+                            <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Proyecto</a>
@@ -70,39 +66,72 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
                                 class="badge badge-primary badge-pill">
-                            {% if count_inactive_users != 0 %}
-                                {{ count_inactive_users }}
-                            {% else %}{% endif %}
-                        </span></a>
+                                        {% if count_inactive_users != 0 %}
+                                            {{ count_inactive_users }}
+                                        {% endif %}
+                                    </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/faq/faq">FAQs</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">Salir</a>
-                </li>
+
             </ul>
-            <form class="form-inline my-2 my-lg-0" class="nav-item">
-                <input class="form-control mr-sm-2" type="text" placeholder="Buscar">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+            <!--        {#-->
+<!--        <form class="form-inline my-2 my-lg-0" class="nav-item"> #}-->
+            <!--            {#<input class="form-control mr-sm-2" type="text" placeholder="Buscar"> #}-->
+            <!--            {#-->
+<!--            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>-->
+<!--            #}-->
+            <!--            {#-->
+<!--        </form>-->
+<!--        #}-->
+            {% if request.user.is_superuser == True %}
+                <a class="btn btn-primary" href="/admin/">{% trans 'Admin Panel' %}</a>
+            {% endif %}
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button class="btn btn-primary" type="submit">{% trans 'Cerrar sesión' %}</button>
             </form>
         </div>
     </nav>
 {% endblock %}
-
 <div style="padding-left: 30px; padding-right: 30px">
     {% block content %}
-
     {% endblock content %}
 </div>
 
-{% block footer %}
-    {#    <div class="footer">#}
-    {#        <blockquote class="blockquote text-center">#}
-    {#            <p class="mb-0">Sistema de Gestión de Artefactos de Software</p>#}
-    {#            <p class="mb-0">Equipo 07</p>#}
-    {#            <footer class="blockquote-footer">Ingeniería de Software II, Año 2020</footer>#}
-    {#        </blockquote>#}
-    {#    </div>#}
-{% endblock footer %}
+<!--{% block footer %}-->
+    <!--{#-->
+<!--<div class="footer">#}-->
+    <!--    {#-->
+<!--    <blockquote class="blockquote text-center">#}-->
+    <!--        {# <p class="mb-0">Sistema de Gestión de Artefactos de Software</p>#}-->
+    <!--        {# <p class="mb-0">Equipo 07</p>#}-->
+    <!--        {#-->
+<!--        <footer class="blockquote-footer">Ingeniería de Software II, Año 2020</footer>-->
+<!--        #}-->
+    <!--        {#-->
+<!--    </blockquote>-->
+<!--    #}-->
+    <!--    {#-->
+<!--</div>-->
+<!--#}-->
+    <!--{% endblock footer %}-->
+{% block extrajs %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+{% endblock extrajs %}
 </body>
 </html>
 

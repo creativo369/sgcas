@@ -1,20 +1,19 @@
 # === Importación de las librerias utilizadas de Django ===
-from django.contrib.auth.models import User
+from apps.usuario.models import User
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from apps.usuario.forms import UserForm
+from apps.usuario.forms import FormularioUsuarioActivar
 
 """
 Todas las vistas para la aplicación del Modulo Mensaje
-Actualmente se despliega en las plantillas 5 vistas:
+Actualmente se despliega en las plantillas 3 vistas:
 
-1. **Mensajes** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py#mensajes]] )
-2. **Actualizar Usuario** - definición de una instancia del modelo comité (Ir a la sección: [[views.py#actualizacionusuario]] )
-3. **Eliminar Usuario** - modificar una instancia del modelo comité (Ir a la sección: [[views.py#eliminarusuario]] )
+1. **Mensajes** - lista los usuarios cuya entrada al sistema debe ser aprobada (Ir a la sección: [[views.py #mensajes]] )
+2. **Actualizar Usuario** - modifica la información correspondiente a cada usuario (Ir a la sección: [[views.py #actualizacion usuario]] )
+3. **Eliminar Usuario** - quita  del sistema a un determinado usuario (Ir a la sección: [[views.py #eliminar usuario]] )
 
 """
-
 
 # === mensajes ===
 class Mensajes(ListView):
@@ -23,11 +22,17 @@ class Mensajes(ListView):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Renderiza la plantilla mensaje_lista.html con las instancias del modelo User de estado inactivo.<br/>
     """
+    paginate_by = 4
     model = User
     template_name = 'mensajes/mensajes_lista.html'
+    permission_required = 'usuario.ver_mensaje'
+
+    def get_queryset(self):
+        #ordena la lista de usuarios excluyendo al AnonymousUser
+        return User.objects.filter(is_active=False).order_by('id').distinct().exclude(username='AnonymousUser')
 
 
-# === actualizacionusuario ===
+# === actualizacion usuario ===
 class ActualizarUsuarioMensaje(PermissionRequiredMixin, UpdateView):
     """
     Permite la actualizacion de informacion de una instancia de modelo User.<br/>
@@ -37,12 +42,12 @@ class ActualizarUsuarioMensaje(PermissionRequiredMixin, UpdateView):
     """
     model = User
     template_name = 'mensajes/mensaje_editar.html'
-    form_class = UserForm
-    permission_required = 'auth.change_user'
+    form_class = FormularioUsuarioActivar
+    permission_required = 'usuario.mensaje_editar'
     success_url = reverse_lazy('mensajes:mensaje_lista')
 
 
-# === eliminarusuario ===
+# === eliminar usuario ===
 class EliminarUsuarioMensaje(PermissionRequiredMixin, DeleteView):
     """
     Permite la eliminacion de una instancia del modelo User inactivo.<br/>
@@ -52,7 +57,7 @@ class EliminarUsuarioMensaje(PermissionRequiredMixin, DeleteView):
      """
     model = User
     template_name = 'mensajes/mensajes_eliminar.html'
-    permission_required = 'auth.delete_user'
+    permission_required = 'usuario.mensaje_eliminar'
     success_url = reverse_lazy('mensajes:mensaje_lista')
 
 # **Volver atras** :[[urls.py]]

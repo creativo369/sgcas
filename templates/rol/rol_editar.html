@@ -1,23 +1,47 @@
 {% extends 'base/base.html'%}
+{% block title %} Editar rol {% endblock%}
 
 {% block content %}
-	<div class="container pt-3">
-		<form method="post">
-	        {% csrf_token %}
-	        {{ form.as_p }}
-	        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
-	        <a class= "btn btn-default" href="{% url 'rol:rol_lista' %}">Cancelar</a>
-    	</form>
-	</div>
+<div class="container pt-3">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="form-group">
+                    <label>Nombre del rol:</label>
+                    {{form.name}}
+                </div>
+            </div>
+        </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label>Permisos:</label>
+                        <p>
+                            {{ form.permissions }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+                        <a class="btn btn-default" href="{% url 'rol:rol_lista' %}">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+<style type="text/css">
+    input {
+        width: 87%;
+        min-height: 10px;
+    }
 
-	<style type="text/css">
-		input{
-          	width: 87%;
-          	min-height: 10px;
-        }
-        select{
-            width: 100%;
-            min-height: 350px;
-        }
-	</style>
+    select {
+        width: 100%;
+        min-height: 350px;
+    }
+</style>
 {% endblock %}

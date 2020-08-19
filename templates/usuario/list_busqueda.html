@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% block title %} B&uacute;squeda de Usuarios {% endblock%}
+
+{% block content %}
+<form method="GET" action="{% url 'usuario:search' %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre del usuario." name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+          {#<th scope="col">ID</th> #}
+            <th scope="col">Usuario</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if page_obj %}
+            {% for usuario in page_obj%}
+                {% if usuario.is_active %}
+                    <tr>
+                     {# <td>{{ usuario.id }}</td> #}
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.first_name }}</td>
+                        <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.groups.all.0 }}</td>
+                        {% if usuario.is_active %}
+                            <td>Activo</td>
+                        {% else %}
+                            <td>Inactivo</td>
+                        {% endif %}
+                        <td>
+                            <a type="button" class="btn btn-warning"
+                               href="{% url 'usuario:usuario_editar' usuario.id %}">Editar</a>
+                            <a type="button" class="btn btn-danger"
+                               href="{% url 'usuario:usuario_eliminar' usuario.id %}">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h2>No se encontraron registros de usuarios.</h2>
+        {% endif %}
+        </tbody>
+    </table>
+       
+ 
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
+      
+{% endblock content %}

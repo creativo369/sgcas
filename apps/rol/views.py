@@ -5,20 +5,31 @@ from django.contrib.auth.models import Group
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from apps.rol.forms import GroupForm
+from django.db.models import Q
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+
 """
 Todas las vistas para la aplicación del Modulo Rol
-Actualmente se despliega en las plantillas 5 vistas:
+Actualmente se despliega en las plantillas 6 vistas:
 
-1. **crear rol ** - funcion para la creación de roles  (Ir a la sección: [[views.py#crearrol]] )
-2. **gestion de roles ** - vista que despliega la gestión de roles (Ir a la sección: [[views.py#rolopciones]] )
-3. **Listar roles ** - Lista los roles existentes (Ir a la sección: [[views.py#listaroles]] )
-4. **Editar un rol  ** - se puede editar un rol (Ir a la sección: [[views.py#editarrol]] )
-5. **Eliminar un rol ** - se puede eliminar un rol (Ir a la sección: [[views.py#eliminarrol]] )
+1. **crear_rol_view** - funcion para la creación de roles  (Ir a la sección: [[views.py #crear rol]] )
+2. **rol_opciones** - despliega opciones  (Ir a la sección: [[views.py #rol opciones]] )
+3. **ListaRol** - Lista los roles existentes (Ir a la sección: [[views.py #listar roles]] )
+4. **search** - lista los roles buscados (Ir a la sección: [[views.py #search]] )
+5. **EditarRol** - modifica los atributos de un rol (Ir a la sección: [[views.py #editar rol]] )
+6. **EliminarRol** - elimina un rol (Ir a la sección: [[views.py #eliminar rol]] )
 """
+
+#Vista que redefine la vista predeterminada del error 403.
+def handler403(request, exception, template_name='403.html'):
+    response = render(request,'rol/403.html')
+    response.status_code = 403
+    return response
+
 @login_required
-@permission_required('usuario.crear_rol')
-# === crearrol ===
+@permission_required('usuario.crear_rol', raise_exception=True)
+# === crear rol ===
 def crear_rol_view(request):
     """
     Permite la visualizacion de la plantilla para la creacion de instancias del modelo Group.<br/>
@@ -36,8 +47,8 @@ def crear_rol_view(request):
 
 
 @login_required
-@permission_required('usuario.ver_rol')
-# === rolopciones ===
+@permission_required('usuario.ver_rol', raise_exception=True)
+# === rol opciones ===
 def rol_opciones(request):
     """
     Permite la visualizacion de las opciones sobre el modelo Group.<br/>
@@ -46,7 +57,7 @@ def rol_opciones(request):
     """
     return render(request, 'rol/rol_opciones.html')
 
-# === listaroles ===
+# === listar roles ===
 class ListaRol(PermissionRequiredMixin, ListView):
     """
     Permite la visualizacion de todas las intancias del modelo Group.<br/>
@@ -54,15 +65,39 @@ class ListaRol(PermissionRequiredMixin, ListView):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
     """
+    paginate_by = 3
     model = Group
     template_name = 'rol/rol_lista.html'
     permission_required = 'usuario.listar_rol'
 
     # La lista a mostrar estara por orden ascendente
-    class Meta:
-        ordering = ['-id']
+    #class Meta:
+        #ordering = ['-id']
+    def get_queryset(self):
+        return Group.objects.order_by('id').distinct()
 
-# === editarrol ===
+@permission_required('usuario.listar_rol', raise_exception=True) 
+def search(request):
+    """
+    Permite la búsqueda de las intancias del modelo Group.<br/>
+    **:param request:** Recibe un request por parte de un usuario.<br/>    
+    **:return:** Lista todas las instancias del modelo Group que cumplen con los criterios de búsqueda.<br/>
+    """
+    template = 'rol/list_busqueda.html'
+    query = request.GET.get('buscar')
+
+    if query:
+        results = Group.objects.filter(Q(name__icontains=query)).order_by('id').distinct()
+    else:
+        results = Group.objects.all().order_by('id')         
+   
+    paginator = Paginator(results, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)     
+    
+    return render(request, template, {'page_obj': page_obj})
+
+# === editar rol ===
 class EditarRol(PermissionRequiredMixin, UpdateView):
     """
     Permite la modificacion de una instancia del modelo Group.<br/>
@@ -76,7 +111,7 @@ class EditarRol(PermissionRequiredMixin, UpdateView):
     template_name = 'rol/rol_editar.html'
     success_url = reverse_lazy('rol:rol_lista')
 
-# === eliminarrol ===
+# === eliminar rol ===
 class EliminarRol(PermissionRequiredMixin, DeleteView):
     """
     Permite la eliminacion de una instancia del modelo Group.<br/>
@@ -89,10 +124,10 @@ class EliminarRol(PermissionRequiredMixin, DeleteView):
     permission_required = 'usuario.eliminar_rol'
     success_url = reverse_lazy('rol:rol_lista')
 
-
 # === Indice de la documentación de la Aplicación rol  === <br/>
 # 1.apps     : [[apps.py]]<br/>
 # 2.forms    : [[forms.py]]<br/>
 # 3.tests    : [[tests.py]]<br/>
 # 4.urls     : [[urls.py]]<br/>
 # 5.views    : [[views.py]]<br/>
+

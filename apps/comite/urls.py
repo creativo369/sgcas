@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required, permission_required
+
 # === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 
 # **Vistas basadas en clases**
@@ -11,10 +13,10 @@ from apps.comite.views import CreateComite, UpdateComite, DeleteComite, success
 app_name = 'comite'
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
 urlpatterns = [
-    url(r'^crear-comite/(?P<_id>\d+)/$', CreateComite.as_view(), name='create'),
-    url(r'^editar-comite/(?P<pk>\d+)/$', UpdateComite.as_view(), name='update'),
-    url(r'^eliminar-comite/(?P<pk>\d+)/$', DeleteComite.as_view(), name='delete'),
-    url(r'^operacion-exitosa/$', success, name='success'),
+    url(r'^crear-comite/(?P<_id>\d+)/$', login_required(permission_required('comite.crear_comite', raise_exception=True)(CreateComite.as_view())), name='create'),
+    url(r'^editar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.editar_comite', raise_exception=True)(UpdateComite.as_view())), name='update'),
+    url(r'^eliminar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.eliminar_comite', raise_exception=True)(DeleteComite.as_view())), name='delete'),
+    url(r'^operacion-exitosa/$', login_required(success), name='success'),
 ]
 
 # **Atras** : [[tests.py]]
