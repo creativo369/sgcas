@@ -2,26 +2,24 @@ import decimal
 from datetime import date
 
 import pyrebase
-import matplotlib.pyplot as plt
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, UpdateView
 from guardian.mixins import PermissionRequiredMixin
 
-from SGCAS.settings.desarrollo import MEDIA_ROOT
 from apps.fase.models import Fase
 from apps.item.forms import ItemForm, ItemUpdateForm, ItemImportarTipoItemForm, ItemAtributosForm, ItemCambiarEstado, \
     RelacionForm
 from apps.item.graph import exclude_potencial_cycles, shortest_path, create_graph_trazabilidad, draw_graph, \
     item_has_path
 from apps.item.models import Item
+from apps.linea_base.models import LineaBase
 from apps.tipo_item.models import TipoItem
 
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
@@ -30,7 +28,6 @@ storage = firebase.storage()
 """
 Todas las vistas para la aplicación del Modulo ítem
 Actualmente se despliega en las plantillas 19 vistas:
-
 1. **crear_item_basico** - crea el ítem (Ir a la sección: [[views.py #crear ítem]] )
 2. **item_importar_ti** - asigna un tipo de ítema al item (Ir a la sección: [[views.py #importar tipo de ítem]] )
 3. **item_set_atributos** - asigna al ítem sus atributos (Ir a la sección: [[views.py #settear atributos ítem]] )
@@ -232,8 +229,14 @@ def item_modificar_basico(request, pk):
     **:return:**  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
-    id_fase = item.fase.pk
-    form = ItemUpdateForm(request.POST or None, instance=item, id_fase=id_fase)
+    fase = item.fase
+    l_base = LineaBase.objects.filter(fase=fase)
+    l_base = [lb for lb in l_base if
+              lb.items.filter(pk=item.pk).exists()]  # Se obtiene la linea base a la cual pertenece el item
+    if l_base and l_base[0].estado == 'Cerrada':
+        l_base = l_base[0]
+        # return render(request, 'item/item_solicitud.html', {})
+    form = ItemUpdateForm(request.POST or None, instance=item, id_fase=fase.pk)
     if form.is_valid():
         version_item = get_item_snapshot(pk)
         item = form.save(commit=False)

@@ -110,7 +110,7 @@ def draw_graph(G):
     """
     nx.draw_spring(G, with_labels=True)
     labels = nx.get_edge_attributes(G, 'costo')
-    nx.draw_networkx_edge_labels(G, nx.spring_layout(G), edge_labels=labels)
+    # nx.draw_networkx_edge_labels(G, nx.spring_layout(G), edge_labels=labels)
     plt.savefig(MEDIA_ROOT + '/item_trazabilidad.png')
     plt.clf()
 

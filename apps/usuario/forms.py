@@ -70,7 +70,7 @@ class UserForm(forms.ModelForm):
 
             forms.ModelForm.__init__(self, *args, **kwargs)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         """
         Guarda el formulario .<br/>
         :return:
@@ -82,7 +82,7 @@ class UserForm(forms.ModelForm):
 
         if u.is_active and inactivo_previo:
             subject = 'Registro SGCAS'
-            message = 'Hola '+ u.username + '!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS'
+            message = 'Hola ' + u.username + '!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS'
             send_mail(
                 subject,
                 message,
