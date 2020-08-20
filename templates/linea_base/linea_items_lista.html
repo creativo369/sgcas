@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% block title %} Listar items {% endblock%}
+
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+        {#  <th scope="col">ID</th> #}
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha de Creacion</th>
+            <th scope="col">Archivo</th>
+{#            <th scope="col" style="text-align: center">Opciones</th>#}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in page_obj %}
+            <tr>
+             {# <td>{{ item.id }}</td> #}
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.descripcion }}</td>
+                <td>{{ item.estado }}</td>
+                <td>{{ item.fecha_creacion }}</td>
+                <td>
+                    {% if item.archivo %}
+                        <a href="{{ item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
+                            archivo</a>
+                    {% else %}
+                        No adjunto.
+                    {% endif %}
+                </td>
+{#                <td>#}
+{#                    <a type="button" class="btn btn-warning"#}
+{#                       href="{% url 'item:item_modificar' item.id %}">Editar</a>#}
+{#                    <a type="submit" class="btn btn-danger"#}
+{#                       href="{% url 'item:item_eliminar' item.id %}">Eliminar</a>#}
+{#                    <div class="dropdown" style="display: inline">#}
+{#                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"#}
+{#                                data-toggle="dropdown"#}
+{#                                aria-haspopup="true" aria-expanded="false">#}
+{#                            Mas#}
+{#                        </button>#}
+{#                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
+{#                            <a class="dropdown-item" href="#">Detalles</a>#}
+{#                            <a class="dropdown-item" href="{% url 'item:item_cambiar_estado' item.id %}">Cambiar#}
+{#                                estado</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <a type="button" class="btn btn-link" href="{% url 'linea_base:linea_lista' fase.id %}">Volver a lista de Lineas bases</a>
+{% endblock content %}

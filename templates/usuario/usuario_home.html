@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <img style="
+            float: left ;
+            width: 600px;
+            height: 450px;
+            padding: 30px;
+         "
+         src="/static/img/lobby.png">
+    <br/>
+    <div class="card text-white bg-dark mb-3" style="max-width: 50rem;">
+        <div class="card-header">Bienvenido {{ request.user }}</div>
+        <div class="card-body">
+            <div>Que es el SGCAS?
+            El Sistema de Gesti&oacute;n de Configuraci&oacute;n de Artefactos de Software,
+            es una herramienta que le facilita la gestión de ítems de proyectos teniendo
+            en cuenta el rol que los usuarios desempeñan.</div>
+            <div>Pudiendo visualizar el impacto que generar&iacute;a el cambio en uno de estos items.</div>
+            <div>La ventaja frente a las herramientas de control tradicionales es que no corre
+            el riesgo de que la informaci&oacute;n se pierda o se borre. Ademas de controlar
+            quienes han de tener acceso a su trabajo, siedo usted el encargado de dar los
+            permisos pertinentes.</div>
+            <div>{{ request.user }} trabaje con confianza que nuestro equipo se encarga del resto!</div>
+        </div>
+    </div>
+{% endblock content %}

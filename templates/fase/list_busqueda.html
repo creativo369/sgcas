@@ -1,0 +1,108 @@
+{% extends 'base/base.html' %}
+{% block title %} B&uacute;squeda de Fases {% endblock%}
+
+{% block content %}
+    <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
+    <form method="GET" action="{% url 'fase:search' proyecto.id %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese una parte del nombre o de la descripci&oacute;n de la fase." name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha de Creacion</th>
+            <th scope="col" style="text-align: center">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if page_obj %}
+            {% for fase in page_obj %}
+                <tr>
+                    <td>{{ fase.nombre }}</td>
+                    <td>{{ fase.descripcion }}</td>
+                    <td>{{ fase.estado }}</td>
+                    <td>{{ fase.fecha_creacion }}</td>
+                    <td>
+                        <div class="dropdown" style="display: inline">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Item
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'item:crear_item' id_fase=fase.id %}">Crear</a>
+                                <a class="dropdown-item" href="{% url 'item:item_lista' id_fase=fase.id %}">Lista de
+                                    items</a>
+                            </div>
+                        </div>
+                        <div class="dropdown" style="display: inline">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Linea base
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item"
+                                   href="{% url 'linea_base:crear_linea' id_fase=fase.id %}">Crear</a>
+                                <a class="dropdown-item" href="{% url 'linea_base:linea_lista' fase.id %}">Lista de
+                                    LB</a>
+
+                                {#                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>#}
+                            </div>
+                        </div>
+                        <div class="dropdown" style="display: inline">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Mas
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'fase:fase_detalles' fase.id %}">Detalles</a>
+                                <a class="dropdown-item" href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
+                                <a class="dropdown-item" href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>
+                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
+                            </div>
+                        </div>
+                        {#                        <a type="button" class="btn btn-outline-warning"#}
+                        {#                           href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>#}
+                        {#                        <a type="button" class="btn btn-outline-danger"#}
+                        {#                           href="{% url 'fase:fase_eliminar' fase.id proyecto.id %} ">Eliminar</a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+ 
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>      
+      
+    <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' proyecto.id %}">Volver al proyecto</a>
+{% endblock content %}

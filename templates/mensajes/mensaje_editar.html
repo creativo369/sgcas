@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% block title %} Editar mensaje {% endblock%}
+
+{% block content %}
+	<form method="POST">
+		{% csrf_token %}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+        <div class="card">
+            <div class="card-header">
+                <strong>Detalles del Usuario</strong>
+            </div>
+            <div class="card-body card-block">
+                <form action="#" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.first_name.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.first_name }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.last_name.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.last_name }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.email.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.email }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.username.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.username }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.roles.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.roles }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">{{ form.is_active.label }}</div>
+                        <div class="col-12 col-md-9">{{ form.is_active  }} {{ form.is_active.help_text }}</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+						<a class="btn btn-secondary" href="{% url 'mensajes:mensaje_lista' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+      {% endif %}
+	</form>
+{% endblock content %}

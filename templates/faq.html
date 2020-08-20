@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% block title %} FAQs{% endblock %}
+{% block content %}
+    <br>
+    <h3><u>Proyecto</u></h3> 
+    <br>
+    <h5><u>¿Puedo ser gerente de varios proyectos?</u></h5>
+    <div>Usted puede ser gerente de todos los proyectos que usted cree.</div>
+    <br>
+    <h5><u>¿Cu&aacute;ntos usuarios puedo agregar a mi proyecto?</u></h5>
+    <div>Usted puede agregar la cantidad de usuarios que desee.</div>
+    <br>
+    <h5><u>¿Puedo darme de baja de un proyecto del que no soy gerente?</u></h5>
+    <div>No. S&oacute;lo el gerente de proyecto te puede dar de baja (sacarte de proyecto).</div>
+    <br>
+    <h5><u>¿Puedo crear nuevos permisos para agregarlos a mi proyecto?</u></h5>
+    <div>No le est&aacute; permitido a ning&uacute;n usuario del sistema la creaci&oacute;n de nuevos permisos.</div>
+
+    <br>
+    <h3><u>Fase</u></h3>    
+    <br>
+    <h5><u>¿Cu&aacute;ntas fases pueden tener mis proyectos?</u></h5>
+    <div>Sus proyectos pueden tener la cantidad de fases que desee.</div>
+    <br>
+    <h5><u>¿Se pueden eliminar fases una vez iniciado un proyecto?</u></h5>
+    <div>Una vez iniciado el proyecto ya no es posible eliminar fases.</div>
+    <br>
+    <h5><u>¿Cu&aacute;ndo puedo aprobar mis fases?</u></h5>
+    <div>Una vez que todos los &iacute;tems y las l&iacute;neas bases est&eacute;n aprobadas.</div>
+    <br>
+    <h5><u>¿Puedo agregar usuarios por fases?</u></h5>
+    <div>S&iacute;. Puede agregar como m&aacute;ximo una cantidad igual a la de usuarios que forman parte del proyecto.</div>
+
+    <br>
+    <h3><u>&Iacute;tem</u></h3>  
+    <br>
+    <h5><u>¿Cu&aacute;ntos &iacute;tems pueden tener mis fases?</u></h5>
+    <div>Las fases pueden tener cantidad que usted necesite de &iacute;tems.</div>
+    <br>
+    <h5><u>¿Qu&eacute; necesito para aprobar mis &iacute;tems?</u></h5>
+    <div>Necesita que esten relacionados con otros &iacute;tems de la misma fase u otra fase.</div>
+    <br>
+    <h5><u>¿Puedo usar el mismo &iacute;tem en dos l&iacute;neas bases?</u></h5>
+    <div>No. Un &iacute;tem s&oacute;lo puede formar parte de una l&iacute;nea base.</div>
+    <br>
+    <h5><u>¿Puedo visualizar el impacto de un &iacute;tem no aprobado?</u></h5>
+    <div>No. Es necesario aprobar el &iacute;tem para efectuar el c&aacute;lculo.</div>
+    <br>
+    <h5><u>¿Para que sirve el versionado de &iacute;tems?</u></h5>
+    <div>Le sirve para deshacer los cambios de un &iacute;tem y regresar a la &uacute;ltima versi&oacute;n guardada.</div>
+    <br>
+    <h5><u>¿El versionado afecta a todo el proyecto?</u></h5>
+    <div>S&iacute;. Afecta a todas las relaciones directas e indirectas del &iacute;tem y por consecuencia, a todo el proyecto.</div>
+
+    <br>
+    <h3><u>L&iacute;nea Base</u></h3> 
+    <br>
+    <h5><u>¿Cu&aacute;ntas l&iacute;neas bases pueden tener mis fases?</u></h5>
+    <div>Las fases pueden tener cantidad que usted necesite de l&iacute;neas bases.</div>
+    <br>
+    <h5><u>¿Qu&eacute; significa "Romper" una l&iacute;nea base?</u></h5>
+    <div>Implica que todos los elementos de esa l&iacute;nea base son liberados para usarlos y as&iacute; trabajar nuevamente con ellos.</div>
+    <br>
+    <h5><u>¿Cu&aacute;ntos elementos pueden tener las l&iacute;neas bases?</u></h5>
+    <div>Las necesarias que usted requiera para formarlas.</div>
+    <br>
+    <h5><u>¿Qu&eacute; necesito para aprobar una l&iacute;nea base?</u></h5>
+    <div>S&oacute;lo necesita que los elementos elegidos para formar parte de la l&iacute;nea base est&eacute;n aprobados.</div>
+
+    <br>
+    <h3><u>Tipo de &Iacute;tem</u></h3> 
+    <br>
+    <h5><u>¿Cu&aacute;ntos tipos de &iacute;tems puedo tener en mi proyecto?</u></h5>
+    <div>S&oacute;lo se permite un tipo de &iacute;tem por fase.</div>
+    <br>
+    <h5><u>¿Puedo modificar los tipos de &iacute;tems que importo?</u></h5>
+    <div>No. S&oacute;lo se permite la edici&oacute;n de los tipos de &iacute;tems creados.</div>
+    <br>
+    <h5><u>¿Cu&aacute;ndo debo importar un tipo de &iacute;tem?</u></h5>
+    <div>Siempre que el proyecto no haya iniciado.</div>
+    <br>
+    <h5><u>¿Cu&aacute;ndo debo crear el un tipo de &iacute;tem?</u></h5>
+    <div>En cualquier momento antes de iniciar el proyecto donde desea usarlo.</div>
+
+    <br>
+{% endblock content %}

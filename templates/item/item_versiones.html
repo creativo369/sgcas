@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% block title %} Versiones de item {% endblock %}
+
+{% block content %}
+
+<!--    {#    <form method="GET" action="{% url 'item:search' fase.id %}">#}-->
+<!--    {#        <div id="custom-search-input">#}-->
+<!--    {#            <div class="input-group col-md-12">#}-->
+<!--    {#                <input type="text" class="form-control"#}-->
+<!--    {#                       placeholder="Ingrese el nombre o la descripci&oacute;n del &iacute;tem." name="buscar"#}-->
+<!--    {#                       value="{{ request.GET.buscar }}">#}-->
+<!--    {#                <span class="input-group-list">#}-->
+<!--    {#                            <i class="icon icon-search"></i>#}-->
+<!--    {#                            <button type="submit" class="btn btn-success">Buscar</button>#}-->
+<!--    {#                        </span>#}-->
+<!--    {#            </div>#}-->
+<!--    {#        </div>#}-->
+<!--    {#    </form>#}-->
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha de Creacion</th>
+            <th scope="col">Archivo</th>
+            <th scope="col">Versión</th>
+            <th scope="col" style="text-align: center">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% if page_obj %}    
+            {% for item in page_obj %}
+                <tr>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.descripcion }}</td>
+                    <td>{{ item.estado }}</td>
+                    <td>{{ item.fecha_creacion }}</td>
+                    <td>
+                        {% if item.archivo %}
+                            <a href="{{ item.file_url_cloud }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
+                            archivo</a>
+                        {% else %}
+                            No adjunto.
+                        {% endif %}
+                    </td>
+                    <td>{{ item.nro_version }}</td>
+                    <td>
+                        <a type="button" class="btn btn-success"
+                       href="{% url 'item:restaurar_version' item.id %}">Restaurar versión</a>
+                        <a type="submit" class="btn btn-secondary"
+                       href="{% url 'item:item_detalles' item.id %}">Detalles</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% else %}
+                <br>
+                <h2>No existen versiones de &eacute;ste &iacute;tem.</h2>
+            {% endif %}
+
+        </tbody>
+
+    </table>    
+
+        <div class="text-center">
+            <div class="pagination">
+                <span class="step-links">
+                    
+                    <span class="current">
+                          <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                   </span>
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; Inicio</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                    {% endif %}
+    
+                   {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+      
+<a type="button" class="btn btn-link" href="{% url 'item:item_lista' fase.id %}">Volver a lista de items</a>
+
+{% endblock content %}

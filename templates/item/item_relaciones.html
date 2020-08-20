@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+        <div class="card-header">
+            {% if item.fase.id > fase.id %}
+                <strong>Relación [ Antecesor ({{ fase }}) ← {{ item }} ({{ item.fase }}) ]</strong>
+            {% elif item.fase.id == fase.id %}
+                <strong>Relación [ {{ item }} ({{ item.fase }}) ↓ Hijo ({{ fase }}) ]</strong>
+            {% else %}
+                <strong>Relación [ {{ item }} ({{ item.fase }}) → Sucesor ({{ fase }}) ]</strong>
+            {% endif %}
+        </div>
+        <div class="card-body card-block">
+            <form action="#" method="post" enctype=" multipart
+                    /form-data" class="form-horizontal">
+                {% csrf_token %}
+                {% if items_query %}
+                    {% if item.fase.id > fase.id %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.antecesores.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.antecesores }}</div>
+                        </div>
+                    {% elif item.fase.id == fase.id %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.hijos.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.hijos }}</div>
+                        </div>
+                    {% else %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.sucesores.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.sucesores }}</div>
+                        </div>
+                    {% endif %}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-link" onclick="window.history.back()">Cancelar</button>
+                    </div>
+                {% else %}
+                    <h1 style="text-align: center">No se encontraron items</h1>
+                    <h5 style="text-align: center"><small class="text-muted">No se pudo establecer la relacion debido a
+                        que no se encontraron items en la fase.</small></h5>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-success" onclick="window.history.back()">Aceptar</button>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
