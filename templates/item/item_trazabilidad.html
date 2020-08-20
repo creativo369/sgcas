@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+    {% if image_name %}
+        <div class="card-header">
+                <strong>Trazabilidad del &iacute;tem "{{ item_name }}"</strong>
+        </div>
+        <div class="text-center" style="margin:25px auto">
+            <img title="Trazabilidad {{ item_name }}" src="/media/{{ image_name }}"
+                 alt="Trazabilidad{{ image_name }}">
+        </div>
+        <div class="text-center">
+            <a style="margin: 25px 0"
+                   type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
+        </div>
+    {% else %}
+        <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+            <div class="card-header">
+                <strong>Trazabilidad del &iacute;tem "{{ item_name }}"</strong>
+            </div>
+            <h1 style="text-align: center; margin: 25px 0 0 0">No se encontró una ruta</h1>
+            <h5 style="text-align: center; margin: 25px 0 0 0"><small class="text-muted">Esto se debe a que el &iacute;tem no
+                posee
+                relación directa o indirecta con el inicio del proyecto.</small></h5>
+            <div class="text-center">
+                <a style="margin: 25px 0"
+                   type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
+            </div>
+        </div>
+        </div>
+    {% endif %}
+{% endblock %}

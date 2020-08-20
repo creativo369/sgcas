@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+{% block title %} Editar TI {% endblock%}
+
+{% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% else %}
+            <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+                <div class="card-header">
+                    <strong>Actualización del T.I. {{ tipoitem.nombre }}</strong>
+                </div>
+                <div class="card-body card-block">
+                    <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.nombre.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.nombre }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.descripcion.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.atributos.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.atributos }}</div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Actualizar</button>
+                            <a class="btn btn-secondary" href="{% url 'tipo_item:tipo_item_lista' %}">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </form>
+{% endblock %}

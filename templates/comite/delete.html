@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% block title %} Eliminar comité {% endblock %}
+
+
+{% block content %}
+	<div class="alert alert-dismissible alert-danger">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>¿Esta usted seguro de eliminar {{ comite.nombre }}?</strong>
+	  Este cambio no se podrá deshacer.
+	</div>
+	<form method="POST">
+		{% csrf_token %}
+		<button type="submit" class="btn btn-danger" >Aceptar</button>
+		<a type="button" class="btn btn-success" href="#" onclick="window.history.back()">Cancelar</a>
+	</form>
+{% endblock content %}

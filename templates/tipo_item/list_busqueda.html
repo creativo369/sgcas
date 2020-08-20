@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+{% block title %} B&uacute;squeda de TI{% endblock%}
+
+{% block content %}
+<form method="GET" action="{% url 'tipo_item:search' %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese una parte del nombre o de la descripci&oacute;n del tipo de &iacute;tem" name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+         {# <th scope="col">ID</th> #}
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Atributos</th>
+            <th scope="col">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if page_obj %}
+            {% for TipoItem in page_obj %}
+                <tr>
+                  {#<td>{{ TipoItem.id }}</td> #}
+                    <td>{{ TipoItem.nombre }}</td>
+                    <td>{{ TipoItem.descripcion }}</td>
+                    <td>{{ TipoItem.atributos }}</td>
+                    <td>
+                        <a type="button" class="btn btn-warning"
+                           href="{% url 'tipo_item:tipo_item_modificar' TipoItem.id %}">Editar</a>
+                        <a type="button" class="btn btn-danger"
+                           href="{% url 'tipo_item:tipo_item_eliminar' TipoItem.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h2>No se encontraron registros de tipos de items.</h2>
+        {% endif %}
+        </tbody>
+    </table>
+    
+ 
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
+   <a type="button" class="btn btn-link" href="{% url 'proyecto:list' %}">Ir a lista de proyectos</a>  
+      
+{% endblock content %}

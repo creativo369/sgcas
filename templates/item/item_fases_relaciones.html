@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+        <div class="card-header">
+            <strong>Fases - [ {{ item }} ∈ {{ fase }} ]</strong>
+        </div>
+        <div class="card-body card-block">
+            {% for fase in fases_proyecto %}
+                <a type="button" class="btn btn-secondary"
+                   href="{% url 'item:relaciones' item.id fase.id %}">{{ fase.nombre }}</a><br>
+            {% endfor %}
+            <a class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
+        </div>
+    </div>
+{% endblock %}
+

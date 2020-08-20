@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>urls.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>urls.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h3><span id="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py" href="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py"> Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">apps.rol.views</span> <span class="kn">import</span> <span class="n">crear_rol_view</span><span class="p">,</span> <span class="n">rol_opciones</span><span class="p">,</span> <span class="n">ListaRol</span><span class="p">,</span> <span class="n">EditarRol</span><span class="p">,</span> <span class="n">EliminarRol</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><strong>Vistas</strong></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p><strong>1.Opciones :</strong> Vista que despliega la gestión de roles<br/>
+<strong>2.lista :</strong> Vista que despliega la lista de roles existentes en el sistema<br/>
+<strong>3.eliminar rol :</strong> Vista que despliega eliminar un rol<br/>
+<strong>4.crear rol :</strong> Vista que despliega la definición de un rol<br/>
+<strong>5.modificar rol :</strong> Vista que despliega modificar un rol<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p><strong> Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. </strong></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^opciones/&#39;</span><span class="p">,</span> <span class="n">rol_opciones</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_opciones&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/&#39;</span><span class="p">,</span> <span class="n">ListaRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_lista&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">EliminarRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_eliminar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/&#39;</span><span class="p">,</span> <span class="n">crear_rol_view</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_crear&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^modificar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">EditarRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Group</span><span class="p">,</span> <span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_editar&#39;</span><span class="p">),</span>
+<span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>=== Indice de la documentación de la Aplicación rol  === <br/>
+1.apps     :  <a href="apps.html">apps.py</a><br/>
+2.forms    :  <a href="forms.html">forms.py</a><br/>
+3.tests    :  <a href="tests.html">tests.py</a><br/>
+4.urls     :  <a href="urls.html">urls.py</a><br/>
+5.views    :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block title %} Gesti&oacute;n de Proyectos {% endblock %}
+
+{% block content %}
+    <br>
+    <h3>Gesti&oacute;n de Proyectos</h3>
+    <div class="list-group">
+        <a href="{% url 'proyecto:create' %}" class="list-group-item list-group-item-action">Crear proyecto</a>
+        <a href="{% url 'proyecto:list' %}" class="list-group-item list-group-item-action">Lista de proyectos</a>
+    </div>
+{% endblock content %}
