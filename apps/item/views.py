@@ -578,18 +578,18 @@ class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
         ordering = ['-id']
 
 
-class ItemEliminar(DeleteView, PermissionRequiredMixin, LoginRequiredMixin):
-    """
-    Permite la eliminacion instancias de modelos Item.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-    **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-    **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-    **:return:** Elimina una instancia del modelo Item del sistema.<br/>
-    """
-    model = Item
-    template_name = 'item/item_eliminar.html'
-    permission_required = 'item.eliminar_item'
-    success_url = reverse_lazy('item:item_lista')
+# class ItemEliminar(DeleteView, PermissionRequiredMixin, LoginRequiredMixin):
+#     """
+#     Permite la eliminacion instancias de modelos Item.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
+#     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
+#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
+#     **:return:** Elimina una instancia del modelo Item del sistema.<br/>
+#     """
+#     model = Item
+#     template_name = 'item/item_eliminar.html'
+#     permission_required = 'item.eliminar_item'
+#     success_url = reverse_lazy('item:item_lista')
 
 
 class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
