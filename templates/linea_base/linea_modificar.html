@@ -2,9 +2,9 @@
 {% block title %} Editar Linea Base {% endblock%}
 
 {% block content %}
-	<div class = "class_container_form">
-		<form method="post" action="">
-		{% csrf_token %}
+    <div class = "class_container_form">
+        <form method="post" action="">
+        {% csrf_token %}
       {% if error %}
         <h2>{{ error }}</h2>
       {% else %}
@@ -35,5 +35,5 @@
            {% endif %}
       {% endif %}
   </form>
-	</div>
+    </div>
 {% endblock %}

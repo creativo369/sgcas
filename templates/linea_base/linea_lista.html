@@ -1,21 +1,22 @@
-{% extends 'base/base.html' %}
-
-{% block extrajs %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-{% endblock extrajs %}
+{{% extends 'base/base.html' %}
+{% block title %} Listar LB {% endblock%}
 
 {% block content %}
     {% if lb %}
         <h1 style="text-align: center">Lineas bases - Fase {{ fase.nombre }}</h1>
     {% endif %}
+
+<form method="GET" action="{% url 'linea_base:search' fase.id %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese el identificador o la descripci&oacute;n de la l&iacute;nea base." name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -27,8 +28,8 @@
         </tr>
         </thead>
         <tbody>
-        {% if lb %}
-            {% for linea in lb %}
+        {% if page_obj %}
+            {% for linea in page_obj %}
                 <tr>
                     <td>{{ linea.identificador }}</td>
                     <td>{{ linea.estado }}</td>
@@ -47,7 +48,7 @@
                                        href="{% url 'linea_base:agregar_items_lb' linea.id fase.id %}">Incluir/Excluir
                                         items</a>
                                 {% endif %}
-                                <a class="dropdown-item" href="{% url 'linea_base:linea_items_lista' linea.id %}">Lista
+                                <a class="dropdown-item" href="{% url 'linea_base:linea_items_lista' linea.id fase.id %}">Lista
                                     de
                                     items</a>
                             </div>
@@ -77,6 +78,23 @@
         {% endif %}
         </tbody>
     </table>
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+    </div>
     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 {% endblock content %}
