@@ -1,23 +1,30 @@
 # === Importación de las librerias utilizadas de Django ===
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+
+from django.db.models import Q
+from django.core.paginator import Paginator
 from apps.usuario.forms import UserForm
 from django.urls import reverse_lazy
 from SGCAS.decorators import administrator_only
+from apps.usuario.models import User
+
 """
 Todas las vistas para la aplicación del Modulo Usuario
-Actualmente se despliega en las plantillas 5 vistas:
+Actualmente se despliega en las plantillas 7 vistas:
 
-1. **usuario_view** -  Un lobby para los usuarios del sistema (Ir a la sección: [[views.py#usuarioview]] )
-2. **Gestión Usuarios** -  Despliega la gestión de usuarios (Ir a la sección: [[views.py#gestionusuarios]] )
-3. **Listado Usuario** -  Despliega el listado de los usuarios (Ir a la sección: [[views.py#usuariolistado]] )
-4. **Registrar Usuario ** -  Despliega el registro para nuevos usuarios (Ir a la sección: [[views.py#registrousuario]] )
-5. **Actualizar Usuario ** - Despliega la actualización de usuarios (Ir a la sección: [[views.py#actualizarusuario]] )
-5. **Eliminar Usuario ** - Despliega la eliminación de usuarios (Ir a la sección: [[views.py#eliminarusuario]] )
+1. **usuario_view** - despliega la página principal del sistema para el usuario (Ir a la sección: [[views.py #usuarioview]] )
+2. **usuario_opciones** - despliega opciones (Ir a la sección: [[views.py #gestion usuarios]] )
+3. **UsuarioLista** - despliega el listado de los usuarios (Ir a la sección: [[views.py #usuarios listados]] )
+4. **search** - despliega el listado de los usuarios  buscados en el sistema (Ir a la sección: [[views.py #search]] )
+5. **RegistrarUsuario** - registra los nuevos usuarios en el sistema (Ir a la sección: [[views.py #registro usuarios]] )
+6. **ActualizarUsuario** - actualiza los datos de los usuarios (Ir a la sección: [[views.py #actualizar usuario]] )
+7. **EliminarUsuario** - elimina usuarios del sistema (Ir a la sección: [[views.py #eliminar usuario]] )
 """
+
 
 @login_required
 # === usuarioview ===
@@ -32,7 +39,7 @@ def usuario_view(request):
 
 @login_required
 @administrator_only
-# === gestionusuarios ===
+# === gestion usuarios ===
 def usuario_opciones(request):
     """
     Permite visualizar la plantilla de opciones que se pueden realizar sobre un objeto de tipo User.
@@ -41,7 +48,9 @@ def usuario_opciones(request):
     """
     return render(request, 'usuario/usuario_opciones.html')
 
-# === usuariolistado ===
+
+
+# === usuarios listados ===
 class UsuarioLista(PermissionRequiredMixin, ListView):
     """
     Permite visualizar la lista de modelos de tipo User activos en el sistema.<br/>
@@ -49,15 +58,41 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** La vista a la plantilla usuario_lista.html con la lista de los usuarios activos en el sistema.<br/>
     """
+
+    paginate_by = 4
     model = User
     template_name = 'usuario/usuario_lista.html'
-    permission_required = 'auth.change_user'
+    permission_required = 'usuario.ver_usuarios'    
 
-    # La lista a mostrar estara por orden ascendente
-    class Meta:
-        ordering = ['-id']
+    def get_queryset(self):
+        # se ordena la lista de usuarios, excluyendo al AnonymousUser.
+        return User.objects.order_by('id').distinct().exclude(username='AnonymousUser')
 
-# === registrousuario ===
+@permission_required('usuario.ver_usuarios', raise_exception=True)
+# === search ===
+def search(request):
+    """
+    Permite realizar la búsqueda de los usuarios  activos en el sistema.<br/>
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:return:** retorna una lista con los usuarios que cumplen con los criterios de búsqueda.<br/>
+    """
+    template = 'usuario/list_busqueda.html'
+    query = request.GET.get('buscar')
+
+    if query:
+        results = User.objects.filter(Q(username__icontains=query)|
+                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(username='AnonymousUser')
+    else:
+        results = User.objects.all().order_by('id').exclude(username='AnonymousUser')
+
+    paginator = Paginator(results, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, template, {'page_obj': page_obj})
+
+
+# === registro usuarios ===
 class RegistrarUsuario(PermissionRequiredMixin, CreateView):
     """
     Permite crear instancias del modelo User  en el sistema de forma manual, sin allauth.<br/>
@@ -81,10 +116,12 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('usuario:usuario_lista')
 
-# === actualizarusuario ===
+
+
+# === actualizar usuario ===
 class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     """
-    Permite la actualizacion de informacion de una instancia de modelo User.<br/>
+    Permite la actualización de información de una instancia de modelo User.<br/>
     :param PermissionRequiredMixin: Maneja multiple permisos, de la libreria django.contrib.auth.mixins<br/>
     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
     **:return:** Una instancia actualizada del modelo User, luego se redirige a la lista de usuarios.<br/>
@@ -95,10 +132,12 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     permission_required = 'usuario.editar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
-# === eliminarusuario ===
+
+
+# === eliminar usuario ===
 class EliminarUsuario(PermissionRequiredMixin, DeleteView):
     """
-    Permite la eliminacion de una instancia del modelo User.<br/>
+    Permite la eliminación de una instancia del modelo User.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins<br/>
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
     **:return:** Se elimina la instancia del modelo User referenciado y se regresa a la lista de usuarios activos del sistema.<br/>

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.usuario.models import User
 import datetime
 
 from apps.fase.models import Fase
@@ -44,12 +44,25 @@ class Item(models.Model):
     costo = models.PositiveIntegerField()
     usuarios_a_cargo = models.ManyToManyField(User, blank=True)
     archivo = models.FileField(null=True, blank=True)
+    file_url_cloud = models.CharField(max_length=200, null=True, blank=True)
     fase = models.ForeignKey(Fase, on_delete=models.CASCADE, null=True)
     tipo_item = models.ForeignKey(TipoItem, on_delete=models.CASCADE, null=True, default='')
+    impacto = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    ### Atributos para tipos de item ###
     boolean = models.BooleanField(default=False)
     char = models.CharField(max_length=100, default='', blank=True)
     date = models.DateField(null=True, blank=True)
     numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    ### Atributos para relaciones ###
+    padres = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='padre')
+    hijos = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='hijo')
+    antecesores = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='antecesor')
+    sucesores = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='sucesor')
+    ### Atributos para el versionado
+    nro_version = models.DecimalField(max_digits=10, decimal_places=1, default=0.1)
+    versiones = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    last_release = models.BooleanField(default=True)
+    ultima_modificacion = models.DateTimeField(auto_now=True)
 
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
@@ -59,7 +72,10 @@ class Item(models.Model):
             ("editar_item", "editar_item"),
             ("eliminar_item", "eliminar_item"),
             ("relacionar_item", "relacionar_item"),
+            ("restaurar_item_version", "restaurar_item_version"),
             ("ver_item", "ver_item"),
+            ("ver_versiones_item", "ver_versiones_item"),
+
             ("item_modificar_atributos", "item_modificar_atributos"),
             ("cambiar_estado_item", "cambiar_estado_item"),
             ("item_modificar_ti", "item_modificar_ti"),
@@ -67,8 +83,12 @@ class Item(models.Model):
             ("item_modificar_import_ti", "item_modificar_import_ti"),
             ("listar_item_de_fase", "listar_item_de_fase"),
             ("calcular_impacto", "calcular_impacto"),
-        ]
 
+            ("ver_trazabilidad", "ver_trazabilidad"),
+        ]
+        verbose_name = 'Item'
+        verbose_name_plural = 'Items'
+        
     def __str__(self):
         """
         **Función para asignar un alias al modelo item**<br/>

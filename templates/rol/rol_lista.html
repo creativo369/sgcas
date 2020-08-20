@@ -1,10 +1,23 @@
 {% extends 'base/base.html' %}
 
+{% block title %} Listar roles {% endblock%}
+
 {% block content %}
+<form method="GET" action="{% url 'rol:search' %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre del rol" name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">ID</th>
+  {#  <th scope="col">ID</th> #}
       <th scope="col">Rol</th>
       <th scope="col">Permisos</th>
       <th scope="col">Opciones</th>
@@ -14,7 +27,8 @@
     {% if object_list %}
     	{% for rol in object_list %}
 			<tr>
-		      <td>{{rol.id}}</td>
+
+		  {#    <td>{{rol.id}}</td> #}
 		      <td>{{rol.name}}</td>
           <td>
             {% for p in rol.permissions.all %}
@@ -37,4 +51,25 @@
     {% endif %}
   </tbody>
 </table> 
+
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
+      <a type="button" class="btn btn-link" href="{% url 'proyecto:list' %}">Ir a lista de proyectos</a>
+
 {% endblock content %}

@@ -1,23 +1,27 @@
 {% extends 'base/base.html'%}
 
+{% block title %} Crear Rol {% endblock%}
+
 {% block content %}
-    <div class="container center-block pt-3">
-        <form method="post">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="form-group">
-                        <label>Nombre del rol:</label>
-                        <input class="form-control" type="text" name="name">
-                    </div>
+<div class="container center-block pt-3">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="form-group">
+                    <label>Nombre del rol:</label>
+                    <input class="form-control" type="text" name="name">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+        </div>
+            <div class="col-md-8 col-md-offset-2">
+
+                <div class="form-group">
+
                     <div class="form-group">
                         <label>Permisos:</label>
                         <p>
-                        {{ form.permissions }}
+                            {{ form.permissions }}
                         </p>
                     </div>
                 </div>
@@ -25,17 +29,18 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="form-group">
-                        <button class="btn btn-primary "type="submit">Crear</button>
-                        <a class= "btn btn-default" href="{% url 'rol:rol_lista' %}">Cancelar</a>
+                        <button class="btn btn-primary " type="submit">Crear</button>
+                        <a class="btn btn-default" href="{% url 'rol:rol_lista' %}">Cancelar</a>
                     </div>
                 </div>
             </div>
-        </form>
-          <style type="text/css">
-            select{
-                width: 100%;
-                min-height: 350px;
-            }
-        </style>
-    </div>
+    </form>
+    <style type="text/css">
+        select {
+            width: 100%;
+            min-height: 350px;
+        }
+    </style>
+</div>
+
 {% endblock %}

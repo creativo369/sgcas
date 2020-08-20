@@ -1,10 +1,23 @@
 # === Código fuente que registra la aplicación Comité en Django ===
 from django.contrib import admin
 from .models import Comite
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+
+class ComiteResource(resources.ModelResource):
+    class Meta:
+        model = Comite
+
+
+class ComiteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    search_fields = ['nombre']
+    list_display = ('nombre', 'descripcion', 'proyecto',)
+    resource_class = ComiteResource
+
 
 # Registra la aplicación en Django
-admin.site.register(Comite)
-
+admin.site.register(Comite, ComiteAdmin)
 # **Ir a la documentación del registro de la Aplicación en Django** :[[apps.py]]
 
 # **Ir al final de la documentación** : [[views.py]]

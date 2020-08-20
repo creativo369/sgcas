@@ -1,20 +1,16 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 # === Clase que modela el concepto de un usuario ===
-class Usuario(models.Model):
-    # 1. **username**: atributo donde se almacena el username de un usuario.<br/>
-    # 2. **password**: atributo que guarda la contraseña del usuario.<br/>
-    # 3. **nombres**: atributo donde se almacena el nombre del usuario.<br/>
-    # 4. **apellido**: atributo donde se almacena el apellido del usuario.<br/>
-    # 5. **roles**: atributo donde se almacena los roles de un usuario.<br/>
-    # 6. **estado**: atributo que alamacena el estado del usuario en el sistema.<br/>
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    nombres = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    roles = models.CharField(max_length=50)
-    estado = models.BooleanField(default=False)
+
+class User(AbstractUser):
+    is_active = models.BooleanField(
+        ('active'),
+        default=False,
+        help_text=('Marcar/desmarcar para activar/inactivar cuenta de usuario.'),
+    )
+    pass
 
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
@@ -27,11 +23,16 @@ class Usuario(models.Model):
             ("eliminar_rol", "eliminar_rol"),
             ("asignar_rol", "asignar_rol"),
             ("ver_rol", "ver_rol"),
+            ("ver_usuarios", "ver_usuarios"),
             ("listar_rol", "listar_rol"),
             ("editar_rol", "editar_rol"),
             ("agregar_usuario_fase", "agregar_usuario_fase"),
             ("quitar_usuario_proyecto", "quitar_usuario_proyecto"),
             ("quitar_usuario_fase", "quitar_usuario_fase"),
+            ("mensaje_eliminar", "mensaje_eliminar"),
+            ("mensaje_editar", "mensaje_editar"),
+            ("ver_mensaje", "ver_mensaje"),
+
         ]
 
     def __str__(self):
@@ -39,7 +40,13 @@ class Usuario(models.Model):
         **Función para asignar un alias al modelo Usuario**<br/>
         **:return:** el nombre usuario<br/>
         """
-        return '{}'.format(self.Usuario.nombres)
+        return self.username
+
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.is_active = True
+        super(User, self).save(*args, **kwargs)
+
 
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 1.apps        : [[apps.py]]<br/>

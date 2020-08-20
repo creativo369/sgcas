@@ -1,7 +1,8 @@
 # === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 from django.conf.urls import url, include
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
-from apps.rol.views import crear_rol_view, rol_opciones, ListaRol, EditarRol, EliminarRol
+from apps.rol.views import crear_rol_view, rol_opciones, ListaRol, EditarRol, EliminarRol, search
 
 
 # **Vistas**
@@ -13,11 +14,14 @@ from apps.rol.views import crear_rol_view, rol_opciones, ListaRol, EditarRol, El
 # **5.modificar rol :** Vista que despliega modificar un rol<br/>
 urlpatterns = [
     # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
-    url(r'^opciones/', rol_opciones, name='rol_opciones'),
-    url(r'^lista/', ListaRol.as_view(), name='rol_lista'),
-    url(r'^eliminar/(?P<pk>\d+)/$', EliminarRol.as_view(), name='rol_eliminar'),
-    url(r'^crear/', crear_rol_view, name='rol_crear'),
-    url(r'^modificar/(?P<pk>\d+)/$', EditarRol.as_view(model=Group, ), name='rol_editar'),
+
+    url(r'^opciones/', login_required(rol_opciones), name='rol_opciones'),
+    url(r'^lista/', login_required(ListaRol.as_view()), name='rol_lista'),
+    url(r'^results/$', login_required(search), name='search'),
+    url(r'^eliminar/(?P<pk>\d+)/$', login_required(EliminarRol.as_view()), name='rol_eliminar'),
+    url(r'^crear/', login_required(crear_rol_view), name='rol_crear'),
+    url(r'^modificar/(?P<pk>\d+)/$', login_required(EditarRol.as_view(model=Group, )), name='rol_editar'),
+
 ]
 
 # === Indice de la documentación de la Aplicación rol  === <br/>

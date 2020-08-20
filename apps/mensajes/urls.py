@@ -1,5 +1,6 @@
 # === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required, permission_required
 from apps.mensajes.views import Mensajes, ActualizarUsuarioMensaje, EliminarUsuarioMensaje
 
 
@@ -9,10 +10,9 @@ from apps.mensajes.views import Mensajes, ActualizarUsuarioMensaje, EliminarUsua
 # **2.Modificar usuario  :** Vista que despliega la actualización de usuarios<br/>
 # **3.Eliminar usuario   :** Vista que despliega rechazar a ese usuario<br/>
 urlpatterns = [
-    url(r'^lista/', Mensajes.as_view(), name='mensaje_lista'),
-    url(r'^modificar/(?P<pk>\d+)/$', ActualizarUsuarioMensaje.as_view(), name='mensaje_usuario_modificar'),
-    url(r'^eliminar/(?P<pk>\d+)/$', EliminarUsuarioMensaje.as_view(), name='mensaje_usuario_eliminar'),
-
+    url(r'^lista/', login_required(permission_required('usuario.ver_mensaje',raise_exception=True)(Mensajes.as_view())), name='mensaje_lista'),
+    url(r'^modificar/(?P<pk>\d+)/$', login_required(permission_required('usuario.mensaje_editar', raise_exception=True)(ActualizarUsuarioMensaje.as_view())), name='mensaje_usuario_modificar'),
+    url(r'^eliminar/(?P<pk>\d+)/$', login_required(permission_required('usuario.mensaje_eliminar', raise_exception=True)(EliminarUsuarioMensaje.as_view())), name='mensaje_usuario_eliminar'),
 ]
 # **Volver atras** :[[tests.py]]
 # **Ir a la documentación del vistas de la Aplicación** :[[forms.py]]
