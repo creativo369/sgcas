@@ -2,9 +2,9 @@
 {% block title %} Editar Fase {% endblock%}
 
 {% block content %}
-	<div class = "class_container_form">
-		<form method="post" action="">
-		{% csrf_token %}
+  <div class = "class_container_form">
+    <form method="post" action="">
+    {% csrf_token %}
       {% if error %}
         <h2>{{ error }}</h2>
       {% else %}
@@ -41,7 +41,3 @@
           {% else %}
               <h2> No esta permitido hacer modificaciones a la fase de {{ fase.nombre }}.</h2>
           {% endif %}
-      {% endif %}
-  </form>
-	</div>
-{% endblock %}

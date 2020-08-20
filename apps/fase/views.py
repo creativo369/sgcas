@@ -59,10 +59,9 @@ def fase_opciones(request):
     Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo Fase.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
     **:return:** Renderiza la plantilla usuario_home.html que es el home del sistema.<br/>
-
     """
-    return render(request, 'fase/fase_opciones.html')
 
+    return render(request, 'fase/fase_opciones.html')
 
 
 @permission_required('fase.detalles_fase', raise_exception=True)
@@ -75,7 +74,6 @@ def fase_detalles(request, pk):
     **:return:** Retorna una plantilla que despliega los detalles de una fase.<br/>
     """
     return render(request, 'fase/fase_detalles.html', {'fase': Fase.objects.get(id=pk)})
-
 
 
 @permission_required('fase.listar_fase', raise_exception=True)

@@ -1,5 +1,6 @@
 # === Importamos las librerias necesarias para la implementación de un Formulario ===
 from django import forms
+from django.db.models import Q
 from .models import LineaBase
 
 # === Clase para abstraer en un formulario el registro de un Comité ===
@@ -83,7 +84,7 @@ class AgregarItemsForm(forms.ModelForm):
         id_fase = kwargs.pop('id_fase')
         super(AgregarItemsForm, self).__init__(*args, **kwargs)
         # No se puede agregar items de otras lineas bases que esten es estado abierta o cerrada
-        items_aprobados_queryset = Item.objects.filter(fase=id_fase).filter(estado='Aprobado')
+        items_aprobados_queryset = Item.objects.filter(fase=id_fase).filter(Q(estado='Aprobado') & Q(last_release=True))
         lb_fase_queryset = LineaBase.objects.filter(fase=id_fase)
         for lb in lb_fase_queryset:
             if lb.estado == 'Abierta' or lb.estado == 'Cerrada':

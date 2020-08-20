@@ -3,26 +3,29 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
+
+from django.db.models import Q
+from django.core.paginator import Paginator
 from apps.tipo_item.models import TipoItem
 from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 """
-Todas las vistas para la aplicación del Modulo Comité
-Actualmente se despliega en las plantillas 5 vistas:
+Todas las vistas para la aplicación del Modulo Tipo de Ítem
+Actualmente se despliega en las plantillas 6 vistas:
 
-
-1. **crear tipo de item** - definición de una instancia del modelo comité (Ir a la sección: [[views.py#creartipo]] )
-2. **Gestión de tipo de item** - modificar una instancia del modelo comité (Ir a la sección: [[views.py#gestiontipo]] )
-3. **Listar tipo de items ** - suprimir una instancia del modelo comité (Ir a la sección: [[views.py#listaitem]] )
-4. **Tipo de item eliminar ** - ver detalles de una instancia del modelo comité (Ir a la sección: [[views.py#eliminartipo]] )
-5. **Tipo de Item modificar** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py#tipoiteupdate]] )
+1. **crear_tipo_item** - definición de una instancia del modelo TipoItem (Ir a la sección: [[views.py #crear tipo de ítem]] )
+2. **tipo_item_opciones** - despliega opciones (Ir a la sección: [[views.py #gestión tipo de ítem]] )
+3. **TipoItemLista** - lista los tipos de ítems del sistema (Ir a la sección: [[views.py #lista tipo de ítem]] )
+4. **search** - lista los tipos de ítems buscados del sistema (Ir a la sección: [[views.py #search]] )
+5. **TipoItemEliminar** - elimina un tipo de ítem (Ir a la sección: [[views.py #eliminar tipo de ítem]] )
+6. **TipoItemModificar** - modifica los atributos de un tipo de ítem (Ir a la sección: [[views.py #tipo de ítem update]] )
 """
 
 
 @login_required
-@permission_required('tipo_item.crear_tipo_item')
-# === creartipo ===
+@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+# === crear tipo de ítem ===
 def crear_tipo_item(request):
     """
     Permite la creacion de instancias de modelo TipoItem.<br/>
@@ -41,39 +44,64 @@ def crear_tipo_item(request):
 
 
 @login_required
-@permission_required('tipo_item.ver_tipo_item')
-# === gestiontipo ===
+@permission_required('tipo_item.ver_tipo_item', raise_exception=True)
+# === gestión tipo de ítem ===
 def tipo_item_opciones(request):
     """
     Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo TipoItem.
     **:param request:** Recibe un request por parte de un usuario.<br/>
-    **:return:** Renderiza la plantilla usuario_home.html que es el home del sistema<br/>
+    **:return:** Renderiza la plantilla usuario_home.html que es el home del sistema.<br/>
     """
 
     return render(request, 'tipo_item/tipo_item_opciones.html')
 
 
-# === listaitem ===
+# === lista tipo de ítem ===
 class TipoItemLista(PermissionRequiredMixin, ListView):
     """
-    Permite la visualizacion en lista de todas las intancias del modelo TipoItem<br/>
+    Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
     """
+    paginate_by = 4
     model = TipoItem
     template_name = 'tipo_item/tipo_item_lista.html'
     permission_required = 'tipo_item.listar_tipo_item'
 
     # La lista a mostrar estara por orden ascendente
-    class Meta:
-        ordering = ['-id']
+    #class Meta:
+        #ordering = ['-id']
+    def get_queryset(self):
+        #ordena la lista de tipos de ítems
+        return TipoItem.objects.order_by('id').distinct()
+        
+@permission_required('tipo_item.listar_tipo_item', raise_exception=True)
+# === search === 
+def search(request):
+    """
+    Permite realizar la búsqueda de las intancias del modelo TipoItem.<br/>
+    *:param request:** Recibe un request por parte un usuario.<br/>   
+    **:return:** retorna una lista con todos los Tipos de Ítem que cumplen con los criterios de búsqueda.<br/>
+    """
+    template = 'tipo_item/list_busqueda.html'
+    query = request.GET.get('buscar')
 
+    if query:
+        results = TipoItem.objects.filter(Q(nombre__icontains=query) | Q(descripcion__contains=query)).order_by('id').distinct()
+    else:
+        results= TipoItem.objects.all().order_by('id')
+   
+    paginator = Paginator(results, 4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)     
+    
+    return render(request, template, {'page_obj': page_obj})
 
-# === eliminartipo ===
+# === eliminar tipo de ítem ===
 class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     """
-    Permite la eliminacion instancias de modelos TipoItem.<br/>
+    Permite la eliminación instancias de modelos TipoItem.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
     **:return:** Elimina una instancia del modelo TipoItem del sistema.<br/>
@@ -84,21 +112,21 @@ class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 
-# === tipoiteupdate ===
+# === tipo de ítem update ===
 class TipoItemModificar(PermissionRequiredMixin, UpdateView):
     """
     Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:return:** Modficia na instancia del modelo TipoItem, luego se redirige a la lista de tipo de items.<br/>
+    **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
     """
     model = TipoItem
     template_name = 'tipo_item/tipo_item_modificar.html'
     form_class = TipoItemUpdateForm
-    permission_required = 'tipo_item.eliminar_tipo_item'
+    permission_required = 'tipo_item.editar_tipo_item'
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
-# === Indice de la documentación de la Aplicación Comité  === <br/>
+# === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
 # 2.forms   : [[forms.py]]<br/>
 # 3.models  : [[models.py]]<br/>
