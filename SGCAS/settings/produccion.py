@@ -11,10 +11,10 @@ ALLOWED_HOSTS = ['sgcas.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dao28eim3euv24',
-        'USER': 'cmpwlzhuwkgxjm',
-        'PASSWORD': '858c4b358153c790af1c66bdd2f2306a161d9587f9d8d157d0e7c22c9fe576e3',
-        'HOST': 'ec2-34-238-26-109.compute-1.amazonaws.com',
+        'NAME': 'd56g94dcqolu98',
+        'USER': 'okrnvtrqtokjcc',
+        'PASSWORD': 'a7b613652535b33085d23c54e6713106b8bd6d95f8e429811d87289a16b3ca70',
+        'HOST': 'ec2-54-243-67-199.compute-1.amazonaws.com',
         'PORT': 5432,
     },
 }
