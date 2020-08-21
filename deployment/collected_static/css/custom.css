@@ -1,0 +1,14 @@
+
+ul {
+    list-style-type: none;
+}
+
+.input-group .search-users,
+.input-group .btn-search-users {
+    margin: 20px 0;
+}
+
+a {
+    outline: none;
+}
+
