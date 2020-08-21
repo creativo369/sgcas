@@ -5,11 +5,8 @@
 __pycache__/
 venv/
 .idea/
-migrations/
-*/migrations/
-*/*/migrations/
-*/*/*/migrations/
-
+0001_initial.py
+0002_auto_20200820_1813.py
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
