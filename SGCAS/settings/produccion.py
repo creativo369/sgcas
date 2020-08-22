@@ -3,7 +3,7 @@ from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sgcas07.herokuapp.com']
+ALLOWED_HOSTS = ['sgcas.herokuapp.com']
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -11,10 +11,10 @@ ALLOWED_HOSTS = ['sgcas07.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd9alvv5plovg8n',
-        'USER': 'lkadbdgmkddzym',
-        'PASSWORD': 'cd175db2f69f71c7dbba2cfe23f1c1987d99dc08e1502500b3255e7794564b37',
-        'HOST': 'ec2-54-156-121-142.compute-1.amazonaws.com',
+        'NAME': 'd4l2en2linv18c',
+        'USER': 'itlhcpnbevkdni',
+        'PASSWORD': '1611f55748128bc7a2ed35bf93f22e4d7097753cb6c999ae7248e44dfc3fd84a',
+        'HOST': 'ec2-54-91-178-234.compute-1.amazonaws.com',
         'PORT': 5432,
     },
 }
