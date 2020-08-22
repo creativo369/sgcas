@@ -41,7 +41,6 @@
 
 {% block navbar %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="{% url 'usuario:usuario_home' %}">SGCAS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -50,16 +49,18 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 {% if request.user.is_active %}
+                    <img src="/static/img/sgcas.png">
+                    <a class="navbar-brand" href="#">SGCAS</a>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Usuario
 
                             <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Proyecto</a>
+                        <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Rol</a>
+                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'tipo_item:tipo_item_opciones' %}">Tipo de item</a>
@@ -91,15 +92,23 @@
             {% if request.user.is_superuser == True %}
                 <a class="btn btn-primary" href="/admin/">{% trans 'Admin Panel' %}</a>
             {% endif %}
-            <form method="post" action="{% url 'account_logout' %}">
-                {% csrf_token %}
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                {% endif %}
-                <button class="btn btn-primary" type="submit">{% trans 'Cerrar sesión' %}</button>
 
-            </form>
         </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown show">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">{{ request.user }}</a>
+            <div class="dropdown-menu show">
+              <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
+                <form method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <button class="dropdown-item" type="submit">{% trans 'Cerrar sesión' %}</button>
+                </form>
+            </div>
+          </li>
+        </ul>
     </nav>
 {% endblock %}
 <div style="padding-left: 30px; padding-right: 30px">
