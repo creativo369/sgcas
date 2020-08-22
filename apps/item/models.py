@@ -75,7 +75,6 @@ class Item(models.Model):
             ("restaurar_item_version", "restaurar_item_version"),
             ("ver_item", "ver_item"),
             ("ver_versiones_item", "ver_versiones_item"),
-
             ("item_modificar_atributos", "item_modificar_atributos"),
             ("cambiar_estado_item", "cambiar_estado_item"),
             ("item_modificar_ti", "item_modificar_ti"),
@@ -83,9 +82,9 @@ class Item(models.Model):
             ("item_modificar_import_ti", "item_modificar_import_ti"),
             ("listar_item_de_fase", "listar_item_de_fase"),
             ("calcular_impacto", "calcular_impacto"),
-
             ("ver_trazabilidad", "ver_trazabilidad"),
         ]
+
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
         

@@ -48,8 +48,6 @@ class Fase(models.Model):
         """
         return '{}'.format(self.nombre)
 
-
-
 # **Volver atras** : [[forms.py]]
 
 # **Ir a la documentación de pruebas unitarias del modulo fase** : [[tests.py]]

@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <strong>Item {{ item.nombre }} - Detalles</strong>
+        </div>
+        <div class="card-body card-block">
+            <h4>Nombre: <small class="text-muted">{{ item.nombre }}</small></h4>
+            <h4>Descripcion: <small class="text-muted">{{ item.descripcion }}</small></h4>
+            <h4>Fecha de creacion: <small class="text-muted">{{ item.fecha_creacion }}</small></h4>
+            <h4>Estado: <small class="text-muted">{{ item.estado }}</small></h4>
+            <h4>Costo: <small class="text-muted">{{ item.costo }} horas</small></h4>
+            <h4>Usuarios a cargo:
+                <ul style="list-style: circle">
+                    {% for miembro in item.usuarios_a_cargo.all %}
+                        <li><small class="text-muted">{{ miembro }}</small></li>
+                    {% endfor %}
+                </ul>
+            </h4>
+            <h4>Archivo:
+                {% if item.archivo %}
+                    <a href="{{ item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
+                        archivo</a>
+                {% else %}
+                    <small class="text-muted">No adjunto.</small>
+                {% endif %}
+            </h4>
+            <h4>Fase: <small class="text-muted">{{ item.fase }}</small></h4>
+            <h4>Tipo de Item: <small class="text-muted">{{ item.tipo_item }}</small></h4>
+            <h4>Atributos:
+                <ul style="list-style: circle">
+                    {% for atributo in item.tipo_item.atributos %}
+                        <li><small class="text-muted">{{ atributo }}</small></li>
+                    {% endfor %}
+                </ul>
+            </h4>
+            <h4>Versión: <small class="text-muted">{{ item.nro_version }}</small></h4>
+            <button type="button" class="btn btn-link" onclick="window.history.back()">Volver</button>
+        </div>
+    </div>
+{% endblock content %}
+<!--{# -->
+
+<!--    nombre = models.CharField(max_length=50)-->
+<!--    descripcion = models.CharField(max_length=50)-->
+<!--    fecha_creacion = models.DateField(default=datetime.date.today)-->
+<!--    estado = models.CharField(max_length=30, choices=item_estado, default='Desarrollo')-->
+<!--    costo = models.PositiveIntegerField()-->
+<!--    usuarios_a_cargo = models.ManyToManyField(User, blank=True)-->
+<!--    archivo = models.FileField(null=True, blank=True)-->
+<!--    fase = models.ForeignKey(Fase, on_delete=models.CASCADE, null=True)-->
+<!--    tipo_item = models.ForeignKey(TipoItem, on_delete=models.CASCADE, null=True, default='')-->
+<!--    boolean = models.BooleanField(default=False)-->
+<!--    char = models.CharField(max_length=100, default='', blank=True)-->
+<!--    date = models.DateField(null=True, blank=True)-->
+<!--    numerico = models.DecimalField(max_digits=10, decimal_places=2, default=0) #}-->

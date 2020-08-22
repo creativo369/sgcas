@@ -1,6 +1,19 @@
 {% extends 'base/base.html' %}
+{% block title %} Listar Proyectos {% endblock%}
 
 {% block content %}
+<form method="GET" action="{% url 'proyecto:search' %}">
+        <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre o de la descripci&oacute;n del proyecto" name="buscar" value="{{ request.GET.buscar }}">
+                        <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+                    </div>
+                </div>   
+</form>
+
     <table class="table table-hover">
         <thead>
         <tr>
@@ -15,7 +28,7 @@
             {% for proyecto in object_list %}
                 <tr>
                     <td>{{ proyecto.nombre }}</td>
-                    <td>{{ proyecto.user }}</td>
+                    <td>{{ proyecto.gerente }}</td>
                     <td>{{ proyecto.estado }}</td>
                     <td>
                         <a type="button" class="btn btn-info" href="{% url 'proyecto:detail' proyecto.id %}">Más
@@ -33,6 +46,24 @@
         {% endif %}
         </tbody>
     </table>
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+                
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
     <a type="button" class="btn btn-secondary" href="{% url 'proyecto:manage_projects' %}">Regresar a Gestión de
         Proyectos</a>
 {% endblock content %}

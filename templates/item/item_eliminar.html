@@ -1,16 +1,17 @@
 {% extends 'base/base.html' %}
+{% block title %} Eliminar item {% endblock%}
 
 {% block content %}
 	<div class="alert alert-dismissible alert-danger">
 	  <button type="button" class="close" data-dismiss="alert">&times;</button>
-	  <strong>¿Esta seguro de eliminar el item {{ object.name }}?</strong>
+	  <strong>¿Esta seguro de restaurar {{ object.nombre }} a la version {{ object.nro_version }}?</strong>
 	  <!-- <a href="#" class="alert-link">Change a few things up</a> and try submitting again. -->
-	  Este cambio no se podrá deshacer.
+	  Este cambio no se podrá deshacer y las versiones posteriores serán eliminadas.
 	</div>
 
 	<form method="POST">
 		{% csrf_token %}
-		<button type="submit" class="btn btn-danger">Sí, eliminar</button>
-		<a type="button" class="btn btn-info" href="{% url 'item:item_lista' %}">Cancelar</a>
+		<button type="submit" class="btn btn-success">Sí, restaurar</button>
+		<a type="button" class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
 	</form>
 {% endblock content%}

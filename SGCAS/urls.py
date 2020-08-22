@@ -51,10 +51,18 @@ if desarrollo.DEBUG:
 """
     path("signup/", views.signup, name="account_signup"),
     path("login/", views.login, name="account_login"),
+<<<<<<< HEAD
 
     path("logout/", views.logout, name="account_logout"),
 >>>>>>> origin/guillermo
 
+=======
+<<<<<<< HEAD
+    path('logout/', views.logout, name="account_logout"),
+=======
+    path("logout/", views.logout, name="account_logout"),
+>>>>>>> origin/guillermo
+>>>>>>> 9de1af86a9d6e911ed13280b7cc8d7d8dc58a668
     path("password/change/", views.password_change,
          name="account_change_password"),
     path("password/set/", views.password_set, name="account_set_password"),

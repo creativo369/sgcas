@@ -79,6 +79,7 @@ class ListaRol(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         return Group.objects.order_by('id').distinct()
 
+
 @permission_required('usuario.listar_rol', raise_exception=True) 
 def search(request):
     """
@@ -99,6 +100,7 @@ def search(request):
     page_obj = paginator.get_page(page_number)     
     
     return render(request, template, {'page_obj': page_obj})
+
 
 # === editar rol ===
 class EditarRol(PermissionRequiredMixin, UpdateView):
@@ -127,7 +129,6 @@ class EliminarRol(PermissionRequiredMixin, DeleteView):
     template_name = 'rol/rol_eliminar.html'
     permission_required = 'usuario.eliminar_rol'
     success_url = reverse_lazy('rol:rol_lista')
-
 
 
 # === Indice de la documentación de la Aplicación rol  === <br/>

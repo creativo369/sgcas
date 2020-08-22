@@ -1,46 +1,57 @@
 {% extends 'base/base.html' %}
-
-{% block extrajs %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-{% endblock extrajs %}
+{% block title %} Listar item {% endblock %}
 
 {% block content %}
+
+    <form method="GET" action="{% url 'item:search' fase.id %}">
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control search-users"
+                       placeholder="Ingrese el nombre o la descripci&oacute;n del &iacute;tem." name="buscar"
+                       value="{{ request.GET.buscar }}">
+                <span class="input-group-list">
+                            <i class="icon icon-search"></i>
+                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                        </span>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
+            {#            <th scope="col">Descripcion</th>#}
             <th scope="col">Estado</th>
-            <th scope="col">Fecha de Creacion</th>
+            <th scope="col">Costo</th>
             <th scope="col">Archivo</th>
+            <th scope="col">Tipo de Item</th>
+            <th scope="col">Versión</th>
             <th scope="col" style="text-align: center">Opciones</th>
         </tr>
         </thead>
         <tbody>
-        {% for item in items %}
+        {% for item in page_obj %}
             <tr>
-                <td>{{ item.id }}</td>
                 <td>{{ item.nombre }}</td>
-                <td>{{ item.descripcion }}</td>
+                {#                <td>{{ item.descripcion }}</td>#}
                 <td>{{ item.estado }}</td>
-                <td>{{ item.fecha_creacion }}</td>
+                <td>{{ item.costo }}
+                    {% if item.costo == 1 %}
+                        hora.
+                    {% else %}
+                        horas.
+                    {% endif %}
+                </td>
                 <td>
                     {% if item.archivo %}
-                        <a href="{{ item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
-                            archivo</a>
+                        <a href="{{ item.file_url_cloud }}" target="_blank" class="btn btn-outline-primary btn-sm">Visualizar</a>
                     {% else %}
                         No adjunto.
                     {% endif %}
                 </td>
+                <td>{{ item.tipo_item }}</td>
+                <td>{{ item.nro_version }}</td>
                 <td>
                     <a type="button" class="btn btn-warning"
                        href="{% url 'item:item_modificar' item.id %}">Editar</a>
@@ -53,9 +64,14 @@
                             Mas
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Detalles</a>
+                            <a class="dropdown-item" href="{% url 'item:item_detalles' item.id %}">Detalles</a>
                             <a class="dropdown-item" href="{% url 'item:item_cambiar_estado' item.id %}">Cambiar
                                 estado</a>
+                            <a class="dropdown-item" href="{% url 'item:fases_rel' item.id %}">Relaciones</a>
+                            <a class="dropdown-item" href="{% url 'item:calculo_impacto' item.id %}">Cálculo de
+                                impacto</a>
+                            <a class="dropdown-item" href="{% url 'item:trazabilidad' item.id %}">Trazabilidad</a>
+                            <a class="dropdown-item" href="{% url 'item:versiones' item.id fase.id %}">Versiones</a>
                         </div>
                     </div>
                 </td>
@@ -63,5 +79,27 @@
         {% endfor %}
         </tbody>
     </table>
+
+
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' _id=proyecto.id %}">Volver a lista de fases</a>
+
 {% endblock content %}

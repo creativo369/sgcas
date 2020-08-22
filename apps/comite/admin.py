@@ -10,6 +10,7 @@ class ComiteResource(resources.ModelResource):
         model = Comite
 
 
+
 class ComiteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ['nombre']
     list_display = ('nombre', 'descripcion', 'proyecto',)
@@ -18,6 +19,7 @@ class ComiteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 # Registra la aplicación en Django
 admin.site.register(Comite, ComiteAdmin)
+
 # **Ir a la documentación del registro de la Aplicación en Django** :[[apps.py]]
 
 # **Ir al final de la documentación** : [[views.py]]

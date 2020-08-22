@@ -15,19 +15,16 @@ from ..proyecto.models import Proyecto
 Todas las vistas para la aplicación del Modulo Comité
 Actualmente se despliega en las plantillas 5 vistas:
 
-<<<<<<< HEAD
-1. **success** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py#success]] )
-2. **CreateComite** - definición de una instancia del modelo comité (Ir a la sección: [[views.py#createcomite]] )
-3. **UpdateComite** - modificar una instancia del modelo comité (Ir a la sección: [[views.py#updatecomite]] )
-4. **DeleteComite ** - suprimir una instancia del modelo comité (Ir a la sección: [[views.py#deletecomite]] )
-5. **DetailComite ** - ver detalles de una instancia del modelo comité (Ir a la sección: [[views.py#detailcomite]] )
-=======
+
+
+
 1. **success** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py #success]] )
 2. **CreateComite** - definición de una instancia del modelo comité (Ir a la sección: [[views.py #create comite]] )
 3. **UpdateComite** - modificar una instancia del modelo comité (Ir a la sección: [[views.py #update comite]] )
 4. **DeleteComite** - suprimir una instancia del modelo comité (Ir a la sección: [[views.py #delete comite]] )
 5. **DetailComite** - ver detalles de una instancia del modelo comité (Ir a la sección: [[views.py #detail comite]] )
->>>>>>> 0f6a2de1cd48c129ad8ac83a2cda88600aa7fd00
+
+
 """
 
 
@@ -143,7 +140,6 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
 
 
 # === detail comite ===
-
 class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
     Despliega los detalles de una instancia del modelo de Proyecto.<br/>

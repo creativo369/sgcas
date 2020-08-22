@@ -1,4 +1,5 @@
 from django.db import models
+
 from apps.usuario.models import User
 import datetime
 from django.core.exceptions import ValidationError
@@ -10,7 +11,6 @@ estado_proyecto = [
     ('Cancelado', 'Cancelado'),
     ('Finalizado', 'Finalizado'),
 ]
-
 
 
 # **Clase que modela el concepto de Proyecto**
@@ -45,6 +45,8 @@ class Proyecto(models.Model):
             ("editar_proyecto", "editar_proyecto"),
             ("detalles_proyecto", "detalles_proyecto"),
         ]
+        verbose_name = 'Proyecto'
+        verbose_name_plural = 'Proyectos'
 
         verbose_name = 'Proyecto'
         verbose_name_plural = 'Proyectos'
@@ -75,7 +77,6 @@ class Proyecto(models.Model):
         self.validate_unique()
         self.slug = self.nombre.replace(" ", "_").lower()
         super(Proyecto, self).save(*args, **kwargs)
-
 
 # **Volver atras** : [[forms.py]]
 

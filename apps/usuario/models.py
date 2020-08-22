@@ -3,7 +3,6 @@ from django.db import models
 
 
 # === Clase que modela el concepto de un usuario ===
-
 class User(AbstractUser):
     is_active = models.BooleanField(
         ('active'),
@@ -32,7 +31,6 @@ class User(AbstractUser):
             ("mensaje_eliminar", "mensaje_eliminar"),
             ("mensaje_editar", "mensaje_editar"),
             ("ver_mensaje", "ver_mensaje"),
-
         ]
 
     def __str__(self):

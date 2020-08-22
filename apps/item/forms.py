@@ -193,7 +193,6 @@ class ItemUpdateForm(forms.ModelForm):
 
 # === Clase para abstraer en un formulario el cambio de estado de un item===
 class ItemCambiarEstado(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         """
         Constructor que se encarga de filtrar solo los campos disponibles para cambiar los estados un item<br/>
@@ -228,6 +227,52 @@ class ItemCambiarEstado(forms.ModelForm):
 
     class Meta(ItemForm.Meta):
         model = Item
+
+
+class RelacionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        queryset = kwargs.pop('query')
+        flag = kwargs.pop('flag')
+        super(RelacionForm, self).__init__(*args, **kwargs)
+        if flag == 0:
+            fields_not_required = ('antecesores', 'sucesores')
+            for field in fields_not_required:
+                self.fields[field].required = False
+                self.fields[field].disabled = True
+            self.fields['hijos'].queryset = queryset
+        elif flag == -1:
+            fields_not_required = ('hijos', 'sucesores')
+            for field in fields_not_required:
+                self.fields[field].required = False
+                self.fields[field].disabled = True
+            self.fields['antecesores'].queryset = queryset
+        else:
+            fields_not_required = ('antecesores', 'hijos')
+            for field in fields_not_required:
+                self.fields[field].required = False
+                self.fields[field].disabled = True
+            self.fields['sucesores'].queryset = queryset
+
+    class Meta:
+        model = Item
+
+        fields = [
+            'hijos',
+            'antecesores',
+            'sucesores',
+        ]
+
+        labels = {
+            'hijos': 'Hijos',
+            'antecesores': 'Antecesores',
+            'sucesores': 'Sucesores',
+        }
+
+        widgets = {
+            'hijos': forms.CheckboxSelectMultiple(),
+            'antecesores': forms.CheckboxSelectMultiple(),
+            'sucesores': forms.CheckboxSelectMultiple(),
+        }
 
 # **Volver atras** : [[apps.py]]
 

@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
+{% block title %} Crear proyecto {% endblock%}
 {{ form.non_field_error }}
+
 {% block content %}
     <form method="post">
         {% csrf_token %}

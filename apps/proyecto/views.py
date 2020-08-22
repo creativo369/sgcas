@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 
 from .models import Proyecto
 from apps.fase.models import Fase
+
 from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import FormularioProyecto, FormularioProyectoUpdate, ChangeProject
@@ -108,7 +109,6 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 
 
 # === list project ===
-
 class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     """
     Permite la visualizacion de los proyectos.<br/>
@@ -128,6 +128,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
         # Queryset que muestra los proyectos del que el usuario forma parte
         return Proyecto.objects.filter(Q(gerente=self.request.user) | Q(miembros=self.request.user)).order_by(
             'id').distinct()
+
 
 
 @permission_required('proyecto.ver_proyecto', raise_exception=True)
@@ -153,6 +154,7 @@ def search(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, template, {'page_obj': page_obj})
+
 
 
 # === update project ===

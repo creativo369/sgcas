@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% block title %} Eliminar mensaje {% endblock%}
 
 {% block title %} Eliminar mensaje {% endblock%}
 
@@ -14,5 +15,6 @@
 		<button type="submit" class="btn btn-danger" >Sí, rechazar</button>
 		<a type="button" class="btn btn-info" href="{% url 'mensajes:mensaje_lista' %}">Cancelar</a>
 	</form>
+
 {% endblock content %}
 

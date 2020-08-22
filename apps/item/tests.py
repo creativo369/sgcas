@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth.models import User
+from apps.usuario.models import User
 from django.test import TestCase
 from apps.item.models import Item
 

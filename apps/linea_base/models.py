@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from apps.fase.models import Fase
 import datetime
 import random
@@ -44,6 +43,8 @@ class LineaBase(models.Model):
             ("listar_item_linea_base", "listar_item_linea_base"),
             ("estado_linea_base", "estado_linea_base"),
         ]
+        verbose_name = 'Linea Base'
+        verbose_name_plural = 'Lineas Bases'
 
     def __str__(self):
         """

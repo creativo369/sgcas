@@ -1,4 +1,3 @@
-
 from apps.usuario.models import User
 
 

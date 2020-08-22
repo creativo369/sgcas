@@ -2,9 +2,23 @@
 
 from django.contrib import admin
 from .models import Item
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+
+class ItemResource(resources.ModelResource):
+    class Meta:
+        model = Item
+
+
+class ItemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    search_fields = ['nombre']
+    list_display = ('nombre', 'descripcion', 'fecha_creacion', 'estado',)
+    resource_class = ItemResource
+
 
 # Registra la aplicación en Django
-admin.site.register(Item)
+admin.site.register(Item,ItemAdmin)
 
 # **Ir a la documentación del registro de la Aplicación en Django** :[[apps.py]]
 
