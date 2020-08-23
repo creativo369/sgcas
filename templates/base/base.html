@@ -97,7 +97,7 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown show">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">{{ request.user }}</a>
-            <div class="dropdown-menu show">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
                 <form method="post" action="{% url 'account_logout' %}">
                     {% csrf_token %}
