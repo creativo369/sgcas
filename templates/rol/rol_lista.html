@@ -30,11 +30,12 @@
 		      <td>{{rol.name}}</td>
           <td>
             {% for p in rol.permissions.all %}
-              {% if forloop.first %}
+             {{ p.name }}&nbsp;&nbsp;&nbsp;
+                <!-- {#% if forloop.first %#}
                 {{ p.name }}
-              {% else %}
+              {#% else %#}
                 , {{ p.name }}
-              {% endif %}
+              {#% endif %#}-->
             {% endfor %}
           </td>
 		      <td>
@@ -67,5 +68,5 @@
             </span>
         </div>
       </div>
-      <a type="button" class="btn btn-link" href="{% url 'proyecto:list' %}">Ir a lista de proyectos</a>
+      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>
 {% endblock content %}

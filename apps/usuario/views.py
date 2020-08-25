@@ -60,11 +60,12 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
     paginate_by = 4
     model = User
     template_name = 'usuario/usuario_lista.html'
-    permission_required = 'usuario.ver_usuarios'    
+    permission_required = 'usuario.ver_usuarios'
 
     def get_queryset(self):
         # se ordena la lista de usuarios, excluyendo al AnonymousUser.
-        return User.objects.order_by('id').distinct().exclude(username='AnonymousUser')
+        return User.objects.order_by('id').distinct().exclude(username='AnonymousUser').exclude(is_superuser=True)
+
 
 @permission_required('usuario.ver_usuarios', raise_exception=True)
 # === search ===
@@ -78,8 +79,9 @@ def search(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = User.objects.filter(Q(username__icontains=query)|
-                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(username='AnonymousUser')
+        results = User.objects.filter(Q(username__icontains=query) |
+                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(
+            username='AnonymousUser')
     else:
         results = User.objects.all().order_by('id').exclude(username='AnonymousUser')
 

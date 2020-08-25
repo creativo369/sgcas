@@ -156,7 +156,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 # ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 # The user is required to enter a username when signing up.
-# ACCOUNT_USERNAME_REQUIRED = True
+#s ACCOUNT_USERNAME_REQUIRED = True
 
 # Attempt to bypass the signup form by using fields (e.g. username, email) retrieved from the social account provider.
 # SOCIALACCOUNT_AUTO_SIGNUP = False
