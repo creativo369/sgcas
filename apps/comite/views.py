@@ -59,11 +59,18 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
         """
         comite_query = Comite.objects.filter(proyecto=Proyecto.objects.get(id=kwargs.get('_id')))
-        if not comite_query.exists():
-            form = FormularioComite(_id=kwargs.pop('_id'))
-            return render(request, self.template_name, {'formulario': form})
+        # num_user_proyect = Proyecto.objects.get(id=kwargs.get('_id')).miembros
+        cantidad_miembros = len(Proyecto.objects.get(id=kwargs.get('_id')).miembros.all())
+        if cantidad_miembros >= 3:
+            if not comite_query.exists():
+                form = FormularioComite(_id=kwargs.pop('_id'))
+                return render(request, self.template_name, {'formulario': form})
+            else:
+                return render(request, self.template_detail, {'comite': comite_query.first()})
         else:
-            return render(request, self.template_detail, {'comite': comite_query.first()})
+            # Redirigir a template de 3 usuarios como minimo en el proyecto para
+            #crear comite
+            pass
 
     def post(self, request, *args, **kwargs):
         """
