@@ -17,10 +17,10 @@ Actualmente se despliega en las plantillas 6 vistas:
 
 1. **crear_tipo_item** - definición de una instancia del modelo TipoItem (Ir a la sección: [[views.py #crear tipo de ítem]] )
 2. **tipo_item_opciones** - despliega opciones (Ir a la sección: [[views.py #gestión tipo de ítem]] )
-3. **TipoItemLista** - lista los tipos de ítems del sistema (Ir a la sección: [[views.py #lista tipo de ítem]] )
+3. **tipo_item_lista** - lista los tipos de ítems del sistema (Ir a la sección: [[views.py #lista tipo de ítem]] )
 4. **search** - lista los tipos de ítems buscados del sistema (Ir a la sección: [[views.py #search]] )
-5. **TipoItemEliminar** - elimina un tipo de ítem (Ir a la sección: [[views.py #eliminar tipo de ítem]] )
-6. **TipoItemModificar** - modifica los atributos de un tipo de ítem (Ir a la sección: [[views.py #tipo de ítem update]] )
+5. **eliminar_tipo_item** - elimina un tipo de ítem (Ir a la sección: [[views.py #eliminar tipo de ítem]] )
+6. **editar_tipo_item** - modifica los atributos de un tipo de ítem (Ir a la sección: [[views.py #tipo de ítem update]] )
 """
 
 
@@ -58,15 +58,33 @@ def tipo_item_opciones(request):
     return render(request, 'tipo_item/tipo_item_opciones.html')
 
 
+@permission_required('tipo_item.listar_tipo_item', raise_exception=True)
 # === lista tipo de ítem ===
 def tipo_item_lista(request, id_fase):
-    context = {
-        'object_list':TipoItem.objects.filter(fase=get_object_or_404(Fase, pk=id_fase))
-    }
-    return render(request, 'tipo_item/tipo_item_lista.html', context)
+    """
+     Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+     **:param pk:** Recibe el pk de la fase a la que pertenece el tipo de ítem para listarlo.<br/>
+     **:return:** Una vista de todas las intancias de tipo de ítem que se encuentra en la fase.<br/>
+     """
+    tipo_item = TipoItem.objects.filter(fase=get_object_or_404(Fase, pk=id_fase)).order_by('id').distinct()
+    paginator = Paginator(tipo_item, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'tipo_item/tipo_item_lista.html', {'fase': Fase.objects.get(id=id_fase),
+                                                            'page_obj': page_obj})
 
-# === Editar tipo de item ===
+
+@permission_required('tipo_item.editar_tipo_item', raise_exception=True)
+# === tipo de ítem update ===
 def editar_tipo_item(request, pk):
+    """
+     Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
+     **:param request:** Recibe un request por parte de un usuario.<br/>
+     **:param pk:** Recibe el pk de la fase a la que pertenece el tipo de ítem para modificarlo.<br/>
+     **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
+    """
     ti = get_object_or_404(TipoItem, pk=pk)
     form = TipoItemUpdateForm(request.POST or None, instance=ti)
     if form.is_valid():
@@ -74,81 +92,47 @@ def editar_tipo_item(request, pk):
         return redirect('tipo_item:tipo_item_lista', id_fase=ti.fase.pk)
     return render(request, 'tipo_item/tipo_item_modificar.html', {'form':form})
 
-# === Eliminar tipo de item
+
+@permission_required('tipo_item.eliminar_tipo_item', raise_exception=True)
+# === eliminar tipo de ítem ===
 def eliminar_tipo_item(request, pk):
+    """
+     Permite la visualizacion en lista de todas las intancias del modelo TipoItem que se encuentran en una fase.<br/>
+     **:param request:** Recibe un request por parte de un usuario.<br/>
+     **:param pk:** Recibe el pk de la fase a la que pertenece el tipo de ítem para eliminarlo.<br/>
+     **:return:** Una vista de todas las intancias  de TipoItem existentes en la fase.<br/>
+    """
     ti = get_object_or_404(TipoItem, pk=pk)
     id_fase = ti.fase.pk
     ti.delete()
     return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
 
-# class TipoItemLista(PermissionRequiredMixin, ListView):
-#     """
-#     Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-#     **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
-#     """
-#     paginate_by = 4
-#     model = TipoItem
-#     template_name = 'tipo_item/tipo_item_lista.html'
-#     permission_required = 'tipo_item.listar_tipo_item'
-
-#     # La lista a mostrar estara por orden ascendente
-#     #class Meta:
-#         #ordering = ['-id']
-#     def get_queryset(self):
-#         #ordena la lista de tipos de ítems
-#         return TipoItem.objects.order_by('id').distinct()
         
 @permission_required('tipo_item.listar_tipo_item', raise_exception=True)
 # === search === 
-def search(request):
+def search(request, id_fase):
     """
     Permite realizar la búsqueda de las intancias del modelo TipoItem.<br/>
-    *:param request:** Recibe un request por parte un usuario.<br/>   
-    **:return:** retorna una lista con todos los Tipos de Ítem que cumplen con los criterios de búsqueda.<br/>
+    *:param request:** Recibe un request por parte un usuario.<br/> 
+    **:param id_fase:** Recibe pk de una instancia de fase, de la cual requerimos la lista de tipos de ítem.<br/>  
+    **:return:** retorna una lista con todos los Tipos de Ítem  de que cumplen con los criterios de búsqueda.<br/>
     """
     template = 'tipo_item/list_busqueda.html'
     query = request.GET.get('buscar')
 
     if query:
-        results = TipoItem.objects.filter(Q(nombre__icontains=query) | Q(descripcion__contains=query)).order_by('id').distinct()
+        results = TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase)) 
+            & Q(nombre__icontains=query) | Q(descripcion__contains=query)).order_by('id').distinct()
     else:
-        results= TipoItem.objects.all().order_by('id')
+        results= TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase))).order_by('id').distinct()
    
-    paginator = Paginator(results, 4)
+    paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)     
     
-    return render(request, template, {'page_obj': page_obj})
-
-# === eliminar tipo de ítem ===
-class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
-    """
-    Permite la eliminación instancias de modelos TipoItem.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-    **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-    **:return:** Elimina una instancia del modelo TipoItem del sistema.<br/>
-    """
-    model = TipoItem
-    template_name = 'tipo_item/tipo_item_eliminar.html'
-    permission_required = 'tipo_item.eliminar_tipo_item'
-    success_url = reverse_lazy('tipo_item:tipo_item_lista')
+    return render(request, template, {'fase': Fase.objects.get(id=id_fase),'page_obj': page_obj})
 
 
-# # === tipo de ítem update ===
-# class TipoItemModificar(PermissionRequiredMixin, UpdateView):
-#     """
-#     Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-#     **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
-#     """
-#     model = TipoItem
-#     template_name = 'tipo_item/tipo_item_modificar.html'
-#     form_class = TipoItemUpdateForm
-#     permission_required = 'tipo_item.editar_tipo_item'
-#     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
