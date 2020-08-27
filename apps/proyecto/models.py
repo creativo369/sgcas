@@ -47,10 +47,7 @@ class Proyecto(models.Model):
         ]
         verbose_name = 'Proyecto'
         verbose_name_plural = 'Proyectos'
-
-        verbose_name = 'Proyecto'
-        verbose_name_plural = 'Proyectos'
-
+        
     def __str__(self):
         """
         Función que retorna el nombre del modelo a una instancia llamada "proyecto"<br/>
