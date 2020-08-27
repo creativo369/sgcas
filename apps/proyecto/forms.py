@@ -93,6 +93,7 @@ class ChangeProject(forms.ModelForm):
         # fields representa los campos que no son editables de acuerdo al estado del proyecto
         fields = ['nombre', 'descripcion', 'fecha_creacion', 'miembros']
         # No se permite la modificacion del nombre del proyecto si su estado es pendiente
+        gerente = kwargs['instance'].gerente
         if kwargs['instance'].estado == 'Pendiente':
             estado_proyectonew = [
                 ('Pendiente', 'Pendiente'),

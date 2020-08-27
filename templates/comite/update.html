@@ -29,7 +29,7 @@
                             <div class="col-12 col-md-9">{{ form.miembros }}</div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-success">Aceptar</button>
+                            <input type="submit" value="Crear" class="btn btn-success" onclick="return checkMiembros();">
                             <a type="button" class="btn btn-danger" href="#" onclick="window.history.back()">Cancelar</a>
                         </div>
                     </form>
@@ -37,5 +37,16 @@
             </div>
       {% endif %}
   </form>
+      <script type="text/javascript">
+        function checkMiembros(){
+           var miembros = document.querySelectorAll('input[type="checkbox"]:checked').length;
+           if (miembros == 1 || miembros%2 == 0 || miembros < 3 ){
+                alert("Cantidad de miembros no aceptada, debe ser un numero impar mayor a 3.");
+                return false;
+           }else{
+            return true;
+           }
+        }
+    </script>
 	</div>
 {% endblock %}
