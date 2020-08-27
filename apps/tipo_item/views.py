@@ -60,24 +60,31 @@ def tipo_item_opciones(request):
 
 
 # === lista tipo de ítem ===
-class TipoItemLista(PermissionRequiredMixin, ListView):
-    """
-    Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-    **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-    **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
-    """
-    paginate_by = 4
-    model = TipoItem
-    template_name = 'tipo_item/tipo_item_lista.html'
-    permission_required = 'tipo_item.listar_tipo_item'
 
-    # La lista a mostrar estara por orden ascendente
-    #class Meta:
-        #ordering = ['-id']
-    def get_queryset(self):
-        #ordena la lista de tipos de ítems
-        return TipoItem.objects.order_by('id').distinct()
+def tipo_item_lista(request, id_fase):
+    context = {
+        'object_list':TipoItem.objects.filter(fase=get_object_or_404(Fase, pk=id_fase))
+    }
+    return render(request, 'tipo_item/tipo_item_lista.html', context)
+
+# class TipoItemLista(PermissionRequiredMixin, ListView):
+#     """
+#     Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
+#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+#     **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
+#     """
+#     paginate_by = 4
+#     model = TipoItem
+#     template_name = 'tipo_item/tipo_item_lista.html'
+#     permission_required = 'tipo_item.listar_tipo_item'
+
+#     # La lista a mostrar estara por orden ascendente
+#     #class Meta:
+#         #ordering = ['-id']
+#     def get_queryset(self):
+#         #ordena la lista de tipos de ítems
+#         return TipoItem.objects.order_by('id').distinct()
         
 @permission_required('tipo_item.listar_tipo_item', raise_exception=True)
 # === search === 
