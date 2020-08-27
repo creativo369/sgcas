@@ -246,7 +246,7 @@ def item_modificar_basico(request, pk):
             item.item_set.add(i)
         form.save()
         return redirect('item:item_modificar_import_ti', pk=item.pk)
-    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
+    return render(request, 'item/item_modificar.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
 @permission_required('item.item_modificar_ti', raise_exception=True)
