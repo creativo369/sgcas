@@ -31,6 +31,7 @@ def crear_tipo_item(request, id_fase):
     """
     Permite la creacion de instancias de modelo TipoItem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param id_fase:** Recibe el id de la fase en la que se creará el tipo de ítem.<br/>
     **:return:**  Retorna una instancia del modelo TipoItem.<br/>
     """
     if request.method == 'POST':
@@ -114,7 +115,7 @@ def search(request, id_fase):
     """
     Permite realizar la búsqueda de las intancias del modelo TipoItem.<br/>
     *:param request:** Recibe un request por parte un usuario.<br/> 
-    **:param id_fase:** Recibe pk de una instancia de fase, de la cual requerimos la lista de tipos de ítem.<br/>  
+    **:param id_fase:** Recibe el id de la instancia de fase, de la cual requerimos la lista de tipos de ítem.<br/>  
     **:return:** retorna una lista con todos los Tipos de Ítem  de que cumplen con los criterios de búsqueda.<br/>
     """
     template = 'tipo_item/list_busqueda.html'
