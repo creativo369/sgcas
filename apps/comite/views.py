@@ -116,8 +116,7 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
         """
         comite = get_object_or_404(Comite, pk=kwargs.get('pk'))
-        miembros_proyecto_queryset = comite.proyecto.miembros.all()
-        form = self.form_class(request.POST or None, instance=comite, miembros=miembros_proyecto_queryset)
+        form = self.form_class(request.POST or None, instance=comite)
         if form.is_valid():
             form.save()
             return redirect(self.success_url)
