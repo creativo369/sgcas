@@ -1,8 +1,8 @@
 # === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, permission_required
-from apps.tipo_item.views import tipo_item_opciones, crear_tipo_item, TipoItemEliminar, \
-    TipoItemModificar, search, tipo_item_lista
+from apps.tipo_item.views import tipo_item_opciones, crear_tipo_item, eliminar_tipo_item, \
+    editar_tipo_item, search, tipo_item_lista
 
 # **Vistas basadas en clases**
 
@@ -15,10 +15,12 @@ urlpatterns = [
     url(r'^opciones/', login_required(tipo_item_opciones), name='tipo_item_opciones'),
     url(r'^crear-tipo-item/(?P<id_fase>\d+)/$', login_required(crear_tipo_item), name='crear_tipo_item'),
     url(r'^lista-tipo-item/(?P<id_fase>\d+)/$', login_required(tipo_item_lista), name='tipo_item_lista'),
+    url(r'^editar-tipo-item/(?P<pk>\d+)/$', login_required(editar_tipo_item), name='tipo_item_modificar'),
+    url(r'^eliminar-tipo-item/(?P<pk>\d+)/$', login_required(eliminar_tipo_item), name='tipo_item_eliminar'),
     # url(r'^lista/(?P<id_fase>\d+)/$', login_required(permission_required('tipo_item.listar_tipo_item', raise_exception=True)(TipoItemLista.as_view())), name='tipo_item_lista'),)
     url(r'^results/$', login_required(search), name='search'),
-    url(r'^eliminar/(?P<pk>\d+)/$', login_required(permission_required('tipo_item.eliminar_tipo_item',raise_exception=True)(TipoItemEliminar.as_view())), name='tipo_item_eliminar'),
-    url(r'^editar/(?P<pk>\d+)/$', login_required(permission_required('tipo_item.editar_tipo_item', raise_exception=True)(TipoItemModificar.as_view())), name='tipo_item_modificar'),
+    # url(r'^eliminar/(?P<pk>\d+)/$', login_required(permission_required('tipo_item.eliminar_tipo_item',raise_exception=True)(TipoItemEliminar.as_view())), name='tipo_item_eliminar'),)
+    # url(r'^editar/(?P<pk>\d+)/$', login_required(permission_required('tipo_item.editar_tipo_item', raise_exception=True)(TipoItemModificar.as_view())), name='tipo_item_modificar'),
 ]
 
 # === Indice de la documentación de la Aplicación Comité  === <br/>

@@ -39,10 +39,9 @@ def crear_tipo_item(request, id_fase):
             ti = form.save(commit=False)
             ti.fase = get_object_or_404(Fase, pk=id_fase)
             ti.save()
-        return redirect('fase:fase_lista', _id=get_object_or_404(Fase, pk=id_fase).proyecto)
+        return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
     else:
         form = TipoItemForm()
-
     return render(request, 'tipo_item/tipo_item_crear.html', {'form': form})
 
 
@@ -60,12 +59,27 @@ def tipo_item_opciones(request):
 
 
 # === lista tipo de ítem ===
-
 def tipo_item_lista(request, id_fase):
     context = {
         'object_list':TipoItem.objects.filter(fase=get_object_or_404(Fase, pk=id_fase))
     }
     return render(request, 'tipo_item/tipo_item_lista.html', context)
+
+# === Editar tipo de item ===
+def editar_tipo_item(request, pk):
+    ti = get_object_or_404(TipoItem, pk=pk)
+    form = TipoItemUpdateForm(request.POST or None, instance=ti)
+    if form.is_valid():
+        form.save()
+        return redirect('tipo_item:tipo_item_lista', id_fase=ti.fase.pk)
+    return render(request, 'tipo_item/tipo_item_modificar.html', {'form':form})
+
+# === Eliminar tipo de item
+def eliminar_tipo_item(request, pk):
+    ti = get_object_or_404(TipoItem, pk=pk)
+    id_fase = ti.fase.pk
+    ti.delete()
+    return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
 
 # class TipoItemLista(PermissionRequiredMixin, ListView):
 #     """
@@ -122,19 +136,19 @@ class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 
-# === tipo de ítem update ===
-class TipoItemModificar(PermissionRequiredMixin, UpdateView):
-    """
-    Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
-    """
-    model = TipoItem
-    template_name = 'tipo_item/tipo_item_modificar.html'
-    form_class = TipoItemUpdateForm
-    permission_required = 'tipo_item.editar_tipo_item'
-    success_url = reverse_lazy('tipo_item:tipo_item_lista')
+# # === tipo de ítem update ===
+# class TipoItemModificar(PermissionRequiredMixin, UpdateView):
+#     """
+#     Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
+#     """
+#     model = TipoItem
+#     template_name = 'tipo_item/tipo_item_modificar.html'
+#     form_class = TipoItemUpdateForm
+#     permission_required = 'tipo_item.editar_tipo_item'
+#     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
