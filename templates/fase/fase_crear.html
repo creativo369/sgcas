@@ -2,6 +2,7 @@
 {% block title %} Crear fase {% endblock%}
 
 {% block content %}
+  {% if proyecto.estado != 'Iniciado' %}
     <form method="post">
         {% csrf_token %}
         {% if error %}
@@ -38,4 +39,9 @@
             </div>
         {% endif %}
     </form>
+      {% else %}
+        <p align="center" class="badge badge-danger">Una vez iniciado el proyecto , no se pueden crear mas fases</p>
+                <br>
+                <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Volver atr&aacute;s</a>
+    {% endif %}
 {% endblock %}

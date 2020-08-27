@@ -59,9 +59,11 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
         """
         comite_query = Comite.objects.filter(proyecto=Proyecto.objects.get(id=kwargs.get('_id')))
+        proyecto_query = Proyecto.objects.get(id=kwargs.get('_id'))
         if not comite_query.exists():
             form = FormularioComite(_id=kwargs.pop('_id'))
-            return render(request, self.template_name, {'formulario': form})
+            proyect = proyecto_query
+            return render(request, self.template_name, {'formulario': form, 'proyecto': proyect})
         else:
             return render(request, self.template_detail, {'comite': comite_query.first()})
 
@@ -78,6 +80,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         if form.is_valid():
             comite = form.save(commit=False)
             comite.proyecto = Proyecto.objects.get(id=id_proyecto)  # Establece el foreign key con proyecto
+
             comite.save()
             form.save_m2m()
         return redirect(self.success_url, pk=id_proyecto)
@@ -150,3 +153,5 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
 # 5.tests   : [[tests.py]]<br/>
 # 6.urls    : [[urls.py]]<br/>
 # 7.views   : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

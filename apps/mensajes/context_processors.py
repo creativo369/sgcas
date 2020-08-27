@@ -22,3 +22,5 @@ def count_inactive_users(request):
 # 3.test                : [[tests.py]]<br/>
 # 4.urls                : [[urls.py]]<br/>
 # 5.views               : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

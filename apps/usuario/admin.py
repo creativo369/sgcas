@@ -16,5 +16,3 @@ class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-
-# Register your models here.

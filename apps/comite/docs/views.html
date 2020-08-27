@@ -51,11 +51,11 @@
       <p>Todas las vistas para la aplicación del Modulo Comité
 Actualmente se despliega en las plantillas 5 vistas:</p>
 <ol>
-<li><strong>success</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#success">views.py</a> )</li>
-<li><strong>CreateComite</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#createcomite">views.py</a> )</li>
-<li><strong>UpdateComite</strong> - modificar una instancia del modelo comité (Ir a la sección:  <a href="views.html#updatecomite">views.py</a> )</li>
-<li><strong>DeleteComite </strong> - suprimir una instancia del modelo comité (Ir a la sección:  <a href="views.html#deletecomite">views.py</a> )</li>
-<li><strong>DetailComite </strong> - ver detalles de una instancia del modelo comité (Ir a la sección:  <a href="views.html#detailcomite">views.py</a> )</li>
+<li><strong>success</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#success">views.py </a> )</li>
+<li><strong>CreateComite</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#create comite">views.py </a> )</li>
+<li><strong>UpdateComite</strong> - modificar una instancia del modelo comité (Ir a la sección:  <a href="views.html#update comite">views.py </a> )</li>
+<li><strong>DeleteComite</strong> - suprimir una instancia del modelo comité (Ir a la sección:  <a href="views.html#delete comite">views.py </a> )</li>
+<li><strong>DetailComite</strong> - ver detalles de una instancia del modelo comité (Ir a la sección:  <a href="views.html#detail comite">views.py </a> )</li>
 </ol>
     </div>
     <div class='code'>
@@ -95,7 +95,7 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <h3><span id="createcomite" href="createcomite"> createcomite </span></h3>
+      <h3><span id="create-comite" href="create-comite"> create comite </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">CreateComite</span><span class="p">(</span><span class="n">CreateView</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
@@ -116,7 +116,7 @@ debe poseer el permiso correspondiente de crear comite.<br/>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.add_comite&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.crear_comite&#39;</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/create.html&#39;</span>
     <span class="n">template_detail</span> <span class="o">=</span> <span class="s1">&#39;comite/detail.html&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="s1">&#39;proyecto:detail&#39;</span></pre></div>
@@ -128,11 +128,11 @@ debe poseer el permiso correspondiente de crear comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p>Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité<br/>
-<strong>:param request:</strong> recibe la petición del cliente que solicita crear un comite para la instancia del proyecto<br/>
+      <p>Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité.<br/>
+<strong>:param request:</strong> recibe la petición del cliente que solicita crear un comite para la instancia del proyecto.<br/>
 :param args:<br/>
-<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto<br/>
-<strong>:return:</strong> el formulario , la plantilla donde se va desplegar el formulario de creación<br/></p>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+<strong>:return:</strong> el formulario , la plantilla donde se va desplegar el formulario de creación.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
@@ -161,11 +161,11 @@ debe poseer el permiso correspondiente de crear comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>Almacena los datos obtenidos del formulario en la base de datos<br/>
-<strong>:param request:</strong> La petición del cliente<br/>
+      <p>Almacena los datos obtenidos del formulario en la base de datos.<br/>
+<strong>:param request:</strong> La petición del cliente.<br/>
 <strong>:param args:</strong><br/>
-<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto<br/>
-<strong>:return:</strong> Redirige a la plantilla de Operación exitosa de la creación de un comité<br/></p>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+<strong>:return:</strong> Redirige a la plantilla de Operación exitosa de la creación de un comité.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
@@ -196,7 +196,7 @@ debe poseer el permiso correspondiente de crear comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <h3><span id="updatecomite" href="updatecomite"> updatecomite </span></h3>
+      <h3><span id="update-comite" href="update-comite"> update comite </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
@@ -219,7 +219,7 @@ debe poseer el permiso correspondiente de modificación de comites.<br/>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/update.html&#39;</span>
     <span class="n">form_class</span> <span class="o">=</span> <span class="n">FormularioComiteUpdate</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.change_comite&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.editar_comite&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -229,9 +229,9 @@ debe poseer el permiso correspondiente de modificación de comites.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      <p>Función que valida el formulario y lo guarda y redirige a una plantilla en caso de ser exitosa<br/>
-<strong>:param form:</strong> Recibe el formulario<br/>
-<strong>:return:</strong> Retorna la creación exitosa del formulario<br/></p>
+      <p>Función que valida el formulario y lo guarda y redirige a una plantilla en caso de ser exitosa.<br/>
+<strong>:param form:</strong> Recibe el formulario.<br/>
+<strong>:return:</strong> Retorna la creación exitosa del formulario.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span></pre></div>
@@ -256,7 +256,7 @@ debe poseer el permiso correspondiente de modificación de comites.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      <h3><span id="deletecomite" href="deletecomite"> deletecomite </span></h3>
+      <h3><span id="delete-comite" href="delete-comite"> delete comite </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">DeleteComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
@@ -278,7 +278,7 @@ debe poseer el permiso correspondiente de eliminar comite.<br/>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/delete.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.delete_comite&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.eliminar_comite&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -288,7 +288,7 @@ debe poseer el permiso correspondiente de eliminar comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-17'>#</a>
       </div>
-      <h3><span id="detailcomite" href="detailcomite"> detailcomite </span></h3>
+      <h3><span id="detail-comite" href="detail-comite"> detail comite </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">DetailComite</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">):</span></pre></div>
@@ -310,7 +310,7 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Comite</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;comite/detail.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.view_comite&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;comite.ver_comite&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;comite:detail&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>

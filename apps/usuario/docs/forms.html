@@ -21,9 +21,8 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Group</span>
-<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
-<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span></pre></div>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -32,10 +31,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Mientras tanto no se admiten password</p>
+      <p>from django.conf import settings</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="n">inactivo_previo</span> <span class="o">=</span> <span class="kc">False</span></pre></div>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">SGCAS.settings</span> <span class="kn">import</span> <span class="n">base</span>
+
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -44,11 +45,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      
+      <p>Mientras tanto no se admiten password</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UserForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-    <span class="n">roles</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></pre></div>
+      <div class="highlight"><pre><span class="n">inactivo_previo</span> <span class="o">=</span> <span class="kc">False</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -60,8 +60,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">User</span></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UserForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -69,6 +69,19 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">User</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>Campos del modelo Rol</p>
     </div>
@@ -81,10 +94,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>etiquetas de los campos del formulario</p>
     </div>
@@ -95,15 +108,30 @@
             <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;Correo electronico&#39;</span><span class="p">,</span>
             <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;Usuario&#39;</span><span class="p">,</span>
             <span class="s1">&#39;roles&#39;</span><span class="p">:</span> <span class="s1">&#39;Roles&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;is_active&#39;</span><span class="p">:</span> <span class="s1">&#39;Cuenta activa&#39;</span>
+            <span class="s1">&#39;is_active&#39;</span><span class="p">:</span> <span class="s1">&#39;Estado de la Cuenta&#39;</span>
+        <span class="p">}</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># los aparatos o elementos de captura de información del formulario</span>
+            <span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">,</span>
+                                                <span class="s1">&#39;placeholder&#39;</span><span class="p">:</span> <span class="s1">&#39;Introduzca los nombres&#39;</span><span class="p">,</span>
+                                                <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                                <span class="s1">&#39;cols&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+            <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">,</span>
+                                               <span class="s1">&#39;placeholder&#39;</span><span class="p">:</span> <span class="s1">&#39;Introduzca los apellidos&#39;</span><span class="p">,</span>
+                                               <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                               <span class="s1">&#39;cols&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">,</span>
+                                           <span class="s1">&#39;placeholder&#39;</span><span class="p">:</span> <span class="s1">&#39;Introduzca el correo&#39;</span><span class="p">,</span>
+                                           <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                           <span class="s1">&#39;cols&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+            <span class="s1">&#39;estado&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">})</span>
         <span class="p">}</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>Constructor que se encarga de filtrar solo los usuarios habilitados y activos en el sistema.<br/>
 <strong>:param args:</strong><br/>
@@ -115,10 +143,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Se obtiene el argumento kword si existe, o se lo inicializa
 como un diccionario si no existe</p>
@@ -128,10 +156,10 @@ como un diccionario si no existe</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p>El widget para el ModelMultiplceChoiceField espera una lista
 de primarykey para los datos seleccionados</p>
@@ -150,23 +178,23 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Guarda el formulario .<br/>
 :return:</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
       
     </div>
@@ -178,22 +206,99 @@ de primarykey para los datos seleccionados</p>
 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">is_active</span> <span class="ow">and</span> <span class="n">inactivo_previo</span><span class="p">:</span>
             <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Registro SGCAS&#39;</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS&#39;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Hola &#39;</span> <span class="o">+</span> <span class="n">u</span><span class="o">.</span><span class="n">username</span> <span class="o">+</span> <span class="s1">&#39;!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS&#39;</span>
             <span class="n">send_mail</span><span class="p">(</span>
                 <span class="n">subject</span><span class="p">,</span>
                 <span class="n">message</span><span class="p">,</span>
-                <span class="n">settings</span><span class="o">.</span><span class="n">EMAIL_HOST_USER</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">EMAIL_HOST_USER</span><span class="p">],</span>
+                <span class="n">base</span><span class="o">.</span><span class="n">EMAIL_HOST_USER</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">EMAIL_HOST_USER</span><span class="p">],</span>
                 <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">u</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">FormularioUsuarioActivar</span><span class="p">(</span><span class="n">UserForm</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p><strong>Clase que modela el formulario de la definición de un usuario a ser usado en la plantilla</strong><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Para read - only los fields que se presentan en la siguiente lista.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FormularioUsuarioActivar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>fields representa los campos que no son editables de acuerdo al estado del proyecto<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;instance&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>No se permite la modificacion del nombre ,apellidos , correo electronico , Usuario<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">UserForm</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">User</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Usuario  === <br/>
 1.apps        :  <a href="apps.html">apps.py</a><br/>
@@ -203,6 +308,18 @@ de primarykey para los datos seleccionados</p>
 5.tests       :  <a href="tests.html">tests.py</a><br/>
 6.urls        :  <a href="urls.html">urls.py</a><br/>
 7.views       :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
