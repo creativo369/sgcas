@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
 # === Importación de los codigos fuentes de la aplicación ===
@@ -60,19 +60,27 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         """
         comite_query = Comite.objects.filter(proyecto=Proyecto.objects.get(id=kwargs.get('_id')))
         proyecto_query = Proyecto.objects.get(id=kwargs.get('_id'))
-        if not comite_query.exists():
-            form = FormularioComite(_id=kwargs.pop('_id'))
-            proyect = proyecto_query
-            return render(request, self.template_name, {'formulario': form, 'proyecto': proyect})
+        # num_user_proyect = Proyecto.objects.get(id=kwargs.get('_id')).miembros
+        cantidad_miembros = len(Proyecto.objects.get(id=kwargs.get('_id')).miembros.all())
+
+        if cantidad_miembros >= 3:
+            if not comite_query.exists():
+                form = FormularioComite(_id=kwargs.pop('_id'))
+                proyect = proyecto_query
+                return render(request, self.template_name, {'formulario': form, 'proyecto': proyect})
+            else:
+                return render(request, self.template_detail, {'comite': comite_query.first()})
         else:
-            return render(request, self.template_detail, {'comite': comite_query.first()})
+            # Redirigir a template de 3 usuarios como minimo en el proyecto para
+            # crear comite
+            pass
 
     def post(self, request, *args, **kwargs):
         """
         Almacena los datos obtenidos del formulario en la base de datos.<br/>
         **:param request:** La petición del cliente.<br/>
         **:param args:**<br/>
-        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo comite.<br/>
         **:return:** Redirige a la plantilla de Operación exitosa de la creación de un comité.<br/>
         """
         id_proyecto = kwargs.pop('_id')  # Guardamos en una variable el id del proyecto
@@ -101,6 +109,21 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     form_class = FormularioComiteUpdate
     permission_required = 'comite.editar_comite'
     success_url = reverse_lazy('proyecto:list')
+
+    def get(self, request, *args, **kwargs):
+        """
+        Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité.<br/>
+        **:param request:** recibe la petición del cliente que solicita crear un comite para la instancia del proyecto.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+        **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
+        """
+        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))
+        form = self.form_class(request.POST or None, instance=comite)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
         """

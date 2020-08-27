@@ -46,6 +46,10 @@ class FormularioComite(forms.ModelForm):
 
 # === Clase heredada para abstraer en un formulario la actualización de un Comité ===
 class FormularioComiteUpdate(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormularioComiteUpdate, self).__init__(*args, **kwargs)
+        self.fields['miembros'].queryset = kwargs['instance'].proyecto.miembros.all()
+
     class Meta(FormularioComite.Meta):
         model = Comite
 # **Volver atras** : [[apps.py]]

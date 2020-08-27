@@ -1,12 +1,13 @@
 # === Importación de las librerias utilizadas de Django ===
 from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 
 from django.db.models import Q
 from django.core.paginator import Paginator
 from apps.tipo_item.models import TipoItem
+from apps.fase.models import Fase
 from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
@@ -26,7 +27,7 @@ Actualmente se despliega en las plantillas 6 vistas:
 @login_required
 @permission_required('tipo_item.crear_tipo_item', raise_exception=True)
 # === crear tipo de ítem ===
-def crear_tipo_item(request):
+def crear_tipo_item(request, id_fase):
     """
     Permite la creacion de instancias de modelo TipoItem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -35,11 +36,12 @@ def crear_tipo_item(request):
     if request.method == 'POST':
         form = TipoItemForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('tipo_item:tipo_item_lista')
+            ti = form.save(commit=False)
+            ti.fase = get_object_or_404(Fase, pk=id_fase)
+            ti.save()
+        return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
     else:
         form = TipoItemForm()
-
     return render(request, 'tipo_item/tipo_item_crear.html', {'form': form})
 
 
@@ -57,24 +59,46 @@ def tipo_item_opciones(request):
 
 
 # === lista tipo de ítem ===
-class TipoItemLista(PermissionRequiredMixin, ListView):
-    """
-    Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-    **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-    **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
-    """
-    paginate_by = 4
-    model = TipoItem
-    template_name = 'tipo_item/tipo_item_lista.html'
-    permission_required = 'tipo_item.listar_tipo_item'
+def tipo_item_lista(request, id_fase):
+    context = {
+        'object_list':TipoItem.objects.filter(fase=get_object_or_404(Fase, pk=id_fase))
+    }
+    return render(request, 'tipo_item/tipo_item_lista.html', context)
 
-    # La lista a mostrar estara por orden ascendente
-    #class Meta:
-        #ordering = ['-id']
-    def get_queryset(self):
-        #ordena la lista de tipos de ítems
-        return TipoItem.objects.order_by('id').distinct()
+# === Editar tipo de item ===
+def editar_tipo_item(request, pk):
+    ti = get_object_or_404(TipoItem, pk=pk)
+    form = TipoItemUpdateForm(request.POST or None, instance=ti)
+    if form.is_valid():
+        form.save()
+        return redirect('tipo_item:tipo_item_lista', id_fase=ti.fase.pk)
+    return render(request, 'tipo_item/tipo_item_modificar.html', {'form':form})
+
+# === Eliminar tipo de item
+def eliminar_tipo_item(request, pk):
+    ti = get_object_or_404(TipoItem, pk=pk)
+    id_fase = ti.fase.pk
+    ti.delete()
+    return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
+
+# class TipoItemLista(PermissionRequiredMixin, ListView):
+#     """
+#     Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
+#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+#     **:return:** Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/>
+#     """
+#     paginate_by = 4
+#     model = TipoItem
+#     template_name = 'tipo_item/tipo_item_lista.html'
+#     permission_required = 'tipo_item.listar_tipo_item'
+
+#     # La lista a mostrar estara por orden ascendente
+#     #class Meta:
+#         #ordering = ['-id']
+#     def get_queryset(self):
+#         #ordena la lista de tipos de ítems
+#         return TipoItem.objects.order_by('id').distinct()
         
 @permission_required('tipo_item.listar_tipo_item', raise_exception=True)
 # === search === 
@@ -112,19 +136,19 @@ class TipoItemEliminar(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 
-# === tipo de ítem update ===
-class TipoItemModificar(PermissionRequiredMixin, UpdateView):
-    """
-    Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
-    """
-    model = TipoItem
-    template_name = 'tipo_item/tipo_item_modificar.html'
-    form_class = TipoItemUpdateForm
-    permission_required = 'tipo_item.editar_tipo_item'
-    success_url = reverse_lazy('tipo_item:tipo_item_lista')
+# # === tipo de ítem update ===
+# class TipoItemModificar(PermissionRequiredMixin, UpdateView):
+#     """
+#     Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
+#     """
+#     model = TipoItem
+#     template_name = 'tipo_item/tipo_item_modificar.html'
+#     form_class = TipoItemUpdateForm
+#     permission_required = 'tipo_item.editar_tipo_item'
+#     success_url = reverse_lazy('tipo_item:tipo_item_lista')
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
