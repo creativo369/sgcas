@@ -1,12 +1,13 @@
 # === Importación de las librerias utilizadas de Django ===
 from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 
 from django.db.models import Q
 from django.core.paginator import Paginator
 from apps.tipo_item.models import TipoItem
+from apps.fase.models import Fase
 from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
@@ -26,7 +27,7 @@ Actualmente se despliega en las plantillas 6 vistas:
 @login_required
 @permission_required('tipo_item.crear_tipo_item', raise_exception=True)
 # === crear tipo de ítem ===
-def crear_tipo_item(request):
+def crear_tipo_item(request, id_fase):
     """
     Permite la creacion de instancias de modelo TipoItem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -35,8 +36,10 @@ def crear_tipo_item(request):
     if request.method == 'POST':
         form = TipoItemForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('tipo_item:tipo_item_lista')
+            ti = form.save(commit=False)
+            ti.fase = get_object_or_404(Fase, pk=id_fase)
+            ti.save()
+        return redirect('fase:fase_lista', _id=get_object_or_404(Fase, pk=id_fase).proyecto)
     else:
         form = TipoItemForm()
 

@@ -1,4 +1,5 @@
 from django.db import models
+from apps.fase.models import Fase
 from multiselectfield import MultiSelectField
 
 # === Atributos de un tipo de item ===
@@ -18,6 +19,7 @@ class TipoItem(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
     atributos = MultiSelectField(choices=ATTRIBUTES)
+    fase = models.ForeignKey(Fase, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de los permisos por defecto que  trae django

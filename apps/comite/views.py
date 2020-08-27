@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
 # === Importación de los codigos fuentes de la aplicación ===
@@ -77,7 +77,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         Almacena los datos obtenidos del formulario en la base de datos.<br/>
         **:param request:** La petición del cliente.<br/>
         **:param args:**<br/>
-        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo comite.<br/>
         **:return:** Redirige a la plantilla de Operación exitosa de la creación de un comité.<br/>
         """
         id_proyecto = kwargs.pop('_id')  # Guardamos en una variable el id del proyecto
@@ -105,6 +105,23 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     form_class = FormularioComiteUpdate
     permission_required = 'comite.editar_comite'
     success_url = reverse_lazy('proyecto:list')
+
+
+    def get(self, request, *args, **kwargs):
+        """
+        Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité.<br/>
+        **:param request:** recibe la petición del cliente que solicita crear un comite para la instancia del proyecto.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
+        **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
+        """
+        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))
+        miembros_proyecto_queryset = comite.proyecto.miembros.all()
+        form = self.form_class(request.POST or None, instance=comite, miembros=miembros_proyecto_queryset)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        return render(request, self.template_name, {'form': form})
 
     def form_valid(self, form):
         """
