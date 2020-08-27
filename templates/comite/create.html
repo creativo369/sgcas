@@ -9,17 +9,11 @@
                 <strong>Formulario de Registro</strong>
             </div>
             <div class="card-body card-block">
-<<<<<<< HEAD
                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                     {% csrf_token %}
                         <div class="row form-group">
                             <div class="col col-md-3">{{ formulario.nombre.label }}:</div>
                             <div class="col-12 col-md-9">{{ formulario.nombre }}</div>
-=======
-                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3">{{ formulario.nombre.label }}:</div>
-                        <div class="col-12 col-md-9">{{ formulario.nombre }}</div>
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">{{ formulario.descripcion.label }}:</div>
@@ -33,32 +27,15 @@
                         <div class="text-center">
                             <input type="submit" value="Crear" class="btn btn-success" onclick="return checkMiembros();">
                             <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
->>>>>>> origin/alex
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">{{ formulario.descripcion.label }}:</div>
-                            <div class="col-12 col-md-9">{{ formulario.descripcion }}</div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">Agregar miembros al comit&eacute;:</div>
-                            <div class="">{{ formulario.miembros }}</div>
-                        </div>
-                        <div class="form-group">
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-success">Crear</button>
-                                <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
                             </div>
                         </div>
                 </form>
             </div>
-<<<<<<< HEAD
             {% else %}
                 <p align="center" class="badge badge-danger">Usted no es el gerente! Solamente el gerente puede crear un comit&eacute; de un proyecto</p>
                 <br>
                 <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Volver atr&aacute;s</a>
         {% endif %}
-{% endblock %}
-=======
     </form>
     <script type="text/javascript">
         function checkMiembros(){
@@ -72,5 +49,3 @@
         }
     </script>
 {% endblock %}
-
->>>>>>> origin/alex
