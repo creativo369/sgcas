@@ -26,10 +26,10 @@
     {% if object_list %}
     	{% for rol in object_list %}
 			<tr>
-		  {#    <td>{{rol.id}}</td> #}
-		      <td>{{rol.name}}</td>
+<!-- 		  {#    <td>{{rol.id}}</td> #} -->
+		      <td>{{rol}}</td>
           <td>
-            {% for p in rol.permissions.all %}
+            {% for p in rol.group.permissions.all %}
               {% if forloop.first %}
                 {{ p.name }}
               {% else %}
@@ -67,5 +67,5 @@
             </span>
         </div>
       </div>
-      <a type="button" class="btn btn-link" href="{% url 'proyecto:list' %}">Ir a lista de proyectos</a>
+      <a type="button" class="btn btn-link" href="#" onclick=window.history.back()>Volver</a>
 {% endblock content %}

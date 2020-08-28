@@ -7,7 +7,9 @@ from django.urls import reverse_lazy
 from apps.rol.forms import GroupForm
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from apps.rol.models import Rol
+from apps.fase.models import Fase
 
 """
 Todas las vistas para la aplicación del Modulo Rol
@@ -30,7 +32,7 @@ def handler403(request, exception, template_name='403.html'):
 @login_required
 @permission_required('usuario.crear_rol', raise_exception=True)
 # === crear rol ===
-def crear_rol_view(request):
+def crear_rol_view(request, id_fase):
     """
     Permite la visualizacion de la plantilla para la creacion de instancias del modelo Group.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -39,42 +41,46 @@ def crear_rol_view(request):
     if request.method == 'POST':
         form = GroupForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('rol:rol_lista')
+            group = form.save()
+            rol = Rol.objects.create(nombre=group.name, group=group, fase=get_object_or_404(Fase, pk=id_fase))
+            return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         form = GroupForm()
     return render(request, 'rol/rol_crear.html', {'form': form})
 
 
-@login_required
-@permission_required('usuario.ver_rol', raise_exception=True)
-# === rol opciones ===
-def rol_opciones(request):
-    """
-    Permite la visualizacion de las opciones sobre el modelo Group.<br/>
-    **:param request:** Recibe un request por parte un usuario.<br/>
-    **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
-    """
-    return render(request, 'rol/rol_opciones.html')
+# @login_required
+# @permission_required('usuario.ver_rol', raise_exception=True)
+# # === rol opciones ===
+# def rol_opciones(request):
+#     """
+#     Permite la visualizacion de las opciones sobre el modelo Group.<br/>
+#     **:param request:** Recibe un request por parte un usuario.<br/>
+#     **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
+#     """
+#     return render(request, 'rol/rol_opciones.html')
 
 # === listar roles ===
-class ListaRol(PermissionRequiredMixin, ListView):
-    """
-    Permite la visualizacion de todas las intancias del modelo Group.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
-    **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-    **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
-    """
-    paginate_by = 3
-    model = Group
-    template_name = 'rol/rol_lista.html'
-    permission_required = 'usuario.listar_rol'
+def lista_rol(request, id_fase):
+    return render(request, 'rol/rol_lista.html', {'object_list':Rol.objects.filter(fase=get_object_or_404(Fase, pk=id_fase))})
 
-    # La lista a mostrar estara por orden ascendente
-    #class Meta:
-        #ordering = ['-id']
-    def get_queryset(self):
-        return Group.objects.order_by('id').distinct()
+# class ListaRol(PermissionRequiredMixin, ListView):
+#     """
+#     Permite la visualizacion de todas las intancias del modelo Group.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
+#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+#     **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
+#     """
+#     paginate_by = 3
+#     model = Group
+#     template_name = 'rol/rol_lista.html'
+#     permission_required = 'usuario.listar_rol'
+
+#     # La lista a mostrar estara por orden ascendente
+#     #class Meta:
+#         #ordering = ['-id']
+#     def get_queryset(self):
+#         return Group.objects.order_by('id').distinct()
 
 @permission_required('usuario.listar_rol', raise_exception=True) 
 def search(request):
@@ -98,18 +104,36 @@ def search(request):
     return render(request, template, {'page_obj': page_obj})
 
 # === editar rol ===
-class EditarRol(PermissionRequiredMixin, UpdateView):
-    """
-    Permite la modificacion de una instancia del modelo Group.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:return:** Se modifica la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
-    """
-    model = Group
-    form_class = GroupForm
-    permission_required = 'usuario.editar_rol'
-    template_name = 'rol/rol_editar.html'
-    success_url = reverse_lazy('rol:rol_lista')
+def editar_rol(request, pk):
+    rol = get_object_or_404(Rol, pk=pk)
+    group = rol.group
+    form = GroupForm(request.POST or None, instance = group)
+    if form.is_valid():
+        group = form.save()
+        rol.group = group
+        return redirect('rol:rol_lista', id_fase=id_fase)
+    return render(request,'rol/rol_crear.html', {'form':form}) 
+
+def eliminar_rol(request, pk):
+    rol = get_object_or_404(Rol, pk=pk)
+    id_fase = rol.fase.pk
+    rol.delete()
+    return redirect('rol:rol_lista', id_fase=id_fase)
+
+
+
+# class EditarRol(PermissionRequiredMixin, UpdateView):
+#     """
+#     Permite la modificacion de una instancia del modelo Group.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:return:** Se modifica la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
+#     """
+#     model = Group
+#     form_class = GroupForm
+#     permission_required = 'usuario.editar_rol'
+#     template_name = 'rol/rol_editar.html'
+#     success_url = reverse_lazy('rol:rol_lista')
 
 # === eliminar rol ===
 class EliminarRol(PermissionRequiredMixin, DeleteView):
