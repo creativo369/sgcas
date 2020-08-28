@@ -9,7 +9,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="form-group">
                     <label>Nombre del rol:</label>
-                    <input class="form-control" type="text" name="name">
+                    <p>{{form.name }}</p>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="form-group">
                         <button class="btn btn-primary " type="submit">Crear</button>
-                        <a class="btn btn-default" href="{% url 'rol:rol_lista' %}">Cancelar</a>
+                        <a class="btn btn-default" href="#" onclick="window.history.back()">Cancelar</a>
                     </div>
                 </div>
             </div>

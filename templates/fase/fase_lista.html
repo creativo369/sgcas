@@ -56,8 +56,6 @@
                                    href="{% url 'linea_base:crear_linea' id_fase=fase.id %}">Crear</a>
                                 <a class="dropdown-item" href="{% url 'linea_base:linea_lista' fase.id %}">Lista de
                                     LB</a>
-
-                                {#                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>#}
                             </div>
                         </div>
                         <div class="dropdown" style="display: inline">
@@ -68,11 +66,9 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item"
-                                   href="{% url 'linea_base:crear_linea' id_fase=fase.id %}">Crear</a>
-                                <a class="dropdown-item" href="{% url 'linea_base:linea_lista' fase.id %}">Lista de
-                                    LB</a>
-
-                                {#                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>#}
+                                   href="{% url 'rol:rol_crear' id_fase=fase.id %}">Crear</a>
+                                <a class="dropdown-item" href="{% url 'rol:rol_lista' id_fase=fase.id %}">Lista de
+                                    Roles</a>
                             </div>
                         </div>
                         <div class="dropdown" style="display: inline">
