@@ -114,6 +114,7 @@ def editar_rol(request, pk):
         return redirect('rol:rol_lista', id_fase=id_fase)
     return render(request,'rol/rol_crear.html', {'form':form}) 
 
+# === Eliminar rol
 def eliminar_rol(request, pk):
     rol = get_object_or_404(Rol, pk=pk)
     id_fase = rol.fase.pk
@@ -136,17 +137,17 @@ def eliminar_rol(request, pk):
 #     success_url = reverse_lazy('rol:rol_lista')
 
 # === eliminar rol ===
-class EliminarRol(PermissionRequiredMixin, DeleteView):
-    """
-    Permite la eliminacion de una instancia del modelo Group.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
-    **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-    **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
-    """
-    model = Group
-    template_name = 'rol/rol_eliminar.html'
-    permission_required = 'usuario.eliminar_rol'
-    success_url = reverse_lazy('rol:rol_lista')
+# class EliminarRol(PermissionRequiredMixin, DeleteView):
+#     """
+#     Permite la eliminacion de una instancia del modelo Group.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
+#     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
+#     **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
+#     """
+#     model = Group
+#     template_name = 'rol/rol_eliminar.html'
+#     permission_required = 'usuario.eliminar_rol'
+#     success_url = reverse_lazy('rol:rol_lista')
 
 # === Indice de la documentación de la Aplicación rol  === <br/>
 # 1.apps     : [[apps.py]]<br/>
