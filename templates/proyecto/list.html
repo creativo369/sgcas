@@ -33,9 +33,11 @@
                     <td>
                         <a type="button" class="btn btn-info" href="{% url 'proyecto:detail' proyecto.id %}">Más
                             Detalles</a>
-                        {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado' %}
-                            <a type="button" class="btn btn-info" href="{% url 'proyecto:change' proyecto.id %}">
+                        {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado'  %}
+                           {% if request.user == proyecto.gerente %}
+                                <a type="button" class="btn btn-info" href="{% url 'proyecto:change' proyecto.id %}">
                                 Transici&oacute;n del Proyecto</a>
+                               {% endif %}
                         {% endif %}
 
                     </td>

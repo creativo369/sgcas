@@ -31,3 +31,5 @@ urlpatterns = [
 # 3.tests    : [[tests.py]]<br/>
 # 4.urls     : [[urls.py]]<br/>
 # 5.views    : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

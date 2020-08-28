@@ -13,3 +13,5 @@ class LineaBaseConfig(AppConfig):
 # 4.tests   : [[tests.py]]<br/>
 # 5.urls    : [[urls.py]]<br/>
 # 6.views   : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

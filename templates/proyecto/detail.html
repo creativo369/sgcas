@@ -34,25 +34,29 @@
     </table>
     <a type="button" class="btn btn-secondary" href="{% url 'proyecto:list' %}">Salir</a>
     {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado'%}
+        {% if request.user == proyecto.gerente %}
         <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
         <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
+        {% endif %}
         <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
-        
+
             <div class="dropdown" style="display: inline">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
             Fases
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+D
            {% if proyecto.estado == 'Pendiente' %} 
+
             <a class="dropdown-item" href="{% url 'fase:crear_fase' _id=proyecto.id %}">Crear fase</a>
+            {% endif %}
             <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
             {% else %}
             <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
          {% endif %}
         </div>
     </div>
-       
     {% endif %}
 
 {% endblock content %}

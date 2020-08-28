@@ -12,3 +12,5 @@ class UsuarioConfig(AppConfig):
 # 5.tests       : [[tests.py]]<br/>
 # 6.urls        : [[urls.py]]<br/>
 # 7.views       : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

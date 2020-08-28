@@ -49,17 +49,21 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 {% if request.user.is_active %}
-                    <img src="/static/img/sgcas.png">
-                    <a class="navbar-brand" href="#">SGCAS</a>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Usuario
+                <img src="/static/img/sgcas.png">
+                <a class="navbar-brand" href="#">SGCAS</a>
 
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
                             <span class="sr-only">(current)</span></a>
                     </li>
+                    {% if request.user.is_superuser == False %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
+
                         <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
                                 class="badge badge-primary badge-pill">
 
@@ -68,40 +72,45 @@
                                         {% endif %}
                                     </span></a>
                     </li>
+                    {% if request.user.is_superuser == False %}
                     <li class="nav-item">
                         <a class="nav-link" href="/faq/faq">FAQs</a>
                     </li>
+                    {% endif %}
                 {% endif %}
 
             </ul>
             <!--        {#-->
-<!--        <form class="form-inline my-2 my-lg-0" class="nav-item"> #}-->
+            <!--        <form class="form-inline my-2 my-lg-0" class="nav-item"> #}-->
             <!--            {#<input class="form-control mr-sm-2" type="text" placeholder="Buscar"> #}-->
             <!--            {#-->
-<!--            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>-->
-<!--            #}-->
+            <!--            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>-->
+            <!--            #}-->
             <!--            {#-->
-<!--        </form>-->
-<!--        #}-->
-            {% if request.user.is_superuser == True %}
-                <a class="btn btn-primary" href="/admin/">{% trans 'Admin Panel' %}</a>
-            {% endif %}
 
+            <!--        </form>-->
+            <!--        #}-->
         </div>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown show">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">{{ request.user }}</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
-                <form method="post" action="{% url 'account_logout' %}">
-                    {% csrf_token %}
-                    {% if redirect_field_value %}
-                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="true">{{ request.user }}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% if request.user.is_superuser == False %}
+                    <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
                     {% endif %}
-                    <button class="dropdown-item" type="submit">{% trans 'Cerrar sesión' %}</button>
-                </form>
-            </div>
-          </li>
+                    {% if request.user.is_superuser == True %}
+                     <a class="dropdown-item" href="/admin/">{% trans 'Admin Panel' %}</a>
+                    {% endif %}
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+                        <button class="dropdown-item" type="submit">{% trans 'Cerrar sesión' %}</button>
+                    </form>
+                </div>
+            </li>
         </ul>
     </nav>
 {% endblock %}
@@ -109,24 +118,13 @@
     {% block content %}
     {% endblock content %}
 </div>
-
-<!--{% block footer %}-->
-    <!--{#-->
-<!--<div class="footer">#}-->
-    <!--    {#-->
-<!--    <blockquote class="blockquote text-center">#}-->
-    <!--        {# <p class="mb-0">Sistema de Gestión de Artefactos de Software</p>#}-->
-    <!--        {# <p class="mb-0">Equipo 07</p>#}-->
-    <!--        {#-->
-<!--        <footer class="blockquote-footer">Ingeniería de Software II, Año 2020</footer>-->
-<!--        #}-->
-    <!--        {#-->
-<!--    </blockquote>-->
-<!--    #}-->
-    <!--    {#-->
-<!--</div>-->
-<!--#}-->
-    <!--{% endblock footer %}-->
+{#{% block footer %}#}
+{#    <div class="footer">#}
+{#    <blockquote class="blockquote text-center">#}
+{#    <a class="btn btn-outline-secondary" href="asda">Documentación</a>#}
+{#    </blockquote>#}
+{#    </div>#}
+{#    {% endblock footer %}#}
 {% block extrajs %}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

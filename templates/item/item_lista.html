@@ -2,7 +2,6 @@
 {% block title %} Listar item {% endblock %}
 
 {% block content %}
-
     <form method="GET" action="{% url 'item:search' fase.id %}">
         <div id="custom-search-input">
             <div class="input-group col-md-12">
@@ -12,7 +11,7 @@
                 <span class="input-group-list">
                             <i class="icon icon-search"></i>
                             <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
-                        </span>
+                </span>
             </div>
         </div>
     </form>

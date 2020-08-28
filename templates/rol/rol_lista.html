@@ -32,10 +32,11 @@
           <td>
             {% for p in rol.group.permissions.all %}
               {% if forloop.first %}
+
                 {{ p.name }}
-              {% else %}
+              {#% else %#}
                 , {{ p.name }}
-              {% endif %}
+              {#% endif %#}-->
             {% endfor %}
           </td>
 		      <td>
@@ -72,4 +73,5 @@
 
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
+
 {% endblock content %}

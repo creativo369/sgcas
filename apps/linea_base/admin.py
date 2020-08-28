@@ -17,4 +17,4 @@ class LineaBaseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 admin.site.register(LineaBase, LineaBaseAdmin)
 
-# Register your models here.
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

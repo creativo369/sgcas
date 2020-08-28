@@ -22,6 +22,7 @@ Actualmente se despliega en las plantillas 7 vistas:
 7. **fase_modificar** - permite efectuar modificaciones a una determinada fase (Ir a la sección: [[views.py #fase modificar]] )
 """
 
+
 # === crear fase ===
 class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     """
@@ -37,8 +38,11 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     success_url = 'fase:fase_lista'
 
     def get(self, request, *args, **kwargs):
-        form = FaseForm(_id=kwargs.get('_id'))
-        return render(request, self.template_name, {'form': form})
+        proyecto = Proyecto.objects.get(pk=kwargs.get('_id'))
+        if proyecto.estado != 'Iniciado':
+            form = FaseForm(_id=kwargs.get('_id'))
+            return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'proyecto': proyecto})
 
     def post(self, request, *args, **kwargs):
         id_proyecto = kwargs.pop('_id')
@@ -99,6 +103,7 @@ def lista_fase(request, _id):
     }
     return render(request, 'fase/fase_lista.html', context)
 
+
 @permission_required('fase.listar_fase', raise_exception=True)
 # === search ===
 def search(request, _id):
@@ -113,10 +118,12 @@ def search(request, _id):
     proyecto = Proyecto.objects.get(id=_id)
 
     if query:
-        results = Fase.objects.filter(Q(proyecto=proyecto) & (Q(nombre__icontains=query) | Q(descripcion__contains=query))).order_by('id').distinct()
+        results = Fase.objects.filter(
+            Q(proyecto=proyecto) & (Q(nombre__icontains=query) | Q(descripcion__contains=query))).order_by(
+            'id').distinct()
     else:
         results = Fase.objects.filter(Q(proyecto=proyecto)).order_by('id').distinct()
-    
+
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -193,3 +200,5 @@ def fase_modificar(request, pk, _id, *args, **kwargs):
 # 5.tests   : [[tests.py]]<br/>
 # 6.urls    : [[urls.py]]<br/>
 # 7.views   : [[views.py]]<br/>
+
+# Regresar al menu principal : [Menú Principal](../../docs-index/index.html)

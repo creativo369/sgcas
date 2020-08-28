@@ -4,17 +4,17 @@
 {{ form.non_field_error }}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <div class="card">
+        <br>
+        {% if request.user.id == proyecto.gerente_id %}
             <div class="card-header">
                 <strong>Formulario de Registro</strong>
             </div>
             <div class="card-body card-block">
-                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3">{{ formulario.nombre.label }}:</div>
-                        <div class="col-12 col-md-9">{{ formulario.nombre }}</div>
+                <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ formulario.nombre.label }}:</div>
+                            <div class="col-12 col-md-9">{{ formulario.nombre }}</div>
                     </div>
                     <div class="row form-group">
                         <div class="col col-md-3">{{ formulario.descripcion.label }}:</div>
@@ -28,9 +28,15 @@
                         <div class="text-center">
                             <input type="submit" value="Crear" class="btn btn-success" onclick="return checkMiembros();">
                             <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
+                            </div>
                         </div>
-                    </div>
+                </form>
             </div>
+            {% else %}
+                <p align="center" class="badge badge-danger">Usted no es el gerente! Solamente el gerente puede crear un comit&eacute; de un proyecto</p>
+                <br>
+                <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Volver atr&aacute;s</a>
+        {% endif %}
     </form>
     <script type="text/javascript">
         function checkMiembros(){
@@ -44,4 +50,3 @@
         }
     </script>
 {% endblock %}
-
