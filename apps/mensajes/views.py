@@ -22,6 +22,7 @@ class Mensajes(ListView):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Renderiza la plantilla mensaje_lista.html con las instancias del modelo User de estado inactivo.<br/>
     """
+
     paginate_by = 4
     model = User
     template_name = 'mensajes/mensajes_lista.html'

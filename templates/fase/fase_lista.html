@@ -38,7 +38,7 @@
                                     data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                 Item
-                            </button>
+                            </button>                       
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{% url 'item:crear_item' id_fase=fase.id %}">Crear</a>
                                 <a class="dropdown-item" href="{% url 'item:item_lista' id_fase=fase.id %}">Lista de
@@ -95,7 +95,9 @@
                                 <a class="dropdown-item" href="{% url 'fase:fase_detalles' fase.id %}">Detalles</a>
                                 <a class="dropdown-item" href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
                                 <a class="dropdown-item" href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>
-                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
+                                {% if proyecto.estado != 'Iniciado' %}
+                                    <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
+                                {% endif %}                                
                             </div>
                         </div>
                         {#                        <a type="button" class="btn btn-outline-warning"#}

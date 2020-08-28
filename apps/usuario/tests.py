@@ -2,6 +2,7 @@ from django.test import TestCase
 from apps.usuario.models import User
 
 
+
 class UsuarioTestCrear(TestCase):
     def setUp(self):
         self.username_modificado = 'username-modificado'

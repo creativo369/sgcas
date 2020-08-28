@@ -36,10 +36,12 @@ class FormularioComite(forms.ModelForm):
         # **Aparatos para formatear un formulario con el respectivo campo**
         # Para obtener los datos y almacenar en la base de datos
         widgets = {
+
             'nombre': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': 'Asigne un nombre al comité'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control',
                                             'placeholder': 'Agregue una breve descripción'}),
+
             'miembros': forms.CheckboxSelectMultiple(),
         }
 

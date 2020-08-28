@@ -58,12 +58,14 @@ class FaseForm(forms.ModelForm):
 class FaseUpdateForm(forms.ModelForm):
     # Para read-only los fields nombre y estado
     def __init__(self, *args, **kwargs):
+        miembros_query = kwargs.pop('miembros')
         """
         Constructor de la clase para obtener el diccionario de los datos de la instancia del formulario de una fase<br/>
         **:param args:** <br/>
         **:param kwargs:** recibe el diccionario con los datos de la fase <br/>
         """
         super(FaseUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['miembros'].queryset = miembros_query
         # fields representa los campos que no son editables de acuerdo al estado de la fase
         fields = ['estado']
         if 'instance' in kwargs:

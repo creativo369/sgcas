@@ -19,6 +19,7 @@ class FaseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 # Registra la aplicación en Django
 admin.site.register(Fase, FaseAdmin)
 
+
 # **Ir a la documentación del registro de la Aplicación en Django** :[[apps.py]]
 
 # **Ir al final de la documentación** : [[views.py]]

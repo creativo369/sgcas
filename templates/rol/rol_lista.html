@@ -2,7 +2,7 @@
 {% block title %} Listar roles {% endblock%}
 
 {% block content %}
-<form method="GET" action="{% url 'rol:search' %}">
+<form method="GET" action="{% url 'rol:search' fase.id %}">
         <div id="custom-search-input">
                     <div class="input-group col-md-12">
                         <input type="text" class="form-control search-users" placeholder="Ingrese el nombre del rol" name="buscar" value="{{ request.GET.buscar }}">
@@ -23,9 +23,10 @@
     </tr>
   </thead>
   <tbody>
-    {% if object_list %}
-    	{% for rol in object_list %}
+    {% if page_obj %}
+    	{% for rol in page_obj %}
 			<tr>
+
 <!-- 		  {#    <td>{{rol.id}}</td> #} -->
 		      <td>{{rol}}</td>
           <td>
@@ -49,6 +50,7 @@
     {% endif %}
   </tbody>
 </table> 
+
     <div class="text-center">
         <div class="pagination">
             <span class="step-links">
@@ -66,5 +68,11 @@
             </span>
         </div>
       </div>
-      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>
+{#<<<<<<< HEAD#}
+{#      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>#}
+{#=======#}
+
+     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
+        proyecto</a>
+{#>>>>>>> origin/guillermo#}
 {% endblock content %}

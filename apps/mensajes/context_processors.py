@@ -7,6 +7,7 @@ def count_inactive_users(request):
     **:param request:** la solicitud del cliente url <br/>
     **:return:** la cantidad de usuarios inactivos en el sistema. <br/>
     """
+
     total_users = User.objects.all().exclude(username='AnonymousUser')
     inactive_users = 0
     for user in total_users:

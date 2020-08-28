@@ -1,6 +1,11 @@
 {% extends 'base/base.html'%}
 
 {% block content%}
-<h1>Acceso Denegado</h1>
-<h3>{{ request.user }}. No le esta permitido llevar a cabo esta acci&oacute;n.</h3>
+<br>
+<br>
+<div class="alert alert-danger alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="window.history.back()">&times;</a>
+  <div><strong>Acceso Denegado!</strong> </div>
+  <div>{{ request.user }}. No le esta permitido llevar a cabo esta acci&oacute;n.</div>
+</div>
 {% endblock content %}

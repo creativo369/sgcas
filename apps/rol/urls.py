@@ -4,23 +4,25 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
 from apps.rol.views import crear_rol_view, lista_rol,search, editar_rol, eliminar_rol
 
+
 # **Vistas**
 
-# **1.Opciones :** Vista que despliega la gestión de roles<br/>
-# **2.lista :** Vista que despliega la lista de roles existentes en el sistema<br/>
-# **3.eliminar rol :** Vista que despliega eliminar un rol<br/>
-# **4.crear rol :** Vista que despliega la definición de un rol<br/>
-# **5.modificar rol :** Vista que despliega modificar un rol<br/>
+
+# **1.lista :** Vista que despliega la lista de roles existentes en el sistema<br/>
+# **2.eliminar rol :** Vista que despliega eliminar un rol<br/>
+# **3.crear rol :** Vista que despliega la definición de un rol<br/>
+# **4.modificar rol :** Vista que despliega modificar un rol<br/>
+# **5.search :** Vista que despliega una lista de roles buscados.<br/>
 urlpatterns = [
     # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
-    # url(r'^opciones/', login_required(rol_opciones), name='rol_opciones'),
-    url(r'^lista/(?P<id_fase>\d+)/$', login_required(lista_rol), name='rol_lista'),
-    url(r'^results/$', login_required(search), name='search'),
-    # url(r'^eliminar/(?P<pk>\d+)/$', login_required(EliminarRol.as_view()), name='rol_eliminar'),
+   
+    url(r'^lista/(?P<id_fase>\d+)/$', login_required(lista_rol), name='rol_lista'),     
     url(r'^eliminar-rol/(?P<pk>\d+)/$', login_required(eliminar_rol), name='rol_eliminar'),
     url(r'^crear/(?P<id_fase>\d+)/$', login_required(crear_rol_view), name='rol_crear'),
     url(r'^modificar-rol/(?P<pk>\d+)/$', login_required(editar_rol), name='rol_editar'),
-    # url(r'^modificar/(?P<pk>\d+)/$', login_required(EditarRol.as_view(model=Group, )), name='rol_editar'),)
+    url(r'^results/(?P<id_fase>\d+)/$', login_required(search), name='search'),   
+    
+
 ]
 
 # === Indice de la documentación de la Aplicación rol  === <br/>

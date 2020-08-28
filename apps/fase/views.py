@@ -172,7 +172,7 @@ def eliminar_fase(request, pk, _id):
 
 @permission_required('fase.editar_fase', raise_exception=True)
 # === fase modificar ===
-def fase_modificar(request, pk, _id):
+def fase_modificar(request, pk, _id, *args, **kwargs):
     """
     Permite la modificación de una instancia de objecto fase.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -181,11 +181,12 @@ def fase_modificar(request, pk, _id):
     **:return:** Se modifica la instancia de fase para luego redirigirse a la lista de fases del proyecto.<br/>
     """
     fase = get_object_or_404(Fase, id=pk)
-    form = FaseUpdateForm(request.POST or None, instance=fase)
+    miembros_proyecto_queryset = fase.proyecto.miembros.all()
+    form = FaseUpdateForm(request.POST or None, instance=fase, miembros=miembros_proyecto_queryset)
     if form.is_valid():
         form.save()
         return redirect('fase:fase_lista', _id=_id)
-    return render(request, 'fase/fase_crear.html', {'form': form})
+    return render(request, 'fase/fase_modificar.html', {'form': form})
 
 # **Volver atras** : [[forms.py]]
 

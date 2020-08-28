@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -16,6 +17,7 @@ from .forms import FormularioProyecto, FormularioProyectoUpdate, ChangeProject
 
 """
 Todas las vistas para la aplicación del Modulo Proyecto
+
 Actualmente se despliega en las plantillas 9 vistas:
 
 1. **manage_projects** - vista que despliega gestión de proyectos (Ir a la sección: [[views.py #manage_projects]] )<br/>
@@ -27,6 +29,7 @@ Actualmente se despliega en las plantillas 9 vistas:
 7. **UpdateProject** - vista que despliega la opción de actualizar un proyecto (Ir a la sección: [[views.py #update project]] )<br/>
 8. **DeleteProject** - vista que despliega el borrado de un proyecto (Ir a la sección: [[views.py #delete project]] )<br/>
 9. **DetailProject** - vista que despliega los detalles referentes a un proyecto (Ir a la sección: [[views.py #detail project]] )<br/>
+
 """
 
 
@@ -57,6 +60,7 @@ def success(request):
 # === change_state ===
 def change_state(request, pk):
     """
+
     Vista basada en función donde desplegamos en una plantilla las diferentes transaciónes que pasa un proyecto.<br/>
     para el registro de sus cambios de estado.<br/>
     **:param request:** Solicitud del cliente para el cambio de estado.<br/>
@@ -69,6 +73,7 @@ def change_state(request, pk):
         form.save()
         return redirect('proyecto:list')
     return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
+
 
 
 # === create project ===
@@ -94,10 +99,13 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         **:return:** guarda los datos en la base de datos y redirige a una plantilla de Operación exitosa<br/>
         """
         self.object = form.save(commit=False)
+
         self.object.gerente = self.request.user  # intuimos que el creador del proyecto va ser el gerente
+
         self.object.save()
         form.save_m2m()  # Para guardar as relaciones manytomany
         return HttpResponseRedirect(self.get_success_url())
+
 
 
 # === list project ===
@@ -110,6 +118,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Una vista de todos los proyectos.<br/>
     """
+
     paginate_by = 4
     model = Proyecto
     permission_required = 'proyecto.ver_proyecto'
@@ -119,6 +128,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
         # Queryset que muestra los proyectos del que el usuario forma parte
         return Proyecto.objects.filter(Q(gerente=self.request.user) | Q(miembros=self.request.user)).order_by(
             'id').distinct()
+
 
 
 @permission_required('proyecto.ver_proyecto', raise_exception=True)
@@ -146,6 +156,7 @@ def search(request):
     return render(request, template, {'page_obj': page_obj})
 
 
+
 # === update project ===
 class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     """
@@ -163,12 +174,15 @@ class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
 
     def form_valid(self, form):
         """
+
         Función que valida los campos requeridos fueron completados y los guarda en la base de datos.<br/>
         **:param form:** recibe el formulario con los datos.<br/>
         **:return:** redirige a la instancia del modelo proyecto en la plantilla de detalles de proyecto.<br/>
+
         """
         object = form.save()
         return redirect('proyecto:detail', pk=object.pk)
+
 
 
 # === delete project ===
@@ -185,6 +199,7 @@ class DeleteProject(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     template_name = 'proyecto/delete.html'
     permission_required = 'proyecto.eliminar_proyecto'
     success_url = reverse_lazy('proyecto:list')
+
 
 
 # === detail project ===

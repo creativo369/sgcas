@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+
 from django.conf.urls import url, handler403
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -51,10 +52,17 @@ if desarrollo.DEBUG:
     path("signup/", views.signup, name="account_signup"),
     path("login/", views.login, name="account_login"),
 <<<<<<< HEAD
+
+    path("logout/", views.logout, name="account_logout"),
+>>>>>>> origin/guillermo
+
+=======
+<<<<<<< HEAD
     path('logout/', views.logout, name="account_logout"),
 =======
     path("logout/", views.logout, name="account_logout"),
 >>>>>>> origin/guillermo
+>>>>>>> 9de1af86a9d6e911ed13280b7cc8d7d8dc58a668
     path("password/change/", views.password_change,
          name="account_change_password"),
     path("password/set/", views.password_set, name="account_set_password"),
@@ -78,3 +86,5 @@ if desarrollo.DEBUG:
     path("password/reset/key/done/", views.password_reset_from_key_done,
          name="account_reset_password_from_key_done"),
 """
+
+

@@ -5,6 +5,7 @@ from django.urls import path
 from apps.usuario.views import usuario_opciones, usuario_view, UsuarioLista, RegistrarUsuario, ActualizarUsuario, \
     EliminarUsuario, search
 
+
 app_name='administracion'
 # ** Vistas: **
 

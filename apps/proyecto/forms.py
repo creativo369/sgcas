@@ -20,7 +20,9 @@ class FormularioProyecto(forms.ModelForm):
         super(FormularioProyecto, self).__init__(*args, **kwargs)
         self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True)).exclude(username='AnonymousUser')
         #queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
+
         campos = ['fecha_creacion', 'estado']        
+
         for field in campos:
             self.fields[field].required = False
             self.fields[field].disabled = True
@@ -36,6 +38,7 @@ class FormularioProyecto(forms.ModelForm):
             'estado',
 
         ]
+
 
         # Las etiquetas que tendrá para visualizarse en el navegador<br/>
         labels = {

@@ -11,6 +11,7 @@ ALLOWED_HOSTS = ['sgcas.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
         'NAME': 'dao28eim3euv24',
         'USER': 'cmpwlzhuwkgxjm',
         'PASSWORD': '858c4b358153c790af1c66bdd2f2306a161d9587f9d8d157d0e7c22c9fe576e3',

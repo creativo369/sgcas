@@ -36,8 +36,10 @@ class Fase(models.Model):
             ("ver_fase", "ver_fase"),
             ("detalles_fase", "detalles_fase"),
         ]
+
         verbose_name = 'Fase'
         verbose_name_plural = 'Fases'
+
 
     def __str__(self):
         """

@@ -2,7 +2,7 @@
 {% block title %} B&uacute;squeda de Roles {% endblock%}
 
 {% block content %}
-<form method="GET" action="{% url 'rol:search' %}">
+<form method="GET" action="{% url 'rol:search' fase.id %}">
         <div id="custom-search-input">
                     <div class="input-group col-md-12">
                         <input type="text" class="form-control search-users" placeholder="Ingrese una parte del nombre del rol." name="buscar" value="{{ request.GET.buscar }}">
@@ -22,14 +22,15 @@
       <th scope="col">Opciones</th>
     </tr>
   </thead>
-  <tbody>
+<tbody>
     {% if page_obj %}
-    	{% for rol in page_obj %}
-			<tr>
-		  {#  <td>{{rol.id}}</td> #}
-		      <td>{{rol.name}}</td>
+      {% for rol in page_obj %}
+      <tr>
+
+<!--      {#    <td>{{rol.id}}</td> #} -->
+          <td>{{rol}}</td>
           <td>
-            {% for p in rol.permissions.all %}
+            {% for p in rol.group.permissions.all %}
               {% if forloop.first %}
                 {{ p.name }}
               {% else %}
@@ -37,15 +38,15 @@
               {% endif %}
             {% endfor %}
           </td>
-		      <td>
+          <td>
            <!-- <a type="button" class="btn btn-warning" href="#">Permisos</a> -->
-		       <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id %}">Editar</a>
+           <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id %}">Editar</a>
            <a type="button" class="btn btn-danger" href="{% url 'rol:rol_eliminar' rol.id %}">Eliminar</a>
           </td>
-		    </tr>
-    	{% endfor %}
+        </tr>
+      {% endfor %}
     {% else %}
-    	<h2>No se encontraron registros de roles.</h2>
+      <h2>No se encontraron registros de roles.</h2>
     {% endif %}
   </tbody>
 </table> 

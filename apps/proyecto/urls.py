@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.conf.urls import url
 
+
 from django.contrib.auth.decorators import login_required, permission_required
 from apps.proyecto.views import manage_projects, CreateProject, ListProject, UpdateProject, DeleteProject, \
     success, DetailProject, change_state, search

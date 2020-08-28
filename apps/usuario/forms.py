@@ -82,7 +82,9 @@ class UserForm(forms.ModelForm):
 
         if u.is_active and inactivo_previo:
             subject = 'Registro SGCAS'
+
             message = 'Hola ' + u.username + '!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS'
+
             send_mail(
                 subject,
                 message,
@@ -91,6 +93,7 @@ class UserForm(forms.ModelForm):
                 fail_silently=False,
             )
         return u
+
 
 
 class FormularioUsuarioActivar(UserForm):

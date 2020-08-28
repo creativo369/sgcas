@@ -36,8 +36,10 @@ class Comite(models.Model):
             ("agregar_usuario_comite", "agregar_usuario_comite"),
             ("quitar_usuario_comite", "quitar_usuario_comite"),
         ]
+
         verbose_name = 'Comité'
         verbose_name_plural = 'Comites'
+
 # **Volver atras** : [[forms.py]]
 
 # **Ir a la documentación de pruebas unitarias del modulo comité** : [[tests.py]]

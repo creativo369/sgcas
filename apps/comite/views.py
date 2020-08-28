@@ -15,11 +15,16 @@ from ..proyecto.models import Proyecto
 Todas las vistas para la aplicación del Modulo Comité
 Actualmente se despliega en las plantillas 5 vistas:
 
+
+
+
 1. **success** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py #success]] )
 2. **CreateComite** - definición de una instancia del modelo comité (Ir a la sección: [[views.py #create comite]] )
 3. **UpdateComite** - modificar una instancia del modelo comité (Ir a la sección: [[views.py #update comite]] )
 4. **DeleteComite** - suprimir una instancia del modelo comité (Ir a la sección: [[views.py #delete comite]] )
 5. **DetailComite** - ver detalles de una instancia del modelo comité (Ir a la sección: [[views.py #detail comite]] )
+
+
 """
 
 
@@ -32,6 +37,7 @@ def success(request):
     **:return:** plantilla mostrando la operación exitosa.<br/>
     """
     return render(request, 'comite/success.html')
+
 
 
 # === create comite ===
@@ -52,11 +58,13 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 
     def get(self, request, *args, **kwargs):
         """
+
         Obtiene el formulario de creación de un comité para validar que un proyecto tenga previamente un comité.<br/>
         **:param request:** recibe la petición del cliente que solicita crear un comite para la instancia del proyecto.<br/>
         :param args:<br/>
         **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
+
         """
         comite_query = Comite.objects.filter(proyecto=Proyecto.objects.get(id=kwargs.get('_id')))
         proyecto_query = Proyecto.objects.get(id=kwargs.get('_id'))
@@ -77,11 +85,13 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         """
+
         Almacena los datos obtenidos del formulario en la base de datos.<br/>
         **:param request:** La petición del cliente.<br/>
         **:param args:**<br/>
         **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo comite.<br/>
         **:return:** Redirige a la plantilla de Operación exitosa de la creación de un comité.<br/>
+
         """
         id_proyecto = kwargs.pop('_id')  # Guardamos en una variable el id del proyecto
         form = FormularioComite(request.POST, _id=id_proyecto)
@@ -92,6 +102,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
             comite.save()
             form.save_m2m()
         return redirect(self.success_url, pk=id_proyecto)
+
 
 
 # === update comite ===
@@ -127,12 +138,14 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
 
     def form_valid(self, form):
         """
+
         Función que valida el formulario y lo guarda y redirige a una plantilla en caso de ser exitosa.<br/>
         **:param form:** Recibe el formulario.<br/>
         **:return:** Retorna la creación exitosa del formulario.<br/>
         """
         comite = form.save()
         return redirect(self.success_url)
+
 
 
 # === delete comite ===
@@ -149,6 +162,7 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     template_name = 'comite/delete.html'
     permission_required = 'comite.eliminar_comite'
     success_url = reverse_lazy('proyecto:list')
+
 
 
 # === detail comite ===

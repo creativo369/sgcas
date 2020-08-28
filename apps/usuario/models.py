@@ -45,6 +45,7 @@ class User(AbstractUser):
             self.is_active = True
         super(User, self).save(*args, **kwargs)
 
+
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 1.apps        : [[apps.py]]<br/>
 # 2.forms       : [[forms.py]]<br/>

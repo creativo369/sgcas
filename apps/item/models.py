@@ -84,9 +84,10 @@ class Item(models.Model):
             ("calcular_impacto", "calcular_impacto"),
             ("ver_trazabilidad", "ver_trazabilidad"),
         ]
+
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
-
+        
     def __str__(self):
         """
         **Función para asignar un alias al modelo item**<br/>

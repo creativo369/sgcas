@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, permission_required
 
+
 # === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 
 # **Vistas basadas en clases**

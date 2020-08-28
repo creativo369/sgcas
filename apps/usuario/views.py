@@ -49,6 +49,7 @@ def usuario_opciones(request):
     return render(request, 'usuario/usuario_opciones.html')
 
 
+
 # === usuarios listados ===
 class UsuarioLista(PermissionRequiredMixin, ListView):
     """
@@ -57,6 +58,7 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** La vista a la plantilla usuario_lista.html con la lista de los usuarios activos en el sistema.<br/>
     """
+
     paginate_by = 4
     model = User
     template_name = 'usuario/usuario_lista.html'
@@ -117,6 +119,7 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
         return reverse_lazy('usuario:usuario_lista')
 
 
+
 # === actualizar usuario ===
 class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     """
@@ -130,6 +133,7 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     form_class = UserForm
     permission_required = 'usuario.editar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
+
 
 
 # === eliminar usuario ===

@@ -1,4 +1,3 @@
-# === Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py ===
 from django.conf.urls import url
 from apps.linea_base.views import *
 from django.contrib.auth.decorators import login_required

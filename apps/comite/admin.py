@@ -10,6 +10,7 @@ class ComiteResource(resources.ModelResource):
         model = Comite
 
 
+
 class ComiteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ['nombre']
     list_display = ('nombre', 'descripcion', 'proyecto',)

@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block title %} Editar &iacute;tem {% endblock%}
+
+{% block content %}
+    <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+        <div class="card-header">
+            {% if object %}
+                <strong>Actualización del Item {{ item.nombre }} - Configuración básica</strong>
+            {% else %}
+                <strong>Registro de Item - Configuración básica</strong>
+            {% endif %}
+        </div>
+        <div class="card-body card-block">
+            {% if tipo_item %}
+                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal"
+                ">
+                {% csrf_token %}
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.nombre.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.nombre }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.descripcion.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.estado.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.estado }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.costo.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.costo }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.usuarios_a_cargo.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.usuarios_a_cargo }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.archivo.label }}</div>
+                    <div class="col-12 col-md-9">{{ form.archivo }}
+                        {% if item.archivo %}
+                            <a aria-describedby="fileHelp" href="{{ item.archivo.url }}" target="_blank"
+                               class="btn btn-outline-primary btn-sm">Ver archivo</a>
+                            <small id="fileHelp" class="form-text text-muted">El archivo actual se eliminará si se
+                                adjunta
+                                un nuevo archivo.</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Siguiente</button>
+                    <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
+                </div>
+                </form>
+            {% else %}
+                <h1 style="text-align: center">No se encontraron Tipos de Item</h1>
+                <h5 style="text-align: center"><small class="text-muted">Se debe crear al menos un tipo de item
+                    para crear un item.</small></h5>
+                <div class="text-center">
+                    <a type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
