@@ -2,7 +2,6 @@ from django.contrib.auth.models import Group, Permission
 from django import forms
 from django.db.models import Q
 
-
 # ** Clase que despliega el formulario de registro de un rol **
 class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **

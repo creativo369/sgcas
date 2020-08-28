@@ -26,16 +26,15 @@
     {% if object_list %}
     	{% for rol in object_list %}
 			<tr>
-		  {#    <td>{{rol.id}}</td> #}
-		      <td>{{rol.name}}</td>
+<!-- 		  {#    <td>{{rol.id}}</td> #} -->
+		      <td>{{rol}}</td>
           <td>
-            {% for p in rol.permissions.all %}
-             {{ p.name }}&nbsp;&nbsp;&nbsp;
-                <!-- {#% if forloop.first %#}
-                {{ p.name }}
-              {#% else %#}
-                , {{ p.name }}
-              {#% endif %#}-->
+            {% for p in rol.group.permissions.all %}
+              {% if forloop.first %}
+                {{ p.name }}&nbsp;&nbsp;&nbsp;
+              {% else %}
+                {{ p.name }}&nbsp;&nbsp;&nbsp;
+              {% endif %}
             {% endfor %}
           </td>
 		      <td>
@@ -53,7 +52,6 @@
     <div class="text-center">
         <div class="pagination">
             <span class="step-links">
-                
                 <span class="current">
                       <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
                 </span>
