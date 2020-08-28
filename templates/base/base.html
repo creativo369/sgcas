@@ -62,6 +62,7 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
+
                         <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>
                     </li>
                     {% if request.user.is_superuser == False %}
