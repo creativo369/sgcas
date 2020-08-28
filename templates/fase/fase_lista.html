@@ -1,19 +1,23 @@
 {% extends 'base/base.html' %}
-{% block title %} Listar fases {% endblock%}
+{% block title %} Listar fases {% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
-<form method="GET" action="{% url 'fase:search' proyecto.id %}">
+    <h1 style="text-align: center">Fases del proyecto "{{ proyecto.nombre }}"</h1>
+    {% if page_obj %}
+    <form method="GET" action="{% url 'fase:search' proyecto.id %}">
         <div id="custom-search-input">
-                    <div class="input-group col-md-12">
-                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre o de la descripci&oacute;n de la fase." name="buscar" value="{{ request.GET.buscar }}">
-                        <span class="input-group-list">
-                            <i class="icon icon-search"></i>
-                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
-                        </span>
-                    </div>
-                </div>   
-</form>
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control search-users"
+                       placeholder="Ingrese el nombre o de la descripci&oacute;n de la fase." name="buscar"
+                       value="{{ request.GET.buscar }}">
+                <span class="input-group-list">
+                                <i class="icon icon-search"></i>
+                                <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
+                            </span>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-hover">
         <thead>
         <tr>
@@ -25,7 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        {% if page_obj %}
+
             {% for fase in page_obj %}
                 <tr>
                     <td>{{ fase.nombre }}</td>
@@ -38,7 +42,7 @@
                                     data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                 Item
-                            </button>                       
+                            </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{% url 'item:crear_item' id_fase=fase.id %}">Crear</a>
                                 <a class="dropdown-item" href="{% url 'item:item_lista' id_fase=fase.id %}">Lista de
@@ -80,7 +84,8 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item"
                                    href="{% url 'tipo_item:crear_tipo_item' id_fase=fase.id %}">Crear</a>
-                                <a class="dropdown-item" href="{% url 'tipo_item:tipo_item_lista' fase.id %}">Lista de TI</a>
+                                <a class="dropdown-item" href="{% url 'tipo_item:tipo_item_lista' fase.id %}">Lista de
+                                    TI</a>
 
                                 {#                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>#}
                             </div>
@@ -93,43 +98,45 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{% url 'fase:fase_detalles' fase.id %}">Detalles</a>
-                                <a class="dropdown-item" href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
+                                <a class="dropdown-item"
+                                   href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
                                 <a class="dropdown-item" href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>
                                 {% if proyecto.estado != 'Iniciado' %}
                                     <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
-                                {% endif %}                                
+                                {% endif %}
                             </div>
                         </div>
-                        {#                        <a type="button" class="btn btn-outline-warning"#}
-                        {#                           href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>#}
-                        {#                        <a type="button" class="btn btn-outline-danger"#}
-                        {#                           href="{% url 'fase:fase_eliminar' fase.id proyecto.id %} ">Eliminar</a>#}
                     </td>
                 </tr>
             {% endfor %}
-        {% endif %}
+
         </tbody>
     </table>
 
     <div class="text-center">
         <div class="pagination">
-            <span class="step-links">
-                
-                <span class="current">
-                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
-                </span>
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; Inicio</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-                {% endif %}               
+                <span class="step-links">
 
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
-                {% endif %}
-            </span>
+                    <span class="current">
+                          <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                    </span>
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; Inicio</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                    {% endif %}
+                </span>
         </div>
-      </div>
-    <a type="button" class="btn btn-link" href="{% url 'proyecto:detail' proyecto.id %}">Volver al proyecto</a>
+    </div>
+    {% else %}
+        <br><br>
+        <h3 style="text-align: center" class="table-warning">Aun no se han creado fases en el proyecto</h3>
+
+    {% endif %}
+    <center><a type="button" class="btn btn-secondary" href="{% url 'proyecto:detail' proyecto.id %}">Volver al proyecto</a></center>
 {% endblock content %}
 
 
