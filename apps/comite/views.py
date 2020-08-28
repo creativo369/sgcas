@@ -39,7 +39,6 @@ def success(request):
     return render(request, 'comite/success.html')
 
 
-
 # === create comite ===
 class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     """
@@ -54,6 +53,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'comite.crear_comite'
     template_name = 'comite/create.html'
     template_detail = 'comite/detail.html'
+    template_alert = 'comite/alert.html'
     success_url = 'proyecto:detail'
 
     def get(self, request, *args, **kwargs):
@@ -74,14 +74,14 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         if cantidad_miembros >= 3:
             if not comite_query.exists():
                 form = FormularioComite(_id=kwargs.pop('_id'))
-                proyect = proyecto_query
-                return render(request, self.template_name, {'formulario': form, 'proyecto': proyect})
+                instancia_proyecto = proyecto_query
+                return render(request, self.template_name, {'formulario': form, 'proyecto': instancia_proyecto})
             else:
                 return render(request, self.template_detail, {'comite': comite_query.first()})
         else:
             # Redirigir a template de 3 usuarios como minimo en el proyecto para
             # crear comite
-            pass
+            return render(request, self.template_alert)
 
     def post(self, request, *args, **kwargs):
         """
@@ -102,7 +102,6 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
             comite.save()
             form.save_m2m()
         return redirect(self.success_url, pk=id_proyecto)
-
 
 
 # === update comite ===
@@ -147,7 +146,6 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         return redirect(self.success_url)
 
 
-
 # === delete comite ===
 class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
@@ -162,7 +160,6 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     template_name = 'comite/delete.html'
     permission_required = 'comite.eliminar_comite'
     success_url = reverse_lazy('proyecto:list')
-
 
 
 # === detail comite ===

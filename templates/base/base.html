@@ -2,145 +2,107 @@
 {% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/team7.ico' %}">
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    {% block extracss %}
-    {% endblock %}
-    <title>{% block title %}SGCAS{% endblock %}</title>
-</head>
-<body>
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/team7.ico' %}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        {% block extracss %}
+        {% endblock %}
+        <title>{% block title %}SGCAS{% endblock title%}</title>
+    </head>
+    <body>
+    <style>
+        p {
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
 
-<style>
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #1a1a1a !important;
-        color: white;
-        text-align: center;
-        text-transform: uppercase;
-        padding-top: 20px;
-    }
+        p:hover {
+            color: #FFFFFF;
+        }
+    </style>
+    {% block navbar %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    {% if request.user.is_active %}
+                        <img src="/static/img/sgcas.png">
+                        <a class="navbar-brand" href="#">SGCAS</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
+                                <span class="sr-only">(current)</span></a>
+                        </li>
+                        {% if request.user.is_superuser == False %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
+                            </li>
+                        {% endif %}
+                        {#                    <li class="nav-item">#}
+                        {##}
+                        {#                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>#}
+                        {#                    </li>#}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
+                                    class="badge badge-primary badge-pill">
 
-    p {
-        color: rgba(255, 255, 255, 0.5);
-        text-transform: uppercase;
-    }
-
-    p:hover {
-        color: #FFFFFF;
-    }
-</style>
-
-{% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarColor01">
+                                            {% if count_inactive_users != 0 %}
+                                                {{ count_inactive_users }}
+                                            {% endif %}
+                                        </span></a>
+                        </li>
+                        {% if request.user.is_superuser == False %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/faq/faq">FAQs</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
             <ul class="navbar-nav mr-auto">
-                {% if request.user.is_active %}
-                <img src="/static/img/sgcas.png">
-                <a class="navbar-brand" href="#">SGCAS</a>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
-                            <span class="sr-only">(current)</span></a>
-                    </li>
-                    {% if request.user.is_superuser == False %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-
-                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>
-                    </li>
-                    {% if request.user.is_superuser == False %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tipo_item:tipo_item_opciones' %}">Tipo de item</a>
-                    </li>
+                <li class="nav-item dropdown show">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="true">{{ request.user }}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% if request.user.is_superuser == False %}
+                            <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
                         {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
-                                class="badge badge-primary badge-pill">
-
-                                        {% if count_inactive_users != 0 %}
-                                            {{ count_inactive_users }}
-                                        {% endif %}
-                                    </span></a>
-                    </li>
-                    {% if request.user.is_superuser == False %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/faq/faq">FAQs</a>
-                    </li>
-                    {% endif %}
-                {% endif %}
-
+                        {% if request.user.is_superuser == True %}
+                            <a class="dropdown-item" href="/admin/">{% trans 'Admin Panel' %}</a>
+                        {% endif %}
+                        <form method="post" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                            {% endif %}
+                            <button class="dropdown-item" type="submit">{% trans 'Cerrar sesión' %}</button>
+                        </form>
+                    </div>
+                </li>
             </ul>
-            <!--        {#-->
-            <!--        <form class="form-inline my-2 my-lg-0" class="nav-item"> #}-->
-            <!--            {#<input class="form-control mr-sm-2" type="text" placeholder="Buscar"> #}-->
-            <!--            {#-->
-            <!--            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>-->
-            <!--            #}-->
-            <!--            {#-->
-        </div>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown show">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                   aria-expanded="true">{{ request.user }}</a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% if request.user.is_superuser == False %}
-                    <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
-                    {% endif %}
-                    {% if request.user.is_superuser == True %}
-                     <a class="dropdown-item" href="/admin/">{% trans 'Admin Panel' %}</a>
-                    {% endif %}
-                    <form method="post" action="{% url 'account_logout' %}">
-                        {% csrf_token %}
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                        {% endif %}
-                        <button class="dropdown-item" type="submit">{% trans 'Cerrar sesión' %}</button>
-                    </form>
-                </div>
-            </li>
-        </ul>
-    </nav>
-{% endblock %}
-<div style="padding-left: 30px; padding-right: 30px">
-    {% block content %}
-    {% endblock content %}
-</div>
-{#{% block footer %}#}
-{#    <div class="footer">#}
-{#    <blockquote class="blockquote text-center">#}
-{#    <a class="btn btn-outline-secondary" href="asda">Documentación</a>#}
-{#    </blockquote>#}
-{#    </div>#}
-{#    {% endblock footer %}#}
-{% block extrajs %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-{% endblock extrajs %}
-
-</body>
+        </nav>
+    {% endblock navbar %}
+    <div style="padding-left: 30px; padding-right: 30px">
+        {% block content %}
+        {% endblock content %}
+    </div>
+        {% block extrajs %}
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                    crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                    crossorigin="anonymous"></script>
+        {% endblock extrajs %}
+    </body>
 </html>
 
