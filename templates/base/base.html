@@ -54,6 +54,7 @@
 
                     <li class="nav-item">
 
+r
                         <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
                             <span class="sr-only">(current)</span></a>
                     </li>
@@ -62,6 +63,16 @@
                         <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
                     </li>
                     {% endif %}
+                    <li class="nav-item">
+
+
+                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>
+                    </li>
+                    {% if request.user.is_superuser == False %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tipo_item:tipo_item_opciones' %}">Tipo de item</a>
+                    </li>
+                        {% endif %}
                     <li class="nav-item">
 
                         <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
@@ -87,9 +98,12 @@
             <!--            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>-->
             <!--            #}-->
             <!--            {#-->
+<<<<<<< HEAD
 
             <!--        </form>-->
             <!--        #}-->
+=======
+>>>>>>> origin/victor
         </div>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown show">

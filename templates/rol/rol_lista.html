@@ -33,10 +33,10 @@
             {% for p in rol.group.permissions.all %}
               {% if forloop.first %}
 
-                {{ p.name }}
-              {#% else %#}
-                , {{ p.name }}
-              {#% endif %#}-->
+                {{ p.name }}&nbsp;&nbsp;&nbsp;
+              {% else %}
+                {{ p.name }}&nbsp;&nbsp;&nbsp;
+
             {% endfor %}
           </td>
 		      <td>
@@ -55,7 +55,6 @@
     <div class="text-center">
         <div class="pagination">
             <span class="step-links">
-                
                 <span class="current">
                       <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
                 </span>
@@ -70,8 +69,18 @@
             </span>
         </div>
       </div>
+<<<<<<< HEAD
 
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 
+=======
+{#<<<<<<< HEAD#}
+{#      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>#}
+{#=======#}
+
+     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
+        proyecto</a>
+{#>>>>>>> origin/guillermo#}
+>>>>>>> origin/victor
 {% endblock content %}
