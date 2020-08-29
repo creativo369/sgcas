@@ -2,7 +2,7 @@
 from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
-from apps.rol.views import crear_rol_view_sistema, lista_rol, search, editar_rol, eliminar_rol
+from apps.rol.views import crear_rol_view_sistema, lista_rol, search, editar_rol, eliminar_rol, asignar_rol_usuario
 from apps.rol.views import crear_rol_view, rol_opciones_sistema, ListaRol_sistema, EditarRol_sistema, \
     EliminarRol_sistema, search_sistema
 
@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^crear/(?P<id_fase>\d+)/$', login_required(crear_rol_view), name='rol_crear'),
     url(r'^modificar-rol/(?P<pk>\d+)/$', login_required(editar_rol), name='rol_editar'),
     url(r'^results/(?P<id_fase>\d+)/$', login_required(search), name='search'),
+    url(r'^asignar/(?P<pk>\d+)/$', login_required(asignar_rol_usuario), name='rol_asignar_usuario'),
     #=== ROL SISTEMA ===
     url(r'^opciones/', login_required(rol_opciones_sistema), name='rol_opciones_sistema'),
     url(r'^lista/', login_required(ListaRol_sistema.as_view()), name='rol_lista_sistema'),

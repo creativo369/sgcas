@@ -2,11 +2,15 @@ from django.contrib.auth.models import Group, Permission
 from django import forms
 from django.db.models import Q
 
-
 # ** Clase que despliega el formulario de registro de un rol **
+from apps import fase
+from apps.fase.models import Fase
+from apps.rol.models import Rol
+from apps.usuario.models import User
+
+
 class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **
-
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
         Q(name='crear_linea_base')
         | Q(name='cerrar_linea_base')
@@ -57,7 +61,7 @@ class GroupForm(forms.ModelForm):
         | Q(name='ver_tipo_item')
         | Q(name='listar_tipo_item')
     ),
-        required=True,
+        required=False,
         # widget=forms.Select(attrs={'class':'form-control'}))
     )
 
@@ -73,6 +77,33 @@ class GroupForm(forms.ModelForm):
         'name': 'Nombre del rol',
         'permissions': 'Permisos',
     }
+
+
+class RolFormUser(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor que se encarga de filtrar solo los miembros de la instancia de un proyecto para la fase a la cual se desea crear
+        una fase.<br/>
+        *:param args:**<br/>
+        **:param kwargs:** diccionario de la referencia (_id) de la instancia del modelo proyecto<br/>
+        """
+        super(RolFormUser, self).__init__(*args, **kwargs)
+        rol = kwargs['instance'].fase.miembros.all()
+        self.fields['usuarios'].queryset = rol
+
+    class Meta:
+        model = Rol
+
+        fields = [  # campos de mi modelo
+            'usuarios',
+        ]
+        labels = {
+            'usuarios': 'Miembros de la fase'
+        }
+        # los aparatos o elementos de captura de información del formulario
+        widgets = {
+            'usuarios': forms.CheckboxSelectMultiple(),
+        }
 
 
 # === ROL SISTEMA ===

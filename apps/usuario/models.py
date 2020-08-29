@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 
 
@@ -44,7 +44,6 @@ class User(AbstractUser):
         if self.is_superuser:
             self.is_active = True
         super(User, self).save(*args, **kwargs)
-
 
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 1.apps        : [[apps.py]]<br/>

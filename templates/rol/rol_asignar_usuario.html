@@ -1,0 +1,38 @@
+{% extends 'base/base.html'%}
+{% block title %} Asignar rol a usuario {% endblock%}
+
+{% block content %}
+<div class="container center-block pt-3">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h5>Rol:
+                    <small class="text-muted">{{ role.nombre }}</small>
+                </h5>
+                <h5>Fase:
+                    <small class="text-muted">{{ role.fase }}</small>
+                </h5>
+                <h5>Miembros de la fase:
+                <p>{{ form.usuarios }}</p>
+                </h5>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="form-group">
+                        <button class="btn btn-primary " type="submit">Guardar Cambios</button>
+                        <a class="btn btn-primary " href="#" onclick="window.history.back()">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+    </form>
+    <style type="text/css">
+        select {
+            width: 100%;
+            min-height: 350px;
+        }
+    </style>
+</div>
+
+{% endblock %}

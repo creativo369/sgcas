@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from apps.rol.forms import GroupForm, GroupForm_sistema
+from apps.rol.forms import GroupForm, GroupForm_sistema, RolFormUser
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -126,6 +126,16 @@ def eliminar_rol(request, pk):
     id_fase = rol.fase.pk
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
+
+
+def asignar_rol_usuario(request, pk):
+    rol = get_object_or_404(Rol, pk=pk)
+    id_fase = rol.fase.id
+    form = RolFormUser(request.POST or None, instance=rol)
+    if form.is_valid():
+        form.save()
+        return redirect('rol:rol_lista', id_fase=id_fase)
+    return render(request, 'rol/rol_asignar_usuario.html', {'form': form, 'role': rol})
 
 
 # === ROL POR SISTEMA ===
