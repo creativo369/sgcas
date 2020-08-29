@@ -39,11 +39,11 @@
                             <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
                                 <span class="sr-only">(current)</span></a>
                         </li>
-                        {% if request.user.is_superuser == False %}
+{#                        {% if request.user.is_superuser == False %}#}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
                             </li>
-                        {% endif %}
+{#                        {% endif %}#}
                                             <li class="nav-item">
 
                                                 <a class="nav-link" href="{% url 'rol:rol_opciones_sistema' %}">Gestión de Roles del Sistema</a>
@@ -57,12 +57,12 @@
                                             {% endif %}
                                         </span></a>
                         </li>
-                        {% if request.user.is_superuser == False %}
+{#                        {% if request.user.is_superuser == False %}#}
                             <li class="nav-item">
                                 <a class="nav-link" href="/faq/faq">FAQs</a>
                             </li>
-                        {% endif %}
-                    {% endif %}
+{#                        {% endif %}#}
+
                 </ul>
             </div>
             <ul class="navbar-nav mr-auto">
@@ -86,6 +86,7 @@
                     </div>
                 </li>
             </ul>
+        {% endif %}
         </nav>
     {% endblock navbar %}
     <div style="padding-left: 30px; padding-right: 30px">
