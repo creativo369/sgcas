@@ -127,13 +127,17 @@ def eliminar_rol(request, pk):
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
 
-
+# === Asigna rol de fase
 def asignar_rol_usuario(request, pk):
     rol = get_object_or_404(Rol, pk=pk)
     id_fase = rol.fase.id
     form = RolFormUser(request.POST or None, instance=rol)
     if form.is_valid():
-        form.save()
+        rol = form.save()
+
+        for user in rol.usuarios.all():
+            user.groups.add(rol.group)
+
         return redirect('rol:rol_lista', id_fase=id_fase)
     return render(request, 'rol/rol_asignar_usuario.html', {'form': form, 'role': rol})
 
@@ -152,7 +156,8 @@ def crear_rol_view_sistema(request):
     if request.method == 'POST':
         form = GroupForm_sistema(request.POST)
         if form.is_valid():
-            form.save()
+            group = form.save()
+            rol = Rol.objects.create(nombre=group.name, group=group, fase=None)
         return redirect('rol:rol_lista_sistema')
     else:
         form = GroupForm_sistema()
@@ -188,6 +193,7 @@ class ListaRol_sistema(PermissionRequiredMixin, ListView):
     # class Meta:
     # ordering = ['-id']
     def get_queryset(self):
+        #Rol.objects.filter(fase=None)
         return Group.objects.order_by('id').distinct()
 
 

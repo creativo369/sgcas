@@ -5,13 +5,14 @@ from django.core.mail import send_mail
 from SGCAS.settings import base
 
 from apps.usuario.models import User
+from apps.rol.models import Rol
 
 # Mientras tanto no se admiten password
 inactivo_previo = False
 
 
 class UserForm(forms.ModelForm):
-    roles = forms.ModelChoiceField(queryset=Group.objects.all())
+    roles = forms.ModelChoiceField(queryset=Rol.objects.filter(fase=None))
 
     class Meta:
         model = User
@@ -63,8 +64,21 @@ class UserForm(forms.ModelForm):
                 global inactivo_previo
                 inactivo_previo = True
 
-            if kwargs['instance'].groups.all():
-                initial['roles'] = kwargs['instance'].groups.all()[0]
+            # if kwargs['instance'].groups.all():
+            #     initial['roles'] = kwargs['instance'].groups.all()[0]
+            # else:
+            #     initial['roles'] = None
+
+            has_rol = False
+            role = None
+            for rol in Rol.objects.filter(fase=None):
+                if kwargs['instance'] in rol.usuarios.all():
+                    has_rol = True
+                    role = rol
+                    break
+
+            if has_rol:
+                initial['roles'] = role
             else:
                 initial['roles'] = None
 
@@ -75,9 +89,9 @@ class UserForm(forms.ModelForm):
         Guarda el formulario .<br/>
         :return:
         """
-        roles = self.cleaned_data.pop('roles')
+        rol = self.cleaned_data.pop('roles')
         u = super().save()
-        u.groups.set([roles])
+        u.groups.add(rol)
         u.save()
 
         if u.is_active and inactivo_previo:
