@@ -1,19 +1,17 @@
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-def role_required(allowed_roles=[]):
-
+##Checkea los permisos por fase
+def requiere_permiso(permiso):
     def decorator(view_func):
         def wrap(request, *args, **kwargs):
-            if request.roles in allowed_roles:
-                return view_func(request, *args, **kwargs)
-            else:
-                raise PermissionDenied
-
+            for rol_fase in Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')):
+                if (request.user in rol_fase.usuarios.all()) and (permiso in rol_fase.group.permissions.all()):
+                        return view_func(request, *args, **kwargs)
+            raise PermissionDenied
         return wrap
-
     return decorator
 
 
