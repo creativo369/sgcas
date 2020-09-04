@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 ##Checkea los permisos por fase
 def requiere_permiso(permiso):
