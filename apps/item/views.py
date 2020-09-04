@@ -22,6 +22,8 @@ from apps.item.models import Item
 from apps.linea_base.models import LineaBase
 from apps.tipo_item.models import TipoItem
 
+from SGCAS.decorators import requiere_permiso
+
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
 
@@ -53,6 +55,7 @@ Actualmente se despliega en las plantillas 19 vistas:
 @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
 def crear_item_basico(request, id_fase):
+
     """
     Permite la creacion de instancias de modelo Item.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>

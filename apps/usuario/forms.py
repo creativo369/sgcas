@@ -91,7 +91,7 @@ class UserForm(forms.ModelForm):
         """
         rol = self.cleaned_data.pop('roles')
         u = super().save()
-        u.groups.add(rol)
+        u.groups.add(Group.objects.get(name=rol.nombre))
         u.save()
 
         if u.is_active and inactivo_previo:
