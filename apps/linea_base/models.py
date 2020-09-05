@@ -34,14 +34,23 @@ class LineaBase(models.Model):
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
-            ("crear_linea_base", "crear_linea_base"),
-            ("cerrar_linea_base", "cerrar_linea_base"),
-            ("ver_linea_base", "ver_linea_base"),
-            ("editar_linea_base", "editar_linea_base"),
-            ("agregar_item_linea_base", "agregar_item_linea_base"),
-            ("quitar_item_linea_base", "quitar_item_linea_base"),
-            ("listar_item_linea_base", "listar_item_linea_base"),
-            ("estado_linea_base", "estado_linea_base"),
+            # ("crear_linea_base", "crear_linea_base"),
+            # ("cerrar_linea_base", "cerrar_linea_base"),
+            # ("ver_linea_base", "ver_linea_base"),
+            # ("editar_linea_base", "editar_linea_base"),
+            # ("agregar_item_linea_base", "agregar_item_linea_base"),
+            # ("quitar_item_linea_base", "quitar_item_linea_base"),
+            # ("listar_item_linea_base", "listar_item_linea_base"),
+            # ("estado_linea_base", "estado_linea_base"),
+
+            ("crear_linea_base", "Puede crear linea base"),
+            ("editar_linea_base", "Puede editar linea base"),
+            ("listar_linea_base", "Puede listar linea base"),
+            ("estado_linea_base", "Puede cambiar estado linea base"),
+            ("agregar_item_linea_base", "Puede agregar item linea base"),
+            ("quitar_item_linea_base", "Puede quitar item linea base"),
+            ("listar_item_linea_base", "Puede listar item linea base"),
+
         ]
         verbose_name = 'Linea Base'
         verbose_name_plural = 'Lineas Bases'

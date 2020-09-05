@@ -52,7 +52,8 @@ Actualmente se despliega en las plantillas 19 vistas:
 """
 
 
-@permission_required('item.crear_item', raise_exception=True)
+#@permission_required('item.crear_item', raise_exception=True)
+@requiere_permiso('item.crear_item')
 # === crear ítem ===
 def crear_item_basico(request, id_fase):
 

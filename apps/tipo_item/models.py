@@ -24,13 +24,21 @@ class TipoItem(models.Model):
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de los permisos por defecto que  trae django
         permissions = [
-            ("crear_tipo_item", "crear_tipo_item"),
-            ("adjuntar_tipo_item", "adjuntar_tipo_item"),
-            ("listar_tipo_item", "listar_tipo_item"),
-            ("editar_tipo_item", "editar_tipo_item"),
-            ("eliminar_tipo_item", "eliminar_tipo_item"),
+            # ("crear_tipo_item", "crear_tipo_item"),
+            # ("adjuntar_tipo_item", "adjuntar_tipo_item"),
+            # ("listar_tipo_item", "listar_tipo_item"),
+            # ("editar_tipo_item", "editar_tipo_item"),
+            # ("eliminar_tipo_item", "eliminar_tipo_item"),
+            # ("importar_tipo_item", "importar_tipo_item"),
+            # ("ver_tipo_item", "ver_tipo_item"),
+
+            ("crear_tipo_item", "Puede crear tipo item"),
+            ("editar_tipo_item", "Puede editar tipo item"),
+            ("listar_tipo_item", "Puede listar tipo item"),
+            ("ver_tipo_item", "Puede ver tipo item"),
+            ("eliminar_tipo_item", "Puede eliminar tipo item"),
+            ("adjuntar_tipo_item", "Puede adjuntar tipo item"),
             ("importar_tipo_item", "importar_tipo_item"),
-            ("ver_tipo_item", "ver_tipo_item"),
 
         ]
 

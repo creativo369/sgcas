@@ -36,18 +36,26 @@ class Proyecto(models.Model):
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
-            ("crear_proyecto", "crear_proyecto"),
-            ("iniciar_proyecto", "iniciar_proyecto"),
-            ("finalizar_proyecto", "finalizar_proyecto"),
-            ("cancelar_proyecto", "cancelar_proyecto"),
-            ("ver_proyecto", "ver_proyecto"),
-            ("eliminar_proyecto", "eliminar_proyecto"),
-            ("editar_proyecto", "editar_proyecto"),
-            ("detalles_proyecto", "detalles_proyecto"),
+            # ("crear_proyecto", "crear_proyecto"),
+            # ("iniciar_proyecto", "iniciar_proyecto"),
+            # ("finalizar_proyecto", "finalizar_proyecto"),
+            # ("cancelar_proyecto", "cancelar_proyecto"),
+            # ("ver_proyecto", "ver_proyecto"),
+            # ("eliminar_proyecto", "eliminar_proyecto"),
+            # ("editar_proyecto", "editar_proyecto"),
+            # ("detalles_proyecto", "detalles_proyecto"),
+
+            ("crear_proyecto", "Puede crear proyecto"),
+            ("editar_proyecto", "Puede editar proyecto"),
+            ("gestion_proyecto", "Puede gestionar proyecto"),
+            ("ver_proyecto", "Puede ver proyecto"),
+            ("eliminar_proyecto", "Puede eliminar proyecto"),
+            ("cambiar_estado", "Puede cambiar estado proyecto"),
+            ("detalles_proyecto", "Puede ver detalles proyecto"),
         ]
         verbose_name = 'Proyecto'
         verbose_name_plural = 'Proyectos'
-        
+
     def __str__(self):
         """
         Función que retorna el nombre del modelo a una instancia llamada "proyecto"<br/>

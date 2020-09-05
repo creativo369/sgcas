@@ -13,5 +13,16 @@ class Rol(models.Model):
         blank=True,
     )
 
+    class Meta:
+        default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
+        permissions = [
+            ("crear_rol", "Puede crear rol"),
+            ("editar_rol", "Puede editar rol"),
+            ("gestion_rol", "Puede gestionar rol"),
+            ("listar_rol", "Puede listar rol"),
+            ("eliminar_rol", "Puede eliminar rol"),
+        ]
+        verbose_name = 'Rol'
+        verbose_name_plural = 'Roles'
     def __str__(self):
         return self.nombre

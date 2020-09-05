@@ -27,14 +27,22 @@ class Fase(models.Model):
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
-            ("crear_fase", "crear_fase"),
-            ("aprobar_fase", "aprobar_fase"),
-            ("editar_fase", "editar_fase"),
-            ("eliminar_fase", "eliminar_fase"),
-            ("listar_fase", "listar_fase"),
-            ("cambio_estado_fase", "cambio_estado_fase"),
-            ("ver_fase", "ver_fase"),
-            ("detalles_fase", "detalles_fase"),
+            # ("crear_fase", "crear_fase"),
+            # ("aprobar_fase", "aprobar_fase"),
+            # ("editar_fase", "editar_fase"),
+            # ("eliminar_fase", "eliminar_fase"),
+            # ("listar_fase", "listar_fase"),
+            # ("cambio_estado_fase", "cambio_estado_fase"),
+            # ("ver_fase", "ver_fase"),
+            # ("detalles_fase", "detalles_fase"),
+
+            ("crear_fase", "Puede crear fase"),
+            ("editar_fase", "Puede editar fase"),
+            ("gestion_fase", "Puede ver gestion de fase"),
+            ("detalles_fase", "Puede ver los detalles de fase"),
+            ("eliminar_fase", "Puede eliminar fase"),
+            ("listar_fase", "Puede listar fase"),
+            ("cambio_estado_fase", "Puede cambiar estado fase"),
         ]
 
         verbose_name = 'Fase'
