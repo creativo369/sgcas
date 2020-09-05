@@ -3,9 +3,14 @@ from django import forms
 from django.db.models import Q
 
 # ** Clase que despliega el formulario de registro de un rol **
+from apps import fase
+from apps.fase.models import Fase
+from apps.rol.models import Rol
+from apps.usuario.models import User
+
+
 class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **
-
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
         Q(name='crear_linea_base')
         | Q(name='cerrar_linea_base')
@@ -15,21 +20,6 @@ class GroupForm(forms.ModelForm):
         | Q(name='listar_item_linea_base')
         | Q(name='quitar_item_linea_base')
         | Q(name='estado_linea_base')
-        | Q(name='crear_proyecto')
-        | Q(name='iniciar_proyecto')
-        | Q(name='finalizar_proyecto')
-        | Q(name='cancelar_proyecto')
-        | Q(name='ver_proyecto')
-        | Q(name='detalles_proyecto')
-        | Q(name='editar_proyecto')
-        | Q(name='eliminar_proyecto')
-        | Q(name='crear_usuario')
-        | Q(name='editar_usuario')
-        | Q(name='agregrar_usuario_proyecto')
-        | Q(name='eliminar_usuario')
-        | Q(name='mensaje_eliminar')
-        | Q(name='ver_mensaje')
-        | Q(name='mensaje_editar')
         | Q(name='crear_rol')
         | Q(name='eliminar_rol')
         | Q(name='asignar_rol')
@@ -38,12 +28,12 @@ class GroupForm(forms.ModelForm):
         | Q(name='listar_rol')
         | Q(name='editar_rol')
         | Q(name='agregar_usuario_fase')
-        | Q(name='quitar_usuario_proyecto')
         | Q(name='quitar_usuario_fase')
         | Q(name='crear_fase')
         | Q(name='aprobar_fase')
         | Q(name='editar_fase')
         | Q(name='eliminar_fase')
+        | Q(name='crear_fase')
         | Q(name='ver_fase')
         | Q(name='listar_fase')
         | Q(name='cambio_estado_fase')
@@ -70,6 +60,86 @@ class GroupForm(forms.ModelForm):
         | Q(name='importar_tipo_item')
         | Q(name='ver_tipo_item')
         | Q(name='listar_tipo_item')
+    ),
+        required=False,
+        # widget=forms.Select(attrs={'class':'form-control'}))
+    )
+
+    # los campos del formulario
+    class Meta:
+        model = Group
+        fields = [
+            'name',
+            'permissions',
+        ]
+
+    labels = {  # etiquetas para el campo.
+        'name': 'Nombre del rol',
+        'permissions': 'Permisos',
+    }
+
+
+class RolFormUser(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor que se encarga de filtrar solo los miembros de la instancia de un proyecto para la fase a la cual se desea crear
+        una fase.<br/>
+        *:param args:**<br/>
+        **:param kwargs:** diccionario de la referencia (_id) de la instancia del modelo proyecto<br/>
+        """
+        super(RolFormUser, self).__init__(*args, **kwargs)
+        rol = kwargs['instance'].fase.miembros.all()
+        self.fields['usuarios'].queryset = rol
+
+    class Meta:
+        model = Rol
+
+        fields = [  # campos de mi modelo
+            'usuarios',
+        ]
+        labels = {
+            'usuarios': 'Miembros de la fase'
+        }
+        # los aparatos o elementos de captura de información del formulario
+        widgets = {
+            'usuarios': forms.CheckboxSelectMultiple(),
+        }
+
+
+# === ROL SISTEMA ===
+class GroupForm_sistema(forms.ModelForm):
+    # ** Despliega un filtro de los permisos en el sistema **
+
+    permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
+        Q(name='crear_proyecto')
+        | Q(name='iniciar_proyecto')
+        | Q(name='finalizar_proyecto')
+        | Q(name='cancelar_proyecto')
+        | Q(name='ver_proyecto')
+        | Q(name='detalles_proyecto')
+        | Q(name='editar_proyecto')
+        | Q(name='eliminar_proyecto')
+        | Q(name='crear_usuario')
+        | Q(name='editar_usuario')
+        | Q(name='agregrar_usuario_proyecto')
+        | Q(name='eliminar_usuario')
+        | Q(name='mensaje_eliminar')
+        | Q(name='ver_mensaje')
+        | Q(name='mensaje_editar')
+        | Q(name='crear_rol_sistema')
+        | Q(name='eliminar_rol_sistema')
+        | Q(name='asignar_rol_sistema')
+        | Q(name='ver_rol_sistema')
+        | Q(name='ver_usuarios')
+        | Q(name='listar_rol_sistema')
+        | Q(name='editar_rol_sistema')
+        | Q(name='agregar_usuario_fase')
+        | Q(name='crear_fase')
+        | Q(name='ver_fase')
+        | Q(name='listar_fase')
+        | Q(name='detalles_fase')
+        | Q(name='quitar_usuario_proyecto')
+        | Q(name='quitar_usuario_fase')
         | Q(name='crear_comite')
         | Q(name='eliminar_comite')
         | Q(name='ver_comite')
@@ -97,6 +167,7 @@ class GroupForm(forms.ModelForm):
         'permissions': 'Permisos',
     }
 
+# === FIN ===
 # === Indice de la documentación de la Aplicación rol  === <br/>
 # 1.apps     : [[apps.py]]<br/>
 # 2.forms    : [[forms.py]]<br/>

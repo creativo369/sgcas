@@ -40,15 +40,15 @@
                             <a class="nav-link" href="{% url 'usuario:usuario_lista' %}">Gestión de usuarios
                                 <span class="sr-only">(current)</span></a>
                         </li>
-                        {% if request.user.is_superuser == False %}
+{#                        {% if request.user.is_superuser == False %}#}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'proyecto:manage_projects' %}">Gestión de Proyecto</a>
                             </li>
-                        {% endif %}
-                        {#                    <li class="nav-item">#}
-                        {##}
-                        {#                        <a class="nav-link" href="{% url 'rol:rol_opciones' %}">Gestión de Roles</a>#}
-                        {#                    </li>#}
+{#                        {% endif %}#}
+                                            <li class="nav-item">
+
+                                                <a class="nav-link" href="{% url 'rol:rol_opciones_sistema' %}">Gestión de Roles del Sistema</a>
+                                            </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'mensajes:mensaje_lista' %}">Mensajes<span
                                     class="badge badge-primary badge-pill">
@@ -58,12 +58,12 @@
                                             {% endif %}
                                         </span></a>
                         </li>
-                        {% if request.user.is_superuser == False %}
+{#                        {% if request.user.is_superuser == False %}#}
                             <li class="nav-item">
                                 <a class="nav-link" href="/faq/faq">FAQs</a>
                             </li>
-                        {% endif %}
-                    {% endif %}
+{#                        {% endif %}#}
+
                 </ul>
             </div>
             <ul class="navbar-nav mr-auto">
@@ -87,6 +87,7 @@
                     </div>
                 </li>
             </ul>
+        {% endif %}
         </nav>
     {% endblock navbar %}
     <div style="padding-left: 30px; padding-right: 30px">
