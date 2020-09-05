@@ -52,9 +52,10 @@ Actualmente se despliega en las plantillas 19 vistas:
 """
 
 
-#@permission_required('item.crear_item', raise_exception=True)
-@requiere_permiso('item.crear_item')
+
+# @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
+@requiere_permiso('crear_item')
 def crear_item_basico(request, id_fase):
 
     """
@@ -86,7 +87,7 @@ def crear_item_basico(request, id_fase):
     return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
-@permission_required('tipo_item.importar_tipo_item', raise_exception=True)
+@permission_required('importar_tipo_item')
 # === importar tipo de ítem ===
 def item_importar_ti(request, pk):
     """
@@ -564,22 +565,22 @@ def trazabilidad_item(request, pk):
     return render(request, 'item/item_trazabilidad.html', context)
 
 
-class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
-    """
-    Permite la visualizacion en lista de todas las intancias del modelo Item<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-    **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-    **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-    **:return:** Una vista de todas las intancias a traves del archivo item_lista.html.<br/>
-    """
-    paginate_by = 4
-    model = Item
-    template_name = 'item/item_lista.html'
-    permission_required = 'item.ver_item'
+# class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
+#     """
+#     Permite la visualizacion en lista de todas las intancias del modelo Item<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
+#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
+#     **:return:** Una vista de todas las intancias a traves del archivo item_lista.html.<br/>
+#     """
+#     paginate_by = 4
+#     model = Item
+#     template_name = 'item/item_lista.html'
+#     permission_required = 'item.ver_item'
 
-    # La lista a mostrar estara por orden ascendente
-    class Meta:
-        ordering = ['-id']
+#     # La lista a mostrar estara por orden ascendente
+#     class Meta:
+#         ordering = ['-id']
 
 
 # class ItemEliminar(DeleteView, PermissionRequiredMixin, LoginRequiredMixin):
@@ -596,55 +597,55 @@ class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
 #     success_url = reverse_lazy('item:item_lista')
 
 
-class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-    """
-    Permite la modificacion de informacion basica de una instancia de modelo Item.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-    **:return:** Modficia una instancia del modelo Item, luego se redirige para la importacion de Tipo de Item.<br/>
-    """
-    model = Item
-    template_name = 'item/item_crear.html'
-    form_class = ItemUpdateForm
-    permission_required = 'item.editar_item'
+# class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
+#     """
+#     Permite la modificacion de informacion basica de una instancia de modelo Item.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
+#     **:return:** Modficia una instancia del modelo Item, luego se redirige para la importacion de Tipo de Item.<br/>
+#     """
+#     model = Item
+#     template_name = 'item/item_crear.html'
+#     form_class = ItemUpdateForm
+#     permission_required = 'item.editar_item'
 
-    def form_valid(self, form):
-        object = form.save()
-        return redirect('item:item_modificar_import_ti', pk=object.pk)
-
-
-class ItemModificarImportTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-    """
-    Permite la modificacion de importacion de Tipo de Item de una instancia de modelo Item.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-    **:return:** Modifica una instancia del modelo Item, luego se redirige para setear los atrobutos del Tipo de Item importado<br/>
-    """
-    model = Item
-    template_name = 'item/item_importar_tipo_item.html'
-    form_class = ItemImportarTipoItemForm
-    permission_required = 'item.item_modificar_import_ti'
-
-    def form_valid(self, form):
-        object = form.save()
-        return redirect('item:item_modificar_atr_ti', pk=object.pk)
+#     def form_valid(self, form):
+#         object = form.save()
+#         return redirect('item:item_modificar_import_ti', pk=object.pk)
 
 
-class ItemModificarAtrTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-    """
-    Permite la modificacion de atributos de una instancia de modelo Item.<br/>
-    **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-    **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-    **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-    **:return:** Modifica na instancia del modelo Item, luego se redirige a la lista de items.<br/>
-    """
-    model = Item
-    template_name = 'item/item_atributos_tipo_item.html'
-    form_class = ItemAtributosForm
-    permission_required = 'item.item_modificar_atributos_ti'
-    success_url = reverse_lazy('item:item_lista')
+# class ItemModificarImportTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
+#     """
+#     Permite la modificacion de importacion de Tipo de Item de una instancia de modelo Item.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
+#     **:return:** Modifica una instancia del modelo Item, luego se redirige para setear los atrobutos del Tipo de Item importado<br/>
+#     """
+#     model = Item
+#     template_name = 'item/item_importar_tipo_item.html'
+#     form_class = ItemImportarTipoItemForm
+#     permission_required = 'item.item_modificar_import_ti'
+
+#     def form_valid(self, form):
+#         object = form.save()
+#         return redirect('item:item_modificar_atr_ti', pk=object.pk)
+
+
+# class ItemModificarAtrTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
+#     """
+#     Permite la modificacion de atributos de una instancia de modelo Item.<br/>
+#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
+#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
+#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
+#     **:return:** Modifica na instancia del modelo Item, luego se redirige a la lista de items.<br/>
+#     """
+#     model = Item
+#     template_name = 'item/item_atributos_tipo_item.html'
+#     form_class = ItemAtributosForm
+#     permission_required = 'item.item_modificar_atributos_ti'
+#     success_url = reverse_lazy('item:item_lista')
 
 # **Atras** : [[urls.py]]
 
