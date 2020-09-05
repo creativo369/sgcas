@@ -21,6 +21,15 @@ class Rol(models.Model):
             ("gestion_rol", "Puede gestionar rol"),
             ("listar_rol", "Puede listar rol"),
             ("eliminar_rol", "Puede eliminar rol"),
+            ("asignar_rol", "Puede asignar rol"),
+            # === PERMISOS SOBRE LOS ROLES DE SISTEMA ===
+            ("crear_rol_sistema", "Puede crear rol sistema"),
+            ("editar_rol_sistema", "Puede editar rol sistema"),
+            ("gestion_rol_sistema", "Puede gestionar rol sistema"),
+            ("listar_rol_sistema", "Puede listar rol sistema"),
+            ("eliminar_rol_sistema", "Puede eliminar rol sistema"),
+            ("asignar_rol_sistema", "Puede asignar rol sistema"),
+
         ]
         verbose_name = 'Rol'
         verbose_name_plural = 'Roles'
