@@ -26,15 +26,19 @@ class Comite(models.Model):
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
-            ("crear_comite", "crear_comite"),
-            ("eliminar_comite", "eliminar_comite"),
-            ("ver_comite", "ver_comite"),
-            ("editar_comite", "editar_comite"),
-            ("listar_comite", "listar_comite"),
-            ("agregar_comite_proyecto", "agregar_comite_proyecto"),
-            ("quitar_comite_proyecto", "quitar_comite_proyecto"),
-            ("agregar_usuario_comite", "agregar_usuario_comite"),
-            ("quitar_usuario_comite", "quitar_usuario_comite"),
+            # ("crear_comite", "crear_comite"),
+            # ("eliminar_comite", "eliminar_comite"),
+            # ("ver_comite", "ver_comite"),
+            # ("editar_comite", "editar_comite"),
+            # ("listar_comite", "listar_comite"),
+            # ("agregar_comite_proyecto", "agregar_comite_proyecto"),
+            # ("quitar_comite_proyecto", "quitar_comite_proyecto"),
+            # ("agregar_usuario_comite", "agregar_usuario_comite"),
+            # ("quitar_usuario_comite", "quitar_usuario_comite"),
+            ("crear_comite", "Puede crear comite"),
+            ("editar_comite", "Puede editar comite"),
+            ("ver_comite", "Puede ver comite"),
+            ("eliminar_comite", "Puede eliminar comite"),
         ]
 
         verbose_name = 'Comité'

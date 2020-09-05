@@ -8,7 +8,7 @@ from apps.fase.models import Fase
 from apps.rol.models import Rol
 from apps.usuario.models import User
 
-
+# === ROLES POR FASES ===
 class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
@@ -23,19 +23,16 @@ class GroupForm(forms.ModelForm):
         | Q(name='crear_rol')
         | Q(name='eliminar_rol')
         | Q(name='asignar_rol')
-        | Q(name='ver_rol')
-        | Q(name='ver_usuarios')
+        | Q(name='gestion_rol')
         | Q(name='listar_rol')
         | Q(name='editar_rol')
+        | Q(name='ver_usuarios')
         | Q(name='agregar_usuario_fase')
         | Q(name='quitar_usuario_fase')
         | Q(name='crear_fase')
         | Q(name='aprobar_fase')
         | Q(name='editar_fase')
         | Q(name='eliminar_fase')
-        | Q(name='crear_fase')
-        | Q(name='ver_fase')
-        | Q(name='listar_fase')
         | Q(name='cambio_estado_fase')
         | Q(name='detalles_fase')
         | Q(name='crear_item')
@@ -129,10 +126,10 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(name='crear_rol_sistema')
         | Q(name='eliminar_rol_sistema')
         | Q(name='asignar_rol_sistema')
-        | Q(name='ver_rol_sistema')
-        | Q(name='ver_usuarios')
+        | Q(name='gestion_rol_sistema')
         | Q(name='listar_rol_sistema')
         | Q(name='editar_rol_sistema')
+        | Q(name='ver_usuarios')
         | Q(name='agregar_usuario_fase')
         | Q(name='crear_fase')
         | Q(name='ver_fase')

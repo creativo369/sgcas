@@ -2,6 +2,8 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
+
+from SGCAS.decorators import requiere_permiso
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 
 from django.db.models import Q
@@ -25,7 +27,8 @@ Actualmente se despliega en las plantillas 6 vistas:
 
 
 @login_required
-@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+#@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+@requiere_permiso('tipo.crear_tipo_item')
 # === crear tipo de ítem ===
 def crear_tipo_item(request, id_fase):
     """

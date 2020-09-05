@@ -52,6 +52,7 @@ Actualmente se despliega en las plantillas 19 vistas:
 """
 
 
+
 # @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
 @requiere_permiso('crear_item')
