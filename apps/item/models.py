@@ -86,7 +86,7 @@ class Item(models.Model):
 
             ("crear_item", "Puede crear item"),
             ("editar_item", "Puede editar item"),
-            ("listar_item_de_fase", "Puede listar item de fase"),
+            ("listar_item", "Puede listar item"),
             ("ver_item", "Puede ver item"),
             ("eliminar_item", "Puede eliminar item"),
             ("cambiar_estado_item", "Puede cambiar estado item"),
@@ -95,7 +95,7 @@ class Item(models.Model):
             ("ver_trazabilidad", "Puede ver trazabilidad item"),
             ("ver_versiones_item", "Puede ver versiones item"),
             ("restaurar_item_version", "Puede restaurar version item"),
-            ("item_modificar_atributos", "Puede modificar atributos item_"),
+            ("item_modificar_atributos", "Puede modificar atributos item"),
             ("item_modificar_ti", "Puede modificar TI de item"),
             ("item_modificar_atributos_ti", "Puede modificar atributos ti de item"),
             ("item_modificar_import_ti", "Puede modificar  import ti de item"),
