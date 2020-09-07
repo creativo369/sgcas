@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+
+from SGCAS.decorators import requiere_permiso
 from apps.fase.models import Fase
 from apps.item.models import Item
 from apps.linea_base.forms import LineaBaseForm, AgregarItemsForm, LineaBaseUpdateEstado
@@ -20,7 +22,7 @@ Actualmente se despliega en las plantillas 7 vistas:
 7. **lista_items_linea_base** - lista todos los ítems que forman parte de una línea base (Ir a la sección: [[views.py #lista ítems lb]] )
 """
 
-@permission_required('linea_base.crear_linea_base', raise_exception=True)
+@requiere_permiso('crear_linea_base')
 # === crear línea base ===
 def crear_linea_base(request, id_fase):
     """
@@ -41,7 +43,7 @@ def crear_linea_base(request, id_fase):
         return render(request, 'linea_base/linea_crear.html', {'form': form})
 
 
-@permission_required('linea_base.agregar_item_linea_base', raise_exception=True)
+@requiere_permiso('agregar_item_linea_base')
 # === agregar ítems lb ===
 def agregar_items_lb(request, pk, id_fase):
     """
@@ -63,7 +65,7 @@ def agregar_items_lb(request, pk, id_fase):
                                                                        'items_aprobados': items_aprobados})
 
 
-@permission_required('linea_base.editar_linea_base', raise_exception=True)
+@requiere_permiso('editar_linea_base')
 # === editar lb ===
 def editar_lb(request, pk, id_fase):
     """
@@ -82,7 +84,7 @@ def editar_lb(request, pk, id_fase):
         return render(request, 'linea_base/linea_crear.html', {'form': form})
 
 
-@permission_required('linea_base.editar_linea_base', raise_exception=True)
+@requiere_permiso('estado_linea_base')
 # === estado lb ===
 def estado_lb(request, pk, id_fase):
     """
@@ -100,7 +102,7 @@ def estado_lb(request, pk, id_fase):
     return render(request, 'linea_base/linea_base_estado.html', {'form': form})
 
 
-@permission_required('linea_base.ver_linea_base', raise_exception=True)
+@requiere_permiso('listar_linea_base')
 # === lista de líneas base ===
 def lista_linea_base(request, id_fase):
     """
@@ -118,7 +120,7 @@ def lista_linea_base(request, id_fase):
                   {'lb': LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)),
                    'fase': Fase.objects.get(id=id_fase),'page_obj': page_obj})
 
-@permission_required('linea_base.ver_linea_base', raise_exception=True)
+@requiere_permiso('listar_linea_base')
 # === search ===
 def search(request, id_fase):
     """
@@ -150,7 +152,7 @@ def search(request, id_fase):
     }
     return render(request, template, context)
 
-@permission_required('linea_base.listar_item_linea_base', raise_exception=True)
+@requiere_permiso('listar_item_linea_base')
 # === lista ítems lb ===
 def lista_items_linea_base(request, pk, id_fases):
     """
@@ -170,7 +172,7 @@ def lista_items_linea_base(request, pk, id_fases):
     return render(request, 'linea_base/linea_items_lista.html',
                   {'items': lista_item_lb, 'page_obj': page_obj, 'fase': fase})
     
-
+@requiere_permiso('eliminar_linea_base')
 def eliminar_lb(request, pk, id_fase):
     """
     Permite la eliminacion de una instancia de linea base.<br/>

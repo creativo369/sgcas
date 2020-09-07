@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
+
+from SGCAS.decorators import requiere_permiso
 from apps.fase.forms import FaseForm, FaseUpdateForm, FaseCambiarEstadoForm
 from apps.fase.models import Fase
 from django.db.models import Q
@@ -56,7 +58,7 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 
 
 @login_required
-@permission_required('fase.ver_fase', raise_exception=True)
+@permission_required('fase.gestion_fase', raise_exception=True)
 # === fase opciones ===
 def fase_opciones(request):
     """
@@ -68,7 +70,7 @@ def fase_opciones(request):
     return render(request, 'fase/fase_opciones.html')
 
 
-@permission_required('fase.detalles_fase', raise_exception=True)
+@requiere_permiso('detalles_fase')
 # === fase detalles ===
 def fase_detalles(request, pk):
     """
@@ -136,7 +138,7 @@ def search(request, _id):
     return render(request, template, context)
 
 
-@permission_required('fase.cambio_estado_fase', raise_exception=True)
+@requiere_permiso('cambio_estado_fase')
 # === cambia estado fase ===
 def cambiar_estado_fase(request, pk, _id):
     """
@@ -154,7 +156,7 @@ def cambiar_estado_fase(request, pk, _id):
     return render(request, 'fase/fase_cambiar_estado.html', {'form': form})
 
 
-@permission_required('fase.eliminar_fase', raise_exception=True)
+@requiere_permiso('eliminar_fase')
 # === eliminar fase ===
 def eliminar_fase(request, pk, _id):
     """
@@ -170,7 +172,7 @@ def eliminar_fase(request, pk, _id):
     return redirect(success_url, _id=_id)
 
 
-@permission_required('fase.editar_fase', raise_exception=True)
+@requiere_permiso('editar_fase')
 # === fase modificar ===
 def fase_modificar(request, pk, _id, *args, **kwargs):
     """

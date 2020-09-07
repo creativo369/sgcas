@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from SGCAS.decorators import requiere_permiso
 from apps.rol.forms import GroupForm, GroupForm_sistema, RolFormUser
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -31,7 +33,7 @@ def handler403(request, exception, template_name='403.html'):
 
 
 @login_required
-@permission_required('usuario.crear_rol', raise_exception=True)
+@requiere_permiso('crear_rol')
 # === crear rol ===
 def crear_rol_view(request, id_fase):
     """
@@ -51,7 +53,7 @@ def crear_rol_view(request, id_fase):
     return render(request, 'rol/rol_crear.html', {'form': form})
 
 
-@permission_required('usuario.listar_rol', raise_exception=True)
+@requiere_permiso('listar_rol')
 # === listar roles ===
 def lista_rol(request, id_fase):
     """
@@ -68,7 +70,7 @@ def lista_rol(request, id_fase):
                                                   'page_obj': page_obj})
 
 
-@permission_required('usuario.listar_rol', raise_exception=True)
+@requiere_permiso('listar_rol')
 # === search === 
 def search(request, id_fase):
     """
@@ -93,7 +95,7 @@ def search(request, id_fase):
     return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
 
 
-@permission_required('usuario.editar_rol', raise_exception=True)
+@requiere_permiso('editar_rol')
 # === editar rol ===
 def editar_rol(request, pk):
     """
@@ -113,7 +115,7 @@ def editar_rol(request, pk):
     return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase)})
 
 
-@permission_required('usuario.eliminar_rol', raise_exception=True)
+@requiere_permiso('eliminar_rol')
 # === eliminar rol ===
 def eliminar_rol(request, pk):
     """
@@ -127,7 +129,9 @@ def eliminar_rol(request, pk):
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
 
+
 # === Asigna rol de fase
+@requiere_permiso('asignar_rol')
 def asignar_rol_usuario(request, pk):
     rol = get_object_or_404(Rol, pk=pk)
     id_fase = rol.fase.id
@@ -145,7 +149,7 @@ def asignar_rol_usuario(request, pk):
 # === ROL POR SISTEMA ===
 
 @login_required
-@permission_required('usuario.crear_rol_sistema', raise_exception=True)
+@permission_required('rol.crear_rol_sistema', raise_exception=True)
 # === crear rol ===
 def crear_rol_view_sistema(request):
     """
@@ -165,7 +169,7 @@ def crear_rol_view_sistema(request):
 
 
 @login_required
-@permission_required('usuario.ver_rol_sistema', raise_exception=True)
+@permission_required('rol.gestion_rol_sistema', raise_exception=True)
 # === rol opciones ===
 def rol_opciones_sistema(request):
     """
@@ -185,19 +189,19 @@ class ListaRol_sistema(PermissionRequiredMixin, ListView):
     **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
     """
     paginate_by = 3
-    model = Group
+    model = Rol
     template_name = 'rol/rol_lista_sistema.html'
-    permission_required = 'usuario.listar_rol_sistema'
+    permission_required = 'rol.listar_rol_sistema'
 
     # La lista a mostrar estara por orden ascendente
     # class Meta:
     # ordering = ['-id']
     def get_queryset(self):
-        #Rol.objects.filter(fase=None)
-        return Group.objects.order_by('id').distinct()
+        # Rol.objects.filter(fase=None)
+        return Rol.objects.filter(fase=None).order_by('id').distinct()
 
 
-@permission_required('usuario.listar_rol_sistema', raise_exception=True)
+@permission_required('rol.listar_rol_sistema', raise_exception=True)
 def search_sistema(request):
     """
     Permite la búsqueda de las intancias del modelo Group.<br/>
@@ -208,9 +212,9 @@ def search_sistema(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = Group.objects.filter(Q(name__icontains=query)).order_by('id').distinct()
+        results = Rol.objects.filter(Q(name__icontains=query), fase=None).order_by('id').distinct()
     else:
-        results = Group.objects.all().order_by('id')
+        results = Rol.objects.all().order_by('id')
 
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
@@ -229,7 +233,7 @@ class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
     """
     model = Group
     form_class = GroupForm_sistema
-    permission_required = 'usuario.editar_rol_sistema'
+    permission_required = 'rol.editar_rol_sistema'
     template_name = 'rol/rol_editar_sistema.html'
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
@@ -244,7 +248,7 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
     model = Group
     template_name = 'rol/rol_eliminar_sistema.html'
-    permission_required = 'usuario.eliminar_rol_sistema'
+    permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
 # === FIN ====

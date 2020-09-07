@@ -14,7 +14,6 @@ class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
         Q(codename='editar_fase')
-        | Q(codename='gestion_fase')
         | Q(codename='detalles_fase')
         | Q(codename='eliminar_fase')
         | Q(codename='cambio_estado_fase')
@@ -24,10 +23,10 @@ class GroupForm(forms.ModelForm):
         | Q(codename='ver_item')
         | Q(codename='eliminar_item')
         | Q(codename='cambiar_estado_item')
-        | Q(codename='relacionar_item')
+        | Q(codename='relacion_item')
         | Q(codename='calcular_impacto')
         | Q(codename='ver_trazabilidad')
-        | Q(codename='ver_versiones_item')
+        | Q(codename='versiones_item')
         | Q(codename='restaurar_item_version')
         | Q(codename='item_modificar_atributos')
         | Q(codename='item_modificar_ti')
@@ -42,11 +41,17 @@ class GroupForm(forms.ModelForm):
         | Q(codename='importar_tipo_item')
         | Q(codename='crear_linea_base')
         | Q(codename='editar_linea_base')
+        | Q(codename='eliminar_linea_base')
         | Q(codename='listar_linea_base')
         | Q(codename='estado_linea_base')
         | Q(codename='agregar_item_linea_base')
         | Q(codename='quitar_item_linea_base')
         | Q(codename='listar_item_linea_base')
+        | Q(codename='crear_rol')
+        | Q(codename='editar_rol')
+        | Q(codename='listar_rol')
+        | Q(codename='eliminar_rol')
+        | Q(codename='asignar_rol')
     ),
         required=False,
         # widget=forms.Select(attrs={'class':'form-control'}))
@@ -125,6 +130,7 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(codename='eliminar_comite')
         | Q(codename='crear_fase')
         | Q(codename='listar_fase')
+        | Q(codename='gestion_fase')
     ),
         required=True,
         # widget=forms.Select(attrs={'class':'form-control'}))

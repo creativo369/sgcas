@@ -13,12 +13,13 @@ from apps.rol.models import Rol
 def requiere_permiso(permiso):
     def decorator(view_func):
         def wrap(request, *args, **kwargs):
-            if request.user.is_superuser == True:return view_func(request, *args, **kwargs)
-            query_rol=Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
+            if request.user.is_superuser:
+                return view_func(request, *args, **kwargs)
+            query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
             for rol_fase in query_rol:
                 if request.user in rol_fase.usuarios.all():
                     try:
-                        if rol_fase.group.permissions.get(name=permiso):
+                        if rol_fase.group.permissions.get(codename=permiso):
                             return view_func(request, *args, **kwargs)
                     except:
                         raise PermissionDenied
