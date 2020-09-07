@@ -58,7 +58,7 @@ class EliminarUsuarioMensaje(PermissionRequiredMixin, DeleteView):
      """
     model = User
     template_name = 'mensajes/mensajes_eliminar.html'
-    permission_required = 'usuario.mensaje_eliminar'
+    permission_required = 'usuario.mensaje_rechazar'
     success_url = reverse_lazy('mensajes:mensaje_lista')
 
 # **Volver atras** :[[urls.py]]

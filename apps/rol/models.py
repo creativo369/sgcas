@@ -18,7 +18,6 @@ class Rol(models.Model):
         permissions = [
             ("crear_rol", "Puede crear rol"),
             ("editar_rol", "Puede editar rol"),
-            ("gestion_rol", "Puede gestionar rol"),
             ("listar_rol", "Puede listar rol"),
             ("eliminar_rol", "Puede eliminar rol"),
             ("asignar_rol", "Puede asignar rol"),

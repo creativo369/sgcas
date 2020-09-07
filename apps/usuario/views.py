@@ -49,7 +49,6 @@ def usuario_opciones(request):
     return render(request, 'usuario/usuario_opciones.html')
 
 
-
 # === usuarios listados ===
 class UsuarioLista(PermissionRequiredMixin, ListView):
     """
@@ -62,7 +61,7 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
     paginate_by = 4
     model = User
     template_name = 'usuario/usuario_lista.html'
-    permission_required = 'usuario.ver_usuarios'
+    permission_required = 'usuario.ver_usuario'
 
     def get_queryset(self):
         # se ordena la lista de usuarios, excluyendo al AnonymousUser.
@@ -105,7 +104,7 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
     model = User
     template_name = 'usuario/usuario_registrar.html'
     form_class = UserForm
-    permission_required = 'usuario.crear_usuario'
+    permission_required = 'usuario.registrar_usuario'
 
     def for_valid(self, form):
         response = super(RegistrarUsuario, self).form_valid(form)
@@ -117,7 +116,6 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('usuario:usuario_lista')
-
 
 
 # === actualizar usuario ===
@@ -133,7 +131,6 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     form_class = UserForm
     permission_required = 'usuario.editar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
-
 
 
 # === eliminar usuario ===

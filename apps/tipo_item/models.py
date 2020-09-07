@@ -38,7 +38,7 @@ class TipoItem(models.Model):
             ("ver_tipo_item", "Puede ver tipo item"),
             ("eliminar_tipo_item", "Puede eliminar tipo item"),
             ("adjuntar_tipo_item", "Puede adjuntar tipo item"),
-            ("importar_tipo_item", "importar_tipo_item"),
+            ("importar_tipo_item", "Puede importar tipo item"),
 
         ]
 

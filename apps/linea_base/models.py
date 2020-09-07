@@ -45,6 +45,7 @@ class LineaBase(models.Model):
 
             ("crear_linea_base", "Puede crear linea base"),
             ("editar_linea_base", "Puede editar linea base"),
+            ("eliminar_linea_base", "Puede eliminar linea base"),
             ("listar_linea_base", "Puede listar linea base"),
             ("estado_linea_base", "Puede cambiar estado linea base"),
             ("agregar_item_linea_base", "Puede agregar item linea base"),
