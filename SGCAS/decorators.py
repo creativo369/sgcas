@@ -9,6 +9,7 @@ from apps.fase.models import Fase
 def requiere_permiso(permiso):
     def decorator(view_func):
         def wrap(request, *args, **kwargs):
+            if request.user.is_superuser == True:return view_func(request, *args, **kwargs)
             query_rol=Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
             for rol_fase in query_rol:
                 if request.user in rol_fase.usuarios.all():
