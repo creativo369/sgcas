@@ -42,6 +42,7 @@
            <!-- <a type="button" class="btn btn-warning" href="#">Permisos</a> -->
            <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id %}">Editar</a>
            <a type="button" class="btn btn-danger" href="{% url 'rol:rol_eliminar' rol.id %}">Eliminar</a>
+           <a type="button" class="btn btn-info" href="{% url 'rol:rol_asignar_usuario' rol.id %}">Asignar</a>
           </td>
         </tr>
       {% endfor %}
@@ -70,5 +71,6 @@
             </span>
         </div>
       </div>
-      <a type="button" class="btn btn-link" href="{% url 'proyecto:list' %}">Ir a lista de proyectos</a>  
+     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
+        proyecto</a> 
 {% endblock content %}

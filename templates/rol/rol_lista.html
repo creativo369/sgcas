@@ -36,7 +36,7 @@
                 {{ p.name }}&nbsp;&nbsp;&nbsp;
               {% else %}
                 {{ p.name }}&nbsp;&nbsp;&nbsp;
-
+              {% endif %}
             {% endfor %}
           </td>
 		      <td>
@@ -70,18 +70,10 @@
             </span>
         </div>
       </div>
-<<<<<<< HEAD
+
 
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 
-=======
-{#<<<<<<< HEAD#}
-{#      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>#}
-{#=======#}
 
-     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
-        proyecto</a>
-{#>>>>>>> origin/guillermo#}
->>>>>>> origin/victor
 {% endblock content %}
