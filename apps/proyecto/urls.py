@@ -12,7 +12,7 @@ urlpatterns = [
     path('', manage_projects, name='manage_projects'),
     url(r'^crear-proyecto/$', login_required(permission_required('proyecto.crear_proyecto', raise_exception=True)(CreateProject.as_view())), name='create'),
     url(r'^listado-proyecto/$', login_required(permission_required('proyecto.ver_proyecto', raise_exception=True)(ListProject.as_view())), name='list'),
-    url(r'^results/$', login_required(search), name='search'),
+    url(r'^results/$', login_required(permission_required('proyecto.ver_proyecto', raise_exception=True)(search)), name='search'),
     url(r'^editar-proyecto/(?P<pk>\d+)/$', login_required(permission_required('proyecto.editar_proyecto', raise_exception=True)(UpdateProject.as_view())), name='update'),
     url(r'^eliminar-proyecto/(?P<pk>\d+)/$', login_required(permission_required('proyecto.eliminar_proyecto', raise_exception=True)(DeleteProject.as_view())), name='delete'),
     url(r'^detalles-proyecto/(?P<pk>\d+)/$', login_required(permission_required('proyecto.detalles_proyecto', raise_exception=True)(DetailProject.as_view())), name='detail'),

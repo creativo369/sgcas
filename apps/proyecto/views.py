@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 # **Importamos los codigos fuentes de la aplicación para la creación de vistas
-
+from SGCAS.decorators import requiere_permiso
 from .models import Proyecto
 from apps.fase.models import Fase
 
@@ -57,6 +57,7 @@ def success(request):
 
 
 @login_required
+@requiere_permiso('cambiar_estado')
 # === change_state ===
 def change_state(request, pk):
     """
@@ -73,7 +74,6 @@ def change_state(request, pk):
         form.save()
         return redirect('proyecto:list')
     return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
-
 
 
 # === create project ===
@@ -107,7 +107,6 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-
 # === list project ===
 class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     """
@@ -130,8 +129,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
             'id').distinct()
 
 
-
-@permission_required('proyecto.ver_proyecto', raise_exception=True)
+@requiere_permiso('ver_proyecto')
 # === search ===
 def search(request):
     """
@@ -154,7 +152,6 @@ def search(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, template, {'page_obj': page_obj})
-
 
 
 # === update project ===
@@ -184,7 +181,6 @@ class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         return redirect('proyecto:detail', pk=object.pk)
 
 
-
 # === delete project ===
 class DeleteProject(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     """
@@ -199,7 +195,6 @@ class DeleteProject(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     template_name = 'proyecto/delete.html'
     permission_required = 'proyecto.eliminar_proyecto'
     success_url = reverse_lazy('proyecto:list')
-
 
 
 # === detail project ===

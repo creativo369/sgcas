@@ -46,13 +46,15 @@
             Fases
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
             {% if proyecto.estado != 'Iniciado' %}
+
             <a class="dropdown-item" href="{% url 'fase:crear_fase' _id=proyecto.id %}">Crear fase</a>
             {% endif %}
             <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
         </div>
     </div>
-
+    
     {% endif %}
 
 {% endblock content %}

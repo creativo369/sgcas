@@ -52,6 +52,7 @@ Actualmente se despliega en las plantillas 19 vistas:
 """
 
 
+
 # @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
 @requiere_permiso('crear_item')
@@ -86,7 +87,7 @@ def crear_item_basico(request, id_fase):
     return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
-@permission_required('importar_tipo_item')
+@requiere_permiso('importar_tipo_item')
 # === importar tipo de ítem ===
 def item_importar_ti(request, pk):
     """
@@ -106,6 +107,7 @@ def item_importar_ti(request, pk):
 
 
 # === settear atributos ítem ===
+@requiere_permiso('crear_item')
 def item_set_atributos(request, pk):
     """
     Permite agregar los atributos a un ítem de acuerdo a su tipo de ítem importado.<br/>
@@ -123,6 +125,7 @@ def item_set_atributos(request, pk):
 
 
 @login_required
+@requiere_permiso('ver_item')
 # === ítem opciones ===
 def item_opciones(request):
     """
@@ -134,7 +137,7 @@ def item_opciones(request):
     return render(request, 'item/item_opciones.html')
 
 
-@permission_required('item.listar_item_de_fase', raise_exception=True)
+@requiere_permiso('listar_item')
 # === lista de ítems de fase ===
 def item_lista_fase(request, id_fase):
     """
@@ -160,7 +163,7 @@ def item_lista_fase(request, id_fase):
     return render(request, 'item/item_lista.html', context)
 
 
-@permission_required('item.listar_item_de_fase', raise_exception=True)
+@requiere_permiso('item.listar_item')
 # === search ===
 def search(request, id_fase):
     """
@@ -197,7 +200,7 @@ def search(request, id_fase):
     return render(request, template, context)
 
 
-@permission_required('item.eliminar_item', raise_exception=True)
+@requiere_permiso('eliminar_item')
 # === ítem eliminar ===
 def item_eliminar(request, pk):
     """
@@ -213,6 +216,7 @@ def item_eliminar(request, pk):
 
 
 # === ítem detalles ===
+@requiere_permiso('ver_item')
 def item_detalles(request, pk):
     """
        Permite visualizar los detalles de una instancia de ítem.<br/>
@@ -223,7 +227,7 @@ def item_detalles(request, pk):
     return render(request, 'item/item_detalles.html', {'item': Item.objects.get(pk=pk)})
 
 
-@permission_required('item.editar_item', raise_exception=True)
+@requiere_permiso('editar_item')
 # === ítem modificar ===
 def item_modificar_basico(request, pk):
     """
@@ -253,7 +257,7 @@ def item_modificar_basico(request, pk):
     return render(request, 'item/item_modificar.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
 
 
-@permission_required('item.item_modificar_ti', raise_exception=True)
+@requiere_permiso('item_modificar_ti')
 # === modificar ti ===
 def item_modificar_ti(request, pk):
     """
@@ -270,7 +274,7 @@ def item_modificar_ti(request, pk):
     return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
 
 
-@permission_required('item.item_modificar_atributos', raise_exception=True)
+@requiere_permiso('item_modificar_atributos')
 # === ítem modificar atributos ===
 def item_modificar_atributos(request, pk):
     """
@@ -288,6 +292,7 @@ def item_modificar_atributos(request, pk):
 
 
 # === snapshot ítem ===
+@requiere_permiso('versiones_item')
 def get_item_snapshot(pk):
     """
     Permite guardar el estado de un ítem.<br/>
@@ -328,7 +333,7 @@ def get_item_snapshot(pk):
     return snap_item
 
 
-@permission_required('item.ver_versiones_item', raise_exception=True)
+@requiere_permiso('versiones_item')
 # === ítem versiones ===
 def item_versiones(request, pk, id_fases):
     lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
@@ -346,7 +351,7 @@ def item_versiones(request, pk, id_fases):
     return render(request, 'item/item_versiones.html', context)
 
 
-@permission_required('item.restaurar_item_version', raise_exception=True)
+@requiere_permiso('versiones_item')
 # === restaurar versión ===
 def restaurar_version(request, pk):
     """
@@ -377,7 +382,7 @@ def restaurar_version(request, pk):
     return render(request, 'item/item_eliminar.html', {'object': nr_item})
 
 
-@permission_required('item.cambiar_estado_item', raise_exception=True)
+@requiere_permiso('cambiar_estado_item')
 # === ítem cambiar estado ===
 def item_cambiar_estado(request, pk):
     """
@@ -395,6 +400,7 @@ def item_cambiar_estado(request, pk):
 
 
 # === fases relaciones ===
+@requiere_permiso('relacion_item')
 def fases_rel(request, pk):
     """
     Permite la visualización de las fases de un ítem, paso previo para establecer de las relaciones.<br/>
@@ -413,6 +419,7 @@ def fases_rel(request, pk):
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===
+@requiere_permiso('relacion_item')
 def get_context(form, items_query, item_pk, fase_pk):
     """
     Realiza el proceso para la obtencion del contexto que se utiliza en la funcion de 'relaciones'.<br/>
@@ -440,7 +447,7 @@ def update_relations(pk, snap_pk):
     # for hijo in snap_item.hijos.all():
 
 
-@permission_required('item.relacionar_item', raise_exception=True)
+@requiere_permiso('relacion_item')
 # === relaciones ===
 def relaciones(request, pk, id_fase):
     """
@@ -511,7 +518,7 @@ def relaciones(request, pk, id_fase):
         return render(request, 'item/item_relaciones.html', context)
 
 
-@permission_required('item.calcular_impacto', raise_exception=True)
+@requiere_permiso('calcular_impacto')
 # === impacto ítem ===
 def calculo_impacto(request, pk):
     """
@@ -538,7 +545,7 @@ def calculo_impacto(request, pk):
     return render(request, 'item/item_calculo_impacto.html', context)
 
 
-@permission_required('item.ver_trazabilidad', raise_exception=True)
+@requiere_permiso('ver_trazabilidad')
 # === trazabilidad ítem ===
 def trazabilidad_item(request, pk):
     """

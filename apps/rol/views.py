@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from SGCAS.decorators import requiere_permiso
 from apps.rol.forms import GroupForm, GroupForm_sistema, RolFormUser
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -13,13 +15,21 @@ from apps.fase.models import Fase
 
 """
 Todas las vistas para la aplicación del Modulo Rol
-Actualmente se despliega en las plantillas 5 vistas:
+Actualmente se despliega en las plantillas 12 vistas:
 
-1. **crear_rol_view** - funcion para la creación de roles  (Ir a la sección: [[views.py #crear rol]] )
-2. **lista_rol** - Lista los roles existentes (Ir a la sección: [[views.py #listar roles]] )
-3. **search** - lista los roles buscados (Ir a la sección: [[views.py #search]] )
-4. **editar_rol** - modifica los atributos de un rol (Ir a la sección: [[views.py #editar rol]] )
-5. **eliminar_rol** - elimina un rol (Ir a la sección: [[views.py #eliminar rol]] )
+1. **crear_rol_view** - funcion para la creación de roles por fase (Ir a la sección: [[views.py #crear rol]] )
+2. **lista_rol** - Lista los roles existentes en la fase (Ir a la sección: [[views.py #listar roles]] )
+3. **search** - lista los roles buscados dentro de la fase (Ir a la sección: [[views.py #search]] )
+4. **editar_rol** - modifica los atributos de un rol de una fase (Ir a la sección: [[views.py #editar rol]] )
+5. **eliminar_rol** - elimina un rol de la fase (Ir a la sección: [[views.py #eliminar rol]] )
+6. **asignar_rol_usuario** - elimina un rol de la fase (Ir a la sección: [[views.py #asigna rol de fase]] )
+
+7. **crear_rol_view_sistema** - funcion para la creación de roles de sistema (Ir a la sección: [[views.py #crear rol sistema]] )
+8. **rol_opciones_sistema** - despliega opciones a sobre lo roles de sistema  (Ir a la sección: [[views.py #rol opciones sistema]] )
+9. **lista_rol_sistema** - Lista los roles del sistema existentes (Ir a la sección: [[views.py #listar roles sistema]] )
+10. **search_sistema** - lista los roles de sistema buscados (Ir a la sección: [[views.py #search sistema]] )
+11. **editar_rol_sistema** - modifica los atributos de un rol de sistema (Ir a la sección: [[views.py #editar rol sistema]] )
+12. **eliminar_rol_sistema** - elimina un rol de sistema (Ir a la sección: [[views.py #eliminar rol sistema]] )
 """
 
 
@@ -31,7 +41,7 @@ def handler403(request, exception, template_name='403.html'):
 
 
 @login_required
-@permission_required('usuario.crear_rol', raise_exception=True)
+@requiere_permiso('crear_rol')
 # === crear rol ===
 def crear_rol_view(request, id_fase):
     """
@@ -51,7 +61,7 @@ def crear_rol_view(request, id_fase):
     return render(request, 'rol/rol_crear.html', {'form': form})
 
 
-@permission_required('usuario.listar_rol', raise_exception=True)
+@requiere_permiso('listar_rol')
 # === listar roles ===
 def lista_rol(request, id_fase):
     """
@@ -68,7 +78,7 @@ def lista_rol(request, id_fase):
                                                   'page_obj': page_obj})
 
 
-@permission_required('usuario.listar_rol', raise_exception=True)
+@requiere_permiso('listar_rol')
 # === search === 
 def search(request, id_fase):
     """
@@ -93,7 +103,7 @@ def search(request, id_fase):
     return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
 
 
-@permission_required('usuario.editar_rol', raise_exception=True)
+@requiere_permiso('editar_rol')
 # === editar rol ===
 def editar_rol(request, pk):
     """
@@ -113,7 +123,7 @@ def editar_rol(request, pk):
     return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase)})
 
 
-@permission_required('usuario.eliminar_rol', raise_exception=True)
+@requiere_permiso('eliminar_rol')
 # === eliminar rol ===
 def eliminar_rol(request, pk):
     """
@@ -127,7 +137,9 @@ def eliminar_rol(request, pk):
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
 
-# === Asigna rol de fase
+
+# === asigna rol de fase
+@requiere_permiso('asignar_rol')
 def asignar_rol_usuario(request, pk):
     rol = get_object_or_404(Rol, pk=pk)
     id_fase = rol.fase.id
@@ -145,8 +157,8 @@ def asignar_rol_usuario(request, pk):
 # === ROL POR SISTEMA ===
 
 @login_required
-@permission_required('usuario.crear_rol_sistema', raise_exception=True)
-# === crear rol ===
+@permission_required('rol.crear_rol_sistema', raise_exception=True)
+# === crear rol sistema ===
 def crear_rol_view_sistema(request):
     """
     Permite la visualizacion de la plantilla para la creacion de instancias del modelo Group.<br/>
@@ -165,8 +177,8 @@ def crear_rol_view_sistema(request):
 
 
 @login_required
-@permission_required('usuario.ver_rol_sistema', raise_exception=True)
-# === rol opciones ===
+@permission_required('rol.gestion_rol_sistema', raise_exception=True)
+# === rol opciones sistema ===
 def rol_opciones_sistema(request):
     """
     Permite la visualizacion de las opciones sobre el modelo Group.<br/>
@@ -176,7 +188,7 @@ def rol_opciones_sistema(request):
     return render(request, 'rol/rol_opciones_sistema.html')
 
 
-# === listar roles ===
+# === listar roles sistema ===
 class ListaRol_sistema(PermissionRequiredMixin, ListView):
     """
     Permite la visualizacion de todas las intancias del modelo Group.<br/>
@@ -185,19 +197,20 @@ class ListaRol_sistema(PermissionRequiredMixin, ListView):
     **:return:** Lista que contiene todas las instancias del modelo Group del sistema.<br/>
     """
     paginate_by = 3
-    model = Group
+    model = Rol
     template_name = 'rol/rol_lista_sistema.html'
-    permission_required = 'usuario.listar_rol_sistema'
+    permission_required = 'rol.listar_rol_sistema'
 
     # La lista a mostrar estara por orden ascendente
     # class Meta:
     # ordering = ['-id']
     def get_queryset(self):
-        #Rol.objects.filter(fase=None)
-        return Group.objects.order_by('id').distinct()
+        # Rol.objects.filter(fase=None)
+        return Rol.objects.filter(fase=None).order_by('id').distinct()
 
 
-@permission_required('usuario.listar_rol_sistema', raise_exception=True)
+@permission_required('rol.listar_rol_sistema', raise_exception=True)
+# === search sistema ===
 def search_sistema(request):
     """
     Permite la búsqueda de las intancias del modelo Group.<br/>
@@ -208,9 +221,9 @@ def search_sistema(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = Group.objects.filter(Q(name__icontains=query)).order_by('id').distinct()
+        results = Rol.objects.filter(Q(name__icontains=query), fase=None).order_by('id').distinct()
     else:
-        results = Group.objects.all().order_by('id')
+        results = Rol.objects.filter(fase=None).order_by('id')
 
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
@@ -219,7 +232,7 @@ def search_sistema(request):
     return render(request, template, {'page_obj': page_obj})
 
 
-# === editar rol ===
+# === editar rol sistema ===
 class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
     """
     Permite la modificacion de una instancia del modelo Group.<br/>
@@ -229,12 +242,12 @@ class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
     """
     model = Group
     form_class = GroupForm_sistema
-    permission_required = 'usuario.editar_rol_sistema'
+    permission_required = 'rol.editar_rol_sistema'
     template_name = 'rol/rol_editar_sistema.html'
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
 
-# === eliminar rol ===
+# === eliminar rol sistema ===
 class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
     Permite la eliminacion de una instancia del modelo Group.<br/>
@@ -244,7 +257,7 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
     model = Group
     template_name = 'rol/rol_eliminar_sistema.html'
-    permission_required = 'usuario.eliminar_rol_sistema'
+    permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
 # === FIN ====
@@ -256,4 +269,6 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
 # 4.urls     : [[urls.py]]<br/>
 # 5.views    : [[views.py]]<br/>
 
+
 # Regresar al menu principal : [Menú Principal](../../docs-index/index.html)
+

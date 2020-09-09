@@ -2,6 +2,8 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from guardian.mixins import PermissionRequiredMixin
+
+from SGCAS.decorators import requiere_permiso
 from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 
 from django.db.models import Q
@@ -25,7 +27,8 @@ Actualmente se despliega en las plantillas 6 vistas:
 
 
 @login_required
-@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+#@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+@requiere_permiso('crear_tipo_item')
 # === crear tipo de ítem ===
 def crear_tipo_item(request, id_fase):
     """
@@ -47,7 +50,7 @@ def crear_tipo_item(request, id_fase):
 
 
 @login_required
-@permission_required('tipo_item.ver_tipo_item', raise_exception=True)
+@requiere_permiso('ver_tipo_item')
 # === gestión tipo de ítem ===
 def tipo_item_opciones(request):
     """
@@ -59,7 +62,7 @@ def tipo_item_opciones(request):
     return render(request, 'tipo_item/tipo_item_opciones.html')
 
 
-@permission_required('tipo_item.listar_tipo_item', raise_exception=True)
+@requiere_permiso('listar_tipo_item')
 # === lista tipo de ítem ===
 def tipo_item_lista(request, id_fase):
     """
@@ -77,7 +80,7 @@ def tipo_item_lista(request, id_fase):
                                                             'page_obj': page_obj})
 
 
-@permission_required('tipo_item.editar_tipo_item', raise_exception=True)
+@requiere_permiso('editar_tipo_item')
 # === tipo de ítem update ===
 def editar_tipo_item(request, pk):
     """
@@ -94,7 +97,7 @@ def editar_tipo_item(request, pk):
     return render(request, 'tipo_item/tipo_item_modificar.html', {'form':form})
 
 
-@permission_required('tipo_item.eliminar_tipo_item', raise_exception=True)
+@requiere_permiso('eliminar_tipo_item')
 # === eliminar tipo de ítem ===
 def eliminar_tipo_item(request, pk):
     """
@@ -109,7 +112,7 @@ def eliminar_tipo_item(request, pk):
     return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
 
         
-@permission_required('tipo_item.listar_tipo_item', raise_exception=True)
+@requiere_permiso('listar_tipo_item')
 # === search === 
 def search(request, id_fase):
     """

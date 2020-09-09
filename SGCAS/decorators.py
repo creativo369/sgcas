@@ -5,6 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from apps.rol.models import Rol
 from apps.fase.models import Fase
 
+from apps.fase.models import Fase
+from apps.rol.models import Rol
+
+
 ##Checkea los permisos por fase
 def requiere_permiso(permiso):
     def decorator(view_func):
@@ -31,6 +35,7 @@ def administrator_only(view_func):
     :param view_func:
     :return:
     """
+
     def wrap(request, *args, **kwargs):
         if request.roles == 'Administrador':
             return view_func(request, *args, **kwargs)
@@ -38,7 +43,6 @@ def administrator_only(view_func):
             raise PermissionDenied
 
     return wrap
-
 
 ##Al crear un usuario, este no posee roles, por lo tanto se lo coloca como inactivo hasta que el admin
 ##active su cuenta
