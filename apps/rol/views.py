@@ -134,7 +134,8 @@ def eliminar_rol(request, pk):
     """
     rol = get_object_or_404(Rol, pk=pk)
     id_fase = rol.fase.pk
-    rol.delete()
+    if len(rol.usuarios.all())==0:        
+        rol.delete() #solo se pueden eliminar los roles que no han sido asignados aun
     return redirect('rol:rol_lista', id_fase=id_fase)
 
 
@@ -221,7 +222,7 @@ def search_sistema(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = Rol.objects.filter(Q(name__icontains=query), fase=None).order_by('id').distinct()
+        results = Rol.objects.filter(Q(nombre__icontains=query), fase=None).order_by('id').distinct()
     else:
         results = Rol.objects.filter(fase=None).order_by('id')
 

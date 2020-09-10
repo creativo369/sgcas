@@ -93,7 +93,7 @@ class Item(models.Model):
             ("relacion_item", "Puede gestionar relacion de item"),
             ("calcular_impacto", "Puede calcular impacto item"),
             ("ver_trazabilidad", "Puede ver trazabilidad item"),
-            ("versiones_item", "Versiones item"),
+            ("versiones_item", "Puede versionar item"),
             ("restaurar_item_version", "Puede restaurar version item"),
             ("item_modificar_atributos", "Puede modificar atributos item"),
             ("item_modificar_ti", "Puede modificar TI de item"),
