@@ -98,7 +98,7 @@ class ChangeProject(forms.ModelForm):
             estado_proyectonew = [
                 ('Pendiente', 'Pendiente'),
                 ('Iniciado', 'Iniciado'),
-                ('Cancelado', 'Cancelado'),
+                # ('Cancelado', 'Cancelado'),
             ]
             self.fields['estado'].choices = estado_proyectonew
         else:
