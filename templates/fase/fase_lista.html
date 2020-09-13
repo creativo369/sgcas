@@ -101,9 +101,9 @@
                                 <a class="dropdown-item"
                                    href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
                                 <a class="dropdown-item" href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>
-                                {% if proyecto.estado != 'Iniciado' %}
+{#                                {% if proyecto.estado != 'Iniciado' %}#}
                                     <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
-                                {% endif %}
+{#                                {% endif %}#}
                             </div>
                         </div>
                     </td>

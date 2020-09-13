@@ -168,7 +168,10 @@ def eliminar_fase(request, pk, _id):
         """
     success_url = 'fase:fase_lista'
     fase = Fase.objects.get(id=pk)
-    fase.delete()
+    if fase.proyecto.estado == "Iniciado":
+        return render(request, 'fase/fase_eliminar.html', {'fase': fase})
+    else:
+        fase.delete()
     return redirect(success_url, _id=_id)
 
 
