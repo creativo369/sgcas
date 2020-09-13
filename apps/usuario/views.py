@@ -81,10 +81,9 @@ def search(request):
 
     if query:
         results = User.objects.filter(Q(username__icontains=query) |
-                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(
-            username='AnonymousUser')
+                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(username='AnonymousUser').exclude(is_superuser=True)
     else:
-        results = User.objects.all().order_by('id').exclude(username='AnonymousUser')
+        results = User.objects.all().order_by('id').exclude(username='AnonymousUser').exclude(is_superuser=True)
 
     paginator = Paginator(results, 4)
     page_number = request.GET.get('page')
