@@ -4,11 +4,12 @@
 {% block content %}
     <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
         <div class="card-header">
-            {% if object %}
-                <strong>Actualización del Item {{ item.nombre }} - Configuración básica</strong>
-            {% else %}
-                <strong>Registro de Item - Configuración básica</strong>
-            {% endif %}
+            {% if validacion_proyecto.proyecto.estado == "Iniciado" %}
+                {% if object %}
+                 <strong>Actualización del Item {{ item.nombre }} - Configuración básica</strong>
+                {% else %}
+                    <strong>Registro de Item - Configuración básica</strong>
+                {% endif %}
         </div>
         <div class="card-body card-block">
             {% if tipo_item %}
@@ -62,6 +63,13 @@
             {% endif %}
         </div>
     </div>
+            {% else %}
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
+                    <h4 class="alert-heading">Advertencia!</h4>
+                    Solo se pueden crear &iacute;tems en las fases cuando el proyecto este en estado iniciado!
+                </div>
+            {% endif %}
 {% endblock %}
 
 

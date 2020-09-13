@@ -63,6 +63,7 @@ def crear_item_basico(request, id_fase):
     **:param request:** Recibe un request por parte de un usuario.<br/>
     **:return:**  Retorna una instancia del modelo Item.<br/>
     """
+    query_fase = Fase.objects.get(id=id_fase) # Obtenemos la instancia de la fase para poder acceder desde ella hasta el estado del proyecto
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES, id_fase=id_fase)
         if form.is_valid():
@@ -72,7 +73,7 @@ def crear_item_basico(request, id_fase):
             form.save_m2m()
 
             if request.FILES:
-                ##ALMACENAMIENTO FIREBASE
+                # ALMACENAMIENTO FIREBASE
                 path_local = 'deployment/media/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
                 path_on_cloud = str(
                     date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
@@ -81,10 +82,11 @@ def crear_item_basico(request, id_fase):
                 item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
                 item.save()
             return redirect('item:importar_tipo_item', pk=item.pk)
-    else:
+    elif query_fase.proyecto.estado == "Iniciado": # Solamente cuando el proyecto este en estado iniciado se pueden crear los items
         form = ItemForm(id_fase=id_fase)
-
-    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
+    else:
+        return render(request, 'item/item_crear.html', {'validacion_proyecto': query_fase})
+    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists(),'validacion_proyecto': query_fase})
 
 
 @requiere_permiso('importar_tipo_item')
