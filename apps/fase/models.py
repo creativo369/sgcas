@@ -58,26 +58,6 @@ class Fase(models.Model):
         """
         return '{}'.format(self.nombre)
 
-    def validate_unique(self, exclude=None):
-        """
-        Función que valida que el nombre de una fase dentro de un proyecto sea Unico.<br/>
-        **:param exclude:** None<br/>
-        **:return:** Mensaje de Validación<br/>
-        """
-        if Fase.objects.filter(Q(nombre=self.nombre)& Q(proyecto=self.proyecto)).exclude(pk=self.id).exists():
-            raise ValidationError("Una fase con el mismo nombre ya se encuentra registrada en el proyecto.")
-
-    def save(self, *args, **kwargs):
-        """
-        Función que guarda la fase en la base de datos como unico.<br/>
-        **:param args:**<br/>
-        **:param kwargs:**<br/>
-        **:return:** Un string que va ser único en nuestra base de datos<br/>
-        """
-        self.validate_unique()
-        self.slug = self.nombre.replace(" ", "_").lower()
-        super(Fase, self).save(*args, **kwargs)
-
 # **Volver atras** : [[forms.py]]
 
 # **Ir a la documentación de pruebas unitarias del modulo fase** : [[tests.py]]

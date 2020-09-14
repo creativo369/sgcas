@@ -113,26 +113,7 @@ class Item(models.Model):
         """
         return self.nombre
 
-    def validate_unique(self, exclude=None):
-        """
-        Función que valida que el nombre de un ítem dentro de una fase sea único.<br/>
-        **:param exclude:** None<br/>
-        **:return:** Mensaje de Validación<br/>
-        """
-        if Item.objects.filter(Q(nombre=self.nombre)& Q(fase=self.fase)).exclude(pk=self.id).exists():
-            raise ValidationError("Un ítem con el mismo nombre ya se encuentra registrado en la fase.")
-
-    def save(self, *args, **kwargs):
-        """
-        Función que guarda el ítem en la base de datos como único.<br/>
-        **:param args:**<br/>
-        **:param kwargs:**<br/>
-        **:return:** Un string que va ser único en nuestra base de datos<br/>
-        """
-        self.validate_unique()
-        self.slug = self.nombre.replace(" ", "_").lower()
-        super(Item, self).save(*args, **kwargs)
-
+  
 
 # **Volver atras** : [[forms.py]]
 
