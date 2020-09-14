@@ -4,8 +4,10 @@ from .models import Proyecto
 from django.db.models import Q
 from apps.usuario.models import User
 
-
 # === Clase para abstraer en un formulario el registro de un Proyecto ===<br/>
+from ..fase.models import Fase
+
+
 class FormularioProyecto(forms.ModelForm):
     # Clase que modela el formulario de la definición de un proyecto a ser usado en la plantilla </br>
     # Para read - only los fields estado y fecha_creacion<br/>
@@ -19,9 +21,9 @@ class FormularioProyecto(forms.ModelForm):
         """
         super(FormularioProyecto, self).__init__(*args, **kwargs)
         self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True)).exclude(username='AnonymousUser')
-        #queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
+        # queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
 
-        campos = ['fecha_creacion', 'estado']        
+        campos = ['fecha_creacion', 'estado']
 
         for field in campos:
             self.fields[field].required = False
@@ -38,7 +40,6 @@ class FormularioProyecto(forms.ModelForm):
             'estado',
 
         ]
-
 
         # Las etiquetas que tendrá para visualizarse en el navegador<br/>
         labels = {
@@ -94,20 +95,25 @@ class ChangeProject(forms.ModelForm):
         fields = ['nombre', 'descripcion', 'fecha_creacion', 'miembros']
         # No se permite la modificacion del nombre del proyecto si su estado es pendiente
         gerente = kwargs['instance'].gerente
-        if kwargs['instance'].estado == 'Pendiente':
-            estado_proyectonew = [
+
+        if Fase.objects.filter(proyecto=kwargs['instance']):
+            estado_proyecto = [
                 ('Pendiente', 'Pendiente'),
                 ('Iniciado', 'Iniciado'),
-                # ('Cancelado', 'Cancelado'),
             ]
-            self.fields['estado'].choices = estado_proyectonew
-        else:
-            estado_proyectonew = [
+            self.fields['estado'].choices = estado_proyecto
+        elif kwargs['instance'].estado == 'Iniciado':
+            estado_proyecto = [
                 ('Iniciado', 'Iniciado'),
                 ('Cancelado', 'Cancelado'),
                 ('Finalizado', 'Finalizado'),
             ]
-            self.fields['estado'].choices = estado_proyectonew
+            self.fields['estado'].choices = estado_proyecto
+        else:
+            estado_proyecto = [
+                ('Pendiente', 'Pendiente'),
+            ]
+            self.fields['estado'].choices = estado_proyecto
 
         for field in fields:
             self.fields[field].required = False
