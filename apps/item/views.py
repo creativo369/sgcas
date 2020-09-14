@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, UpdateView
 from guardian.mixins import PermissionRequiredMixin
@@ -52,18 +52,17 @@ Actualmente se despliega en las plantillas 19 vistas:
 """
 
 
-
 # @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
 @requiere_permiso('crear_item')
 def crear_item_basico(request, id_fase):
-
     """
     Permite la creacion de instancias de modelo Item.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
     **:return:**  Retorna una instancia del modelo Item.<br/>
     """
-    query_fase = Fase.objects.get(id=id_fase) # Obtenemos la instancia de la fase para poder acceder desde ella hasta el estado del proyecto
+    query_fase = Fase.objects.get(
+        id=id_fase)  # Obtenemos la instancia de la fase para poder acceder desde ella hasta el estado del proyecto
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES, id_fase=id_fase)
         if form.is_valid():
@@ -82,11 +81,12 @@ def crear_item_basico(request, id_fase):
                 item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
                 item.save()
             return redirect('item:importar_tipo_item', pk=item.pk)
-    elif query_fase.proyecto.estado == "Iniciado": # Solamente cuando el proyecto este en estado iniciado se pueden crear los items
+    elif query_fase.proyecto.estado == "Iniciado":  # Solamente cuando el proyecto este en estado iniciado se pueden crear los items
         form = ItemForm(id_fase=id_fase)
     else:
         return render(request, 'item/item_crear.html', {'validacion_proyecto': query_fase})
-    return render(request, 'item/item_crear.html', {'form': form, 'tipo_item': TipoItem.objects.exists(),'validacion_proyecto': query_fase})
+    return render(request, 'item/item_crear.html',
+                  {'form': form, 'tipo_item': TipoItem.objects.exists(), 'validacion_proyecto': query_fase})
 
 
 @requiere_permiso('importar_tipo_item')
@@ -394,12 +394,13 @@ def item_cambiar_estado(request, pk):
     **:return:** Retorna una instancia de un ítem con su estado modificado.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
-    form = ItemCambiarEstado(request.POST or None, instance=item)
-    if form.is_valid():
-        form.save()
-        return redirect('item:item_lista', id_fase=item.fase.pk)
-    return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
-
+    if item.antecesores.all().exists() or item.sucesores.all().exists() or item.padres.all().exists() or item.hijos.all().exists():
+        form = ItemCambiarEstado(request.POST or None, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('item:item_lista', id_fase=item.fase.pk)
+        return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
+    return render(request, 'item/item_cambiar_estado.html', {'item': item})
 
 # === fases relaciones ===
 @requiere_permiso('relacion_item')
@@ -571,7 +572,6 @@ def trazabilidad_item(request, pk):
             'item_name': target.nombre
         }
     return render(request, 'item/item_trazabilidad.html', context)
-
 
 # class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
 #     """

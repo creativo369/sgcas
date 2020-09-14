@@ -1,30 +1,45 @@
 {% extends 'base/base.html' %}
-{% block title %} Cambiar estado Item {% endblock%}
+{% block title %} Cambiar estado Item {% endblock title %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {% if error %}
-            <h2>{{ error }}</h2>
+    {% if item.padres.all.exists or item.hijos.all.exists or item.antecesores.all.exists or item.sucesores.all.exists %}
+         {% if item.estado == "Revision" %}
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
+                <h4 class="alert-heading">Advertencia!</h4>
+                El ítem se encuentra en estado de revisión. Una vez aprobado la solicitud del comité se podra cambiar
+                nuevamente su estado a aprobado.
+            </div>
         {% else %}
-            <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
-            <div class="card-header">
-                <strong>Cambio de estado - Item {{ item.nombre }}</strong>
-            </div>
-            <div class="card-body card-block">
-                <form action="#" method="post" enctype=" multipart
-                    /form-data" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col col-md-3">{{ form.estado.label }}</div>
-                        <div class="col-12 col-md-9">{{ form.estado }}</div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
-                    </div>
-                </form>
-            </div>
+            {% if error %}
+                <h2>{{ error }}</h2>
+            {% else %}
+                <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+                <div class="card-header">
+                    <strong>Cambio de estado - Item {{ item.nombre }}</strong>
+                </div>
+                <div class="card-body card-block">
+                    <form method="post" enctype=" multipart
+                                /form-data" class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.estado.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.estado }}</div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            {% endif %}
         {% endif %}
-    </form>
-{% endblock %}
-
+    {% else %}
+        <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
+                <h4 class="alert-heading">Advertencia!</h4>
+                El ítem debe poseer al menos una relación para cambiar su estado a aprobado.
+            </div>
+    {% endif %}
+{% endblock content %}
