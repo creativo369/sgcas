@@ -292,7 +292,6 @@ def item_modificar_atributos(request, pk):
 
 
 # === snapshot ítem ===
-@requiere_permiso('versiones_item')
 def get_item_snapshot(pk):
     """
     Permite guardar el estado de un ítem.<br/>
@@ -419,7 +418,6 @@ def fases_rel(request, pk):
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===
-@requiere_permiso('relacion_item')
 def get_context(form, items_query, item_pk, fase_pk):
     """
     Realiza el proceso para la obtencion del contexto que se utiliza en la funcion de 'relaciones'.<br/>
