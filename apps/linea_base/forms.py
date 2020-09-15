@@ -45,6 +45,12 @@ class LineaBaseUpdateEstado(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LineaBaseUpdateEstado, self).__init__(*args, **kwargs)
 
+        if kwargs['instance'].estado=='Abierta':
+            linea_base_new =[
+                ('Cerrada', 'Cerrada'),                
+                ]
+            self.fields['estado'].choices=linea_base_new
+            
         self.fields['descripcion'].required = False
         self.fields['descripcion'].disabled = True
 

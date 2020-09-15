@@ -26,7 +26,7 @@ urlpatterns = [
     #=== ROL SISTEMA ===
     url(r'^opciones/', login_required(permission_required('rol.gestion_rol_sistema', raise_exception=True)(rol_opciones_sistema)), name='rol_opciones_sistema'),
     url(r'^lista/', login_required(permission_required('rol.listar_rol_sistema', raise_exception=True)(ListaRol_sistema.as_view())), name='rol_lista_sistema'),
-    url(r'^results/$', login_required(permission_required('rol.listar_rol_sistema', raise_exception=True)(search)), name='search_sistema'),
+    url(r'^results/$', login_required(permission_required('rol.listar_rol_sistema', raise_exception=True)(search_sistema)), name='search_sistema'),
     url(r'^eliminar/(?P<pk>\d+)/$', login_required(permission_required('rol.eliminar_rol_sistema', raise_exception=True)(EliminarRol_sistema.as_view())), name='rol_eliminar_sistema'),
     url(r'^crear/', login_required(permission_required('rol.crear_rol_sistema', raise_exception=True)(crear_rol_view_sistema)), name='rol_crear_sistema'),
     url(r'^modificar/(?P<pk>\d+)/$', login_required(permission_required('rol.editar_rol_sistema', raise_exception=True)(EditarRol_sistema.as_view(model=Group, ))), name='rol_editar_sistema'),

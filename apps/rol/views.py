@@ -12,16 +12,25 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from apps.rol.models import Rol
 from apps.fase.models import Fase
+from apps.usuario.models import User
 
 """
 Todas las vistas para la aplicación del Modulo Rol
-Actualmente se despliega en las plantillas 5 vistas:
+Actualmente se despliega en las plantillas 12 vistas:
 
-1. **crear_rol_view** - funcion para la creación de roles  (Ir a la sección: [[views.py #crear rol]] )
-2. **lista_rol** - Lista los roles existentes (Ir a la sección: [[views.py #listar roles]] )
-3. **search** - lista los roles buscados (Ir a la sección: [[views.py #search]] )
-4. **editar_rol** - modifica los atributos de un rol (Ir a la sección: [[views.py #editar rol]] )
-5. **eliminar_rol** - elimina un rol (Ir a la sección: [[views.py #eliminar rol]] )
+1. **crear_rol_view** - funcion para la creación de roles por fase (Ir a la sección: [[views.py #crear rol]] )
+2. **lista_rol** - Lista los roles existentes en la fase (Ir a la sección: [[views.py #listar roles]] )
+3. **search** - lista los roles buscados dentro de la fase (Ir a la sección: [[views.py #search]] )
+4. **editar_rol** - modifica los atributos de un rol de una fase (Ir a la sección: [[views.py #editar rol]] )
+5. **eliminar_rol** - elimina un rol de la fase (Ir a la sección: [[views.py #eliminar rol]] )
+6. **asignar_rol_usuario** - elimina un rol de la fase (Ir a la sección: [[views.py #asigna rol de fase]] )
+
+7. **crear_rol_view_sistema** - funcion para la creación de roles de sistema (Ir a la sección: [[views.py #crear rol sistema]] )
+8. **rol_opciones_sistema** - despliega opciones a sobre lo roles de sistema  (Ir a la sección: [[views.py #rol opciones sistema]] )
+9. **lista_rol_sistema** - Lista los roles del sistema existentes (Ir a la sección: [[views.py #listar roles sistema]] )
+10. **search_sistema** - lista los roles de sistema buscados (Ir a la sección: [[views.py #search sistema]] )
+11. **editar_rol_sistema** - modifica los atributos de un rol de sistema (Ir a la sección: [[views.py #editar rol sistema]] )
+12. **eliminar_rol_sistema** - elimina un rol de sistema (Ir a la sección: [[views.py #eliminar rol sistema]] )
 """
 
 
@@ -125,12 +134,12 @@ def eliminar_rol(request, pk):
      **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles de la fase.<br/>
     """
     rol = get_object_or_404(Rol, pk=pk)
-    id_fase = rol.fase.pk
+    id_fase = rol.fase.pk        
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
 
 
-# === Asigna rol de fase
+# === asigna rol de fase
 @requiere_permiso('asignar_rol')
 def asignar_rol_usuario(request, pk):
     rol = get_object_or_404(Rol, pk=pk)
@@ -150,7 +159,7 @@ def asignar_rol_usuario(request, pk):
 
 @login_required
 @permission_required('rol.crear_rol_sistema', raise_exception=True)
-# === crear rol ===
+# === crear rol sistema ===
 def crear_rol_view_sistema(request):
     """
     Permite la visualizacion de la plantilla para la creacion de instancias del modelo Group.<br/>
@@ -170,7 +179,7 @@ def crear_rol_view_sistema(request):
 
 @login_required
 @permission_required('rol.gestion_rol_sistema', raise_exception=True)
-# === rol opciones ===
+# === rol opciones sistema ===
 def rol_opciones_sistema(request):
     """
     Permite la visualizacion de las opciones sobre el modelo Group.<br/>
@@ -180,7 +189,7 @@ def rol_opciones_sistema(request):
     return render(request, 'rol/rol_opciones_sistema.html')
 
 
-# === listar roles ===
+# === listar roles sistema ===
 class ListaRol_sistema(PermissionRequiredMixin, ListView):
     """
     Permite la visualizacion de todas las intancias del modelo Group.<br/>
@@ -202,6 +211,7 @@ class ListaRol_sistema(PermissionRequiredMixin, ListView):
 
 
 @permission_required('rol.listar_rol_sistema', raise_exception=True)
+# === search sistema ===
 def search_sistema(request):
     """
     Permite la búsqueda de las intancias del modelo Group.<br/>
@@ -212,9 +222,9 @@ def search_sistema(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = Rol.objects.filter(Q(name__icontains=query), fase=None).order_by('id').distinct()
+        results = Rol.objects.filter(Q(nombre__icontains=query), fase=None).order_by('id').distinct()
     else:
-        results = Rol.objects.all().order_by('id')
+        results = Rol.objects.filter(fase=None).order_by('id')
 
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
@@ -223,7 +233,7 @@ def search_sistema(request):
     return render(request, template, {'page_obj': page_obj})
 
 
-# === editar rol ===
+# === editar rol sistema ===
 class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
     """
     Permite la modificacion de una instancia del modelo Group.<br/>
@@ -238,7 +248,7 @@ class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
 
-# === eliminar rol ===
+# === eliminar rol sistema ===
 class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
     Permite la eliminacion de una instancia del modelo Group.<br/>
@@ -246,7 +256,10 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
     **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
     """
-    model = Group
+    
+    model = Rol
+    queryset= Rol.objects.filter(Q(usuarios__in=User.objects.all().exclude(username='AnonymousUser').exclude(is_superuser=True)) |
+        Q(usuarios=None))
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')
@@ -260,4 +273,6 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
 # 4.urls     : [[urls.py]]<br/>
 # 5.views    : [[views.py]]<br/>
 
+
 # Regresar al menu principal : [Menú Principal](../../docs-index/index.html)
+

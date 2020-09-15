@@ -66,6 +66,12 @@ def crear_item_basico(request, id_fase):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES, id_fase=id_fase)
         if form.is_valid():
+
+            nombre = form.cleaned_data['nombre']
+            fase = get_object_or_404(Fase, pk=id_fase)
+            if Item.objects.filter(Q(nombre=nombre) & Q(fase=fase)).exists():
+                return render(request, 'item/validate_item.html')
+
             item = form.save(commit=False)
             item.fase = Fase.objects.get(id=id_fase)
             item.save()
@@ -294,7 +300,6 @@ def item_modificar_atributos(request, pk):
 
 
 # === snapshot ítem ===
-@requiere_permiso('versiones_item')
 def get_item_snapshot(pk):
     """
     Permite guardar el estado de un ítem.<br/>
@@ -422,7 +427,6 @@ def fases_rel(request, pk):
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===
-@requiere_permiso('relacion_item')
 def get_context(form, items_query, item_pk, fase_pk):
     """
     Realiza el proceso para la obtencion del contexto que se utiliza en la funcion de 'relaciones'.<br/>

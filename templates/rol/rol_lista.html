@@ -32,6 +32,7 @@
           <td>
             {% for p in rol.group.permissions.all %}
               {% if forloop.first %}
+
                 {{ p.name }}&nbsp;&nbsp;&nbsp;
               {% else %}
                 {{ p.name }}&nbsp;&nbsp;&nbsp;
@@ -69,11 +70,10 @@
             </span>
         </div>
       </div>
-{#<<<<<<< HEAD#}
-{#      <a type="button" class="btn btn-secondary" href="{% url 'rol:rol_opciones' %}">Regresar a gestión de roles</a>#}
-{#=======#}
+
 
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
-{#>>>>>>> origin/guillermo#}
+
+
 {% endblock content %}
