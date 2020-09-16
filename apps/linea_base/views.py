@@ -22,6 +22,7 @@ Actualmente se despliega en las plantillas 7 vistas:
 7. **lista_items_linea_base** - lista todos los ítems que forman parte de una línea base (Ir a la sección: [[views.py #lista ítems lb]] )
 """
 
+
 @requiere_permiso('crear_linea_base')
 # === crear línea base ===
 def crear_linea_base(request, id_fase):
@@ -31,6 +32,14 @@ def crear_linea_base(request, id_fase):
     **:param id_fase:** Recibe pk de la instancia de fase en donde se esta creando la línea base.<br/>
     **:return:** Retorna una instancia de línea base creada.<br/>
     """
+    query_item = Item.objects.all().filter(fase_id=id_fase)
+    flag = False
+    fase = Fase.objects.get(id=id_fase)
+    print(fase.proyecto.estado)
+    for item in query_item:
+        if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
+            flag = True
+
     if request.method == 'POST':
         form = LineaBaseForm(request.POST)
         if form.is_valid():
@@ -38,9 +47,11 @@ def crear_linea_base(request, id_fase):
             lb.fase = Fase.objects.get(id=id_fase)
             lb.save()
             return redirect('linea_base:agregar_items_lb', pk=lb.pk, id_fase=id_fase)
-    else:
+    elif flag and fase.proyecto.estado == "Iniciado":
         form = LineaBaseForm()
         return render(request, 'linea_base/linea_crear.html', {'form': form})
+    else:
+        return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
 
 
 @requiere_permiso('agregar_item_linea_base')
@@ -118,7 +129,8 @@ def lista_linea_base(request, id_fase):
 
     return render(request, 'linea_base/linea_lista.html',
                   {'lb': LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)),
-                   'fase': Fase.objects.get(id=id_fase),'page_obj': page_obj})
+                   'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
+
 
 @requiere_permiso('listar_linea_base')
 # === search ===
@@ -131,26 +143,28 @@ def search(request, id_fase):
     """
     template = 'linea_base/list_busqueda.html'
     query = request.GET.get('buscar')
-    
+
     fase = Fase.objects.get(id=id_fase)
-    
+
     if query:
-        results = LineaBase.objects.filter(Q(fase=Fase.objects.get(id=id_fase)) & 
-            (Q(identificador__icontains=query) | Q(descripcion__contains=query))).order_by('id').distinct()
+        results = LineaBase.objects.filter(Q(fase=Fase.objects.get(id=id_fase)) &
+                                           (Q(identificador__icontains=query) | Q(
+                                               descripcion__contains=query))).order_by('id').distinct()
     else:
         results = LineaBase.objects.filter(Q(fase=Fase.objects.get(id=id_fase))).order_by('id').distinct()
 
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)     
-    
+    page_obj = paginator.get_page(page_number)
+
     context = {
-    
+
         'lb': results,
         'fase': fase,
         'page_obj': page_obj
     }
     return render(request, template, context)
+
 
 @requiere_permiso('listar_item_linea_base')
 # === lista ítems lb ===
@@ -163,7 +177,7 @@ def lista_items_linea_base(request, pk, id_fases):
     **:return:** Retorna una lista de ítems correspondientes a una línea base.<br/>
     """
     lista_item_lb = get_object_or_404(LineaBase, pk=pk).items.all().order_by('id').distinct()
-    fase= Fase.objects.get(id=id_fases)
+    fase = Fase.objects.get(id=id_fases)
 
     paginator = Paginator(lista_item_lb, 3)
     page_number = request.GET.get('page')
@@ -171,7 +185,8 @@ def lista_items_linea_base(request, pk, id_fases):
 
     return render(request, 'linea_base/linea_items_lista.html',
                   {'items': lista_item_lb, 'page_obj': page_obj, 'fase': fase})
-    
+
+
 @requiere_permiso('eliminar_linea_base')
 def eliminar_lb(request, pk, id_fase):
     """
