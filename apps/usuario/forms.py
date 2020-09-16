@@ -64,11 +64,6 @@ class UserForm(forms.ModelForm):
                 global inactivo_previo
                 inactivo_previo = True
 
-            # if kwargs['instance'].groups.all():
-            #     initial['roles'] = kwargs['instance'].groups.all()[0]
-            # else:
-            #     initial['roles'] = None
-
             has_rol = False
             role = None
             for rol in Rol.objects.filter(fase=None):
@@ -90,8 +85,14 @@ class UserForm(forms.ModelForm):
         :return:
         """
         rol = self.cleaned_data.pop('roles')
+        username = self.cleaned_data.pop('username')
         u = super().save()
+        system_rol = get_system_rol(u)
+        if system_rol is not None and rol is not system_rol:
+            u.groups.remove(Group.objects.get(name=system_rol.nombre))
+            Rol.objects.get(nombre=system_rol.nombre).usuarios.remove(u)
         u.groups.add(Group.objects.get(name=rol.nombre))
+        Rol.objects.get(nombre=rol.nombre).usuarios.add(u)
         u.save()
 
         if u.is_active and inactivo_previo:
@@ -107,6 +108,13 @@ class UserForm(forms.ModelForm):
                 fail_silently=False,
             )
         return u
+
+#Obtiene el rol de sistema actual del usuario
+def get_system_rol(user):
+    for rol in Rol.objects.filter(fase=None):
+        if user in rol.usuarios.all():
+            return rol
+    return None
 
 
 

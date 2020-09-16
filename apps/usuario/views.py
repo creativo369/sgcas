@@ -108,10 +108,6 @@ class RegistrarUsuario(PermissionRequiredMixin, CreateView):
 
     def for_valid(self, form):
         response = super(RegistrarUsuario, self).form_valid(form)
-        username = form.cleaned_data['username']
-        rol = form.cleaned_data['groups']
-        g = Group.objects.get(name=rol)
-        g.user_set.add(self.object)
         return response
 
     def get_success_url(self):
