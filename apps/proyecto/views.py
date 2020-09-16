@@ -14,7 +14,7 @@ from apps.fase.models import Fase
 from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import FormularioProyecto, FormularioProyectoUpdate, ChangeProject
-
+import datetime
 """
 Todas las vistas para la aplicación del Modulo Proyecto
 
@@ -71,6 +71,13 @@ def change_state(request, pk):
     proyecto = get_object_or_404(Proyecto, id=pk)
     form = ChangeProject(request.POST or None, instance=proyecto)
     if form.is_valid():
+        if proyecto.estado == 'Iniciado':
+            proyecto.fecha_iniciado = datetime.date.today()
+        elif proyecto.estado == 'Cancelado':
+            proyecto.fecha_cancelado = datetime.date.today()
+        elif proyecto.estado == 'Finalizado':
+            proyecto.fecha_finalizado = datetime.date.today()
+        proyecto.save()
         form.save()
         return redirect('proyecto:list')
     return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})

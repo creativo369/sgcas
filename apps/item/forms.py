@@ -205,22 +205,20 @@ class ItemCambiarEstado(forms.ModelForm):
             item_estado = [
                 ('Desarrollo', 'Desarrollo'),
                 ('Aprobado', 'Aprobado'),
-                ('Desactivado', 'Desactivado'),
             ]
             self.fields['estado'].choices = item_estado
-        if kwargs['instance'].estado == 'Revision':
-            item_estado = [
-                ('Revision', 'Revision'),
-                ('Aprobado', 'Aprobado'),
-                ('Desactivado', 'Desactivado'),
-            ]
-            self.fields['estado'].choices = item_estado
-        if kwargs['instance'].estado == 'Aprobado':
-            item_estado = [
-                ('Aprobado', 'Aprobado'),
-                ('Desactivado', 'Desactivado'),
-            ]
-            self.fields['estado'].choices = item_estado
+        # if kwargs['instance'].estado == 'Revision':
+        #     item_estado = [
+        #         ('Revision', 'Revision'),
+        #         ('Aprobado', 'Aprobado'),
+        #     ]
+        #     self.fields['estado'].choices = item_estado
+        # if kwargs['instance'].estado == 'Aprobado':
+        #     item_estado = [
+        #         ('Aprobado', 'Aprobado'),
+        #         ('Revision', 'Revision'),
+        #     ]
+        #     self.fields['estado'].choices = item_estado
         for field in fields_not_required:
             self.fields[field].required = False
             self.fields[field].disabled = True

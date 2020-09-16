@@ -10,7 +10,16 @@
             <th scope="col">Estado</th>
             <th scope="col">Miembros del Proyecto</th>
             <th scope="col">Fecha de creación</th>
-            <th scope="col">Ultima modificación</th>
+            {% if proyecto.estado != 'Pendiente' %}
+                <th scope="col">Fecha iniciada</th>
+            {% endif %}
+            {% if proyecto.estado == 'Cancelado' %}
+                <th scope="col">Fecha Cancelada</th>
+            {% endif %}
+            {% if proyecto.estado == 'Finalizado' %}
+                <th scope="col">Fecha Finalizada</th>
+            {% endif %}
+            <th scope="col">Ultima modificación</th
         </tr>
         </thead>
         <tbody>
@@ -25,6 +34,15 @@
                     {% endfor %}
                 </td>
                 <td>{{ object.fecha_creacion }}</td>
+                 {% if proyecto.estado != 'Pendiente' %}
+                     <th>{{ object.fecha_iniciado }}</th>
+                 {% endif %}
+                 {% if proyecto.estado == 'Cancelado' %}
+                     <th>{{ object.fecha_cancelado }}</th>
+                 {% endif %}
+                 {% if proyecto.estado == 'Finalizado' %}
+                     <th>{{ object.fecha_finalizado }}</th>
+                 {% endif %}
                 <td>{{ object.ultima_modificacion }}</td>
             </tr>
         {% else %}

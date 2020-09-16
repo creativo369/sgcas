@@ -16,9 +16,6 @@ from apps.tipo_item.models import TipoItem
 item_estado = [
     ('Desarrollo', 'Desarrollo'),
     ('Aprobado', 'Aprobado'),
-    ('Desactivado', 'Desactivado'),
-    ('Revision', 'Revisión'),
-    ('LineaBase', 'Línea base'),
 ]
 
 
@@ -41,6 +38,7 @@ class Item(models.Model):
     descripcion = models.CharField(max_length=50)
     fecha_creacion = models.DateField(default=datetime.date.today)
     estado = models.CharField(max_length=30, choices=item_estado, default='Desarrollo')
+    en_linea_base = models.BooleanField(default=False)
     costo = models.PositiveIntegerField()
     usuarios_a_cargo = models.ManyToManyField(User, blank=True)
     archivo = models.FileField(null=True, blank=True)
@@ -103,7 +101,7 @@ class Item(models.Model):
 
         verbose_name = 'Item'
         verbose_name_plural = 'Items'
-        
+
     def __str__(self):
         """
         **Función para asignar un alias al modelo item**<br/>
