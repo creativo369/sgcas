@@ -37,7 +37,7 @@ class User(AbstractUser):
             ("eliminar_usuario", "Puede eliminar usuario"),
             ("ver_usuario", "Puede ver usuario"),
             ("gestion_usuario", "Puede gestionar usuario"),
-            ("ver_mensaje", "ver_mensaje"),
+            ("ver_mensaje", "Puede ver mensaje"),
             ("mensaje_editar", "Puede editar mensaje"),
             ("mensaje_rechazar", "Puede rechazar mensaje"),
         ]

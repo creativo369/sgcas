@@ -1,6 +1,8 @@
 from django.db import models
 from apps.usuario.models import User
 from apps.proyecto.models import Proyecto
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 import datetime
 
 # === Estados de una fase ===

@@ -50,6 +50,10 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         id_proyecto = kwargs.pop('_id')
         form = FaseForm(request.POST, _id=id_proyecto)
         if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            proyecto = get_object_or_404(Proyecto, pk=id_proyecto)
+            if Fase.objects.filter(Q(nombre=nombre) & Q(proyecto=proyecto)).exists():
+                return render(request, 'fase/validate_fase.html')
             fase = form.save(commit=False)
             fase.proyecto = Proyecto.objects.get(id=id_proyecto)
             fase.save()

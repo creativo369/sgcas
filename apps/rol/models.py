@@ -1,7 +1,9 @@
 from django.contrib.auth.models import Group
 from django.db import models
+from django.db.models import Q
 from apps.fase.models import Fase
 from apps.usuario.models import User
+from django.core.exceptions import ValidationError
 
 
 class Rol(models.Model):
@@ -32,5 +34,13 @@ class Rol(models.Model):
         ]
         verbose_name = 'Rol'
         verbose_name_plural = 'Roles'
+
     def __str__(self):
         return self.nombre
+
+    def delete(self, *args, **kwargs):
+        if Rol.objects.filter(Q(id=self.id) &
+            Q(usuarios__in=User.objects.all().exclude(username='AnonymousUser').exclude(is_superuser=True))).exists():
+            raise ValidationError('Este rol esta asignado a un usuario') 
+        else:
+                super(Rol, self).delete(*args, **kwargs)

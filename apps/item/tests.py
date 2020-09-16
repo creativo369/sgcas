@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.core.exceptions import ValidationError
 from apps.usuario.models import User
 from django.test import TestCase
 from apps.item.models import Item
@@ -14,20 +14,23 @@ class ItemSetUpTest(TestCase):
 
     def test_crear_item(self):
         nombre_item = self.item.nombre
-        self.assertEqual(self.item.nombre, nombre_item)
-        print('Item-test_crear_item OK')
+        #self.assertEqual(self.item.nombre, nombre_item)
+        if not self.item.nombre == nombre_item:
+            raise ValidationError('Datos proporcionados no coinciden.')
 
     def test_modificar_item(self):
         descripcion_pasada = self.item.descripcion
         self.item.descripcion = 'Nueva descripcion'
-        self.assertNotEqual(self.item.descripcion, descripcion_pasada)
-        print('Item-test_modificar_item OK')
+        #self.assertNotEqual(self.item.descripcion, descripcion_pasada)
+        if self.item.descripcion == descripcion_pasada:
+            raise ValidationError('Datos proporcionados son iguales.')
+        
 
     def test_eliminar_item(self):
         self.item.delete()
 
     def __del__(self):
-        print('Item-test_eliminar_item OK')
+        pass
 
 # **Volver atras** : [[models.py]]
 

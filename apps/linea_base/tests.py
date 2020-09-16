@@ -1,6 +1,46 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
+from apps.proyecto.models import Proyecto
+from apps.fase.models import Fase
 
-# Create your tests here.
+class TestLBSetUp(TestCase):
+    def setUp(self):
+        self.descripcion = 'descripcion_LB'        
+        self.fase = Fase.objects.create(nombre='fase_test', descripcion='fase_test',
+        		proyecto=Proyecto.objects.first())
+        
+class LBTestCrear(TestLBSetUp):
+
+    def setUp(self):
+        super(LBTestCrear, self).setUp()
+
+    def test_descripcion(self):
+        descripcion_lb = 'descripcion_LB'
+        
+        if not self.descripcion == descripcion_lb:
+            raise ValidationError('Datos proporcionados no coinciden')
+  
+
+    def test_pertenece_fase(self):
+        fase = Fase.objects.none()
+        fase = Fase.objects.first()
+        
+        if not self.fase == fase:
+            raise ValidationError ('Datos proporcionados no coinciden')
+
+
+class LBTestEditar(TestLBSetUp):
+
+    def setUp(self):
+        super(LBTestEditar, self).setUp()        
+
+    def test_editar_descripcion(self):
+        descripcion_anterior = self.descripcion
+        self.descripcion = 'lb-test-descripcion-cambiada'        
+        
+        if self.descripcion == descripcion_anterior:
+            raise ValidationError('Datos proporcionados son iguales.')
+
 
 # **Volver atras** : [[apps.py]]
 

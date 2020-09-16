@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from apps.rol.models import Rol
 from apps.fase.models import Fase
+from apps.usuario.models import User
 
 """
 Todas las vistas para la aplicación del Modulo Rol
@@ -133,7 +134,7 @@ def eliminar_rol(request, pk):
      **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles de la fase.<br/>
     """
     rol = get_object_or_404(Rol, pk=pk)
-    id_fase = rol.fase.pk
+    id_fase = rol.fase.pk        
     rol.delete()
     return redirect('rol:rol_lista', id_fase=id_fase)
 
@@ -221,7 +222,7 @@ def search_sistema(request):
     query = request.GET.get('buscar')
 
     if query:
-        results = Rol.objects.filter(Q(name__icontains=query), fase=None).order_by('id').distinct()
+        results = Rol.objects.filter(Q(nombre__icontains=query), fase=None).order_by('id').distinct()
     else:
         results = Rol.objects.filter(fase=None).order_by('id')
 
@@ -255,7 +256,10 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
     **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
     """
-    model = Group
+    
+    model = Rol
+    queryset= Rol.objects.filter(Q(usuarios__in=User.objects.all().exclude(username='AnonymousUser').exclude(is_superuser=True)) |
+        Q(usuarios=None))
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')

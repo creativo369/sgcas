@@ -1,5 +1,7 @@
 from django.db import models
 from apps.usuario.models import User
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 import datetime
 
 from apps.fase.models import Fase
@@ -91,7 +93,7 @@ class Item(models.Model):
             ("relacion_item", "Puede gestionar relacion de item"),
             ("calcular_impacto", "Puede calcular impacto item"),
             ("ver_trazabilidad", "Puede ver trazabilidad item"),
-            ("versiones_item", "Versiones item"),
+            ("versiones_item", "Puede versionar item"),
             ("restaurar_item_version", "Puede restaurar version item"),
             ("item_modificar_atributos", "Puede modificar atributos item"),
             ("item_modificar_ti", "Puede modificar TI de item"),
@@ -108,6 +110,8 @@ class Item(models.Model):
         **:return:** el nombre comité<br/>
         """
         return self.nombre
+
+  
 
 # **Volver atras** : [[forms.py]]
 
