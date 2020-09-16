@@ -2,7 +2,7 @@ from apps.usuario.models import User
 from django.test import TestCase
 from apps.comite.models import Comite
 from apps.proyecto.models import Proyecto
-
+from django.core.exceptions import ValidationError
 
 class TestComiteSetUp(TestCase):
     def setUp(self):
@@ -19,20 +19,32 @@ class ComiteTestCrear(TestComiteSetUp):
         super(ComiteTestCrear, self).setUp()
 
     def test_nombre(self):
-        self.assertEqual(self.comite.nombre, 'comite-test')
-        print('Comite-test_nombre OK')
+        nombre_comite = 'comite-test'
+        #self.assertEqual(self.comite.nombre, 'comite-test')
+        if not self.comite.nombre == nombre_comite :
+            raise ValidationError('Datos proporcionados no coinciden.')
 
     def test_descripcion(self):
-        self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
-        print('Comite-test_descripcion OK')
+        descripcion_comite = 'descripcion-comite-test'
+        #self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
+        if not self.comite.descripcion == descripcion_comite:
+            raise ValidationError('Datos proporcionados no coinciden.')
+        
 
     def test_pertenece_proyecto(self):
-        self.assertEqual(self.comite.proyecto, self.proyecto)
-        print('Comite-test_pertenece_proyecto OK')
+        proyecto = Proyecto.objects.none()
+        proyecto = self.proyecto
+        #self.assertEqual(self.comite.proyecto, self.proyecto)
+        if not self.comite.proyecto == proyecto:
+            raise ValidationError('Datos proporcionados no coiciden.')
 
     def test_miembro(self):
-        self.assertEqual(self.comite.miembros.first(), self.miembro)
-        print('Comite-test_miembro OK')
+        usuario = User.objects.none()
+        usuario = self.miembro
+        #self.assertEqual(self.comite.miembros.first(), self.miembro)
+        if not self.comite.miembros.first() == usuario:
+            raise ValidationError('Datos proporcionados no coiciden.')
+        
 
 
 class ComiteTestEditar(TestComiteSetUp):
@@ -45,15 +57,18 @@ class ComiteTestEditar(TestComiteSetUp):
         nombre_anterior = self.comite.nombre
         self.comite.nombre = 'comite-test-nombre-cambiado'
         self.comite.save()
-        self.assertNotEqual(self.comite.nombre, nombre_anterior)
-        print('Comite-test_editar_nombre OK')
+        #self.assertNotEqual(self.comite.nombre, nombre_anterior)
+        if self.comite.nombre == nombre_anterior:
+            raise ValidationError('Datos proporcionados son iguales.')
 
     def test_editar_descripcion(self):
         descripcion_anterior = self.comite.descripcion
         self.comite.descripcion = 'descripcion-cambiada-test'
         self.comite.save()
-        self.assertNotEqual(self.comite.nombre, descripcion_anterior)
-        print('Comite-test_editar_descripcion OK')
+        #self.assertNotEqual(self.comite.nombre, descripcion_anterior)
+        if self.comite.descripcion == descripcion_anterior:
+            raise ValidationError('Datos proporcionados son iguales.')
+        
 
 
 class ComiteTestEliminar(TestComiteSetUp):
@@ -62,7 +77,7 @@ class ComiteTestEliminar(TestComiteSetUp):
         self.id_comite = self.comite.id
 
     def __del__(self):
-        print('Comite borrado OK')
+        pass        
 
     def test_eliminar_comite(self):
         self.comite.delete()

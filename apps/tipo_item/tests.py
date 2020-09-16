@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 from apps.tipo_item.models import TipoItem
 
 
@@ -15,21 +16,25 @@ class TipoItemTest(TestCase):
 
     def test_crear_tipo_item(self):
         nombre = self.tipo_item.nombre
-        self.assertEqual(self.tipo_item.nombre, nombre)
-        print('TipoItem-test_crear_tipo_item OK ')
+        #self.assertEqual(self.tipo_item.nombre, nombre)
+        if not self.tipo_item.nombre == nombre:
+            raise ValidationError('Datos proporcionados no coinciden.')
 
     def test_modificar_tipo_item(self):
         atributos_anterior = self.tipo_item.atributos
         self.tipo_item.atributos = ('Char', 'Char')
         self.tipo_item.save()
-        self.assertNotEqual(self.tipo_item.atributos, atributos_anterior)
-        print('TipoItem-test_modificar_tipo_item')
+        #self.assertNotEqual(self.tipo_item.atributos, atributos_anterior)
+        if self.tipo_item.atributos == atributos_anterior:
+            raise ValidationError('Datos proporcionados son iguales.')
+        
 
     def test_eliminar_ti(self):
         self.tipo_item.delete()
 
     def __del__(self):
-        print('Tipo de item eliminado OK')
+        pass
+        
 
 # === Indice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>

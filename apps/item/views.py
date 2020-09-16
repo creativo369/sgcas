@@ -26,6 +26,7 @@ from SGCAS.decorators import requiere_permiso
 
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
+from SGCAS.settings.desarrollo import MEDIA_ROOT
 
 """
 Todas las vistas para la aplicación del Modulo ítem
@@ -79,7 +80,7 @@ def crear_item_basico(request, id_fase):
 
             if request.FILES:
                 # ALMACENAMIENTO FIREBASE
-                path_local = 'deployment/media/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+                path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
                 path_on_cloud = str(
                     date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
                 storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
