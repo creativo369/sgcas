@@ -3,8 +3,8 @@
 {% load account socialaccount %}
 
 {% block content %}
-
   {% get_providers as socialaccount_providers %}
+
 
   {% if socialaccount_providers %}
     {% block welcome %}¡No ha iniciado sesión!{% endblock welcome %}
