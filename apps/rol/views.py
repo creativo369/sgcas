@@ -16,7 +16,7 @@ from apps.usuario.models import User
 
 """
 Todas las vistas para la aplicación del Modulo Rol
-Actualmente se despliega en las plantillas 12 vistas:
+Actualmente se despliega en las plantillas 13 vistas:
 
 1. **crear_rol_view** - funcion para la creación de roles por fase (Ir a la sección: [[views.py #crear rol]] )
 2. **lista_rol** - Lista los roles existentes en la fase (Ir a la sección: [[views.py #listar roles]] )
@@ -31,6 +31,8 @@ Actualmente se despliega en las plantillas 12 vistas:
 10. **search_sistema** - lista los roles de sistema buscados (Ir a la sección: [[views.py #search sistema]] )
 11. **editar_rol_sistema** - modifica los atributos de un rol de sistema (Ir a la sección: [[views.py #editar rol sistema]] )
 12. **eliminar_rol_sistema** - elimina un rol de sistema (Ir a la sección: [[views.py #eliminar rol sistema]] )
+
+13. **Usuario_roles** - lista los roles que posee el usuario actualmente (Ir a la sección: [[views.py #lista rol usuarios]] )
 """
 
 
@@ -253,12 +255,11 @@ class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
 # === eliminar rol sistema ===
 class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
-    Permite la eliminacion de una instancia del modelo Group.<br/>
+    Permite la eliminacion de una instancia del modelo Rol.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-    **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
-    """
-    
+    **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles del sistema.<br/>
+    """    
     model = Rol
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
@@ -273,6 +274,23 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
             rol.delete()
             return redirect(self.success_url)              
 
+
+# === lista rol usuarios ===
+class Usuario_roles(ListView):
+    """
+    Permite la visualizacion de todas las intancias del modelo Rol que posee un usuario.<br/>
+    **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+    **:return:** Lista que contiene todas las instancias del modelo Rol que pertenecen a un usuario.<br/>
+    """  
+    model = Rol
+    template_name = 'rol/usuario_roles.html'
+
+    def get(self, request, *args, **kwargs):
+        rol= Rol.objects.filter(usuarios__in= User.objects.filter(id=request.user.id))
+        print(rol.exists())
+        if rol.exists():
+            return render(request, self.template_name, {'rol':rol})
+        return render(request, self.template_name, {'rol':rol})
 
 # === FIN ====
 
