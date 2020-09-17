@@ -134,10 +134,12 @@ def eliminar_rol(request, pk):
      **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles de la fase.<br/>
     """
     rol = get_object_or_404(Rol, pk=pk)
-    id_fase = rol.fase.pk        
-    rol.delete()
-    return redirect('rol:rol_lista', id_fase=id_fase)
-
+    id_fase = rol.fase.pk
+    if len(rol.usuarios.all())==0:       
+        rol.delete()
+        return redirect('rol:rol_lista', id_fase=id_fase)
+    else:
+        return render(request, 'rol/validate_delete.html')
 
 # === asigna rol de fase
 @requiere_permiso('asignar_rol')
@@ -258,11 +260,19 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
     
     model = Rol
-    queryset= Rol.objects.filter(Q(usuarios__in=User.objects.all().exclude(username='AnonymousUser').exclude(is_superuser=True)) |
-        Q(usuarios=None))
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.pop('pk') #se obtiene el pk para eliminar
+        rol=Rol.objects.get(pk = pk)        
+        if not len(rol.usuarios.all()) == 0:
+            return render(request, 'rol/validate_delete.html')   
+        else:
+            rol.delete()
+            return redirect(self.success_url)              
+
 
 # === FIN ====
 

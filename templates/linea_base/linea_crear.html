@@ -2,17 +2,25 @@
 {% block title %} Crear lb {% endblock%}
 
 {% block content %}
-    <form method="post">
-      {% csrf_token %}
-      {% if error %}
-        <h2>{{ error }}</h2>
+      {% if error or flag == False %}
+          <h2>{{ error }}</h2>
+          <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
+                    <h4 class="alert-heading">Advertencia!</h4>
+                    {% if flag == False and fase.proyecto.estado == 'Iniciado'  %}
+                        Solo se pueden crear lineas bases si al menos hay un ítem aprobado y con al menos 1 relación!
+                    {% elif fase.proyecto.estado == "Pendiente" %}
+                        Solo se puden crear lineas bases si un proyecto esta en estado iniciado!
+                    {% endif %}
+                </div>
       {% else %}
         <div class="card">
             <div class="card-header">
                 <strong>Formulario de Registro</strong>
             </div>
             <div class="card-body card-block">
-                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form  method="post" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
                     <div class="row form-group">
                         <div class="col col-md-3">{{ form.descripcion.label }}</div>
                         <div class="col-12 col-md-9">{{ form.descripcion }}</div>
@@ -29,5 +37,4 @@
             </div>
         </div>
       {% endif %}
-    </form>
 {% endblock %}

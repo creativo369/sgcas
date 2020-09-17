@@ -2,9 +2,13 @@
 {% block title %} Cambiar estado {% endblock%}
 
 {% block content %}
-
-        {% if error %}
+        {% if error or fase.proyecto.estado == "Pendiente"%}
             <h2>{{ error }}</h2>
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
+                <h4 class="alert-heading">Advertencia!</h4>
+                No se puede cambiar el estado de una fase cuando el proyecto se encuentra en estado pendiente!
+            </div>
         {% else %}
             <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
             <div class="card-header">
@@ -25,6 +29,7 @@
                     </div>
                 </form>
             </div>
+            </div>
         {% endif %}
-{% endblock %}
+{% endblock content %}
 
