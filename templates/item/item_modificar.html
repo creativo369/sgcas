@@ -39,7 +39,7 @@
                     <div class="col col-md-3">{{ form.archivo.label }}</div>
                     <div class="col-12 col-md-9">{{ form.archivo }}
                         {% if item.archivo %}
-                            <a aria-describedby="fileHelp" href="{{ item.archivo.url }}" target="_blank"
+                            <a aria-describedby="fileHelp" href="{{ item.file_url_cloud }}" target="_blank"
                                class="btn btn-outline-primary btn-sm">Ver archivo</a>
                             <small id="fileHelp" class="form-text text-muted">El archivo actual se eliminará si se
                                 adjunta

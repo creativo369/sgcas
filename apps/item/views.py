@@ -23,10 +23,11 @@ from apps.linea_base.models import LineaBase
 from apps.tipo_item.models import TipoItem
 
 from SGCAS.decorators import requiere_permiso
+from SGCAS.settings.desarrollo import MEDIA_ROOT
 
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
-from SGCAS.settings.desarrollo import MEDIA_ROOT
+
 
 """
 Todas las vistas para la aplicación del Modulo ítem
@@ -246,6 +247,9 @@ def item_modificar_basico(request, pk):
     **:return:**  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
+    print(item.file_url_cloud)
+    print("nombre del archivo")
+    print(item.archivo.name)
     fase = item.fase
     l_base = LineaBase.objects.filter(fase=fase)
     l_base = [lb for lb in l_base if
@@ -261,9 +265,23 @@ def item_modificar_basico(request, pk):
         item.item_set.add(version_item)
         for i in version_item.item_set.all():
             item.item_set.add(i)
-        form.save()
+        item.save()
+        form.save_m2m()
+        if request.FILES:
+            item.archivo = request.FILES['archivo']
+            # ALMACENAMIENTO FIREBASE
+            path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+            path_on_cloud = str(date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+            storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
+            item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
+            item.save()
         return redirect('item:item_modificar_import_ti', pk=item.pk)
-    return render(request, 'item/item_modificar.html', {'form': form, 'tipo_item': TipoItem.objects.exists()})
+    context = {
+        'form':form,
+        'item':item,
+        'tipo_item':TipoItem.objects.exists()
+    }
+    return render(request, 'item/item_modificar.html', context)
 
 
 @requiere_permiso('item_modificar_ti')
@@ -316,8 +334,10 @@ def get_item_snapshot(pk):
         estado=prev_item.estado,
         costo=prev_item.costo,
         archivo=prev_item.archivo,
+        file_url_cloud = prev_item.file_url_cloud,
         fase=prev_item.fase,
         tipo_item=prev_item.tipo_item,
+        impacto=prev_item.impacto,
         # Atributos de tipo de item
         boolean=prev_item.boolean,
         char=prev_item.char,
@@ -325,8 +345,8 @@ def get_item_snapshot(pk):
         numerico=prev_item.numerico,
         # Atributos de versionado
         nro_version=prev_item.nro_version,
+        last_release=False,
         ultima_modificacion=prev_item.ultima_modificacion,
-        last_release=False
     )
     ## Atributo basico
     snap_item.usuarios_a_cargo.add(*prev_item.usuarios_a_cargo.all())
@@ -351,9 +371,9 @@ def item_versiones(request, pk, id_fases):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        # 'versiones_queryset': lista_item_version,
+        'versiones': lista_item_version,
         'fase': fase,
-        'page_obj': page_obj
+        # 'page_obj': page_obj
     }
 
     return render(request, 'item/item_versiones.html', context)
