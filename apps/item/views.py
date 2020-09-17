@@ -507,7 +507,7 @@ def relaciones(request, pk, id_fase):
         context = get_context(form, items_query, pk, id_fase)
         return render(request, 'item/item_relaciones.html', context)
     elif from_fase > to_fase:  ##Relacion antecesores <- item
-        items_query = Item.objects.filter(fase=to_fase)
+        items_query = Item.objects.filter(Q(fase=to_fase) & Q(last_release=True))
         items_query = exclude_potencial_cycles(pk, id_fase, items_query)
         form = RelacionForm(request.POST or None, instance=get_object_or_404(Item, pk=pk), query=items_query, flag=-1)
         if form.is_valid():
@@ -525,7 +525,7 @@ def relaciones(request, pk, id_fase):
         context = get_context(form, items_query, pk, id_fase)
         return render(request, 'item/item_relaciones.html', context)
     else:  ##Relacion item -> sucesores
-        items_query = Item.objects.filter(fase=to_fase)
+        items_query = Item.objects.filter(Q(fase=to_fase) & Q(last_release=True))
         items_query = exclude_potencial_cycles(pk, id_fase, items_query)
         form = RelacionForm(request.POST or None, instance=get_object_or_404(Item, pk=pk), query=items_query, flag=1)
         if form.is_valid():
