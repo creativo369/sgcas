@@ -247,9 +247,6 @@ def item_modificar_basico(request, pk):
     **:return:**  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
-    print(item.file_url_cloud)
-    print("nombre del archivo")
-    print(item.archivo.name)
     fase = item.fase
     l_base = LineaBase.objects.filter(fase=fase)
     l_base = [lb for lb in l_base if
@@ -489,7 +486,8 @@ def relaciones(request, pk, id_fase):
     to_fase = int(id_fase)  # id de la fase a la cual se desea direccionar la relacion
     item = get_object_or_404(Item, pk=pk)
     if from_fase == to_fase:  ##Relaciones padre/hijos
-        items_query = Item.objects.filter(fase=Item.objects.get(pk=pk).fase.id).exclude(pk=pk)
+        items_query = Item.objects.filter(Q(fase=item.fase) & Q(last_release=True)).exclude(pk=item.pk)
+        print(items_query)
         for item_p in items_query:  # Se exluyen los padres, un hijo no puede ser padre a la vez con respecto a un item
             if item in item_p.hijos.all():
                 items_query = items_query.exclude(pk=item_p.pk)
