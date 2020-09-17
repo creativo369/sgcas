@@ -1,5 +1,5 @@
 # === Importación de las librerias utilizadas de Django ===
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -152,6 +152,13 @@ class EliminarUsuario(PermissionRequiredMixin, DeleteView):
     permission_required = 'usuario.eliminar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
+    def post(self, request, *args, **kwargs):
+        usuario = User.objects.get(id=self.kwargs['pk'])
+        en_proyecto = Proyecto.objects.all().filter(miembros=usuario)
+        if en_proyecto.exists():
+            return render(request, self.template_name, {'en_proyecto': en_proyecto})
+        usuario.delete()
+        return redirect(self.success_url)
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 1.apps        : [[apps.py]]<br/>
 # 2.forms       : [[forms.py]]<br/>

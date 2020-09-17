@@ -2,16 +2,23 @@
 {% block title %} Eliminar usuario {% endblock%}
 
 {% block content %}
-	<div class="alert alert-dismissible alert-danger">
+	{% if en_proyecto.exists %}
+        <div class="alert alert-dismissible alert-warning">
+          <h4 class="alert-heading">Advertencia!</h4>
+          Usuario no eliminado!<br>El mismo esta asociado a un proyecto!. Debe desasignar de todos los proyectos para eliminar<br>
+        </div>
+        <a class="btn btn-secondary" href="{% url 'usuario:usuario_lista' %}">Regresar</a>
+    {% else %}
+    <div class="alert alert-dismissible alert-danger">
 	  <button type="button" class="close" data-dismiss="alert">&times;</button>
 	  <strong>¿Esta usted seguro de eliminar a {{ object.username }}?</strong>
 	  <!-- <a href="#" class="alert-link">Change a few things up</a> and try submitting again. -->
 	  Este cambio no se podrá deshacer.
 	</div>
-
 	<form method="POST">
 		{% csrf_token %}
 		<button type="submit" class="btn btn-danger" >Sí, eliminar</button>
 		<a type="button" class="btn btn-info" href="{% url 'usuario:usuario_lista' %}">Cancelar</a>
 	</form>
+    {% endif %}
 {% endblock content%}
