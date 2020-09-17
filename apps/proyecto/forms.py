@@ -20,7 +20,7 @@ class FormularioProyecto(forms.ModelForm):
         **:param kwargs:** Un diccionario del formulario de registro del proyecto<br/>
         """
         super(FormularioProyecto, self).__init__(*args, **kwargs)
-        self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True)).exclude(username='AnonymousUser')
+        self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True)).exclude(username='AnonymousUser').exclude(is_active=False)
         # queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
 
         campos = ['fecha_creacion', 'estado']
