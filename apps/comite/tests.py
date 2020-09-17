@@ -2,7 +2,6 @@ from apps.usuario.models import User
 from django.test import TestCase
 from apps.comite.models import Comite
 from apps.proyecto.models import Proyecto
-from django.core.exceptions import ValidationError
 
 class TestComiteSetUp(TestCase):
     def setUp(self):
@@ -18,32 +17,27 @@ class ComiteTestCrear(TestComiteSetUp):
     def setUp(self):
         super(ComiteTestCrear, self).setUp()
 
-    def test_nombre(self):
-        nombre_comite = 'comite-test'
-        #self.assertEqual(self.comite.nombre, 'comite-test')
-        if not self.comite.nombre == nombre_comite :
-            raise ValidationError('Datos proporcionados no coinciden.')
+    def test_nombre(self):        
+        self.assertEqual(self.comite.nombre, 'comite-test')
 
-    def test_descripcion(self):
-        descripcion_comite = 'descripcion-comite-test'
-        #self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
-        if not self.comite.descripcion == descripcion_comite:
-            raise ValidationError('Datos proporcionados no coinciden.')
+    def test_agregar_miembros(self):
+        for r in 'ab':
+          self.comite.miembros.add(User.objects.create(username='a'+ r))
+
+        self.assertEqual(len(self.comite.miembros.all()),3)
+
+
+    def test_descripcion(self):        
+        self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
         
 
     def test_pertenece_proyecto(self):
-        proyecto = Proyecto.objects.none()
-        proyecto = self.proyecto
-        #self.assertEqual(self.comite.proyecto, self.proyecto)
-        if not self.comite.proyecto == proyecto:
-            raise ValidationError('Datos proporcionados no coiciden.')
+        self.assertEqual(self.comite.proyecto, self.proyecto)
+
 
     def test_miembro(self):
-        usuario = User.objects.none()
-        usuario = self.miembro
-        #self.assertEqual(self.comite.miembros.first(), self.miembro)
-        if not self.comite.miembros.first() == usuario:
-            raise ValidationError('Datos proporcionados no coiciden.')
+        self.assertEqual(self.comite.miembros.first(), self.miembro)
+
         
 
 
@@ -57,18 +51,15 @@ class ComiteTestEditar(TestComiteSetUp):
         nombre_anterior = self.comite.nombre
         self.comite.nombre = 'comite-test-nombre-cambiado'
         self.comite.save()
-        #self.assertNotEqual(self.comite.nombre, nombre_anterior)
-        if self.comite.nombre == nombre_anterior:
-            raise ValidationError('Datos proporcionados son iguales.')
+        self.assertNotEqual(self.comite.nombre, nombre_anterior)
+
 
     def test_editar_descripcion(self):
         descripcion_anterior = self.comite.descripcion
         self.comite.descripcion = 'descripcion-cambiada-test'
         self.comite.save()
-        #self.assertNotEqual(self.comite.nombre, descripcion_anterior)
-        if self.comite.descripcion == descripcion_anterior:
-            raise ValidationError('Datos proporcionados son iguales.')
-        
+        self.assertNotEqual(self.comite.descripcion, descripcion_anterior)
+
 
 
 class ComiteTestEliminar(TestComiteSetUp):
