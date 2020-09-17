@@ -253,12 +253,11 @@ class EditarRol_sistema(PermissionRequiredMixin, UpdateView):
 # === eliminar rol sistema ===
 class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     """
-    Permite la eliminacion de una instancia del modelo Group.<br/>
+    Permite la eliminacion de una instancia del modelo Rol.<br/>
     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-    **:return:** Se elimina la instancia del modelo Group referenciado y se regresa a la lista de roles del sistema.<br/>
-    """
-    
+    **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles del sistema.<br/>
+    """    
     model = Rol
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
