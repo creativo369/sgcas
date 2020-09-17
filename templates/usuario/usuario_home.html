@@ -10,7 +10,7 @@
          src="/static/img/lobby.png">
     <br/>
     <div class="card text-white bg-dark mb-3" style="max-width: 50rem;">
-        <div class="card-header">Bienvenido {{ request.user }}</div>
+        <div class="card-header">Bienvenido {{ request.user.first_name }}</div>
         <div class="card-body">
             <div>Que es el SGCAS?
             El Sistema de Gesti&oacute;n de Configuraci&oacute;n de Artefactos de Software,
@@ -21,7 +21,10 @@
             el riesgo de que la informaci&oacute;n se pierda o se borre. Ademas de controlar
             quienes han de tener acceso a su trabajo, siedo usted el encargado de dar los
             permisos pertinentes.</div>
-            <div>{{ request.user }} trabaje con confianza que nuestro equipo se encarga del resto!</div>
+            <div>{{ request.user.first_name }} trabaje con confianza que nuestro equipo se encarga del resto!</div>
+            <br>
+            <h5 class="text-muted">Sus roles son : </h5>
+
         </div>
     </div>
 {% endblock content %}

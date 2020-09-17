@@ -102,7 +102,6 @@ class FaseCambiarEstadoForm(forms.ModelForm):
         lb_fase_queryset = LineaBase.objects.filter(fase=kwargs['instance'].id)
         items_en_lb = 0
         fase_estado_opciones = [('Abierta', 'Abierta'), ('Cerrada', 'Cerrada')]
-        print(fase_estado_opciones)
         for lb in lb_fase_queryset:
             items_en_lb += lb.items.all().count()
             if lb.estado == 'Abierta':

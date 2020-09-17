@@ -68,8 +68,13 @@
             </div>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown show">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                    {% if request.user.is_superuser == True %}
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                        aria-expanded="true">{{ request.user }}</a>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                       aria-expanded="true">{{ request.user.first_name }}</a>
+                        {% endif %}
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% if request.user.is_superuser == False %}
                             <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>

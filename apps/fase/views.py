@@ -157,8 +157,10 @@ def cambiar_estado_fase(request, pk, _id):
     if form.is_valid():
         form.save()
         return redirect('fase:fase_lista', _id=_id)
-    return render(request, 'fase/fase_cambiar_estado.html', {'form': form})
-
+    elif fase.proyecto.estado == "Iniciado":
+        return render(request, 'fase/fase_cambiar_estado.html', {'form': form, 'fase': fase})
+    else:
+        return render(request, 'fase/fase_cambiar_estado.html', {'fase': fase})
 
 @requiere_permiso('eliminar_fase')
 # === eliminar fase ===
