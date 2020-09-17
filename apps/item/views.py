@@ -199,7 +199,6 @@ def search(request, id_fase):
     page_obj = paginator.get_page(page_number)
 
     context = {
-
         'items': results,
         'proyecto': proyecto,
         'page_obj': page_obj,
