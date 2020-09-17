@@ -32,14 +32,12 @@ def crear_linea_base(request, id_fase):
     **:param id_fase:** Recibe pk de la instancia de fase en donde se esta creando la línea base.<br/>
     **:return:** Retorna una instancia de línea base creada.<br/>
     """
-    query_item = Item.objects.all().filter(fase_id=id_fase)
-    flag = False
+    # query_item = Item.objects.all().filter(fase_id=id_fase)
+    # flag = False
     fase = Fase.objects.get(id=id_fase)
-    print(fase.proyecto.estado)
-    for item in query_item:
-        if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
-            flag = True
-
+    # for item in query_item:
+    #     if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
+    #         flag = True
     if request.method == 'POST':
         form = LineaBaseForm(request.POST)
         if form.is_valid():
@@ -47,11 +45,13 @@ def crear_linea_base(request, id_fase):
             lb.fase = Fase.objects.get(id=id_fase)
             lb.save()
             return redirect('linea_base:agregar_items_lb', pk=lb.pk, id_fase=id_fase)
-    elif flag and fase.proyecto.estado == "Iniciado":
+    # elif flag and fase.proyecto.estado == "Iniciado":
+    elif fase.proyecto.estado == "Iniciado":
         form = LineaBaseForm()
         return render(request, 'linea_base/linea_crear.html', {'form': form})
     else:
-        return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
+        # return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
+        return render(request, 'linea_base/linea_crear.html', {'fase': fase})
 
 
 @requiere_permiso('agregar_item_linea_base')
