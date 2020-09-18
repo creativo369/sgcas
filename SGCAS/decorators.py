@@ -16,14 +16,18 @@ def requiere_permiso(permiso):
             if request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
             query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
+            print(query_rol)
             if query_rol:
                 for rol_fase in query_rol:
-                    if request.user in rol_fase.usuarios.all():
-                        try:
-                            if rol_fase.group.permissions.get(codename=permiso):
-                                return view_func(request, *args, **kwargs)
-                        except:
-                            raise PermissionDenied
+                    if rol_fase.usuarios.all():
+                        if request.user in rol_fase.usuarios.all():
+                            try:
+                                if rol_fase.group.permissions.get(codename=permiso):
+                                    return view_func(request, *args, **kwargs)
+                            except:
+                                raise PermissionDenied
+                    else:
+                        raise PermissionDenied
             else:
                 raise PermissionDenied
         return wrap
