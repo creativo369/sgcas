@@ -21,6 +21,7 @@ from apps.item.graph import exclude_potencial_cycles, shortest_path, create_grap
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
 from apps.tipo_item.models import TipoItem
+from apps.proyecto.models import Proyecto
 
 from SGCAS.decorators import requiere_permiso
 from SGCAS.settings.desarrollo import MEDIA_ROOT
@@ -77,6 +78,11 @@ def crear_item_basico(request, id_fase):
             item.fase = Fase.objects.get(id=id_fase)
             item.save()
             form.save_m2m()
+
+            ##Actualizamos la complejidad del proyecto
+            proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.pk)
+            proyecto.complejidad += item.costo
+            proyecto.save()
 
             if request.FILES:
                 # ALMACENAMIENTO FIREBASE
@@ -219,6 +225,9 @@ def item_eliminar(request, pk):
        """
     item = Item.objects.get(id=pk)
     id_fase = item.fase.pk
+    proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+    proyecto.complejidad -= item.costo
+    proyecto.save()
     actualizar_punteros(item)
     item.delete()
     return redirect('item:item_lista', id_fase=id_fase)
@@ -571,7 +580,6 @@ def relaciones(request, pk, id_fase):
 
 
 @requiere_permiso('calcular_impacto')
-# === impacto ítem ===
 def calculo_impacto(request, pk):
     """
     Permite realizar el cálculo de impacto de un ítem al proyecto.<br/>
@@ -579,22 +587,30 @@ def calculo_impacto(request, pk):
     **:param pk:** Recibe el pk de una instancia de ítem sobre el cual se le realizará el cálculo de impacto.<br/>
     **:return:** El cálculo de impacto de un ítem en terminos numericos.<br/>
     """
-    target = Item.objects.get(pk=pk)
-    fase = Fase.objects.filter(proyecto=target.fase.proyecto).first()
-    source = Item.objects.filter(fase=fase).filter(last_release=True).earliest(
-        'id')  ##Se toma como el source el primer item del proyecto
-    if item_has_path(fase.pk, source, target):
-        path = shortest_path(source, target, fase.pk)
-        for item in path:  ##Se calcula del impacto en cada item del path
-            if path.index(item) == 0:
-                item.impacto = item.costo
-            else:
-                item.impacto = item.costo + path[path.index(item) - 1].impacto
-            item.save()
-        context = {'target': target, 'path': shortest_path(source, target, fase.pk)}
-    else:
-        context = {'target': target}
+    item = get_object_or_404(Item, pk=pk)
+    complejidad_proyecto = get_object_or_404(Fase, pk=item.fase.pk).proyecto.complejidad
+    calculo = explore(item, impacto=0)
+    context = {
+        'complejidad_proyecto':complejidad_proyecto, 
+        'item':item,
+        'calculo_impacto':round((calculo/complejidad_proyecto), 2)
+    }
     return render(request, 'item/item_calculo_impacto.html', context)
+
+
+def explore(item, impacto):
+    """
+    Explora el arbol sumando los costos.<br/>
+    **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+    **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+    **:return:** El impacto de un item en el proyecto.<br/>
+    """
+    impacto += item.costo
+    for hijo in item.hijos.all():
+        return explore(hijo, impacto)
+    for sucesor in item.sucesores.all():
+        return explore(sucesor, impacto)
+    return impacto
 
 
 @requiere_permiso('ver_trazabilidad')
