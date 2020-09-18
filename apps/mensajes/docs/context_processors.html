@@ -20,7 +20,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -46,7 +46,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">total_users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+      <div class="highlight"><pre>    <span class="n">total_users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;AnonymousUser&#39;</span><span class="p">)</span>
     <span class="n">inactive_users</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">total_users</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
@@ -79,6 +79,18 @@
 3.test                :  <a href="tests.html">tests.py</a><br/>
 4.urls                :  <a href="urls.html">urls.py</a><br/>
 5.views               :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

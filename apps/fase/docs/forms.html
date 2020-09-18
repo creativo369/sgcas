@@ -170,7 +170,8 @@ una fase.<br/>
       <p>Para read-only los fields nombre y estado</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">miembros_query</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;miembros&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -184,7 +185,8 @@ una fase.<br/>
 <strong>:param kwargs:</strong> recibe el diccionario con los datos de la fase <br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="nb">super</span><span class="p">(</span><span class="n">FaseUpdateForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="nb">super</span><span class="p">(</span><span class="n">FaseUpdateForm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;miembros&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">miembros_query</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -286,7 +288,6 @@ No debe de haber un solo item sin linea base</p>
         <span class="n">lb_fase_queryset</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
         <span class="n">items_en_lb</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">fase_estado_opciones</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Abierta&#39;</span><span class="p">,</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cerrada&#39;</span><span class="p">,</span> <span class="s1">&#39;Cerrada&#39;</span><span class="p">)]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">fase_estado_opciones</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">lb</span> <span class="ow">in</span> <span class="n">lb_fase_queryset</span><span class="p">:</span>
             <span class="n">items_en_lb</span> <span class="o">+=</span> <span class="n">lb</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lb</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">:</span>
@@ -348,6 +349,18 @@ No debe de haber un solo item sin linea base</p>
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

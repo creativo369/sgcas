@@ -21,7 +21,6 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">random</span>
@@ -90,11 +89,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p><strong>Función para asignar un alias al modelo linea base</strong><br/>
-<strong>:return:</strong> el nombre linea base<br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -103,10 +103,28 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      
+      <p>(&ldquo;crear_linea_base&rdquo;, &ldquo;crear_linea_base&rdquo;),
+(&ldquo;cerrar_linea_base&rdquo;, &ldquo;cerrar_linea_base&rdquo;),
+(&ldquo;ver_linea_base&rdquo;, &ldquo;ver_linea_base&rdquo;),
+(&ldquo;editar_linea_base&rdquo;, &ldquo;editar_linea_base&rdquo;),
+(&ldquo;agregar_item_linea_base&rdquo;, &ldquo;agregar_item_linea_base&rdquo;),
+(&ldquo;quitar_item_linea_base&rdquo;, &ldquo;quitar_item_linea_base&rdquo;),
+(&ldquo;listar_item_linea_base&rdquo;, &ldquo;listar_item_linea_base&rdquo;),
+(&ldquo;estado_linea_base&rdquo;, &ldquo;estado_linea_base&rdquo;),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">identificador</span></pre></div>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;estado_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede cambiar estado linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;agregar_item_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede agregar item linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;quitar_item_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede quitar item linea base&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_item_linea_base&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar item linea base&quot;</span><span class="p">),</span>
+
+        <span class="p">]</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Linea Base&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Lineas Bases&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -114,6 +132,31 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p><strong>Función para asignar un alias al modelo linea base</strong><br/>
+<strong>:return:</strong> el nombre linea base<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">identificador</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>el random se ocupa de generar un codigo alganumerico aleatorio a cada linea base creada
 <strong>Volver atras</strong> :  <a href="apps.html">apps.py</a></p>
@@ -123,10 +166,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p><strong>Ir a la documentación del modelo linea base</strong> :  <a href="models.html">models.py</a></p>
     </div>
@@ -135,10 +178,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación linea base  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
@@ -147,6 +190,18 @@
 4.tests   :  <a href="tests.html">tests.py</a><br/>
 5.urls    :  <a href="urls.html">urls.py</a><br/>
 6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

@@ -17,7 +17,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <h3><span id="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py" href="importamos-las-vistas-basadas-en-clases-y-en-funciones-del-codigo-fuente-de-views.py"> Importamos las vistas basadas en clases y en funciones del codigo fuente de views.py </span></h3>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
@@ -58,7 +58,8 @@
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">crear_linea_base</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;crear_linea&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar_linea_base/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">editar_lb</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;editar_lb&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_linea_base</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;linea_lista&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista_items/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_items_linea_base</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;linea_items_lista&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^results/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">search</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;search&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista_items/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_items_linea_base</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;linea_items_lista&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^cambiar_estado_lb/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">estado_lb</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;linea_estado&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar_lb/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">eliminar_lb</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;eliminar_lb&#39;</span><span class="p">),</span>
 <span class="p">]</span></pre></div>
@@ -101,6 +102,18 @@
 4.tests   :  <a href="tests.html">tests.py</a><br/>
 5.urls    :  <a href="urls.html">urls.py</a><br/>
 6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
