@@ -1,8 +1,8 @@
 from datetime import datetime
-from django.core.exceptions import ValidationError
 from apps.usuario.models import User
 from django.test import TestCase
 from apps.item.models import Item
+from apps.tipo_item.models import TipoItem
 
 
 class ItemSetUpTest(TestCase):
@@ -11,19 +11,37 @@ class ItemSetUpTest(TestCase):
         self.item = Item.objects.create(nombre='item-test', descripcion='descripcion-test', estado='Desarrollo',
                                         costo=2)
         self.item.usuarios_a_cargo.add(self.usarios_a_cargo)
+        self.tipo_item =TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
+                                                 atributos=('Boolean', 'Boolean'))
+
+        self.padres =Item.objects.none()
+
 
     def test_crear_item(self):
         nombre_item = self.item.nombre
-        #self.assertEqual(self.item.nombre, nombre_item)
-        if not self.item.nombre == nombre_item:
-            raise ValidationError('Datos proporcionados no coinciden.')
+        self.assertEqual(self.item.nombre, nombre_item)
+
 
     def test_modificar_item(self):
         descripcion_pasada = self.item.descripcion
         self.item.descripcion = 'Nueva descripcion'
-        #self.assertNotEqual(self.item.descripcion, descripcion_pasada)
-        if self.item.descripcion == descripcion_pasada:
-            raise ValidationError('Datos proporcionados son iguales.')
+        self.assertNotEqual(self.item.descripcion, descripcion_pasada)
+
+
+    def test_modificar_padres_y_TI(self):
+        anterior_TI = TipoItem.objects.none()
+        anterior_TI = self.tipo_item
+        self.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
+                                                 atributos=('Char', 'Char'))
+
+
+        self.assertNotEqual(self.tipo_item,anterior_TI)
+
+        anterior_padres = Item.objects.none()
+        anterior_padres = self.padres
+        self.padres = Item.objects.create(nombre= 'Item1', descripcion='descripcion item 1', costo=5)
+
+        self.assertNotEqual(self.padres, anterior_padres)
         
 
     def test_eliminar_item(self):

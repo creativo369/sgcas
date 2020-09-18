@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from apps.usuario.models import User
 
 
@@ -10,19 +9,16 @@ class UsuarioTestCrear(TestCase):
         self.usuario = User.objects.create(username='user-test')
         
 
-    def test_usuario_crear(self):
-        nombre_usuarios = 'user-test'
-        #self.assertEqual(self.usuario.username, 'user-test')
-        if not self.usuario.username == nombre_usuarios:
-            raise ValidationError ('Datos proporcionados no coinciden.')       
+    def test_usuario_crear(self):        
+        self.assertEqual(self.usuario.username, 'user-test')
+      
 
     def test_usuario_modificar(self):
         username_anterior = self.usuario.username
         self.usuario.username = 'username_modificado'
         self.usuario.save()
-        #self.assertNotEqual(self.usuario.username, username_anterior)
-        if self.usuario.username == username_anterior:
-            raise ValidationError ('Datos proporcionados son iguales.')
+        self.assertNotEqual(self.usuario.username, username_anterior)
+
        
     def test_eliminar_usuario(self):
         self.usuario.delete()

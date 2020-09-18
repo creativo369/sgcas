@@ -1,32 +1,28 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from apps.proyecto.models import Proyecto
 from apps.fase.models import Fase
+from apps.item.models import Item
 
 class TestLBSetUp(TestCase):
     def setUp(self):
         self.descripcion = 'descripcion_LB'        
         self.fase = Fase.objects.create(nombre='fase_test', descripcion='fase_test',
         		proyecto=Proyecto.objects.first())
-        
+        self.items = Item.objects.none()
+
 class LBTestCrear(TestLBSetUp):
 
     def setUp(self):
         super(LBTestCrear, self).setUp()
 
     def test_descripcion(self):
-        descripcion_lb = 'descripcion_LB'
-        
-        if not self.descripcion == descripcion_lb:
-            raise ValidationError('Datos proporcionados no coinciden')
+        descripcion_lb = 'descripcion_LB'        
+        self.assertEqual(self.descripcion, descripcion_lb)
   
 
-    def test_pertenece_fase(self):
-        fase = Fase.objects.none()
-        fase = Fase.objects.first()
-        
-        if not self.fase == fase:
-            raise ValidationError ('Datos proporcionados no coinciden')
+    def test_pertenece_fase(self):        
+        self.assertEqual(self.fase, Fase.objects.first())
+
 
 
 class LBTestEditar(TestLBSetUp):
@@ -38,8 +34,14 @@ class LBTestEditar(TestLBSetUp):
         descripcion_anterior = self.descripcion
         self.descripcion = 'lb-test-descripcion-cambiada'        
         
-        if self.descripcion == descripcion_anterior:
-            raise ValidationError('Datos proporcionados son iguales.')
+        self.assertNotEqual(self.descripcion,descripcion_anterior)
+
+    def test_editar_item(self):
+        item_anterior = self.items
+        self.items = Item.objects.create(nombre= 'Item1', descripcion='descripcion item 1', costo=6)        
+        
+        self.assertNotEqual(self.items,item_anterior)
+
 
 
 # **Volver atras** : [[apps.py]]
