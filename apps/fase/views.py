@@ -76,14 +76,14 @@ def fase_opciones(request):
 
 @requiere_permiso('detalles_fase')
 # === fase detalles ===
-def fase_detalles(request, pk):
+def fase_detalles(request, id_fase):
     """
     Permite visualizar los detalles una fase de un proyecto.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
     **:param pk:** Recibe un pk correspondiente a la fase que se desea visualizar.<br/>
     **:return:** Retorna una plantilla que despliega los detalles de una fase.<br/>
     """
-    return render(request, 'fase/fase_detalles.html', {'fase': Fase.objects.get(id=pk)})
+    return render(request, 'fase/fase_detalles.html', {'fase': Fase.objects.get(id=id_fase)})
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
@@ -144,7 +144,7 @@ def search(request, _id):
 
 @requiere_permiso('cambio_estado_fase')
 # === cambia estado fase ===
-def cambiar_estado_fase(request, pk, _id):
+def cambiar_estado_fase(request, id_fase, _id):
     """
     Permite la modificación del estado de una fase.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -152,7 +152,7 @@ def cambiar_estado_fase(request, pk, _id):
     **:param _id:** Recibe un pk del proyecto al cual pertenece la fase para luego redirigirse a la lista de fases.<br/>
     **:return:** Retorna la fase de un estado cambiada o no, luego se redirige a la lista de fases del proyecto.<br/>
     """
-    fase = get_object_or_404(Fase, pk=pk)
+    fase = get_object_or_404(Fase, id=id_fase)
     form = FaseCambiarEstadoForm(request.POST or None, instance=fase)
     if form.is_valid():
         form.save()
@@ -164,7 +164,7 @@ def cambiar_estado_fase(request, pk, _id):
 
 @requiere_permiso('eliminar_fase')
 # === eliminar fase ===
-def eliminar_fase(request, pk, _id):
+def eliminar_fase(request, id_fase, _id):
     """
     Permite la eliminación de una instancia de objecto fase.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -173,7 +173,7 @@ def eliminar_fase(request, pk, _id):
     **:return:** Se elimina la instancia para luego redirigirse  la lista de fases del proyecto.<br/>
         """
     success_url = 'fase:fase_lista'
-    fase = Fase.objects.get(id=pk)
+    fase = Fase.objects.get(id=id_fase)
     if fase.proyecto.estado == "Iniciado":
         return render(request, 'fase/fase_eliminar.html', {'fase': fase})
     else:
@@ -183,7 +183,7 @@ def eliminar_fase(request, pk, _id):
 
 @requiere_permiso('editar_fase')
 # === fase modificar ===
-def fase_modificar(request, pk, _id, *args, **kwargs):
+def fase_modificar(request, id_fase, _id, *args, **kwargs):
     """
     Permite la modificación de una instancia de objecto fase.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -191,7 +191,7 @@ def fase_modificar(request, pk, _id, *args, **kwargs):
     **:param _id:** Recibe un pk del proyecto al cual pertenece la fase para luego redirigirse a la lista de fases.<br/>
     **:return:** Se modifica la instancia de fase para luego redirigirse a la lista de fases del proyecto.<br/>
     """
-    fase = get_object_or_404(Fase, id=pk)
+    fase = get_object_or_404(Fase, id=id_fase)
     miembros_proyecto_queryset = fase.proyecto.miembros.all()
     form = FaseUpdateForm(request.POST or None, instance=fase, miembros=miembros_proyecto_queryset)
     if form.is_valid():

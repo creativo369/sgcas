@@ -44,7 +44,7 @@ def handler403(request, exception, template_name='403.html'):
 
 
 @login_required
-@requiere_permiso('crear_rol')
+# @requiere_permiso('crear_rol')
 # === crear rol ===
 def crear_rol_view(request, id_fase):
     """
@@ -64,7 +64,7 @@ def crear_rol_view(request, id_fase):
     return render(request, 'rol/rol_crear.html', {'form': form})
 
 
-@requiere_permiso('listar_rol')
+# @requiere_permiso('listar_rol')
 # === listar roles ===
 def lista_rol(request, id_fase):
     """
@@ -126,7 +126,7 @@ def editar_rol(request, pk, id_fase):
     return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase)})
 
 
-@requiere_permiso('eliminar_rol')
+#@requiere_permiso('eliminar_rol')
 # === eliminar rol ===
 def eliminar_rol(request, pk, id_fase):
     """
@@ -145,7 +145,7 @@ def eliminar_rol(request, pk, id_fase):
 
 
 # === asigna rol de fase
-@requiere_permiso('asignar_rol')
+# @requiere_permiso('asignar_rol')
 def asignar_rol_usuario(request, pk, id_fase):
     rol = get_object_or_404(Rol, pk=pk)
     # id_fase = rol.fase.id
