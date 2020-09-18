@@ -35,6 +35,7 @@ class Proyecto(models.Model):
     estado = models.CharField(max_length=30, choices=estado_proyecto, default="Pendiente")
     slug = models.CharField('Slug', max_length=100, blank=False, null=False)
     miembros = models.ManyToManyField(User, blank=True)
+    complejidad = models.DecimalField(max_digits=500, decimal_places=2, default=0)
 
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django

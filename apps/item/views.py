@@ -579,22 +579,29 @@ def calculo_impacto(request, pk):
     **:param pk:** Recibe el pk de una instancia de ítem sobre el cual se le realizará el cálculo de impacto.<br/>
     **:return:** El cálculo de impacto de un ítem en terminos numericos.<br/>
     """
-    target = Item.objects.get(pk=pk)
-    fase = Fase.objects.filter(proyecto=target.fase.proyecto).first()
-    source = Item.objects.filter(fase=fase).filter(last_release=True).earliest(
-        'id')  ##Se toma como el source el primer item del proyecto
-    if item_has_path(fase.pk, source, target):
-        path = shortest_path(source, target, fase.pk)
-        for item in path:  ##Se calcula del impacto en cada item del path
-            if path.index(item) == 0:
-                item.impacto = item.costo
-            else:
-                item.impacto = item.costo + path[path.index(item) - 1].impacto
-            item.save()
-        context = {'target': target, 'path': shortest_path(source, target, fase.pk)}
-    else:
-        context = {'target': target}
+    item = get_object_or_404(Item, pk=pk)
+    complejidad_proyecto = get_object_or_404(Fase, pk=item.fase.pk).proyecto.complejidad
+    calculo = explore(item, impacto=0)
+    context = {
+        'complejidad_proyecto':complejidad_proyecto,
+        'item':item,
+        'calculo_impacto':round((calculo/complejidad_proyecto), 2)
+    }
     return render(request, 'item/item_calculo_impacto.html', context)
+
+def explore(item, impacto):
+    """
+    Explora el arbol sumando los costos.<br/>
+    **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+    **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+    **:return:** El impacto de un item en el proyecto.<br/>
+    """
+    impacto += item.costo
+    for hijo in item.hijos.all():
+        return explore(hijo, impacto)
+    for sucesor in item.sucesores.all():
+        return explore(sucesor, impacto)
+    return impacto
 
 
 # @requiere_permiso('ver_trazabilidad')
