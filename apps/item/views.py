@@ -219,8 +219,36 @@ def item_eliminar(request, pk):
        """
     item = Item.objects.get(id=pk)
     id_fase = item.fase.pk
+    actualizar_punteros(item)
     item.delete()
     return redirect('item:item_lista', id_fase=id_fase)
+
+
+##Actualiza los punteros de las relaciones
+##Todos los padres apuntan a todos los hijos.
+##Todos los hijos apuntan a todos los padres
+##Todos los antecesores apuntan a todos los sucesores
+##Todos los sucesores apuntan a tdos los antecesores
+def actualizar_punteros(item):
+    print("Actualizando punteros...")
+    padres = item.padres.all()
+    hijos = item.hijos.all()
+    antecesores = item.antecesores.all()
+    sucesores = item.sucesores.all()
+
+    for hijo in hijos:
+        for padre in padres:
+            hijo.padres.add(padre)
+    for padre in padres:
+        for hijo in hijos:
+            padre.hijos.add(hijo)
+    for antecesor in antecesores: 
+        for sucesores in sucesor: 
+            antecesor.sucesores.add(sucesor)
+    for sucesor in sucesores: 
+        for antecesor in antecesores: 
+            sucesor.antecesores.add(antecesor)
+
 
 
 # === ítem detalles ===
