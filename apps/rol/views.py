@@ -57,7 +57,7 @@ def crear_rol_view(request, id_fase):
         form = GroupForm(request.POST)
         if form.is_valid():
             group = form.save()
-            rol = Rol.objects.create(nombre=group.name, group=group, fase=get_object_or_404(Fase, pk=id_fase))
+            rol = Rol.objects.create(nombre=group.name, group=group, fase=get_object_or_404(Fase, id=id_fase))
             return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         form = GroupForm()
@@ -108,16 +108,16 @@ def search(request, id_fase):
 
 @requiere_permiso('editar_rol')
 # === editar rol ===
-def editar_rol(request, pk):
+def editar_rol(request, pk, id_fase):
     """
      Permite la modificación de una instancia del modelo Rol.<br/>
      **:param request:** Recibe un request por parte de un usuario.<br/>
      **:param pk:** Recibe el pk de la instancia del modelo Rol que se desea editar.<br/>
      **:return:** Se modifica la instancia del modelo Rol referenciado y se regresa a la lista de roles de la fase.<br/>
     """
-    rol = get_object_or_404(Rol, pk=pk)
+    rol = get_object_or_404(Rol, id=pk)
     group = rol.group
-    id_fase = rol.fase.id
+    #id_fase = rol.fase.id
     form = GroupForm(request.POST or None, instance=group)
     if form.is_valid():
         group = form.save()
@@ -128,26 +128,27 @@ def editar_rol(request, pk):
 
 @requiere_permiso('eliminar_rol')
 # === eliminar rol ===
-def eliminar_rol(request, pk):
+def eliminar_rol(request, pk, id_fase):
     """
      Permite la eliminación de una instancia del modelo Rol.<br/>
      **:param request:** Recibe un request por parte de un usuario.<br/>
      **:param pk:** Recibe el pk de la instancia del modelo Rol que se desea eliminar de la fase.<br/>
      **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles de la fase.<br/>
     """
-    rol = get_object_or_404(Rol, pk=pk)
-    id_fase = rol.fase.pk
-    if len(rol.usuarios.all())==0:       
+    rol = get_object_or_404(Rol, id=pk)
+    # id_fase = rol.fase.pk
+    if len(rol.usuarios.all()) == 0:
         rol.delete()
         return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         return render(request, 'rol/validate_delete.html')
 
+
 # === asigna rol de fase
 @requiere_permiso('asignar_rol')
-def asignar_rol_usuario(request, pk):
+def asignar_rol_usuario(request, pk, id_fase):
     rol = get_object_or_404(Rol, pk=pk)
-    id_fase = rol.fase.id
+    # id_fase = rol.fase.id
     form = RolFormUser(request.POST or None, instance=rol)
     if form.is_valid():
         rol = form.save()
@@ -259,38 +260,39 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
     **:return:** Se elimina la instancia del modelo Rol referenciado y se regresa a la lista de roles del sistema.<br/>
-    """    
+    """
     model = Rol
     template_name = 'rol/rol_eliminar_sistema.html'
     permission_required = 'rol.eliminar_rol_sistema'
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
     def post(self, request, *args, **kwargs):
-        pk = kwargs.pop('pk') #se obtiene el pk para eliminar
-        rol=Rol.objects.get(pk = pk)        
+        pk = kwargs.pop('pk')  # se obtiene el pk para eliminar
+        rol = Rol.objects.get(pk=pk)
         if not len(rol.usuarios.all()) == 0:
-            return render(request, 'rol/validate_delete.html')   
+            return render(request, 'rol/validate_delete.html')
         else:
             rol.delete()
-            return redirect(self.success_url)              
+            return redirect(self.success_url)
+
+        # === lista rol usuarios ===
 
 
-# === lista rol usuarios ===
 class Usuario_roles(ListView):
     """
     Permite la visualizacion de todas las intancias del modelo Rol que posee un usuario.<br/>
     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
     **:return:** Lista que contiene todas las instancias del modelo Rol que pertenecen a un usuario.<br/>
-    """  
+    """
     model = Rol
     template_name = 'rol/usuario_roles.html'
 
     def get(self, request, *args, **kwargs):
-        rol= Rol.objects.filter(usuarios__in= User.objects.filter(id=request.user.id))
+        rol = Rol.objects.filter(usuarios__in=User.objects.filter(id=request.user.id))
         print(rol.exists())
         if rol.exists():
-            return render(request, self.template_name, {'rol':rol})
-        return render(request, self.template_name, {'rol':rol})
+            return render(request, self.template_name, {'rol': rol})
+        return render(request, self.template_name, {'rol': rol})
 
 # === FIN ====
 
@@ -303,4 +305,3 @@ class Usuario_roles(ListView):
 
 
 # Regresar al menu principal : [Menú Principal](../../docs-index/index.html)
-

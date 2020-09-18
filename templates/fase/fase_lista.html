@@ -44,8 +44,8 @@
                                 Item
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'item:crear_item' id_fase=fase.id %}">Crear</a>
-                                <a class="dropdown-item" href="{% url 'item:item_lista' id_fase=fase.id %}">Lista de
+                                <a class="dropdown-item" href="{% url 'item:crear_item' fase.id %}">Crear</a>
+                                <a class="dropdown-item" href="{% url 'item:item_lista' fase.id %}">Lista de
                                     items</a>
                             </div>
                         </div>

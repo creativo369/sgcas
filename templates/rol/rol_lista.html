@@ -11,7 +11,7 @@
                             <button type="submit" class="btn btn-success btn-search-users">Buscar</button>
                         </span>
                     </div>
-                </div>   
+                </div>
 </form>
 <table class="table table-hover">
   <thead>
@@ -41,9 +41,9 @@
           </td>
 		      <td>
            <!-- <a type="button" class="btn btn-warning" href="#">Permisos</a> -->
-                  <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id %}">Editar</a>
-                  <a type="button" class="btn btn-danger" href="{% url 'rol:rol_eliminar' rol.id %}">Eliminar</a>
-                  <a type="button" class="btn btn-info" href="{% url 'rol:rol_asignar_usuario' rol.id %}">Asignar</a>
+                  <a type="button" class="btn btn-warning" href="{% url 'rol:rol_editar' rol.id rol.fase.id %}">Editar</a>
+                  <a type="button" class="btn btn-danger" href="{% url 'rol:rol_eliminar' rol.id rol.fase.id %}">Eliminar</a>
+                  <a type="button" class="btn btn-info" href="{% url 'rol:rol_asignar_usuario' rol.id rol.fase.id %}">Asignar</a>
           </td>
 		    </tr>
     	{% endfor %}

@@ -13,6 +13,9 @@ from apps.rol.models import Rol
 def requiere_permiso(permiso):
     def decorator(view_func):
         def wrap(request, *args, **kwargs):
+            # print(permiso)
+            # rsq = request.user.groups.all().get(name="Rol de Fase de Prueba 1")
+            # print(rsq.permissions.all().get(codename="crear_rol"))
             if request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
             query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))

@@ -40,6 +40,7 @@ def usuario_view(request):
 
 @login_required
 @administrator_only
+@permission_required("usuario.gestion_usuario", raise_exception=True)
 # === gestion usuarios ===
 def usuario_opciones(request):
     """
