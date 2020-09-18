@@ -20,6 +20,7 @@ from apps.item.graph import exclude_potencial_cycles, shortest_path, create_grap
     item_has_path
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
+from apps.proyecto.models import Proyecto
 from apps.tipo_item.models import TipoItem
 
 from SGCAS.decorators import requiere_permiso
@@ -76,7 +77,10 @@ def crear_item_basico(request, id_fase):
             item.fase = Fase.objects.get(id=id_fase)
             item.save()
             form.save_m2m()
-
+            ##Actualizamos la complejidad del proyecto
+            proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.pk)
+            proyecto.complejidad += item.costo
+            proyecto.save()
             if request.FILES:
                 # ALMACENAMIENTO FIREBASE
                 path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
@@ -218,6 +222,9 @@ def item_eliminar(request, pk):
        """
     item = Item.objects.get(id=pk)
     id_fase = item.fase.pk
+    proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+    proyecto.complejidad -= item.costo
+    proyecto.save()
     actualizar_punteros(item)
     item.delete()
     return redirect('item:item_lista', id_fase=id_fase)
