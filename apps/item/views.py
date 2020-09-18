@@ -29,7 +29,6 @@ from SGCAS.settings.desarrollo import MEDIA_ROOT
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
 
-
 """
 Todas las vistas para la aplicación del Modulo ítem
 Actualmente se despliega en las plantillas 19 vistas:
@@ -57,7 +56,7 @@ Actualmente se despliega en las plantillas 19 vistas:
 
 # @permission_required('item.crear_item', raise_exception=True)
 # === crear ítem ===
-@requiere_permiso('crear_item')
+# @requiere_permiso('crear_item')
 def crear_item_basico(request, id_fase):
     """
     Permite la creacion de instancias de modelo Item.<br/>
@@ -102,7 +101,7 @@ def crear_item_basico(request, id_fase):
                   {'form': form, 'tipo_item': TipoItem.objects.exists(), 'validacion_proyecto': query_fase})
 
 
-@requiere_permiso('importar_tipo_item')
+# @requiere_permiso('importar_tipo_item')
 # === importar tipo de ítem ===
 def item_importar_ti(request, pk):
     """
@@ -122,7 +121,7 @@ def item_importar_ti(request, pk):
 
 
 # === settear atributos ítem ===
-@requiere_permiso('crear_item')
+# @requiere_permiso('crear_item')
 def item_set_atributos(request, pk):
     """
     Permite agregar los atributos a un ítem de acuerdo a su tipo de ítem importado.<br/>
@@ -140,7 +139,7 @@ def item_set_atributos(request, pk):
 
 
 @login_required
-@requiere_permiso('ver_item')
+# @requiere_permiso('ver_item')
 # === ítem opciones ===
 def item_opciones(request):
     """
@@ -152,7 +151,7 @@ def item_opciones(request):
     return render(request, 'item/item_opciones.html')
 
 
-@requiere_permiso('listar_item')
+# @requiere_permiso('listar_item')
 # === lista de ítems de fase ===
 def item_lista_fase(request, id_fase):
     """
@@ -178,7 +177,7 @@ def item_lista_fase(request, id_fase):
     return render(request, 'item/item_lista.html', context)
 
 
-@requiere_permiso('item.listar_item')
+# @requiere_permiso('item.listar_item')
 # === search ===
 def search(request, id_fase):
     """
@@ -214,7 +213,7 @@ def search(request, id_fase):
     return render(request, template, context)
 
 
-@requiere_permiso('eliminar_item')
+# @requiere_permiso('eliminar_item')
 # === ítem eliminar ===
 def item_eliminar(request, pk):
     """
@@ -251,17 +250,16 @@ def actualizar_punteros(item):
     for padre in padres:
         for hijo in hijos:
             padre.hijos.add(hijo)
-    for antecesor in antecesores: 
-        for sucesores in sucesor: 
+    for antecesor in antecesores:
+        for sucesor in sucesores:
             antecesor.sucesores.add(sucesor)
-    for sucesor in sucesores: 
-        for antecesor in antecesores: 
+    for sucesor in sucesores:
+        for antecesor in antecesores:
             sucesor.antecesores.add(antecesor)
 
 
-
 # === ítem detalles ===
-@requiere_permiso('ver_item')
+# @requiere_permiso('ver_item')
 def item_detalles(request, pk):
     """
        Permite visualizar los detalles de una instancia de ítem.<br/>
@@ -272,7 +270,7 @@ def item_detalles(request, pk):
     return render(request, 'item/item_detalles.html', {'item': Item.objects.get(pk=pk)})
 
 
-@requiere_permiso('editar_item')
+# @requiere_permiso('editar_item')
 # === ítem modificar ===
 def item_modificar_basico(request, pk):
     """
@@ -303,20 +301,21 @@ def item_modificar_basico(request, pk):
             item.archivo = request.FILES['archivo']
             # ALMACENAMIENTO FIREBASE
             path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
-            path_on_cloud = str(date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+            path_on_cloud = str(
+                date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
             storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
             item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
             item.save()
         return redirect('item:item_modificar_import_ti', pk=item.pk)
     context = {
-        'form':form,
-        'item':item,
-        'tipo_item':TipoItem.objects.exists()
+        'form': form,
+        'item': item,
+        'tipo_item': TipoItem.objects.exists()
     }
     return render(request, 'item/item_modificar.html', context)
 
 
-@requiere_permiso('item_modificar_ti')
+# @requiere_permiso('item_modificar_ti')
 # === modificar ti ===
 def item_modificar_ti(request, pk):
     """
@@ -333,7 +332,7 @@ def item_modificar_ti(request, pk):
     return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
 
 
-@requiere_permiso('item_modificar_atributos')
+# @requiere_permiso('item_modificar_atributos')
 # === ítem modificar atributos ===
 def item_modificar_atributos(request, pk):
     """
@@ -366,7 +365,7 @@ def get_item_snapshot(pk):
         estado=prev_item.estado,
         costo=prev_item.costo,
         archivo=prev_item.archivo,
-        file_url_cloud = prev_item.file_url_cloud,
+        file_url_cloud=prev_item.file_url_cloud,
         fase=prev_item.fase,
         tipo_item=prev_item.tipo_item,
         impacto=prev_item.impacto,
@@ -393,7 +392,7 @@ def get_item_snapshot(pk):
     return snap_item
 
 
-@requiere_permiso('versiones_item')
+# @requiere_permiso('versiones_item')
 # === ítem versiones ===
 def item_versiones(request, pk, id_fases):
     lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
@@ -411,7 +410,7 @@ def item_versiones(request, pk, id_fases):
     return render(request, 'item/item_versiones.html', context)
 
 
-@requiere_permiso('versiones_item')
+# @requiere_permiso('versiones_item')
 # === restaurar versión ===
 def restaurar_version(request, pk):
     """
@@ -442,7 +441,7 @@ def restaurar_version(request, pk):
     return render(request, 'item/item_eliminar.html', {'object': nr_item})
 
 
-@requiere_permiso('cambiar_estado_item')
+# @requiere_permiso('cambiar_estado_item')
 # === ítem cambiar estado ===
 def item_cambiar_estado(request, pk):
     """
@@ -460,8 +459,9 @@ def item_cambiar_estado(request, pk):
         return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
 
+
 # === fases relaciones ===
-@requiere_permiso('relacion_item')
+# @requiere_permiso('relacion_item')
 def fases_rel(request, pk):
     """
     Permite la visualización de las fases de un ítem, paso previo para establecer de las relaciones.<br/>
@@ -507,7 +507,7 @@ def update_relations(pk, snap_pk):
     # for hijo in snap_item.hijos.all():
 
 
-@requiere_permiso('relacion_item')
+# @requiere_permiso('relacion_item')
 # === relaciones ===
 def relaciones(request, pk, id_fase):
     """
@@ -579,7 +579,8 @@ def relaciones(request, pk, id_fase):
         return render(request, 'item/item_relaciones.html', context)
 
 
-@requiere_permiso('calcular_impacto')
+# @requiere_permiso('calcular_impacto')
+# === impacto ítem ===
 def calculo_impacto(request, pk):
     """
     Permite realizar el cálculo de impacto de un ítem al proyecto.<br/>
@@ -613,7 +614,7 @@ def explore(item, impacto):
     return impacto
 
 
-@requiere_permiso('ver_trazabilidad')
+# @requiere_permiso('ver_trazabilidad')
 # === trazabilidad ítem ===
 def trazabilidad_item(request, pk):
     """

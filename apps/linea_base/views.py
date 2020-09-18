@@ -168,7 +168,7 @@ def search(request, id_fase):
 
 @requiere_permiso('listar_item_linea_base')
 # === lista ítems lb ===
-def lista_items_linea_base(request, pk, id_fases):
+def lista_items_linea_base(request, pk, id_fase):
     """
     Permite visualizar la lista de ítems correspondientes a una línea base en particular.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -177,7 +177,7 @@ def lista_items_linea_base(request, pk, id_fases):
     **:return:** Retorna una lista de ítems correspondientes a una línea base.<br/>
     """
     lista_item_lb = get_object_or_404(LineaBase, pk=pk).items.all().order_by('id').distinct()
-    fase = Fase.objects.get(id=id_fases)
+    fase = Fase.objects.get(id=id_fase)
 
     paginator = Paginator(lista_item_lb, 3)
     page_number = request.GET.get('page')

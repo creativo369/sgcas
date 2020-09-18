@@ -44,6 +44,7 @@ def handler403(request, exception, template_name='403.html'):
 
 
 @login_required
+@permission_required('rol.crear_rol', raise_exception=True)
 # @requiere_permiso('crear_rol')
 # === crear rol ===
 def crear_rol_view(request, id_fase):
@@ -64,6 +65,7 @@ def crear_rol_view(request, id_fase):
     return render(request, 'rol/rol_crear.html', {'form': form})
 
 
+@permission_required('rol.listar_rol', raise_exception=True)
 # @requiere_permiso('listar_rol')
 # === listar roles ===
 def lista_rol(request, id_fase):
@@ -81,8 +83,9 @@ def lista_rol(request, id_fase):
                                                   'page_obj': page_obj})
 
 
-@requiere_permiso('listar_rol')
-# === search === 
+# @requiere_permiso('listar_rol')
+@permission_required('rol.listar_rol', raise_exception=True)
+# === search ===
 def search(request, id_fase):
     """
     Permite la búsqueda de las intancias del modelo Rol.<br/>
@@ -106,7 +109,8 @@ def search(request, id_fase):
     return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
 
 
-@requiere_permiso('editar_rol')
+# @requiere_permiso('editar_rol')
+@permission_required('rol.editar_rol', raise_exception=True)
 # === editar rol ===
 def editar_rol(request, pk, id_fase):
     """
@@ -117,7 +121,7 @@ def editar_rol(request, pk, id_fase):
     """
     rol = get_object_or_404(Rol, id=pk)
     group = rol.group
-    #id_fase = rol.fase.id
+    # id_fase = rol.fase.id
     form = GroupForm(request.POST or None, instance=group)
     if form.is_valid():
         group = form.save()
@@ -126,7 +130,8 @@ def editar_rol(request, pk, id_fase):
     return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase)})
 
 
-#@requiere_permiso('eliminar_rol')
+# @requiere_permiso('eliminar_rol')
+@permission_required('rol.eliminar_rol', raise_exception=True)
 # === eliminar rol ===
 def eliminar_rol(request, pk, id_fase):
     """
@@ -138,7 +143,8 @@ def eliminar_rol(request, pk, id_fase):
     rol = get_object_or_404(Rol, id=pk)
     # id_fase = rol.fase.pk
     if len(rol.usuarios.all()) == 0:
-        rol.delete()
+        # rol.delete()
+        Group.objects.get(name=rol.nombre).delete()
         return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         return render(request, 'rol/validate_delete.html')
@@ -146,6 +152,7 @@ def eliminar_rol(request, pk, id_fase):
 
 # === asigna rol de fase
 # @requiere_permiso('asignar_rol')
+@permission_required('rol.asignar_rol', raise_exception=True)
 def asignar_rol_usuario(request, pk, id_fase):
     rol = get_object_or_404(Rol, pk=pk)
     # id_fase = rol.fase.id
@@ -272,7 +279,8 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
         if not len(rol.usuarios.all()) == 0:
             return render(request, 'rol/validate_delete.html')
         else:
-            rol.delete()
+            Group.objects.get(name=rol.nombre).delete()
+            # rol.delete()
             return redirect(self.success_url)
 
         # === lista rol usuarios ===

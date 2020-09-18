@@ -161,6 +161,7 @@ class EliminarUsuario(PermissionRequiredMixin, DeleteView):
         usuario.delete()
         return redirect(self.success_url)
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
+# 0.admin          : [[admin.py]]<br/>
 # 1.apps        : [[apps.py]]<br/>
 # 2.forms       : [[forms.py]]<br/>
 # 3.middleware  : [[middleware.py]]<br/>

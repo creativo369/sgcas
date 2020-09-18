@@ -33,6 +33,7 @@
                     <td>{{ TipoItem.atributos }}</td>
                     <td>
                         <a type="button" class="btn btn-warning"
+
                            href="{% url 'tipo_item:tipo_item_modificar' TipoItem.id %}">Editar</a>
                         <a type="button" class="btn btn-danger"
                            href="{% url 'tipo_item:tipo_item_eliminar' TipoItem.id %}">Eliminar</a>

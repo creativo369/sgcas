@@ -47,8 +47,7 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">username_modificado</span> <span class="o">=</span> <span class="s1">&#39;username-modificado&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user-test&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario creado OK&#39;</span><span class="p">)</span></pre></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user-test&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -60,9 +59,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_usuario_crear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;user-test&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario-test_usuario_crear OK&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_usuario_crear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s1">&#39;user-test&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -78,8 +76,7 @@
         <span class="n">username_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;username_modificado&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">username_anterior</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario-test_usuario_modificar OK&#39;</span><span class="p">)</span></pre></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usuario</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">username_anterior</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -105,7 +102,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Usuario borrado OK&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">pass</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -115,6 +112,7 @@
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Usuario  === <br/>
+0.admin          :  <a href="admin.html">admin.py</a><br/>
 1.apps        :  <a href="apps.html">apps.py</a><br/>
 2.forms       :  <a href="forms.html">forms.py</a><br/>
 3.middleware  :  <a href="middleware.html">middleware.py</a><br/>

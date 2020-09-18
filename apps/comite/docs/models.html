@@ -94,19 +94,7 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
-        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;crear_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;crear_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;eliminar_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;eliminar_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;ver_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;ver_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;editar_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;editar_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;listar_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;listar_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;agregar_comite_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;agregar_comite_proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;quitar_comite_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;quitar_comite_proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;agregar_usuario_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;agregar_usuario_comite&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;quitar_usuario_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;quitar_usuario_comite&quot;</span><span class="p">),</span>
-        <span class="p">]</span>
-        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Comité&#39;</span>
-        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Comites&#39;</span></pre></div>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -115,10 +103,25 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+      <p>(&ldquo;crear_comite&rdquo;, &ldquo;crear_comite&rdquo;),
+(&ldquo;eliminar_comite&rdquo;, &ldquo;eliminar_comite&rdquo;),
+(&ldquo;ver_comite&rdquo;, &ldquo;ver_comite&rdquo;),
+(&ldquo;editar_comite&rdquo;, &ldquo;editar_comite&rdquo;),
+(&ldquo;listar_comite&rdquo;, &ldquo;listar_comite&rdquo;),
+(&ldquo;agregar_comite_proyecto&rdquo;, &ldquo;agregar_comite_proyecto&rdquo;),
+(&ldquo;quitar_comite_proyecto&rdquo;, &ldquo;quitar_comite_proyecto&rdquo;),
+(&ldquo;agregar_usuario_comite&rdquo;, &ldquo;agregar_usuario_comite&rdquo;),
+(&ldquo;quitar_usuario_comite&rdquo;, &ldquo;quitar_usuario_comite&rdquo;),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear comite&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar comite&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver comite&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_comite&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar comite&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Comité&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Comites&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -127,7 +130,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p><strong>Ir a la documentación de pruebas unitarias del modulo comité</strong> :  <a href="tests.html">tests.py</a></p>
+      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -139,6 +142,18 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
+      <p><strong>Ir a la documentación de pruebas unitarias del modulo comité</strong> :  <a href="tests.html">tests.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
       <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
 2.apps    :  <a href="apps.html">apps.py</a><br/>
@@ -147,6 +162,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

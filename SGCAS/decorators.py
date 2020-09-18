@@ -18,12 +18,17 @@ def requiere_permiso(permiso):
             query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
             if query_rol:
                 for rol_fase in query_rol:
-                    if request.user in rol_fase.usuarios.all():
-                        try:
-                            if rol_fase.group.permissions.get(codename=permiso):
-                                return view_func(request, *args, **kwargs)
-                        except:
+                    if rol_fase.usuarios.all():
+                        if request.user in rol_fase.usuarios.all():
+                            try:
+                                if rol_fase.group.permissions.get(codename=permiso):
+                                    return view_func(request, *args, **kwargs)
+                            except:
+                                raise PermissionDenied
+                        else:
                             raise PermissionDenied
+                    else:
+                        raise PermissionDenied
             else:
                 raise PermissionDenied
         return wrap

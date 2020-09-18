@@ -36,7 +36,8 @@
     <div class='code'>
       <div class="highlight"><pre><span class="kn">from</span> <span class="nn">SGCAS.settings</span> <span class="kn">import</span> <span class="n">base</span>
 
-<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">apps.rol.models</span> <span class="kn">import</span> <span class="n">Rol</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -61,7 +62,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">UserForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-    <span class="n">roles</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></pre></div>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -169,8 +170,16 @@ de primarykey para los datos seleccionados</p>
                 <span class="k">global</span> <span class="n">inactivo_previo</span>
                 <span class="n">inactivo_previo</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-                <span class="n">initial</span><span class="p">[</span><span class="s1">&#39;roles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">has_rol</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">rol</span> <span class="ow">in</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">rol</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                    <span class="n">has_rol</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">role</span> <span class="o">=</span> <span class="n">rol</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">has_rol</span><span class="p">:</span>
+                <span class="n">initial</span><span class="p">[</span><span class="s1">&#39;roles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">role</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">initial</span><span class="p">[</span><span class="s1">&#39;roles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -199,14 +208,22 @@ de primarykey para los datos seleccionados</p>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">roles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span>
+      <div class="highlight"><pre>        <span class="n">rol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;roles&#39;</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span>
         <span class="n">u</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="n">u</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">set</span><span class="p">([</span><span class="n">roles</span><span class="p">])</span>
+        <span class="n">system_rol</span> <span class="o">=</span> <span class="n">get_system_rol</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">system_rol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">system_rol</span><span class="p">:</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">system_rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">))</span>
+            <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="n">system_rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">u</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">))</span>
+        <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="n">rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="n">u</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">is_active</span> <span class="ow">and</span> <span class="n">inactivo_previo</span><span class="p">:</span>
             <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Registro SGCAS&#39;</span>
+
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Hola &#39;</span> <span class="o">+</span> <span class="n">u</span><span class="o">.</span><span class="n">username</span> <span class="o">+</span> <span class="s1">&#39;!. Su cuenta ha sido aprobada satisfactoriamente, ya puede ingresar al sistema SGCAS&#39;</span>
+
             <span class="n">send_mail</span><span class="p">(</span>
                 <span class="n">subject</span><span class="p">,</span>
                 <span class="n">message</span><span class="p">,</span>
@@ -223,10 +240,14 @@ de primarykey para los datos seleccionados</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      
+      <p>Obtiene el rol de sistema actual del usuario</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">FormularioUsuarioActivar</span><span class="p">(</span><span class="n">UserForm</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_system_rol</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rol</span> <span class="ow">in</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">rol</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">rol</span>
+    <span class="k">return</span> <span class="kc">None</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -235,10 +256,10 @@ de primarykey para los datos seleccionados</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      <p><strong>Clase que modela el formulario de la definición de un usuario a ser usado en la plantilla</strong><br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">FormularioUsuarioActivar</span><span class="p">(</span><span class="n">UserForm</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -246,6 +267,18 @@ de primarykey para los datos seleccionados</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p><strong>Clase que modela el formulario de la definición de un usuario a ser usado en la plantilla</strong><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
       </div>
       <p>Para read - only los fields que se presentan en la siguiente lista.<br/></p>
     </div>
@@ -255,10 +288,10 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>fields representa los campos que no son editables de acuerdo al estado del proyecto<br/></p>
     </div>
@@ -268,10 +301,10 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
       <p>No se permite la modificacion del nombre ,apellidos , correo electronico , Usuario<br/></p>
     </div>
@@ -282,10 +315,10 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       
     </div>
@@ -295,12 +328,13 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Usuario  === <br/>
+0.admin          :  <a href="admin.html">admin.py</a><br/>
 1.apps        :  <a href="apps.html">apps.py</a><br/>
 2.forms       :  <a href="forms.html">forms.py</a><br/>
 3.middleware  :  <a href="middleware.html">middleware.py</a><br/>
@@ -314,10 +348,10 @@ de primarykey para los datos seleccionados</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

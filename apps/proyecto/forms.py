@@ -96,7 +96,9 @@ class ChangeProject(forms.ModelForm):
         # No se permite la modificacion del nombre del proyecto si su estado es pendiente
         gerente = kwargs['instance'].gerente
 
-        if Fase.objects.filter(proyecto=kwargs['instance']):
+        if Fase.objects.filter(proyecto=kwargs['instance']) and kwargs['instance'].estado == "Pendiente":
+            print(Fase.objects.filter(proyecto=kwargs['instance']))
+        # if kwargs['instance'].estado == 'Pendiente':
             estado_proyecto = [
                 ('Pendiente', 'Pendiente'),
                 ('Iniciado', 'Iniciado'),

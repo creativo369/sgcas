@@ -22,7 +22,7 @@
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
 <span class="kn">from</span> <span class="nn">apps.fase.views</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span></pre></div>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -36,12 +36,13 @@
     <div class='code'>
       <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^opciones/&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">fase_opciones</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_opciones&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^cambiar_estado/(?P&lt;pk&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">cambiar_estado_fase</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_cambiar_estado&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^fase_detalles/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">fase_detalles</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_detalles&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">FaseCrear</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;crear_fase&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">lista_fase</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_lista&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;pk&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">eliminar_fase</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_eliminar&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar/(?P&lt;pk&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">fase_modificar</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_modificar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^results/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;fase.listar_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">search</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;search&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^cambiar_estado/(?P&lt;id_fase&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">cambiar_estado_fase</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_cambiar_estado&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^fase_detalles/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">fase_detalles</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_detalles&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;fase.crear_fase&#39;</span><span class="p">,</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">FaseCrear</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;crear_fase&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;fase.listar_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">lista_fase</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_lista&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;id_fase&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">eliminar_fase</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_eliminar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar/(?P&lt;id_fase&gt;\d+)/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">fase_modificar</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;fase_modificar&#39;</span><span class="p">),</span>
 <span class="p">]</span></pre></div>
     </div>
   </div>
@@ -83,6 +84,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

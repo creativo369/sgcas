@@ -17,11 +17,25 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <p>Todas las vistas para la aplicación del Modulo Línea Base
+Actualmente se despliega en las plantillas 7 vistas:</p>
+<ol>
+<li><strong>crear_linea_base</strong> - crea la línea base (Ir a la sección:  <a href="views.html#crear línea base">views.py </a> )</li>
+<li><strong>agregar_items_lb</strong> - agrega ítems aprobados a la línea base (Ir a la sección:  <a href="views.html#agregar ítems lb">views.py </a> )</li>
+<li><strong>editar_lb</strong> - modifica los atributos de la línea base (Ir a la sección:  <a href="views.html#editar lb">views.py </a> )</li>
+<li><strong>estado_lb</strong> - modifica el estado de una línea base (Ir a la sección:  <a href="views.html#estado lb">views.py </a> )</li>
+<li><strong>lista_linea_base</strong> - lista las líneas base de una fase (Ir a la sección:  <a href="views.html#lista de líneas base">views.py </a> )</li>
+<li><strong>search</strong> - despliega las líneas base buscadas de una fase (Ir a la sección:  <a href="views.html#search">views.py </a> )</li>
+<li><strong>lista_items_linea_base</strong> - lista todos los ítems que forman parte de una línea base (Ir a la sección:  <a href="views.html#lista ítems lb">views.py </a> )</li>
+</ol>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">permission_required</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 
+<span class="kn">from</span> <span class="nn">SGCAS.decorators</span> <span class="kn">import</span> <span class="n">requiere_permiso</span>
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
 <span class="kn">from</span> <span class="nn">apps.linea_base.forms</span> <span class="kn">import</span> <span class="n">LineaBaseForm</span><span class="p">,</span> <span class="n">AgregarItemsForm</span><span class="p">,</span> <span class="n">LineaBaseUpdateEstado</span>
@@ -34,13 +48,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Permite la creacion de una instancia de objeto linea base.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param id_fase:</strong> Recibe pk de la instancia de fase en donde se esta creando la linea base<br/>
-<strong>:return:</strong> Retorna una instancia de linea base creada,<br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -52,16 +63,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">LineaBaseForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="n">lb</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">lb</span><span class="o">.</span><span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
-            <span class="n">lb</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;linea_base:agregar_items_lb&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">lb</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">LineaBaseForm</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;crear_linea_base&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -70,14 +72,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p>Permite agregar items a una linea base.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia de linea base, en donde se asignaran los items.<br/>
-<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la linea base.<br/>
-<strong>:return:</strong> Retorna una linea base con sus items agregados.<br/></p>
+      <h3><span id="crear-línea-base" href="crear-línea-base"> crear línea base </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">agregar_items_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -86,7 +84,99 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
+      <p>Permite la creación de una instancia de objeto línea base.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe pk de la instancia de fase en donde se esta creando la línea base.<br/>
+<strong>:return:</strong> Retorna una instancia de línea base creada.<br/></p>
+<p>query_item = Item.objects.all().filter(fase_id=id_fase)
+flag = False</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>for item in query_item:
+    if item.estado == &ldquo;Aprobado&rdquo; and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
+        flag = True</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">LineaBaseForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">lb</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">lb</span><span class="o">.</span><span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+            <span class="n">lb</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;linea_base:agregar_items_lb&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">lb</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>elif flag and fase.proyecto.estado == &ldquo;Iniciado&rdquo;:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">elif</span> <span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s2">&quot;Iniciado&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">LineaBaseForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>return render(request, &lsquo;linea_base/linea_crear.html&rsquo;, {&lsquo;flag&rsquo;: flag, &lsquo;fase&rsquo;: fase})</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
       
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;agregar_item_linea_base&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <h3><span id="agregar-ítems-lb" href="agregar-ítems-lb"> agregar ítems lb </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">agregar_items_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Permite agregar ítems a una línea base.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia de línea base, en donde se asignaran los ítems.<br/>
+<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la línea base.<br/>
+<strong>:return:</strong> Retorna una línea base con sus ítems agregados.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">form</span> <span class="o">=</span> <span class="n">AgregarItemsForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
@@ -102,28 +192,40 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>Permite la modificacion de una instancia de linea base.<br/>
-  <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-  <strong>:param pk:</strong> Recibe pk de una instancia de linea base que se desea modificar.<br/>
-  <strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la linea base.<br/>
-  <strong>:return:</strong> Retorna una linea base modificada.<br/></p>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;editar_linea_base&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <h3><span id="editar-lb" href="editar-lb"> editar lb </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">editar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      
+      <p>Permite la modificación de una instancia de línea base.<br/>
+  <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+  <strong>:param pk:</strong> Recibe pk de una instancia de línea base que se desea modificar.<br/>
+  <strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la línea base.<br/>
+  <strong>:return:</strong> Retorna una línea base modificada.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">form</span> <span class="o">=</span> <span class="n">LineaBaseForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">))</span>
@@ -136,28 +238,40 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-14'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-14'>#</a>
       </div>
-      <p>Permite la modificacion de una linea base.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia de linea base, la que cambiara de estado.<br/>
-<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la linea base.<br/>
-<strong>:return:</strong> Retorna una linea base con su estado modificado.<br/></p>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;estado_linea_base&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <h3><span id="estado-lb" href="estado-lb"> estado lb </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">estado_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
-      
+      <p>Permite la modificación de una línea base.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia de línea base, la que cambiará de estado.<br/>
+<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la línea base.<br/>
+<strong>:return:</strong> Retorna una línea base con su estado modificado.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">lb</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
@@ -169,67 +283,165 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
-      <p>Permite visualizar la lista de lineas bases de una fase en particular.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, de la cual requerimos la lista de lineas bases.<br/>
-<strong>:return:</strong> Retorna una lista de lineas bases.<br/></p>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_linea_base&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <h3><span id="lista-de-líneas-base" href="lista-de-líneas-base"> lista de líneas base </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">lista_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
-      
+      <p>Permite visualizar la lista de líneas bases de una fase en particular.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, de la cual requerimos la lista de líneas bases.<br/>
+<strong>:return:</strong> Retorna una lista de líneas bases.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_lista.html&#39;</span><span class="p">,</span>
+      <div class="highlight"><pre>    <span class="n">lista_lb</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">lista_lb</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_lista.html&#39;</span><span class="p">,</span>
                   <span class="p">{</span><span class="s1">&#39;lb&#39;</span><span class="p">:</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)),</span>
-                   <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)})</span></pre></div>
+                   <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">),</span> <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
-      </div>
-      <p>Permite visualizar la lista de items correspondientes a una linea base en particular.<br/>
-<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia de linea base, de la cual requerimos la lista de items.<br/>
-<strong>:return:</strong> Retorna una lista de items correspondientes a una linea base.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">lista_items_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-12'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_items_lista.html&#39;</span><span class="p">,</span>
-                  <span class="p">{</span><span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">()})</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_linea_base&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-13'>
+  <div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-13'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <h3><span id="search" href="search"> search </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Permite realizar la búsqueda de líneas bases de una fase en particular.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe pk de una instancia de fase, de la cual requerimos la lista de líneas bases.<br/>
+<strong>:return:</strong> Retorna una lista de líneas bases que satifacen el criterio de búsqueda.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;linea_base/list_busqueda.html&#39;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buscar&#39;</span><span class="p">)</span>
+
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span> <span class="o">&amp;</span>
+                                           <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">identificador__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span>
+                                               <span class="n">descripcion__contains</span><span class="o">=</span><span class="n">query</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="s1">&#39;lb&#39;</span><span class="p">:</span> <span class="n">results</span><span class="p">,</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">,</span>
+        <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_item_linea_base&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <h3><span id="lista-ítems-lb" href="lista-ítems-lb"> lista ítems lb </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">lista_items_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>Permite visualizar la lista de ítems correspondientes a una línea base en particular.<br/>
+<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia de línea base, de la cual requerimos la lista de ítems.<br/>
+<strong>:param id_fases:</strong> Recibe el id de la fase a la que pertenece, para regresar a la lista de líneas base.<br/>
+<strong>:return:</strong> Retorna una lista de ítems correspondientes a una línea base.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">lista_item_lb</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">lista_item_lb</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;linea_base/linea_items_lista.html&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">lista_item_lb</span><span class="p">,</span> <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">,</span> <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <p>Permite la eliminacion de una instancia de linea base.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -238,14 +450,15 @@
 <strong>:return:</strong> Retorna una instancia de linea base eliminada.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">eliminar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;eliminar_linea_base&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eliminar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-14'>
+  <div class='section' id='section-27'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
+        <a class='octothorpe' href='#section-27'>#</a>
       </div>
       
     </div>
@@ -255,10 +468,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       <p><strong>Volver atras</strong> :  <a href="urls.html">urls.py</a></p>
     </div>
@@ -267,10 +480,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación linea base  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
@@ -279,6 +492,18 @@
 4.tests   :  <a href="tests.html">tests.py</a><br/>
 5.urls    :  <a href="urls.html">urls.py</a><br/>
 6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

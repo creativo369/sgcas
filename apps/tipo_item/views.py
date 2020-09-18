@@ -27,7 +27,7 @@ Actualmente se despliega en las plantillas 6 vistas:
 
 
 @login_required
-#@permission_required('tipo_item.crear_tipo_item', raise_exception=True)
+# @permission_required('tipo_item.crear_tipo_item', raise_exception=True)
 @requiere_permiso('crear_tipo_item')
 # === crear tipo de ítem ===
 def crear_tipo_item(request, id_fase):
@@ -75,29 +75,31 @@ def tipo_item_lista(request, id_fase):
     paginator = Paginator(tipo_item, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     return render(request, 'tipo_item/tipo_item_lista.html', {'fase': Fase.objects.get(id=id_fase),
-                                                            'page_obj': page_obj})
+                                                              'page_obj': page_obj})
 
 
-@requiere_permiso('editar_tipo_item')
+# @requiere_permiso('editar_tipo_item')
+@permission_required('tipo_item.editar_tipo_item', raise_exception=True)
 # === tipo de ítem update ===
-def editar_tipo_item(request, pk):
+def editar_tipo_item(request, id_item):
     """
      Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
      **:param request:** Recibe un request por parte de un usuario.<br/>
      **:param pk:** Recibe el pk de la fase a la que pertenece el tipo de ítem para modificarlo.<br/>
      **:return:** Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/>
     """
-    ti = get_object_or_404(TipoItem, pk=pk)
+    ti = get_object_or_404(TipoItem, id=id_item)
     form = TipoItemUpdateForm(request.POST or None, instance=ti)
     if form.is_valid():
         form.save()
-        return redirect('tipo_item:tipo_item_lista', id_fase=ti.fase.pk)
-    return render(request, 'tipo_item/tipo_item_modificar.html', {'form':form})
+        return redirect('tipo_item:tipo_item_lista', id_fase=ti.fase_id)
+    return render(request, 'tipo_item/tipo_item_modificar.html', {'form': form})
 
 
-@requiere_permiso('eliminar_tipo_item')
+@permission_required('tipo_item.eliminar_tipo_item', raise_exception=True)
+# @requiere_permiso('eliminar_tipo_item')
 # === eliminar tipo de ítem ===
 def eliminar_tipo_item(request, pk):
     """
@@ -111,7 +113,7 @@ def eliminar_tipo_item(request, pk):
     ti.delete()
     return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
 
-        
+
 @requiere_permiso('listar_tipo_item')
 # === search === 
 def search(request, id_fase):
@@ -125,18 +127,17 @@ def search(request, id_fase):
     query = request.GET.get('buscar')
 
     if query:
-        results = TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase)) 
-            & Q(nombre__icontains=query) | Q(descripcion__contains=query)).order_by('id').distinct()
+        results = TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase))
+                                          & Q(nombre__icontains=query) | Q(descripcion__contains=query)).order_by(
+            'id').distinct()
     else:
-        results= TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase))).order_by('id').distinct()
-   
+        results = TipoItem.objects.filter(Q(fase=get_object_or_404(Fase, pk=id_fase))).order_by('id').distinct()
+
     paginator = Paginator(results, 3)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)     
-    
-    return render(request, template, {'fase': Fase.objects.get(id=id_fase),'page_obj': page_obj})
+    page_obj = paginator.get_page(page_number)
 
-
+    return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>

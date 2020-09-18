@@ -21,6 +21,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">multiselectfield</span> <span class="kn">import</span> <span class="n">MultiSelectField</span></pre></div>
     </div>
   </div>
@@ -68,7 +69,8 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">nombre</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
     <span class="n">descripcion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-    <span class="n">atributos</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">ATTRIBUTES</span><span class="p">)</span></pre></div>
+    <span class="n">atributos</span> <span class="o">=</span> <span class="n">MultiSelectField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">ATTRIBUTES</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -80,8 +82,9 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de los permisos por defecto que  trae django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -90,6 +93,45 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
+      <p>(&ldquo;crear_tipo_item&rdquo;, &ldquo;crear_tipo_item&rdquo;),
+(&ldquo;adjuntar_tipo_item&rdquo;, &ldquo;adjuntar_tipo_item&rdquo;),
+(&ldquo;listar_tipo_item&rdquo;, &ldquo;listar_tipo_item&rdquo;),
+(&ldquo;editar_tipo_item&rdquo;, &ldquo;editar_tipo_item&rdquo;),
+(&ldquo;eliminar_tipo_item&rdquo;, &ldquo;eliminar_tipo_item&rdquo;),
+(&ldquo;importar_tipo_item&rdquo;, &ldquo;importar_tipo_item&rdquo;),
+(&ldquo;ver_tipo_item&rdquo;, &ldquo;ver_tipo_item&rdquo;),</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;adjuntar_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede adjuntar tipo item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;importar_tipo_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede importar tipo item&quot;</span><span class="p">),</span>
+
+        <span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
       <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
 2.forms   :  <a href="forms.html">forms.py</a><br/>
@@ -97,6 +139,18 @@
 4.tests   :  <a href="tests.html">tests.py</a><br/>
 5.urls    :  <a href="urls.html">urls.py</a><br/>
 6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

@@ -87,6 +87,7 @@ def fase_detalles(request, id_fase):
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
+#@requiere_permiso('listar_fase')
 # === lista fase ===
 def lista_fase(request, _id):
     """
@@ -111,6 +112,7 @@ def lista_fase(request, _id):
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
+#@requiere_permiso('listar_fase')
 # === search ===
 def search(request, _id):
     """

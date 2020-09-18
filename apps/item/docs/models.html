@@ -21,7 +21,9 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
@@ -45,9 +47,6 @@
       <div class="highlight"><pre><span class="n">item_estado</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">,</span> <span class="s1">&#39;Desarrollo&#39;</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;Aprobado&#39;</span><span class="p">,</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;Desactivado&#39;</span><span class="p">,</span> <span class="s1">&#39;Desactivado&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;Revision&#39;</span><span class="p">,</span> <span class="s1">&#39;Revisión&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;LineaBase&#39;</span><span class="p">,</span> <span class="s1">&#39;Línea base&#39;</span><span class="p">),</span>
 <span class="p">]</span></pre></div>
     </div>
   </div>
@@ -90,15 +89,14 @@
     <span class="n">descripcion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
     <span class="n">fecha_creacion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
     <span class="n">estado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">item_estado</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">)</span>
+    <span class="n">en_linea_base</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">costo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">()</span>
     <span class="n">usuarios_a_cargo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">archivo</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">file_url_cloud</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">fase</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">tipo_item</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">TipoItem</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="n">boolean</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">char</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">numerico</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
+    <span class="n">impacto</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -106,6 +104,110 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Atributos para tipos de item</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">boolean</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">char</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">numerico</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h2>Atributos para relaciones</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">padres</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="n">symmetrical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;padre&#39;</span><span class="p">)</span>
+    <span class="n">hijos</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="n">symmetrical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;hijo&#39;</span><span class="p">)</span>
+    <span class="n">antecesores</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="n">symmetrical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;antecesor&#39;</span><span class="p">)</span>
+    <span class="n">sucesores</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="n">symmetrical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;sucesor&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h2>Atributos para el versionado</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nro_version</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">versiones</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">last_release</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ultima_modificacion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>(&ldquo;crear_item&rdquo;, &ldquo;crear_item&rdquo;),
+(&ldquo;aprobar_item&rdquo;, &ldquo;aprobar_item&rdquo;),
+(&ldquo;editar_item&rdquo;, &ldquo;editar_item&rdquo;),
+(&ldquo;eliminar_item&rdquo;, &ldquo;eliminar_item&rdquo;),
+(&ldquo;relacionar_item&rdquo;, &ldquo;relacionar_item&rdquo;),
+(&ldquo;restaurar_item_version&rdquo;, &ldquo;restaurar_item_version&rdquo;),
+(&ldquo;ver_item&rdquo;, &ldquo;ver_item&rdquo;),
+(&ldquo;ver_versiones_item&rdquo;, &ldquo;ver_versiones_item&rdquo;),
+(&ldquo;item_modificar_atributos&rdquo;, &ldquo;item_modificar_atributos&rdquo;),
+(&ldquo;cambiar_estado_item&rdquo;, &ldquo;cambiar_estado_item&rdquo;),
+(&ldquo;item_modificar_ti&rdquo;, &ldquo;item_modificar_ti&rdquo;),
+(&ldquo;item_modificar_atributos_ti&rdquo;, &ldquo;item_modificar_atributos_ti&rdquo;),
+(&ldquo;item_modificar_import_ti&rdquo;, &ldquo;item_modificar_import_ti&rdquo;),
+(&ldquo;listar_item_de_fase&rdquo;, &ldquo;listar_item_de_fase&rdquo;),
+(&ldquo;calcular_impacto&rdquo;, &ldquo;calcular_impacto&rdquo;),
+(&ldquo;ver_trazabilidad&rdquo;, &ldquo;ver_trazabilidad&rdquo;),</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;cambiar_estado_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede cambiar estado item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;relacion_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede gestionar relacion de item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;calcular_impacto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede calcular impacto item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_trazabilidad&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver trazabilidad item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;versiones_item&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede versionar item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;restaurar_item_version&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede restaurar version item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;item_modificar_atributos&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede modificar atributos item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;item_modificar_ti&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede modificar TI de item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;item_modificar_atributos_ti&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede modificar atributos ti de item&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;item_modificar_import_ti&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede modificar  import ti de item&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Item&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Items&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p><strong>Función para asignar un alias al modelo item</strong><br/>
 <strong>:return:</strong> el nombre comité<br/></p>
@@ -115,10 +217,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       
     </div>
@@ -127,10 +229,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
       <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
     </div>
@@ -139,10 +241,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p><strong>Ir a la documentación de pruebas unitarias del modulo item</strong> :  <a href="tests.html">tests.py</a></p>
     </div>
@@ -151,10 +253,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación item  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -164,6 +266,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
