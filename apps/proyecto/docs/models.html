@@ -21,7 +21,8 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span></pre></div>
     </div>
@@ -73,13 +74,16 @@
 </ol>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;gerente&#39;</span><span class="p">)</span>
+      <div class="highlight"><pre>    <span class="n">gerente</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;gerente&#39;</span><span class="p">)</span>
     <span class="n">nombre</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
     <span class="n">descripcion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
     <span class="n">fecha_creacion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">)</span>
     <span class="n">ultima_modificacion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fecha_iniciado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fecha_cancelado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fecha_finalizado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">estado</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">estado_proyecto</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Pendiente&quot;</span><span class="p">)</span>
-    <span class="n">slug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">slug</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s1">&#39;Slug&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">miembros</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -89,11 +93,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p>Función que retorna el nombre del modelo a una instancia llamada &ldquo;proyecto&rdquo;<br/>
-:return: nombre del modelo a una instancia <br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -102,10 +107,26 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      
+      <p>(&ldquo;crear_proyecto&rdquo;, &ldquo;crear_proyecto&rdquo;),
+(&ldquo;iniciar_proyecto&rdquo;, &ldquo;iniciar_proyecto&rdquo;),
+(&ldquo;finalizar_proyecto&rdquo;, &ldquo;finalizar_proyecto&rdquo;),
+(&ldquo;cancelar_proyecto&rdquo;, &ldquo;cancelar_proyecto&rdquo;),
+(&ldquo;ver_proyecto&rdquo;, &ldquo;ver_proyecto&rdquo;),
+(&ldquo;eliminar_proyecto&rdquo;, &ldquo;eliminar_proyecto&rdquo;),
+(&ldquo;editar_proyecto&rdquo;, &ldquo;editar_proyecto&rdquo;),
+(&ldquo;detalles_proyecto&rdquo;, &ldquo;detalles_proyecto&rdquo;),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></pre></div>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;gestion_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede gestionar proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;cambiar_estado&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede cambiar estado proyecto&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;detalles_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver detalles proyecto&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Proyecto&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Proyectos&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -114,12 +135,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <p>Función que valida que el nombre de un proyecto sea unico.<br/>
-<strong>:param exclude:</strong> None<br/>
-<strong>:return:</strong> Mensaje de Validación<br/></p>
+      <p>Función que retorna el nombre del modelo a una instancia llamada &ldquo;proyecto&rdquo;<br/>
+:return: nombre del modelo a una instancia <br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">validate_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -131,8 +151,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="k">if</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Un proyecto con el mismo título ya se encuentra registrado&quot;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -141,13 +160,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <p>Función que guarda el proyecto en la base de datos como unico.<br/>
-<strong>:param args:</strong><br/>
-<strong>:param kwargs:</strong><br/>
-<strong>:return:</strong> Un string que va ser unico en nuestra base de datos<br/></p>
+      <p>Función que valida que el nombre de un proyecto sea unico.<br/>
+<strong>:param exclude:</strong> None<br/>
+<strong>:return:</strong> Mensaje de Validación<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">validate_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -159,9 +177,8 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">validate_unique</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="k">if</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Un proyecto con el mismo título ya se encuentra registrado&quot;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -170,10 +187,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      
+      <p>Función que guarda el proyecto en la base de datos como unico.<br/>
+<strong>:param args:</strong><br/>
+<strong>:param kwargs:</strong><br/>
+<strong>:return:</strong> Un string que va ser unico en nuestra base de datos<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -182,15 +202,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p><strong>Clase Meta que personaliza los permisos que tendra un proyecto para gestionar en un rol</strong></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;Can add proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear un proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;Can change proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar el proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;Can delete proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar un proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;Can view proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede visualizar un proyecto&quot;</span><span class="p">),</span>
-        <span class="p">]</span></pre></div>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">validate_unique</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -231,6 +248,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

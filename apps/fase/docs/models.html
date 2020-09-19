@@ -21,8 +21,10 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">apps.proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">import</span> <span class="nn">datetime</span></pre></div>
     </div>
   </div>
@@ -82,11 +84,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p><strong>Función para asignar un alias al modelo Comité</strong><br/>
-<strong>:return:</strong> el nombre fase<br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -95,10 +98,27 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      
+      <p>(&ldquo;crear_fase&rdquo;, &ldquo;crear_fase&rdquo;),
+(&ldquo;aprobar_fase&rdquo;, &ldquo;aprobar_fase&rdquo;),
+(&ldquo;editar_fase&rdquo;, &ldquo;editar_fase&rdquo;),
+(&ldquo;eliminar_fase&rdquo;, &ldquo;eliminar_fase&rdquo;),
+(&ldquo;listar_fase&rdquo;, &ldquo;listar_fase&rdquo;),
+(&ldquo;cambio_estado_fase&rdquo;, &ldquo;cambio_estado_fase&rdquo;),
+(&ldquo;ver_fase&rdquo;, &ldquo;ver_fase&rdquo;),
+(&ldquo;detalles_fase&rdquo;, &ldquo;detalles_fase&rdquo;),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;gestion_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver gestion de fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;detalles_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver los detalles de fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar fase&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;cambio_estado_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede cambiar estado fase&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Fase&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Fases&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -107,10 +127,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+      <p><strong>Función para asignar un alias al modelo Comité</strong><br/>
+<strong>:return:</strong> el nombre fase<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -119,10 +140,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p><strong>Ir a la documentación de pruebas unitarias del modulo fase</strong> :  <a href="tests.html">tests.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -130,6 +151,30 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p><strong>Ir a la documentación de pruebas unitarias del modulo fase</strong> :  <a href="tests.html">tests.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación fase  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -139,6 +184,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

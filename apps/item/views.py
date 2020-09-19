@@ -21,13 +21,13 @@ from apps.item.graph import exclude_potencial_cycles, shortest_path, create_grap
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
 from apps.tipo_item.models import TipoItem
+from apps.proyecto.models import Proyecto
 
 from SGCAS.decorators import requiere_permiso
 from SGCAS.settings.desarrollo import MEDIA_ROOT
 
 firebase = pyrebase.initialize_app(settings.FIREBASE_CONFIG)
 storage = firebase.storage()
-
 
 """
 Todas las vistas para la aplicación del Modulo ítem
@@ -78,6 +78,11 @@ def crear_item_basico(request, id_fase):
             item.save()
             form.save_m2m()
 
+            ##Actualizamos la complejidad del proyecto
+            proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.pk)
+            proyecto.complejidad += item.costo
+            proyecto.save()
+
             if request.FILES:
                 # ALMACENAMIENTO FIREBASE
                 path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
@@ -96,8 +101,8 @@ def crear_item_basico(request, id_fase):
                   {'form': form, 'tipo_item': TipoItem.objects.exists(), 'validacion_proyecto': query_fase})
 
 
-@requiere_permiso('importar_tipo_item')
 # === importar tipo de ítem ===
+@requiere_permiso('importar_tipo_item')
 def item_importar_ti(request, pk):
     """
     Permite la creacion de instancias de modelo Ítem.<br/>
@@ -116,7 +121,7 @@ def item_importar_ti(request, pk):
 
 
 # === settear atributos ítem ===
-@requiere_permiso('crear_item')
+@requiere_permiso('importar_tipo_item')
 def item_set_atributos(request, pk):
     """
     Permite agregar los atributos a un ítem de acuerdo a su tipo de ítem importado.<br/>
@@ -134,7 +139,7 @@ def item_set_atributos(request, pk):
 
 
 @login_required
-@requiere_permiso('ver_item')
+# @requiere_permiso('ver_item')
 # === ítem opciones ===
 def item_opciones(request):
     """
@@ -172,7 +177,7 @@ def item_lista_fase(request, id_fase):
     return render(request, 'item/item_lista.html', context)
 
 
-@requiere_permiso('item.listar_item')
+# @requiere_permiso('item.listar_item')
 # === search ===
 def search(request, id_fase):
     """
@@ -210,7 +215,7 @@ def search(request, id_fase):
 
 @requiere_permiso('eliminar_item')
 # === ítem eliminar ===
-def item_eliminar(request, pk):
+def item_eliminar(request, pk, id_fase):
     """
        Permite la eliminacion de uns instancia de objeto ítem.<br/>
        **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -219,6 +224,9 @@ def item_eliminar(request, pk):
        """
     item = Item.objects.get(id=pk)
     id_fase = item.fase.pk
+    proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+    proyecto.complejidad -= item.costo
+    proyecto.save()
     actualizar_punteros(item)
     item.delete()
     return redirect('item:item_lista', id_fase=id_fase)
@@ -242,18 +250,17 @@ def actualizar_punteros(item):
     for padre in padres:
         for hijo in hijos:
             padre.hijos.add(hijo)
-    for antecesor in antecesores: 
-        for sucesores in sucesor: 
+    for antecesor in antecesores:
+        for sucesor in sucesores:
             antecesor.sucesores.add(sucesor)
-    for sucesor in sucesores: 
-        for antecesor in antecesores: 
+    for sucesor in sucesores:
+        for antecesor in antecesores:
             sucesor.antecesores.add(antecesor)
-
 
 
 # === ítem detalles ===
 @requiere_permiso('ver_item')
-def item_detalles(request, pk):
+def item_detalles(request, pk, id_fase):
     """
        Permite visualizar los detalles de una instancia de ítem.<br/>
        **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -264,8 +271,10 @@ def item_detalles(request, pk):
 
 
 @requiere_permiso('editar_item')
+@requiere_permiso('item_modificar_ti')
+@requiere_permiso('item_modificar_atributos')
 # === ítem modificar ===
-def item_modificar_basico(request, pk):
+def item_modificar_basico(request, pk, id_fase):
     """
     Permite la modificación de una instancia de ítem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -294,20 +303,21 @@ def item_modificar_basico(request, pk):
             item.archivo = request.FILES['archivo']
             # ALMACENAMIENTO FIREBASE
             path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
-            path_on_cloud = str(date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+            path_on_cloud = str(
+                date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
             storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
             item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
             item.save()
         return redirect('item:item_modificar_import_ti', pk=item.pk)
     context = {
-        'form':form,
-        'item':item,
-        'tipo_item':TipoItem.objects.exists()
+        'form': form,
+        'item': item,
+        'tipo_item': TipoItem.objects.exists()
     }
     return render(request, 'item/item_modificar.html', context)
 
 
-@requiere_permiso('item_modificar_ti')
+
 # === modificar ti ===
 def item_modificar_ti(request, pk):
     """
@@ -324,7 +334,7 @@ def item_modificar_ti(request, pk):
     return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
 
 
-@requiere_permiso('item_modificar_atributos')
+
 # === ítem modificar atributos ===
 def item_modificar_atributos(request, pk):
     """
@@ -357,7 +367,7 @@ def get_item_snapshot(pk):
         estado=prev_item.estado,
         costo=prev_item.costo,
         archivo=prev_item.archivo,
-        file_url_cloud = prev_item.file_url_cloud,
+        file_url_cloud=prev_item.file_url_cloud,
         fase=prev_item.fase,
         tipo_item=prev_item.tipo_item,
         impacto=prev_item.impacto,
@@ -386,9 +396,9 @@ def get_item_snapshot(pk):
 
 @requiere_permiso('versiones_item')
 # === ítem versiones ===
-def item_versiones(request, pk, id_fases):
+def item_versiones(request, pk, id_fase):
     lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
-    fase = Fase.objects.get(id=id_fases)
+    fase = Fase.objects.get(id=id_fase)
 
     paginator = Paginator(lista_item_version, 3)
     page_number = request.GET.get('page')
@@ -404,7 +414,7 @@ def item_versiones(request, pk, id_fases):
 
 @requiere_permiso('versiones_item')
 # === restaurar versión ===
-def restaurar_version(request, pk):
+def restaurar_version(request, pk, id_fase):
     """
     Permite la restauración de la versión de un ítem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
@@ -451,6 +461,7 @@ def item_cambiar_estado(request, pk):
         return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
 
+
 # === fases relaciones ===
 @requiere_permiso('relacion_item')
 def fases_rel(request, pk):
@@ -460,6 +471,7 @@ def fases_rel(request, pk):
     **:param pk:** Recibe pk de una instancia del ítem, ejecutor de la acción de 'establecer relación'.<br/>
     **:return:** Retorna un template de las fases de un proyecto.<br/>
     """
+
     proyecto = Item.objects.get(pk=pk).fase.proyecto
     context = {
         'item': get_object_or_404(Item, pk=pk),
@@ -513,7 +525,6 @@ def relaciones(request, pk, id_fase):
     item = get_object_or_404(Item, pk=pk)
     if from_fase == to_fase:  ##Relaciones padre/hijos
         items_query = Item.objects.filter(Q(fase=item.fase) & Q(last_release=True)).exclude(pk=item.pk)
-        print(items_query)
         for item_p in items_query:  # Se exluyen los padres, un hijo no puede ser padre a la vez con respecto a un item
             if item in item_p.hijos.all():
                 items_query = items_query.exclude(pk=item_p.pk)
@@ -579,22 +590,30 @@ def calculo_impacto(request, pk):
     **:param pk:** Recibe el pk de una instancia de ítem sobre el cual se le realizará el cálculo de impacto.<br/>
     **:return:** El cálculo de impacto de un ítem en terminos numericos.<br/>
     """
-    target = Item.objects.get(pk=pk)
-    fase = Fase.objects.filter(proyecto=target.fase.proyecto).first()
-    source = Item.objects.filter(fase=fase).filter(last_release=True).earliest(
-        'id')  ##Se toma como el source el primer item del proyecto
-    if item_has_path(fase.pk, source, target):
-        path = shortest_path(source, target, fase.pk)
-        for item in path:  ##Se calcula del impacto en cada item del path
-            if path.index(item) == 0:
-                item.impacto = item.costo
-            else:
-                item.impacto = item.costo + path[path.index(item) - 1].impacto
-            item.save()
-        context = {'target': target, 'path': shortest_path(source, target, fase.pk)}
-    else:
-        context = {'target': target}
+    item = get_object_or_404(Item, pk=pk)
+    complejidad_proyecto = get_object_or_404(Fase, pk=item.fase.pk).proyecto.complejidad
+    calculo = explore(item, impacto=0)
+    context = {
+        'complejidad_proyecto':complejidad_proyecto, 
+        'item':item,
+        'calculo_impacto':round((calculo/complejidad_proyecto), 2)
+    }
     return render(request, 'item/item_calculo_impacto.html', context)
+
+
+def explore(item, impacto):
+    """
+    Explora el arbol sumando los costos.<br/>
+    **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+    **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+    **:return:** El impacto de un item en el proyecto.<br/>
+    """
+    impacto += item.costo
+    for hijo in item.hijos.all():
+        return explore(hijo, impacto)
+    for sucesor in item.sucesores.all():
+        return explore(sucesor, impacto)
+    return impacto
 
 
 @requiere_permiso('ver_trazabilidad')
@@ -621,88 +640,6 @@ def trazabilidad_item(request, pk):
             'item_name': target.nombre
         }
     return render(request, 'item/item_trazabilidad.html', context)
-
-# class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):
-#     """
-#     Permite la visualizacion en lista de todas las intancias del modelo Item<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-#     **:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-#     **:return:** Una vista de todas las intancias a traves del archivo item_lista.html.<br/>
-#     """
-#     paginate_by = 4
-#     model = Item
-#     template_name = 'item/item_lista.html'
-#     permission_required = 'item.ver_item'
-
-#     # La lista a mostrar estara por orden ascendente
-#     class Meta:
-#         ordering = ['-id']
-
-
-# class ItemEliminar(DeleteView, PermissionRequiredMixin, LoginRequiredMixin):
-#     """
-#     Permite la eliminacion instancias de modelos Item.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-#     **:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-#     **:return:** Elimina una instancia del modelo Item del sistema.<br/>
-#     """
-#     model = Item
-#     template_name = 'item/item_eliminar.html'
-#     permission_required = 'item.eliminar_item'
-#     success_url = reverse_lazy('item:item_lista')
-
-
-# class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-#     """
-#     Permite la modificacion de informacion basica de una instancia de modelo Item.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-#     **:return:** Modficia una instancia del modelo Item, luego se redirige para la importacion de Tipo de Item.<br/>
-#     """
-#     model = Item
-#     template_name = 'item/item_crear.html'
-#     form_class = ItemUpdateForm
-#     permission_required = 'item.editar_item'
-
-#     def form_valid(self, form):
-#         object = form.save()
-#         return redirect('item:item_modificar_import_ti', pk=object.pk)
-
-
-# class ItemModificarImportTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-#     """
-#     Permite la modificacion de importacion de Tipo de Item de una instancia de modelo Item.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-#     **:return:** Modifica una instancia del modelo Item, luego se redirige para setear los atrobutos del Tipo de Item importado<br/>
-#     """
-#     model = Item
-#     template_name = 'item/item_importar_tipo_item.html'
-#     form_class = ItemImportarTipoItemForm
-#     permission_required = 'item.item_modificar_import_ti'
-
-#     def form_valid(self, form):
-#         object = form.save()
-#         return redirect('item:item_modificar_atr_ti', pk=object.pk)
-
-
-# class ItemModificarAtrTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):
-#     """
-#     Permite la modificacion de atributos de una instancia de modelo Item.<br/>
-#     **:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-#     **:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-#     **:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-#     **:return:** Modifica na instancia del modelo Item, luego se redirige a la lista de items.<br/>
-#     """
-#     model = Item
-#     template_name = 'item/item_atributos_tipo_item.html'
-#     form_class = ItemAtributosForm
-#     permission_required = 'item.item_modificar_atributos_ti'
-#     success_url = reverse_lazy('item:item_lista')
 
 # **Atras** : [[urls.py]]
 
