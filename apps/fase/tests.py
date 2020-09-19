@@ -14,15 +14,25 @@ class FaseTestCrear(TestFaseSetUp):
     def setUp(self):
         super(FaseTestCrear, self).setUp()
 
-    def test_nombre(self):        
-        self.assertEqual(self.nombre, 'fase-prueba')
+    def test_nombre(self):
+        try:    
+            self.assertEqual(self.nombre, 'fase-prueba')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
-    def test_descripcion(self):        
-        self.assertEqual(self.descripcion, 'descripcion-fase-prueba')
+    def test_descripcion(self):
+        try:    
+            self.assertEqual(self.descripcion, 'descripcion-fase-prueba')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
        
 
     def test_pertenece_proyecto(self):
-        self.assertEqual(self.proyecto, Proyecto.objects.first())
+        try:    
+            self.assertEqual(self.proyecto, Proyecto.objects.first())
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
  
         
 
@@ -34,14 +44,21 @@ class FaseTestEditar(TestFaseSetUp):
 
     def test_editar_nombre(self):
         nombre_anterior = self.nombre
-        self.nombre = 'fase-test-nombre-cambiado'        
-        self.assertNotEqual(self.nombre, nombre_anterior)
+        self.nombre = 'fase-test-nombre-cambiado'
+        try:    
+            self.assertNotEqual(self.nombre, nombre_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
 
 
     def test_editar_descripcion(self):
         descripcion_anterior = self.descripcion
-        self.descripcion = 'descripcion-cambiada-test'        
-        self.assertNotEqual(self.descripcion, descripcion_anterior)
+        self.descripcion = 'descripcion-cambiada-test' 
+        try:    
+            self.assertNotEqual(self.descripcion, descripcion_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
+        
 
 
 # **Volver atras** : [[forms.py]]

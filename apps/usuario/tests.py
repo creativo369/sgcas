@@ -9,15 +9,21 @@ class UsuarioTestCrear(TestCase):
         self.usuario = User.objects.create(username='user-test')
         
 
-    def test_usuario_crear(self):        
-        self.assertEqual(self.usuario.username, 'user-test')
-      
+    def test_usuario_crear(self):
+        try:        
+            self.assertEqual(self.usuario.username, 'user-test')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
     def test_usuario_modificar(self):
         username_anterior = self.usuario.username
         self.usuario.username = 'username_modificado'
         self.usuario.save()
-        self.assertNotEqual(self.usuario.username, username_anterior)
+        try:        
+            self.assertNotEqual(self.usuario.username, username_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
 
        
     def test_eliminar_usuario(self):
@@ -28,6 +34,7 @@ class UsuarioTestCrear(TestCase):
         
 
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
+# 0.admin          : [[admin.py]]<br/>
 # 1.apps        : [[apps.py]]<br/>
 # 2.forms       : [[forms.py]]<br/>
 # 3.middleware  : [[middleware.py]]<br/>
