@@ -14,18 +14,24 @@ class ItemSetUpTest(TestCase):
         self.tipo_item =TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
                                                  atributos=('Boolean', 'Boolean'))
 
-        self.padres =Item.objects.none()
+        self.padres =Item.objects.create(nombre= 'Item', descripcion='descripcion item', costo=3)
 
 
     def test_crear_item(self):
         nombre_item = self.item.nombre
-        self.assertEqual(self.item.nombre, nombre_item)
-
+        try:
+            self.assertEqual(self.item.nombre, nombre_item)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
     def test_modificar_item(self):
         descripcion_pasada = self.item.descripcion
         self.item.descripcion = 'Nueva descripcion'
-        self.assertNotEqual(self.item.descripcion, descripcion_pasada)
+        try:
+            self.assertNotEqual(self.item.descripcion, descripcion_pasada)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
 
 
     def test_modificar_padres_y_TI(self):
@@ -34,14 +40,20 @@ class ItemSetUpTest(TestCase):
         self.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
                                                  atributos=('Char', 'Char'))
 
+        try:
+            self.assertNotEqual(self.tipo_item, anterior_TI)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
-        self.assertNotEqual(self.tipo_item,anterior_TI)
 
         anterior_padres = Item.objects.none()
         anterior_padres = self.padres
         self.padres = Item.objects.create(nombre= 'Item1', descripcion='descripcion item 1', costo=5)
 
-        self.assertNotEqual(self.padres, anterior_padres)
+        try:
+            self.assertNotEqual(self.padres, anterior_padres)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
         
 
     def test_eliminar_item(self):

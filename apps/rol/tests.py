@@ -17,13 +17,18 @@ class RolTestCrear(TestRolSetUp):
     def setUp(self):
         super(RolTestCrear, self).setUp()
 
-    def test_nombre(self):        
-        self.assertEqual(self.nombre, 'test')
-
+    def test_nombre(self):
+        try:        
+            self.assertEqual(self.nombre, 'test')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
   
 
     def test_pertenece_Group(self):
-        self.assertEqual(self.group, Group.objects.first())
+        try:        
+            self.assertEqual(self.group, Group.objects.first())
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))       
 
 
 class RolTestEditar(TestRolSetUp):
@@ -34,16 +39,21 @@ class RolTestEditar(TestRolSetUp):
     def test_editar_nombre(self):
         nombre_anterior = self.nombre
         self.nombre = 'rol-test-nombre-cambiado'
-
-        self.assertNotEqual(self.nombre,nombre_anterior)        
+        try:        
+            self.assertNotEqual(self.nombre,nombre_anterior)  
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
         
 
     def test_editar_group(self):
         group_anterior = Group.objects.none()
         group_anterior = self.group
         self.group = Group.objects.create(name='grupo2')
+        try:        
+            self.assertNotEqual(self.group,group_anterior) 
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
         
-        self.assertNotEqual(self.group,group_anterior)
 
         
 
