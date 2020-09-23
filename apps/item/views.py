@@ -453,13 +453,29 @@ def item_cambiar_estado(request, pk):
     **:return:** Retorna una instancia de un ítem con su estado modificado.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
+    prev_estado = item.estado
     if item.antecesores.all().exists() or item.sucesores.all().exists() or item.padres.all().exists() or item.hijos.all().exists():
         form = ItemCambiarEstado(request.POST or None, instance=item)
         if form.is_valid():
+            lb = get_lb(pk)
+            new_estado = form.cleaned_data['estado']
+            if prev_estado == 'Aprobado' and new_estado == 'Desarrollo':
+                if lb is not None and lb.estado == 'Cerrada':
+                    return redirect('comite:solicitud_linea_base', pk)
+                return redirect('comite:solicitud_item', pk)
             form.save()
             return redirect('item:item_lista', id_fase=item.fase.pk)
         return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
+    
+
+##Retorna la linea base de item (si tiene)
+def get_lb(pk):
+    item = Item.objects.get(pk=pk)
+    for lb in LineaBase.objects.all():
+        if item in lb.items.all():
+            return lb
+    return None
 
 
 # === fases relaciones ===

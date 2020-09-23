@@ -14,23 +14,31 @@
             <div class="card-header">
                 <strong>Formulario de Registro</strong>
             </div>
-            <div class="card-body card-block">
-                <form  method="post" enctype="multipart/form-data" class="form-horizontal">
-                    {% csrf_token %}
-                    <div class="row form-group">
-                        <div class="col col-md-3">{{ form.descripcion.label }}</div>
-                        <div class="col-12 col-md-9">{{ form.descripcion }}</div>
-                    </div> 
-                    <div class="row form-group">
-                        <div class="col col-md-3">{{ form.estado.label }}</div>
-                        <div class="col-12 col-md-9">{{ form.estado }}</div>
-                    </div>                    
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
-                    </div>
-                </form>
-            </div>
+            {% if cant_items_sueltos == 0 %}
+                <h1 style="text-align: center">No se encontraron items</h1>
+                <h5 style="text-align: center"><small class="text-muted">No se encontraron items sueltos en la fase.</small></h5>
+                <div class="text-center">
+                    <a type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
+                </div>
+            {% else %}
+                <div class="card-body card-block">
+                    <form  method="post" enctype="multipart/form-data" class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.descripcion.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                        </div> 
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.estado.label }}</div>
+                            <div class="col-12 col-md-9">{{ form.estado }}</div>
+                        </div>                    
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
         </div>
       {% endif %}
 {% endblock %}

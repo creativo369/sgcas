@@ -5,11 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from SGCAS.settings import base
+
+
 
 # === Importación de los codigos fuentes de la aplicación ===
-from .models import Comite
-from .forms import FormularioComite, FormularioComiteUpdate
+from .models import Comite, Solicitud
+from .forms import FormularioComite, FormularioComiteUpdate, FormularioSolicitud
 from ..proyecto.models import Proyecto
+from apps.item.models import Item
+from apps.linea_base.models import LineaBase
+from apps.item.views import get_lb
 
 """
 Todas las vistas para la aplicación del Modulo Comité
@@ -176,6 +183,168 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     template_name = 'comite/detail.html'
     permission_required = 'comite.ver_comite'
     success_url = reverse_lazy('comite:detail')
+
+
+def voto_favor(request, pk):
+    """
+    Realiza la votacion a favor de la aprobacion del artefacto.
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe el pk de la instancia de artefacto a ser votado.<br/>
+    **:return:** Retorna al template de solicitudes del comite.<br/>
+    """
+    solicitud = get_object_or_404(Solicitud, pk=pk)
+    solicitud.votacion += 1
+    solicitud.votantes.add(request.user)
+    solicitud.save()
+    if revision_votacion(solicitud):
+        decision_comite(solicitud)
+    return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
+
+
+def voto_contra(request, pk):
+    """
+    Realiza la votacion en contra de la aprobacion del artefacto.
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe el pk de la instancia de artefacto a ser votado.<br/>
+    **:return:** Retorna al template de solicitudes del comite.<br/>
+    """
+    solicitud = get_object_or_404(Solicitud, pk=pk)
+    solicitud.votacion -= 1
+    solicitud.votantes.add(request.user)
+    solicitud.save()
+    if revision_votacion(solicitud):
+        decision_comite(solicitud)
+    return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
+
+
+##Revisa la votacion para ver si ya votaron todos los miembros, si ya votaron todos
+def revision_votacion(solicitud):
+    """
+    Realiza la revision de la votacion.
+    **:param solicitud:** Recibe la instancia de solicitud sobre la cual se hara la revision de la votacion.<br/>
+    **:return:** Retorna True si todos los miembros del comite ya votaron, en caso contrario retorna False.<br/>
+    """
+    cant_miembros_comite=Comite.objects.get(proyecto=solicitud.proyecto).miembros.all().count()
+    cant_votantes_solicitud=solicitud.votantes.all().count()
+    if cant_miembros_comite > cant_votantes_solicitud:
+        return False
+    return True
+
+
+def decision_comite(solicitud):
+    """
+    Realiza la decision sobre el artefacto de acuerdo al resultado de la votacion, notificando por correo al solicitante sobre el resultado.
+    **:param solicitud:** Recibe una instancia de solicitud sobre el cual se hara la decision de aprobar o no.<br/>
+    **:return:** Retorna el artefacto aprobado si la votacion resulta a favor, en caso contrario, el artefacto no modifica su estado.<br/>
+    """
+    subject = ''
+    message = ''
+    if solicitud.votacion > 1:
+        subject = 'Solicitud aprobada.'
+        if solicitud.item is not None:
+            item = solicitud.item
+            item.estado = 'Desarrollo'
+            item.save()
+            message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+        else:
+            lb = solicitud.linea_base
+            lb.estado = 'Rota'
+            lb.save()
+            message = 'Su solicitud correspondiente a la linea base {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
+    else:
+        subject = 'Solicitud no aprobada.'
+        if solicitud.item is not None:
+            message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+        else:
+            message = 'Su solicitud correspondiente a la linea base {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
+    send_notification(solicitud.solicitante.email, subject, message)
+    solicitud.delete()
+
+
+def lista_solicitudes(request, pk):
+    """
+    Renderiza la lista de solicitudes que se encuentran en proceso de votacion.
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe el pk de la instancia de comite, del cual se desea renderizar las solicitudes.<br/>
+    **:return:** Retorna el template de solicitudes en proceso del comite de instancia.<br/>
+    """
+    context = {
+        'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
+        'miembro_comite': request.user,
+        'comite':Comite.objects.get(pk=pk)
+    }
+
+    return render(request, 'comite/solicitudes.html', context)
+
+
+def solicitud_item(request, pk):
+    """
+    Realiza la solicitud del usuario para la modificacion de un item.
+    **:param request:** Recibe un request por parte del usuario que realiza la solicitud.<br/>
+    **:param pk:** Recibe el pk de la instancia de item que el usuario desea modificar.<br/>
+    **:return:** Retorna al template de lista de items.<br/>
+    """
+    #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+    form = FormularioSolicitud(request.POST or None, pk=pk, request=request, tipo=0)
+    if request.method == 'GET':
+        context = {
+            'form':form,
+            'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
+        }
+        return render(request, 'comite/solicitud.html', context)
+    else:
+        if form.is_valid():
+            solicitud = form.save(commit=False)
+            solicitud.proyecto = get_object_or_404(Item, pk=pk).fase.proyecto
+            solicitud.save()
+            for miembro_comite in Comite.objects.get(proyecto=solicitud.item.fase.proyecto).miembros.all():
+                message='{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
+                send_notification(miembro_comite.email, solicitud.asunto, message)
+            return redirect('item:item_lista', id_fase=Item.objects.get(pk=pk).fase.pk)
+
+
+def solicitud_linea_base(request, pk):
+    """
+    Realiza la solicitud del usuario para la rotura de la linea base.
+    **:param request:** Recibe un request por parte del usuario que realiza la solicitud.<br/>
+    **:param pk:** Recibe el pk de la instancia de item donde se encuentra la linea base que se desea romper.<br/>
+    **:return:** Retorna al template de lista de items.<br/>
+    """
+    #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+    form = FormularioSolicitud(request.POST or None, pk=pk, request=request, tipo=1)
+    if request.method == 'GET':
+        context = {
+            'form':form,
+            'solicitud_en_proceso': Solicitud.objects.filter(linea_base=get_lb(pk)).count()
+        }
+        return render(request, 'comite/solicitud.html', context)
+    else:
+        if form.is_valid():
+            solicitud = form.save(commit=False)
+            solicitud.proyecto = get_object_or_404(Item, pk=pk).fase.proyecto
+            solicitud.save()
+            for miembro_comite in Comite.objects.get(proyecto=solicitud.item.fase.proyecto).miembros.all():
+                message='{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
+                send_notification(miembro_comite.email, solicitud.asunto, message)
+            return redirect('item:item_lista', id_fase=Item.objects.get(pk=pk).fase.pk)
+
+
+##Envia el correo
+def send_notification(to, subject, message):
+    """
+    Realiza el envio de correo electronico.
+    **:param to:** Destinatario del correo.<br/>
+    **:param subject:** Asunto del correo.<br/>
+    **:param message:** Mensaje a enviar al destinatario.<br/>
+    """
+    send_mail(
+        subject,
+        message,
+        base.EMAIL_HOST_USER,
+        [to, base.EMAIL_HOST_USER],
+        fail_silently=False,
+    )
+
 
 # **Atras** : [[urls.py]]
 

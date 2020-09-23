@@ -38,6 +38,7 @@ def crear_linea_base(request, id_fase):
     # for item in query_item:
     #     if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
     #         flag = True
+    cant_items_sueltos = cant_item_libres(fase)
     if request.method == 'POST':
         form = LineaBaseForm(request.POST)
         if form.is_valid():
@@ -48,10 +49,23 @@ def crear_linea_base(request, id_fase):
     # elif flag and fase.proyecto.estado == "Iniciado":
     elif fase.proyecto.estado == "Iniciado":
         form = LineaBaseForm()
-        return render(request, 'linea_base/linea_crear.html', {'form': form})
+        return render(request, 'linea_base/linea_crear.html', {'form': form, 'cant_items_sueltos':cant_items_sueltos})
     else:
         # return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
-        return render(request, 'linea_base/linea_crear.html', {'fase': fase})
+        return render(request, 'linea_base/linea_crear.html', {'fase': fase, 'cant_items_sueltos':cant_items_sueltos})
+
+
+def cant_item_libres(fase):
+    """
+    Permite conocer la cantidad de items libres en una fase.<br/>
+    **:param fase:** Recibe la instancia de fase sobre el cual se desea se desea operar.<br/>
+    **:return:** Retorna un numero entero que es la cantidad de items libres en la fase.<br/>
+    """
+    items_en_lb = 0
+    for lb in LineaBase.objects.filter(fase=fase):
+        if lb.estado != 'Rota':
+            items_en_lb += lb.items.all().count()
+    return items_en_lb-Item.objects.filter(fase=fase).count()
 
 
 @requiere_permiso('agregar_item_linea_base')
