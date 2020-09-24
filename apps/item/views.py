@@ -223,13 +223,16 @@ def item_eliminar(request, pk, id_fase):
        **:return:** Se elimina el ítem y se redirige a la lista de ítems de la fase.<br/>
        """
     item = Item.objects.get(id=pk)
-    id_fase = item.fase.pk
-    proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
-    proyecto.complejidad -= item.costo
-    proyecto.save()
-    actualizar_punteros(item)
-    item.delete()
-    return redirect('item:item_lista', id_fase=id_fase)
+    if item.estado == 'Desarrollo':
+        id_fase = item.fase.pk
+        proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+        proyecto.complejidad -= item.costo
+        proyecto.save()
+        actualizar_punteros(item)
+        item.delete()
+        return redirect('item:item_lista', id_fase=id_fase)
+    else:
+        return render(request,'item/validate_item_aprobado.html')
 
 
 ##Actualiza los punteros de las relaciones
@@ -267,7 +270,12 @@ def item_detalles(request, pk, id_fase):
        **:param pk:** Recibe pk de la instancia del ítem que se desea visualizar.<br/>
        **:return:** Se visualizan los detalles del ítem.<br/>
     """
-    return render(request, 'item/item_detalles.html', {'item': Item.objects.get(pk=pk)})
+    context ={
+     'item': Item.objects.get(pk=pk),
+     'fase': Fase.objects.get(id=id_fase),
+     'proyecto': Fase.objects.get(id=id_fase).proyecto
+    }
+    return render(request, 'item/item_detalles.html', context)
 
 
 @requiere_permiso('editar_item')
@@ -282,40 +290,42 @@ def item_modificar_basico(request, pk, id_fase):
     **:return:**  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
-    fase = item.fase
-    l_base = LineaBase.objects.filter(fase=fase)
-    l_base = [lb for lb in l_base if
-              lb.items.filter(pk=item.pk).exists()]  # Se obtiene la linea base a la cual pertenece el item
-    if l_base and l_base[0].estado == 'Cerrada':
-        l_base = l_base[0]
-        # return render(request, 'item/item_solicitud.html', {})
-    form = ItemUpdateForm(request.POST or None, instance=item, id_fase=fase.pk)
-    if form.is_valid():
-        version_item = get_item_snapshot(pk)
-        item = form.save(commit=False)
-        item.nro_version += decimal.Decimal(0.1)  ##Adjunta numero de versión
-        item.item_set.add(version_item)
-        for i in version_item.item_set.all():
-            item.item_set.add(i)
-        item.save()
-        form.save_m2m()
-        if request.FILES:
-            item.archivo = request.FILES['archivo']
-            # ALMACENAMIENTO FIREBASE
-            path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
-            path_on_cloud = str(
-                date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
-            storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
-            item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
+    if item.estado == 'Desarrollo': 
+        fase = item.fase
+        l_base = LineaBase.objects.filter(fase=fase)
+        l_base = [lb for lb in l_base if
+                  lb.items.filter(pk=item.pk).exists()]  # Se obtiene la linea base a la cual pertenece el item
+        if l_base and l_base[0].estado == 'Cerrada':
+            l_base = l_base[0]
+            # return render(request, 'item/item_solicitud.html', {})
+        form = ItemUpdateForm(request.POST or None, instance=item, id_fase=fase.pk)
+        if form.is_valid():
+            version_item = get_item_snapshot(pk)
+            item = form.save(commit=False)
+            item.nro_version += decimal.Decimal(0.1)  ##Adjunta numero de versión
+            item.item_set.add(version_item)
+            for i in version_item.item_set.all():
+                item.item_set.add(i)
             item.save()
-        return redirect('item:item_modificar_import_ti', pk=item.pk)
-    context = {
-        'form': form,
-        'item': item,
-        'tipo_item': TipoItem.objects.exists()
-    }
-    return render(request, 'item/item_modificar.html', context)
-
+            form.save_m2m()
+            if request.FILES:
+                item.archivo = request.FILES['archivo']
+                # ALMACENAMIENTO FIREBASE
+                path_local = MEDIA_ROOT + '/' + item.archivo.name  # Busca los archivos en MEDIA/NOMBREARCHIVO
+                path_on_cloud = str(
+                    date.today()) + '/' + item.archivo.name  # Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO
+                storage.child(path_on_cloud).put(path_local)  # Almacena el archivo en Firebase
+                item.file_url_cloud = storage.child(path_on_cloud).get_url(item.archivo.name)
+                item.save()
+            return redirect('item:item_modificar_import_ti', pk=item.pk)
+        context = {
+            'form': form,
+            'item': item,
+            'tipo_item': TipoItem.objects.exists()
+        }
+        return render(request, 'item/item_modificar.html', context)
+    else:
+        return render(request, 'item/validate_item_aprobado.html')
 
 # === modificar ti ===
 def item_modificar_ti(request, pk):

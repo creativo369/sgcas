@@ -2,6 +2,11 @@
 {% block title %} Asignar rol a usuario {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Rol {{ role }} </li>
+    </ol>
 <div class="container center-block pt-3">
     <form method="post">
         {% csrf_token %}

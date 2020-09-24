@@ -1,6 +1,11 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
     <div class="card">
         <div class="card-header">
             <strong>Item {{ item.nombre }} - Detalles</strong>
