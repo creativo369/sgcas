@@ -77,6 +77,7 @@ def tipo_item_lista(request, id_fase):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'tipo_item/tipo_item_lista.html', {'fase': Fase.objects.get(id=id_fase),
+                                                               'proyecto': Fase.objects.get(id=id_fase).proyecto,
                                                               'page_obj': page_obj})
 
 
@@ -137,7 +138,8 @@ def search(request, id_fase):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
+    return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'proyecto':Fase.objects.get(id=id_fase).proyecto,
+                                      'page_obj': page_obj})
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>

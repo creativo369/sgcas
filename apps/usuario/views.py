@@ -70,7 +70,7 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
         return User.objects.order_by('id').distinct().exclude(username='AnonymousUser').exclude(is_superuser=True)
 
 
-@permission_required('usuario.ver_usuarios', raise_exception=True)
+@permission_required('usuario.ver_usuario', raise_exception=True)
 # === search ===
 def search(request):
     """

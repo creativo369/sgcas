@@ -160,7 +160,7 @@ def cambiar_estado_fase(request, id_fase, _id):
         form.save()
         return redirect('fase:fase_lista', _id=_id)
     elif fase.proyecto.estado == "Iniciado":
-        return render(request, 'fase/fase_cambiar_estado.html', {'form': form, 'fase': fase})
+        return render(request, 'fase/fase_cambiar_estado.html', {'form': form, 'fase': fase, 'proyecto': Fase.objects.get(id=id_fase).proyecto})
     else:
         return render(request, 'fase/fase_cambiar_estado.html', {'fase': fase})
 

@@ -2,6 +2,11 @@
 {% block title %} Versiones de item {% endblock %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
 
 <!--    {#    <form method="GET" action="{% url 'item:search' fase.id %}">#}-->
 <!--    {#        <div id="custom-search-input">#}-->

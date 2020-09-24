@@ -406,7 +406,9 @@ def item_versiones(request, pk, id_fase):
     context = {
         'versiones': lista_item_version,
         'fase': fase,
-        # 'page_obj': page_obj
+        'proyecto': Fase.objects.get(id=id_fase).proyecto,
+        'item': Item.objects.get(pk=pk),
+        'page_obj': page_obj
     }
 
     return render(request, 'item/item_versiones.html', context)
@@ -465,7 +467,8 @@ def item_cambiar_estado(request, pk):
                 return redirect('comite:solicitud_item', pk)
             form.save()
             return redirect('item:item_lista', id_fase=item.fase.pk)
-        return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item})
+        return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
+                                                                  'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
     
 
@@ -612,6 +615,8 @@ def calculo_impacto(request, pk):
     context = {
         'complejidad_proyecto':complejidad_proyecto, 
         'item':item,
+        'fase': Fase.objects.get(id=item.fase.pk),
+        'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
         'calculo_impacto':round((calculo/complejidad_proyecto), 2)
     }
     return render(request, 'item/item_calculo_impacto.html', context)
@@ -644,11 +649,15 @@ def trazabilidad_item(request, pk):
     target = Item.objects.get(pk=pk)
     fase = Fase.objects.filter(proyecto=target.fase.proyecto).first()
     source = Item.objects.filter(fase=fase).filter(last_release=True).earliest('id')
+    item = Item.objects.get(id=pk)
     if item_has_path(fase.pk, source, target):
         G = create_graph_trazabilidad(shortest_path(source, target, fase.pk))
         draw_graph(G)
         context = {
             'image_name': 'item_trazabilidad.png',
+            'item': item,
+            'fase': Fase.objects.get(id=item.fase.pk),
+            'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
             'item_name': target.nombre
         }
     else:
