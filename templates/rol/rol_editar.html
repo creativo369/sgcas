@@ -2,6 +2,11 @@
 {% block title %} Editar rol {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Rol {{ rol }} </li>
+    </ol>
 <div class="container center-block pt-3">
     <form method="post">
         {% csrf_token %}

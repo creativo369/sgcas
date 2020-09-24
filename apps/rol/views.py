@@ -129,7 +129,8 @@ def editar_rol(request, pk, id_fase):
         group = form.save()
         rol.group = group
         return redirect('rol:rol_lista', id_fase=id_fase)
-    return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase)})
+    return render(request, 'rol/rol_editar.html', {'form': form, 'fase': Fase.objects.get(id=id_fase),
+        'rol':rol,'proyecto': Fase.objects.get(id=id_fase).proyecto})
 
 
 # @requiere_permiso('eliminar_rol')
@@ -166,7 +167,8 @@ def asignar_rol_usuario(request, pk, id_fase):
             user.groups.add(rol.group)
 
         return redirect('rol:rol_lista', id_fase=id_fase)
-    return render(request, 'rol/rol_asignar_usuario.html', {'form': form, 'role': rol})
+    return render(request, 'rol/rol_asignar_usuario.html', {'form': form, 'role': rol,
+        'fase': Fase.objects.get(id=id_fase),'proyecto': Fase.objects.get(id=id_fase).proyecto})
 
 
 # === ROL POR SISTEMA ===

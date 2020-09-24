@@ -2,6 +2,10 @@
 {% block title %} Detalles fase {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+    </ol>
     <div class="card">
         <div class="card-header">
             <strong>Fase {{ fase.nombre }} - Detalles</strong>

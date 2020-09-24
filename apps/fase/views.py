@@ -83,7 +83,11 @@ def fase_detalles(request, id_fase):
     **:param pk:** Recibe un pk correspondiente a la fase que se desea visualizar.<br/>
     **:return:** Retorna una plantilla que despliega los detalles de una fase.<br/>
     """
-    return render(request, 'fase/fase_detalles.html', {'fase': Fase.objects.get(id=id_fase)})
+    context = {
+    'fase': Fase.objects.get(id=id_fase),
+    'proyecto': Fase.objects.get(id=id_fase).proyecto
+    }
+    return render(request, 'fase/fase_detalles.html', context)
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
