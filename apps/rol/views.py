@@ -80,6 +80,7 @@ def lista_rol(request, id_fase):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'rol/rol_lista.html', {'fase': Fase.objects.get(id=id_fase),
+                                                   'proyecto': Fase.objects.get(id=id_fase).proyecto,
                                                   'page_obj': page_obj})
 
 
@@ -106,7 +107,8 @@ def search(request, id_fase):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
+    return render(request, template, {'fase': Fase.objects.get(id=id_fase),'proyecto':Fase.objects.get(id=id_fase).proyecto,
+                                      'page_obj': page_obj})
 
 
 # @requiere_permiso('editar_rol')

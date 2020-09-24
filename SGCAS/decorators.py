@@ -7,6 +7,7 @@ from apps.fase.models import Fase
 
 from apps.fase.models import Fase
 from apps.rol.models import Rol
+from apps.item.models import Item
 
 
 ##Checkea los permisos por fase
@@ -15,7 +16,11 @@ def requiere_permiso(permiso):
         def wrap(request, *args, **kwargs):
             if request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
-            query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
+            query_rol = None
+            if 'pk' in kwargs:
+                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
+            else:    
+                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
             if query_rol:
                 for rol_fase in query_rol:
                     if rol_fase.usuarios.all():

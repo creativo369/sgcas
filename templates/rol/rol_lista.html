@@ -2,6 +2,10 @@
 {% block title %} Listar roles {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+    </ol>
 <form method="GET" action="{% url 'rol:search' fase.id %}">
         <div id="custom-search-input">
                     <div class="input-group col-md-12">
@@ -52,7 +56,33 @@
     {% endif %}
   </tbody>
 </table> 
-
+<!--
+  <div>
+    <ul class="pagination">
+      <li class="page-item disabled">
+        <a class="page-link" href="#">&laquo;</a>
+      </li>
+      <li class="page-item active">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">3</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">4</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">5</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">&raquo;</a>
+      </li>
+    </ul>
+  </div>
+-->
     <div class="text-center">
         <div class="pagination">
             <span class="step-links">
@@ -69,7 +99,7 @@
                 {% endif %}
             </span>
         </div>
-      </div>
+      </div> 
 
 
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del

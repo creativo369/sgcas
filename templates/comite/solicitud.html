@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Solicitud{% endblock %}
+{{ form.errors }}
+{{ form.non_field_errors }}
+
+{% block content %}
+        <br>
+    <div class="card-header">
+        <strong>Solicitud Comité</strong>
+    </div>
+    {% if solicitud_en_proceso > 0 %}
+        <h1 style="text-align: center">Solicitud en proceso</h1>
+        <h5 style="text-align: center"><small class="text-muted">Se encontró una solicitud en proceso para el item</small></h5>
+        <div class="text-center">
+            <a type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
+        </div>
+    {% else %}
+        <div class="card-body card-block">
+            <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                {% csrf_token %}
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.asunto.label }}:</div>
+                    <div class="col-12 col-md-9">{{ form.asunto }}</div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">{{ form.descripcion.label }}:</div>
+                    <div class="col-12 col-md-9">{{ form.descripcion }}</div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                    <input type="submit" value="Solicitar" class="btn btn-success">
+                    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

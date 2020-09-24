@@ -1,7 +1,11 @@
 # === Importamos las librerias necesarias para la implementación de un Formulario ===
 from django import forms
-from .models import Comite
+from .models import Comite, Solicitud
 from ..proyecto.models import Proyecto
+from ..linea_base.models import LineaBase
+from ..item.models import Item
+from django.shortcuts import get_object_or_404
+from apps.item.views import get_lb
 
 
 # === Clase para abstraer en un formulario el registro de un Comité ===
@@ -54,6 +58,46 @@ class FormularioComiteUpdate(forms.ModelForm):
 
     class Meta(FormularioComite.Meta):
         model = Comite
+
+
+class FormularioSolicitud(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        tipo = kwargs.pop('tipo')
+        request = kwargs.pop('request')
+        to_approve = None
+        if tipo == 0:
+            to_approve = get_object_or_404(Item, pk=kwargs.pop('pk'))
+        else:
+            to_approve = get_lb(kwargs.pop('pk'))
+
+        super(FormularioSolicitud, self).__init__(*args, **kwargs)
+        fields_not_required = ['asunto', 'solicitante', 'item', 'tipo', 'linea_base', 'votacion']
+        self.fields['solicitante'].initial = request.user
+        self.fields['proyecto'].initial = to_approve.fase.proyecto
+
+        for field in fields_not_required:
+            self.fields[field].required = False
+            self.fields[field].disabled = True
+
+        if tipo == 0:
+            self.fields['asunto'].initial = 'Item: {} | Fase: {} | Proyecto: {}.'.format(to_approve, to_approve.fase, to_approve.fase.proyecto)
+            self.fields['item'].initial = to_approve
+            self.fields['linea_base'].initial = None
+        else:
+            self.fields['asunto'].initial = 'Rotura de Linea Base: {}.'.format(to_approve)
+            self.fields['item'].initial = None
+            self.fields['linea_base'].initial = to_approve
+
+    class Meta:
+        model = Solicitud
+        fields = '__all__'
+        labels = {'asunto':'Asunto', 'Descripción':'descripcion'}
+        widgets = {
+            'asunto': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder':'Ingrese una descripción para la solicitud.'}),
+        }
+
+
 # **Volver atras** : [[apps.py]]
 
 # **Ir a la documentación del modelo comité** : [[models.py]]

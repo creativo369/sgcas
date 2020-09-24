@@ -2,6 +2,9 @@
 {% block title %} Detalles del proyecto {% endblock %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Proyecto {{ object }} </li>
+    </ol>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -19,7 +22,7 @@
             {% if proyecto.estado == 'Finalizado' %}
                 <th scope="col">Fecha Finalizada</th>
             {% endif %}
-            <th scope="col">Ultima modificación</th
+            <th scope="col">Ultima modificación</th>
         </tr>
         </thead>
         <tbody>

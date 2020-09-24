@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block title %}Solicitudes{% endblock%}
+
+{% block extracss %}
+    <script src="https://kit.fontawesome.com/aa90bcc874.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=comite.proyecto.pk %}">Proyecto {{ comite.proyecto }}</a></li>
+      <li class="breadcrumb-item"><a href="#" onclick="window.history.back()">Comité {{ comite }}</a></li>
+      <li class="breadcrumb-item active">Solicitudes</li>
+    </ol>
+    {% if solicitudes %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Artefacto</th>
+                <th scope="col">Descripcion de la solicitud</th>
+                <th scope="col">Solicitante</th>
+                <th scope="col">Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for solicitud in solicitudes %}
+                    <tr>
+                        {% if solicitud.item %}
+                            <td>Item</td>
+                        {% else %}
+                            <td>Linea Base</td>
+                        {% endif %}
+                        <td>{{ solicitud.descripcion }}</td>
+                        <td>{{ solicitud.solicitante }}</td>
+                        <td>
+                            {% if solicitud.item %}
+                                <a type="button" class="btn btn-secondary" href="{% url 'item:item_detalles' solicitud.item.id solicitud.item.fase.id %}">Detalles</a>
+                            {% else %}
+                                <a type="button" class="btn btn-secondary" href="#">Detalles</a>
+                            {% endif %}
+                            {% if miembro_comite not in solicitud.votantes.all %}
+                               <div class="dropdown" style="display: inline">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        Votar
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{% url 'comite:voto_favor' solicitud.id %}">A favor</a>
+                                        <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <a type="button" class="btn btn-secondary" href="#">Votado <i class="fa fa-check" aria-hidden="true"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h2>No se encontraron solicitudes.</h2>
+    {% endif %}
+     <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>
+{% endblock content %}

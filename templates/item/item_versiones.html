@@ -2,6 +2,11 @@
 {% block title %} Versiones de item {% endblock %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
 
 <!--    {#    <form method="GET" action="{% url 'item:search' fase.id %}">#}-->
 <!--    {#        <div id="custom-search-input">#}-->
@@ -49,9 +54,9 @@
                     <td>{{ item.nro_version }}</td>
                     <td>
                         <a type="button" class="btn btn-success"
-                       href="{% url 'item:restaurar_version' item.id %}">Restaurar versión</a>
+                       href="{% url 'item:restaurar_version' item.id item.fase.id %}">Restaurar versión</a>
                         <a type="submit" class="btn btn-secondary"
-                       href="{% url 'item:item_detalles' item.id %}">Detalles</a>
+                       href="{% url 'item:item_detalles' item.id item.fase.id %}">Detalles</a>
                     </td>
                 </tr>
             {% endfor %}

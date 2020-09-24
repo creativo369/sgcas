@@ -1,12 +1,13 @@
 from django.test import TestCase
 from apps.usuario.models import User
 
+
 class TestProyectoSetUp(TestCase):
     def setUp(self):
-    	self.gerente = User.objects.create(username='gerente-proyecto')
-    	self.nombre = 'proyecto-prueba'
-    	self.descripcion = 'descripcion-proyecto-prueba'
-    	
+        self.gerente = User.objects.create(username='gerente-proyecto')
+        self.nombre = 'proyecto-prueba'
+        self.descripcion = 'descripcion-proyecto-prueba'
+
 
 class ProyectoTestCrear(TestProyectoSetUp):
 
@@ -14,13 +15,16 @@ class ProyectoTestCrear(TestProyectoSetUp):
         super(ProyectoTestCrear, self).setUp()
 
     def test_nombre(self):
-        self.assertEqual(self.nombre, 'proyecto-prueba')
+        try:
+            self.assertEqual(self.nombre, 'proyecto-prueba')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
-
-    def test_descripcion(self):        
-        self.assertEqual(self.descripcion, 'descripcion-proyecto-prueba')     
-
-        
+    def test_descripcion(self):
+        try:
+            self.assertEqual(self.descripcion, 'descripcion-proyecto-prueba')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
 
 class ProyectoTestEditar(TestProyectoSetUp):
@@ -32,19 +36,18 @@ class ProyectoTestEditar(TestProyectoSetUp):
     def test_editar_nombre(self):
         nombre_anterior = self.nombre
         self.nombre = 'Proyecto-test-nombre-cambiado'
-        self.assertNotEqual(self.nombre, nombre_anterior)
-
+        try:
+            self.assertNotEqual(self.nombre, nombre_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
     def test_editar_descripcion(self):
         descripcion_anterior = self.descripcion
         self.descripcion = 'descripcion-cambiada-test'
-        self.assertNotEqual(self.descripcion, descripcion_anterior)
-
-        
-
-
-
-
+        try:
+            self.assertNotEqual(self.descripcion, descripcion_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
 # **Volver atras** : [[models.py]]
 

@@ -17,26 +17,42 @@ class ComiteTestCrear(TestComiteSetUp):
     def setUp(self):
         super(ComiteTestCrear, self).setUp()
 
-    def test_nombre(self):        
-        self.assertEqual(self.comite.nombre, 'comite-test')
+    def test_nombre(self):
+        try:    
+            self.assertEqual(self.comite.nombre, 'comite-test')
+        except AssertionError  as e:
+            print("Error de comparacion: {}".format(e))
 
     def test_agregar_miembros(self):
         for r in 'ab':
           self.comite.miembros.add(User.objects.create(username='a'+ r))
+        try:
+            self.assertEqual(len(self.comite.miembros.all()),3)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
-        self.assertEqual(len(self.comite.miembros.all()),3)
 
-
-    def test_descripcion(self):        
-        self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
+    def test_descripcion(self):
+        try:
+            self.assertEqual(self.comite.descripcion, 'descripcion-comite-test')
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
         
 
     def test_pertenece_proyecto(self):
-        self.assertEqual(self.comite.proyecto, self.proyecto)
+        try:
+            self.assertEqual(self.comite.proyecto, self.proyecto)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e)) 
+        
 
 
     def test_miembro(self):
-        self.assertEqual(self.comite.miembros.first(), self.miembro)
+        try:
+            self.assertEqual(self.comite.miembros.first(), self.miembro)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
 
         
 
@@ -51,14 +67,20 @@ class ComiteTestEditar(TestComiteSetUp):
         nombre_anterior = self.comite.nombre
         self.comite.nombre = 'comite-test-nombre-cambiado'
         self.comite.save()
-        self.assertNotEqual(self.comite.nombre, nombre_anterior)
+        try:
+            self.assertNotEqual(self.comite.nombre, nombre_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
 
 
     def test_editar_descripcion(self):
         descripcion_anterior = self.comite.descripcion
         self.comite.descripcion = 'descripcion-cambiada-test'
         self.comite.save()
-        self.assertNotEqual(self.comite.descripcion, descripcion_anterior)
+        try:
+            self.assertNotEqual(self.comite.descripcion, descripcion_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))        
 
 
 

@@ -2,7 +2,7 @@
 {% block title %} Listar fases {% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center">Fases del proyecto "{{ proyecto.nombre }}"</h1>
+    <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
     {% if page_obj %}
     <form method="GET" action="{% url 'fase:search' proyecto.id %}">
         <div id="custom-search-input">

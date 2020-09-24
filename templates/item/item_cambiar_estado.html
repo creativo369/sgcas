@@ -2,6 +2,11 @@
 {% block title %} Cambiar estado Item {% endblock title %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
     {% if item.padres.all.exists or item.hijos.all.exists or item.antecesores.all.exists or item.sucesores.all.exists %}
          {% if item.estado == "Revision" %}
             <div class="alert alert-dismissible alert-warning">
