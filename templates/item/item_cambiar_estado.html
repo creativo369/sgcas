@@ -4,7 +4,7 @@
 {% block content %}
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
-      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+      <li class="breadcrumb-item">Fase {{ fase }} </li>
       <li class="breadcrumb-item active">Item {{ item }} </li>   
     </ol>
     {% if item.padres.all.exists or item.hijos.all.exists or item.antecesores.all.exists or item.sucesores.all.exists %}
