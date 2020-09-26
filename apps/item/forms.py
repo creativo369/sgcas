@@ -19,6 +19,10 @@ class ItemForm(forms.ModelForm):
         super(ItemForm, self).__init__(*args, **kwargs)
         self.fields['estado'].required = False
         self.fields['estado'].disabled = True
+
+        self.fields['usuarios_a_cargo'].required = True
+        self.fields['usuarios_a_cargo'].disabled = False
+
         self.fields['usuarios_a_cargo'].queryset = Fase.objects.get(id=id_fase).miembros.all()
 
     class Meta:
@@ -178,6 +182,10 @@ class ItemUpdateForm(forms.ModelForm):
         """
         id_fase = kwargs.pop('id_fase')
         super(ItemUpdateForm, self).__init__(*args, **kwargs)
+
+        self.fields['usuarios_a_cargo'].required = True
+        self.fields['usuarios_a_cargo'].disabled = False
+        
         self.fields['usuarios_a_cargo'].queryset = Fase.objects.get(id=id_fase).miembros.all()
         # fields representa los campos que no son editables de acuerdo al estado del item
         fields = ['estado']
