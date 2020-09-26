@@ -37,10 +37,3 @@ class Rol(models.Model):
 
     def __str__(self):
         return self.nombre
-
-    def delete(self, *args, **kwargs):
-        if Rol.objects.filter(Q(id=self.id) &
-            Q(usuarios__in=User.objects.all().exclude(username='AnonymousUser').exclude(is_superuser=True))).exists():
-            raise ValidationError('Este rol esta asignado a un usuario') 
-        else:
-                super(Rol, self).delete(*args, **kwargs)

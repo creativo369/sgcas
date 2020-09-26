@@ -17,24 +17,55 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <p>Todas las vistas para la aplicación del Modulo ítem
+Actualmente se despliega en las plantillas 19 vistas:
+1. <strong>crear_item_basico</strong> - crea el ítem (Ir a la sección:  <a href="views.html#crear ítem">views.py </a> )
+2. <strong>item_importar_ti</strong> - asigna un tipo de ítema al item (Ir a la sección:  <a href="views.html#importar tipo de ítem">views.py </a> )
+3. <strong>item_set_atributos</strong> - asigna al ítem sus atributos (Ir a la sección:  <a href="views.html#settear atributos ítem">views.py </a> )
+4. <strong>item_lista_fase</strong> - lista los ítems de una fase (Ir a la sección:  <a href="views.html#lista de ítems de fase">views.py </a> )
+5. <strong>search</strong> - lista los ítems buscados en una fase (Ir a la sección:  <a href="views.html#search">views.py </a> )
+6. <strong>item_eliminar</strong> - elimina un ítem permanentemente (Ir a la sección:  <a href="views.html#ítem eliminar">views.py </a> )
+7. <strong>item_detalles</strong> - despliega información relevante sobre un ítem (Ir a la sección:  <a href="views.html#ítem detalles">views.py </a> )
+8. <strong>item_modificar_basico</strong> - modifica los atributos de un ítem (Ir a la sección:  <a href="views.html#ítem modificar">views.py </a> )
+9. <strong>item_modificar_ti</strong> - modifica el tipo de ítem que posee un ítem (Ir a la sección:  <a href="views.html#modificar ti">views.py </a> )
+10. <strong>item_modificar_atributos</strong> - modifica los atributos del tipo de ítem que posee un ítem (Ir a la sección:  <a href="views.html#ítem modificar atributos">views.py </a> )
+11. <strong>get_item_snapshot</strong> - almacena una copia de ítem, es su versión actual (Ir a la sección:  <a href="views.html#snapshot ítem">views.py </a> )
+12. <strong>item_versiones</strong> - lista todas las versiones que posee un ítem (Ir a la sección:  <a href="views.html#ítem versiones">views.py </a> )
+13. <strong>restaurar_version</strong> - regresa el ítem a una versión anterior a la actual (Ir a la sección:  <a href="views.html#restaurar versión">views.py </a> )
+14. <strong>item_cambiar_estado</strong> - modifica el estado de un ítem (Ir a la sección:  <a href="views.html#ítem cambiar estado">views.py </a> )
+15. <strong>fases_rel</strong> - despliega las fases que contienen a los ítems para relacionarlos (Ir a la sección:  <a href="views.html#fases relaciones">views.py </a> )
+16. <strong>get_context</strong> - vista que crea un diccionario de ítems (Ir a la sección:  <a href="views.html#contexto ítem">views.py </a> )
+17. <strong>relaciones</strong> - efectúa el relacionamiento de los ítems (Ir a la sección:  <a href="views.html#relaciones">views.py </a> )
+18. <strong>calculo_impacto</strong> - efectúa el cálculo del impacto, que tendría sobre el proyecto la modificación del ítem (Ir a la sección:  <a href="views.html#impacto ítem">views.py </a> )
+19. <strong>trazabilidad_item</strong> - representa en forma gráfica las relaciones que posee un ítem (Ir a la sección:  <a href="views.html#impacto ítem">views.py </a> )</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+<span class="kn">import</span> <span class="nn">pyrebase</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.mixins</span> <span class="kn">import</span> <span class="n">LoginRequiredMixin</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">UpdateView</span>
 <span class="kn">from</span> <span class="nn">guardian.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
 
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
-<span class="kn">from</span> <span class="nn">apps.item.forms</span> <span class="kn">import</span> <span class="n">ItemForm</span><span class="p">,</span> <span class="n">ItemUpdateForm</span><span class="p">,</span> <span class="n">ItemImportarTipoItemForm</span><span class="p">,</span> <span class="n">ItemAtributosForm</span><span class="p">,</span> <span class="n">ItemCambiarEstado</span>
+<span class="kn">from</span> <span class="nn">apps.item.forms</span> <span class="kn">import</span> <span class="n">ItemForm</span><span class="p">,</span> <span class="n">ItemUpdateForm</span><span class="p">,</span> <span class="n">ItemImportarTipoItemForm</span><span class="p">,</span> <span class="n">ItemAtributosForm</span><span class="p">,</span> <span class="n">ItemCambiarEstado</span><span class="p">,</span> \
+    <span class="n">RelacionForm</span>
+<span class="kn">from</span> <span class="nn">apps.item.graph</span> <span class="kn">import</span> <span class="n">exclude_potencial_cycles</span><span class="p">,</span> <span class="n">shortest_path</span><span class="p">,</span> <span class="n">create_graph_trazabilidad</span><span class="p">,</span> <span class="n">draw_graph</span><span class="p">,</span> \
+    <span class="n">item_has_path</span>
 <span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
-<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">UpdateView</span>
-<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
-<span class="kn">import</span> <span class="nn">pyrebase</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-
+<span class="kn">from</span> <span class="nn">apps.linea_base.models</span> <span class="kn">import</span> <span class="n">LineaBase</span>
 <span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span>
+
+<span class="kn">from</span> <span class="nn">SGCAS.decorators</span> <span class="kn">import</span> <span class="n">requiere_permiso</span>
+<span class="kn">from</span> <span class="nn">SGCAS.settings.desarrollo</span> <span class="kn">import</span> <span class="n">MEDIA_ROOT</span>
 
 <span class="n">firebase</span> <span class="o">=</span> <span class="n">pyrebase</span><span class="o">.</span><span class="n">initialize_app</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">FIREBASE_CONFIG</span><span class="p">)</span>
 <span class="n">storage</span> <span class="o">=</span> <span class="n">firebase</span><span class="o">.</span><span class="n">storage</span><span class="p">()</span></pre></div>
@@ -46,12 +77,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Permite la creacion de instancias de modelo Item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:return:</strong>  Retorna una instancia del modelo Item.<br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_item_basico</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -60,12 +89,35 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      
+      <p>@permission_required(&lsquo;item.crear_item&rsquo;, raise_exception=True)
+=== crear ítem ===
+@requiere_permiso(&lsquo;crear_item&rsquo;)</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_item_basico</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Permite la creacion de instancias de modelo Item.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:return:</strong>  Retorna una instancia del modelo Item.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">query_fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>  <span class="c1"># Obtenemos la instancia de la fase para poder acceder desde ella hasta el estado del proyecto</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">ItemForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">nombre</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;nombre&#39;</span><span class="p">]</span>
+            <span class="n">fase</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="n">nombre</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">))</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/validate_item.html&#39;</span><span class="p">)</span>
+
             <span class="n">item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">item</span><span class="o">.</span><span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
             <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -75,34 +127,18 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-3'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      <h1>ALMACENAMIENTO FIREBASE</h1>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>                <span class="n">path_local</span> <span class="o">=</span> <span class="s1">&#39;media/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Busca los archivos en MEDIA/NOMBREARCHIVO</span>
-                <span class="n">path_on_cloud</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-                    <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO</span>
-                <span class="n">storage</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">path_on_cloud</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">path_local</span><span class="p">)</span>  <span class="c1"># Almacena el archivo en Firebase</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <h1></h1>
+      <p>ALMACENAMIENTO FIREBASE</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:importar_tipo_item&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">ItemForm</span><span class="p">(</span><span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exists</span><span class="p">()})</span></pre></div>
+      <div class="highlight"><pre>                <span class="n">path_local</span> <span class="o">=</span> <span class="n">MEDIA_ROOT</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Busca los archivos en MEDIA/NOMBREARCHIVO</span>
+                <span class="n">path_on_cloud</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO</span>
+                <span class="n">storage</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">path_on_cloud</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">path_local</span><span class="p">)</span>  <span class="c1"># Almacena el archivo en Firebase</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -111,13 +147,18 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>Permite la creacion de instancias de modelo Item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia de item a la cual se le asignara el tipo de item.<br/>
-<strong>:return:</strong>  Retorna una instancia de item con su tipo de item agregado<br/></p>
+      <p>print(storage.child(path_on_cloud).get_url(item.archivo.name))</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_importar_ti</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>                <span class="n">item</span><span class="o">.</span><span class="n">file_url_cloud</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">path_on_cloud</span><span class="p">)</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:importar_tipo_item&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">query_fase</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s2">&quot;Iniciado&quot;</span><span class="p">:</span>  <span class="c1"># Solamente cuando el proyecto este en estado iniciado se pueden crear los items</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ItemForm</span><span class="p">(</span><span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;validacion_proyecto&#39;</span><span class="p">:</span> <span class="n">query_fase</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_crear.html&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s1">&#39;validacion_proyecto&#39;</span><span class="p">:</span> <span class="n">query_fase</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -126,7 +167,23 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      
+      <p>@requiere_permiso(&lsquo;importar_tipo_item&rsquo;)
+=== importar tipo de ítem ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_importar_ti</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Permite la creacion de instancias de modelo Ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia de ítem a la cual se le asignara el tipo de ítem.<br/>
+<strong>:return:</strong>  Retorna una instancia de ítem con su tipo de ítem agregado.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
@@ -140,27 +197,28 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <p>Permite agregar los atributos a un item de acuerdo a su tipo de item importado.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia de item al cual se le asignara los atributos.<br/>
-<strong>:return:</strong>  Retorna una instancia de item con sus atributos agregados.<br/></p>
+      <p>=== settear atributos ítem ===
+@requiere_permiso(&lsquo;crear_item&rsquo;)</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_set_atributos</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      
+      <p>Permite agregar los atributos a un ítem de acuerdo a su tipo de ítem importado.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia de ítem al cual se le asignará los atributos.<br/>
+<strong>:return:</strong>  Retorna una instancia de ítem con sus atributos agregados.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
@@ -173,21 +231,6 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
-      </div>
-      <p>Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo Item.<br/>
-<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
-<strong>:return:</strong> Renderiza la plantilla usuario_home.html que es el home del sistema<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">item_opciones</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
@@ -196,7 +239,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_opciones.html&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@login_required</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -205,13 +248,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>Permite visualizar todos los items de una fase en particular.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param id_fase:</strong> Recibe pk de la fase del cual se desea visualizar los items.<br/>
-<strong>:return:</strong>  Retorna una lista dde items correspondientes a la fase.<br/></p>
+      <p>@requiere_permiso(&lsquo;ver_item&rsquo;)
+=== ítem opciones ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_lista_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_opciones</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -220,11 +261,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      
+      <p>Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo Ítem.<br/>
+<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
+<strong>:return:</strong> Renderiza la plantilla usuario_home.html que es el home del sistema.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_lista.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)),</span>
-                                                    <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">})</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_opciones.html&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -233,13 +275,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      <p>Permite la eliminacion de uns instancia de objeto item.<br/>
-   <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-   <strong>:param pk:</strong> Recibe pk de la instancia del item que se desea eliminar.<br/>
-   <strong>:return:</strong> Se elimina el item y se redifire a la lista de items de la fase.<br/></p>
+      <p>@requiere_permiso(&lsquo;listar_item&rsquo;)
+=== lista de ítems de fase ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_eliminar</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_lista_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -248,13 +288,27 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
-      
+      <p>Permite visualizar todos los ítems de una fase en particular.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe pk de la fase del cual se desea visualizar los ítems.<br/>
+<strong>:return:</strong>  Retorna una lista de ítems correspondientes a la fase.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="n">id_fase</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span>
-    <span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">lista_item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">lista_item</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">,</span>
+        <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">,</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_lista.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -263,13 +317,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      <p>Permite la modificacion de una instancia de item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia del item que se desea modificar.<br/>
-<strong>:return:</strong>  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/></p>
+      <p>@requiere_permiso(&lsquo;item.listar_item&rsquo;)
+=== search ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_modificar_basico</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -278,16 +330,37 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-16'>#</a>
       </div>
-      
+      <p>Permite realizar la búsqueda de ítems de una fase.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe pk de la fase del cual se desea visualizar los ítems.<br/>
+<strong>:return:</strong>  Retorna los ítems  de una fase, que cumplen con los criterios de búsqueda.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="n">id_fase</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">ItemUpdateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-        <span class="n">item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_modificar_import_ti&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exists</span><span class="p">()})</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;item/list_busqueda.html&#39;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buscar&#39;</span><span class="p">)</span>
+    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span> <span class="o">&amp;</span>
+                                      <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">nombre__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">descripcion__contains</span><span class="o">=</span><span class="n">query</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="n">results</span><span class="p">,</span>
+        <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">,</span>
+        <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">,</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -296,13 +369,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-17'>#</a>
       </div>
-      <p>Permite la modificacion del tipo de item de un item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia del item que se desea modificar.<br/>
-<strong>:return:</strong> Retorna una instancia de un item con su tipo de item modificado<br/></p>
+      <p>@requiere_permiso(&lsquo;eliminar_item&rsquo;)
+=== ítem eliminar ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_modificar_ti</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_eliminar</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -311,7 +382,185 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-18'>#</a>
       </div>
-      
+      <p>Permite la eliminacion de uns instancia de objeto ítem.<br/>
+   <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+   <strong>:param pk:</strong> Recibe pk de la instancia del ítem que se desea eliminar.<br/>
+   <strong>:return:</strong> Se elimina el ítem y se redirige a la lista de ítems de la fase.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">id_fase</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span>
+    <span class="n">actualizar_punteros</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <h1>Actualiza los punteros de las relaciones</h1>
+<h1>Todos los padres apuntan a todos los hijos.</h1>
+<h1>Todos los hijos apuntan a todos los padres</h1>
+<h1>Todos los antecesores apuntan a todos los sucesores</h1>
+<h1>Todos los sucesores apuntan a tdos los antecesores</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">actualizar_punteros</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Actualizando punteros...&quot;</span><span class="p">)</span>
+    <span class="n">padres</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">hijos</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">antecesores</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">sucesores</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">hijo</span> <span class="ow">in</span> <span class="n">hijos</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">padre</span> <span class="ow">in</span> <span class="n">padres</span><span class="p">:</span>
+            <span class="n">hijo</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">padre</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">padre</span> <span class="ow">in</span> <span class="n">padres</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">hijo</span> <span class="ow">in</span> <span class="n">hijos</span><span class="p">:</span>
+            <span class="n">padre</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hijo</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">antecesor</span> <span class="ow">in</span> <span class="n">antecesores</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sucesor</span> <span class="ow">in</span> <span class="n">sucesores</span><span class="p">:</span>
+            <span class="n">antecesor</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sucesor</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sucesor</span> <span class="ow">in</span> <span class="n">sucesores</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">antecesor</span> <span class="ow">in</span> <span class="n">antecesores</span><span class="p">:</span>
+            <span class="n">sucesor</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">antecesor</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>=== ítem detalles ===
+@requiere_permiso(&lsquo;ver_item&rsquo;)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_detalles</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>Permite visualizar los detalles de una instancia de ítem.<br/>
+   <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+   <strong>:param pk:</strong> Recibe pk de la instancia del ítem que se desea visualizar.<br/>
+   <strong>:return:</strong> Se visualizan los detalles del ítem.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_detalles.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;editar_item&rsquo;)
+=== ítem modificar ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_modificar_basico</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Permite la modificación de una instancia de ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem que se desea modificar.<br/>
+<strong>:return:</strong>  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span>
+    <span class="n">l_base</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span>
+    <span class="n">l_base</span> <span class="o">=</span> <span class="p">[</span><span class="n">lb</span> <span class="k">for</span> <span class="n">lb</span> <span class="ow">in</span> <span class="n">l_base</span> <span class="k">if</span>
+              <span class="n">lb</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()]</span>  <span class="c1"># Se obtiene la linea base a la cual pertenece el item</span>
+    <span class="k">if</span> <span class="n">l_base</span> <span class="ow">and</span> <span class="n">l_base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Cerrada&#39;</span><span class="p">:</span>
+        <span class="n">l_base</span> <span class="o">=</span> <span class="n">l_base</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p>return render(request, &lsquo;item/item_solicitud.html&rsquo;, {})</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">form</span> <span class="o">=</span> <span class="n">ItemUpdateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">version_item</span> <span class="o">=</span> <span class="n">get_item_snapshot</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">nro_version</span> <span class="o">+=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1">##Adjunta numero de versión</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">version_item</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">version_item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">save_m2m</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">archivo</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s1">&#39;archivo&#39;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>ALMACENAMIENTO FIREBASE</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="n">path_local</span> <span class="o">=</span> <span class="n">MEDIA_ROOT</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Busca los archivos en MEDIA/NOMBREARCHIVO</span>
+            <span class="n">path_on_cloud</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># Se almacena en Firebase como FECHADEHOY/NOMBREARCHIVO</span>
+            <span class="n">storage</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">path_on_cloud</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">path_local</span><span class="p">)</span>  <span class="c1"># Almacena el archivo en Firebase</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">file_url_cloud</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">path_on_cloud</span><span class="p">)</span><span class="o">.</span><span class="n">get_url</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">archivo</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_modificar_import_ti&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+        <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_modificar.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;item_modificar_ti&rsquo;)
+=== modificar ti ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_modificar_ti</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>Permite la modificación del tipo de ítem de un ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del item que se desea modificar.<br/>
+<strong>:return:</strong> Retorna una instancia de un ítem con su tipo de ítem modificado.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
@@ -323,27 +572,28 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
-      <p>Permite la modificacion de los atributos de un tipo de item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia del item que se desea modificar.<br/>
-<strong>:return:</strong> Retorna una instancia de un item con sus atributos modificados.<br/></p>
+      <p>@requiere_permiso(&lsquo;item_modificar_atributos&rsquo;)
+=== ítem modificar atributos ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_modificar_atributos</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-20'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
-      
+      <p>Permite la modificación de los atributos de un tipo de ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem que se desea modificar.<br/>
+<strong>:return:</strong> Retorna una instancia de un ítem con sus atributos modificados.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
@@ -355,154 +605,15 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
-      </div>
-      <p>Permite la modificacion del estado de un item.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe pk de una instancia del item que se desea modificar.<br/>
-<strong>:return:</strong> Retorna una instancia de un item con su estado modificado.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_cambiar_estado</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-22'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="n">form</span> <span class="o">=</span> <span class="n">ItemCambiarEstado</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">})</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-23'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
-      </div>
-      <p>Permite la visualizacion en lista de todas las intancias del modelo Item<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-<strong>:param ListView:</strong> Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-<strong>:param LoginRequiredMixin:</strong> Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-<strong>:return:</strong> Una vista de todas las intancias a traves del archivo item_lista.html.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ItemLista</span><span class="p">(</span><span class="n">ListView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-24'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Item</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;item/item_lista.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;item.view_item&#39;</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-25'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
-      </div>
-      <p>La lista a mostrar estara por orden ascendente</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-id&#39;</span><span class="p">]</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-26'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
-      </div>
-      <p>Permite la eliminacion instancias de modelos Item.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-<strong>:param LoginRequiredMixin:</strong> Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-<strong>:return:</strong> Elimina una instancia del modelo Item del sistema.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ItemEliminar</span><span class="p">(</span><span class="n">DeleteView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-27'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Item</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;item/item_eliminar.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;item.delete_item&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-28'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
-      </div>
-      <p>Permite la modificacion de informacion basica de una instancia de modelo Item.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-<strong>:param LoginRequiredMixin:</strong> Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-<strong>:return:</strong> Modficia una instancia del modelo Item, luego se redirige para la importacion de Tipo de Item.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ItemModificar</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-29'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Item</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;item/item_crear.html&#39;</span>
-    <span class="n">form_class</span> <span class="o">=</span> <span class="n">ItemUpdateForm</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;item.change_item&#39;</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-30'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-30'>#</a>
       </div>
-      
+      <h3><span id="snapshot-ítem" href="snapshot-ítem"> snapshot ítem </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
-        <span class="nb">object</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_modificar_import_ti&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_item_snapshot</span><span class="p">(</span><span class="n">pk</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -511,14 +622,24 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-31'>#</a>
       </div>
-      <p>Permite la modificacion de importacion de Tipo de Item de una instancia de modelo Item.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-<strong>:param LoginRequiredMixin:</strong> Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-<strong>:return:</strong> Modifica una instancia del modelo Item, luego se redirige para setear los atrobutos del Tipo de Item importado<br/></p>
+      <p>Permite guardar el estado de un ítem.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem del cual se desea guardar su estado.<br/>
+<strong>:return:</strong> Retorna una instancia de ítem que es la copia del ítem recibido.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ItemModificarImportTI</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Taking snapshot...&#39;</span><span class="p">)</span>
+    <span class="n">prev_item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">snap_item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">nombre</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span>
+        <span class="n">descripcion</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span>
+        <span class="n">fecha_creacion</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">fecha_creacion</span><span class="p">,</span>
+        <span class="n">estado</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">estado</span><span class="p">,</span>
+        <span class="n">costo</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">costo</span><span class="p">,</span>
+        <span class="n">archivo</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">archivo</span><span class="p">,</span>
+        <span class="n">file_url_cloud</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">file_url_cloud</span><span class="p">,</span>
+        <span class="n">fase</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">fase</span><span class="p">,</span>
+        <span class="n">tipo_item</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">tipo_item</span><span class="p">,</span>
+        <span class="n">impacto</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">impacto</span><span class="p">,</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -527,13 +648,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-32'>#</a>
       </div>
-      
+      <p>Atributos de tipo de item</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Item</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;item/item_importar_tipo_item.html&#39;</span>
-    <span class="n">form_class</span> <span class="o">=</span> <span class="n">ItemImportarTipoItemForm</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;item.change_item&#39;</span></pre></div>
+      <div class="highlight"><pre>        <span class="n">boolean</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">boolean</span><span class="p">,</span>
+        <span class="n">char</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">char</span><span class="p">,</span>
+        <span class="n">date</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">date</span><span class="p">,</span>
+        <span class="n">numerico</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">numerico</span><span class="p">,</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -542,12 +663,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-33'>#</a>
       </div>
-      
+      <p>Atributos de versionado</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
-        <span class="nb">object</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_modificar_atr_ti&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="n">nro_version</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">nro_version</span><span class="p">,</span>
+        <span class="n">last_release</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ultima_modificacion</span><span class="o">=</span><span class="n">prev_item</span><span class="o">.</span><span class="n">ultima_modificacion</span><span class="p">,</span>
+    <span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -556,14 +678,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-34'>#</a>
       </div>
-      <p>Permite la modificacion de atributos de una instancia de modelo Item.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-<strong>:param LoginRequiredMixin:</strong> Acceso controlado por logueo, de la libreria auth.mixins.<br/>
-<strong>:return:</strong> Modifica na instancia del modelo Item, luego se redirige a la lista de items.<br/></p>
+      <h1>Atributo basico</h1>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ItemModificarAtrTI</span><span class="p">(</span><span class="n">UpdateView</span><span class="p">,</span> <span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">snap_item</span><span class="o">.</span><span class="n">usuarios_a_cargo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">usuarios_a_cargo</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -572,14 +690,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-35'>#</a>
       </div>
-      
+      <h1>Atributos para relaciones</h1>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Item</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;item/item_atributos_tipo_item.html&#39;</span>
-    <span class="n">form_class</span> <span class="o">=</span> <span class="n">ItemAtributosForm</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;item.change_item&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">snap_item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">snap_item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">snap_item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="n">snap_item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -588,10 +705,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-36'>#</a>
       </div>
-      <p><strong>Atras</strong> :  <a href="urls.html">urls.py</a></p>
+      <h1>Atributos para el versionado</h1>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="n">snap_item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="n">prev_item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">snap_item</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -599,6 +718,746 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-37'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;versiones_item&rsquo;)
+=== ítem versiones ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_versiones</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fases</span><span class="p">):</span>
+    <span class="n">lista_item_version</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fases</span><span class="p">)</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">lista_item_version</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;versiones&#39;</span><span class="p">:</span> <span class="n">lista_item_version</span><span class="p">,</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">,</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-38'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-38'>#</a>
+      </div>
+      <p>&lsquo;page_obj&rsquo;: page_obj</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_versiones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-39'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-39'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;versiones_item&rsquo;)
+=== restaurar versión ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">restaurar_version</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-40'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-40'>#</a>
+      </div>
+      <p>Permite la restauración de la versión de un ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem el cual representa la versión a la cual se desea regresar.<br/>
+<strong>:return:</strong> Retorna una instancia de ítem actualizada.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">nr_item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>  <span class="c1">##new release item</span>
+    <span class="n">lr_item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">nr_item</span><span class="o">.</span><span class="n">versiones</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>  <span class="c1">##latest release item</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">nr_item</span><span class="o">.</span><span class="n">versiones</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">oldest_version_query</span> <span class="o">=</span> <span class="n">lr_item</span><span class="o">.</span><span class="n">item_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nro_version__lt</span><span class="o">=</span><span class="n">nr_item</span><span class="o">.</span><span class="n">nro_version</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-41'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-41'>#</a>
+      </div>
+      <h1>Se redirecciona el historial al nuevo last_release</h1>
+<h1>Y se elimina la relación de foreign key con el anterior last release</h1>
+<h1>porque de otra forma se eliminarian</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">for</span> <span class="n">older_version</span> <span class="ow">in</span> <span class="n">oldest_version_query</span><span class="p">:</span>
+            <span class="n">older_version</span><span class="o">.</span><span class="n">versiones</span> <span class="o">=</span> <span class="n">nr_item</span>
+            <span class="n">older_version</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">nr_item</span><span class="o">.</span><span class="n">last_release</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1">##Ahora la ultima version es la version elegida</span>
+        <span class="n">nr_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-42'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-42'>#</a>
+      </div>
+      <h1>Se eliminan las versiones posteriores</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">lr_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1">##Se borra la ultima version y por consiguiente las foreign key mayores que la version elegida</span>
+
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">nr_item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_eliminar.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;object&#39;</span><span class="p">:</span> <span class="n">nr_item</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-43'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-43'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;cambiar_estado_item&rsquo;)
+=== ítem cambiar estado ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">item_cambiar_estado</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-44'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-44'>#</a>
+      </div>
+      <p>Permite la modificación del estado de un ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem que se desea modificar.<br/>
+<strong>:return:</strong> Retorna una instancia de un ítem con su estado modificado.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ItemCambiarEstado</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-45'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-45'>#</a>
+      </div>
+      <p>=== fases relaciones ===
+@requiere_permiso(&lsquo;relacion_item&rsquo;)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">fases_rel</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-46'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-46'>#</a>
+      </div>
+      <p>Permite la visualización de las fases de un ítem, paso previo para establecer de las relaciones.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem, ejecutor de la acción de &lsquo;establecer relación&rsquo;.<br/>
+<strong>:return:</strong> Retorna un template de las fases de un proyecto.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="p">,</span>
+        <span class="s1">&#39;fases_proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_fases_relaciones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-47'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-47'>#</a>
+      </div>
+      <h1>Obtiene el contexto para el template de las relaciones</h1>
+<p>=== contexto ítem ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">get_context</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">items_query</span><span class="p">,</span> <span class="n">item_pk</span><span class="p">,</span> <span class="n">fase_pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-48'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-48'>#</a>
+      </div>
+      <p>Realiza el proceso para la obtencion del contexto que se utiliza en la funcion de &lsquo;relaciones&rsquo;.<br/>
+<strong>:param form:</strong> Recibe el formulario de entrada.<br/>
+<strong>:param items_query:</strong> Recibe el queryset de ítems disponibles para las relaciones.<br/>
+<strong>:param item_pk:</strong> Recibe el pk del ítem ejecutor de &lsquo;Establecer relación&rsquo;.<br/>
+<strong>:param fase_pk:</strong> Recibe el pk de la fase al cual el ítem ejecutor desea establecer la relación.<br/>
+<strong>:return:</strong> Retorna contexto en formato diccionario de los parametros dados.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s1">&#39;items_query&#39;</span><span class="p">:</span> <span class="n">items_query</span><span class="p">,</span>
+        <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item_pk</span><span class="p">),</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">fase_pk</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">context</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-49'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-49'>#</a>
+      </div>
+      <h3><span id="update-relations" href="update-relations"> update relations </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">update_relations</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">snap_pk</span><span class="p">):</span>
+    <span class="n">snap_item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">snap_pk</span><span class="p">)</span>
+    <span class="n">new_item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-50'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-50'>#</a>
+      </div>
+      <p>for hijo in snap_item.hijos.all():</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-51'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-51'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;relacion_item&rsquo;)
+=== relaciones ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">relaciones</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-52'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-52'>#</a>
+      </div>
+      <p>Permite establecer relaciones entre instancias de un ítem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe pk de una instancia del ítem, ejecutor de la acción &lsquo;establecer relación&rsquo;.<br/>
+<strong>:return:</strong> Retorna una instancia de ítem con sus relaciones actualizadas.<br/></p>
+<h1>flags: -1 para antecesores, 0 para hijos, 1 para sucesores</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">from_fase</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">id</span>  <span class="c1"># Id de la fase a la cual corresponde el item</span>
+    <span class="n">to_fase</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">id_fase</span><span class="p">)</span>  <span class="c1"># id de la fase a la cual se desea direccionar la relacion</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">from_fase</span> <span class="o">==</span> <span class="n">to_fase</span><span class="p">:</span>  <span class="c1">##Relaciones padre/hijos</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">items_query</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item_p</span> <span class="ow">in</span> <span class="n">items_query</span><span class="p">:</span>  <span class="c1"># Se exluyen los padres, un hijo no puede ser padre a la vez con respecto a un item</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_p</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">items_query</span> <span class="o">=</span> <span class="n">items_query</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">item_p</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">exclude_potencial_cycles</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">items_query</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RelacionForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">items_query</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">older_version_item</span> <span class="o">=</span> <span class="n">get_item_snapshot</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">hijo</span> <span class="ow">in</span> <span class="n">older_version_item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">hijo</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">hijo</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">hijo</span> <span class="ow">in</span> <span class="n">_item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">hijo</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-53'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-53'>#</a>
+      </div>
+      <h1>update_relations</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="n">older_version_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">get_context</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">items_query</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_relaciones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">from_fase</span> <span class="o">&gt;</span> <span class="n">to_fase</span><span class="p">:</span>  <span class="c1">##Relacion antecesores &lt;- item</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">to_fase</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">exclude_potencial_cycles</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">items_query</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RelacionForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">items_query</span><span class="p">,</span> <span class="n">flag</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">older_version_item</span> <span class="o">=</span> <span class="n">get_item_snapshot</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-54'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-54'>#</a>
+      </div>
+      <p>form.save()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">for</span> <span class="n">antecesor</span> <span class="ow">in</span> <span class="n">older_version_item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">antecesor</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">antecesor</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">antencesor</span> <span class="ow">in</span> <span class="n">_item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>  <span class="c1">##Setea los sucesores</span>
+                <span class="n">antencesor</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-55'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-55'>#</a>
+      </div>
+      <h1>update_rel</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="n">older_version_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">get_context</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">items_query</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_relaciones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1">##Relacion item -&gt; sucesores</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">to_fase</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">items_query</span> <span class="o">=</span> <span class="n">exclude_potencial_cycles</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">items_query</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RelacionForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">items_query</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">older_version_item</span> <span class="o">=</span> <span class="n">get_item_snapshot</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+            <span class="n">_item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-56'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-56'>#</a>
+      </div>
+      <p>form.save()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">for</span> <span class="n">sucesor</span> <span class="ow">in</span> <span class="n">older_version_item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">sucesor</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">sucesor</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sucesor</span> <span class="ow">in</span> <span class="n">_item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>  <span class="c1">##Setea los sucesores</span>
+                <span class="n">sucesor</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_item</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-57'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-57'>#</a>
+      </div>
+      <h1>update_rel</h1>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="n">older_version_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">get_context</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">items_query</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_relaciones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-58'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-58'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;calcular_impacto&rsquo;)
+=== impacto ítem ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">calculo_impacto</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-59'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-59'>#</a>
+      </div>
+      <p>Permite realizar el cálculo de impacto de un ítem al proyecto.<br/>
+<strong>:param request:</strong> Recibe un request por parte del usuario.<br/>
+<strong>:param pk:</strong> Recibe el pk de una instancia de ítem sobre el cual se le realizará el cálculo de impacto.<br/>
+<strong>:return:</strong> El cálculo de impacto de un ítem en terminos numericos.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">target</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">earliest</span><span class="p">(</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">)</span>  <span class="c1">##Se toma como el source el primer item del proyecto</span>
+    <span class="k">if</span> <span class="n">item_has_path</span><span class="p">(</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>  <span class="c1">##Se calcula del impacto en cada item del path</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">impacto</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">costo</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">impacto</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">costo</span> <span class="o">+</span> <span class="n">path</span><span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">impacto</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="n">target</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_calculo_impacto.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-60'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-60'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;ver_trazabilidad&rsquo;)
+=== trazabilidad ítem ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">trazabilidad_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-61'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-61'>#</a>
+      </div>
+      <p>Permite obtener la trazabilidad de un item.<br/>
+<strong>:param request:</strong> Recibe un request por parte del usuario.<br/>
+<strong>:param pk:</strong> Recibe el pk de una instancia de item sobre el cual se realizara la trazabilidad.<br/>
+<strong>:return:</strong> La trazabilidad de un ítem (Si posee) en formato .png renderizado en el template.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">target</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">earliest</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">item_has_path</span><span class="p">(</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">create_graph_trazabilidad</span><span class="p">(</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
+        <span class="n">draw_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;image_name&#39;</span><span class="p">:</span> <span class="s1">&#39;item_trazabilidad.png&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">nombre</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">nombre</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_trazabilidad.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-62'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-62'>#</a>
+      </div>
+      <p>class ItemLista(ListView, PermissionRequiredMixin, LoginRequiredMixin):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-63'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-63'>#</a>
+      </div>
+      <pre><code>Permite la visualizacion en lista de todas las intancias del modelo Item&lt;br/&gt;
+**:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.&lt;br/&gt;
+**:param ListView:** Recibe una vista generica de tipo ListView para vistas basadas en clases.&lt;br/&gt;
+**:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.&lt;br/&gt;
+**:return:** Una vista de todas las intancias a traves del archivo item_lista.html.&lt;br/&gt;
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-64'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-64'>#</a>
+      </div>
+      <pre><code>paginate_by = 4
+model = Item
+template_name = 'item/item_lista.html'
+permission_required = 'item.ver_item'
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-65'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-65'>#</a>
+      </div>
+      <pre><code># La lista a mostrar estara por orden ascendente
+class Meta:
+    ordering = ['-id']
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-66'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-66'>#</a>
+      </div>
+      <p>class ItemEliminar(DeleteView, PermissionRequiredMixin, LoginRequiredMixin):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-67'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-67'>#</a>
+      </div>
+      <pre><code>Permite la eliminacion instancias de modelos Item.&lt;br/&gt;
+**:param PermissionRequiredMixin:** Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.&lt;br/&gt;
+**:param DeleteView:** Recibe una vista generica de tipo DeleteView para vistas basadas en clases.&lt;br/&gt;
+**:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.&lt;br/&gt;
+**:return:** Elimina una instancia del modelo Item del sistema.&lt;br/&gt;
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-68'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-68'>#</a>
+      </div>
+      <pre><code>model = Item
+template_name = 'item/item_eliminar.html'
+permission_required = 'item.eliminar_item'
+success_url = reverse_lazy('item:item_lista')
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-69'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-69'>#</a>
+      </div>
+      <p>class ItemModificar(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-70'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-70'>#</a>
+      </div>
+      <pre><code>Permite la modificacion de informacion basica de una instancia de modelo Item.&lt;br/&gt;
+**:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.&lt;br/&gt;
+**:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.&lt;br/&gt;
+**:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.&lt;br/&gt;
+**:return:** Modficia una instancia del modelo Item, luego se redirige para la importacion de Tipo de Item.&lt;br/&gt;
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-71'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-71'>#</a>
+      </div>
+      <pre><code>model = Item
+template_name = 'item/item_crear.html'
+form_class = ItemUpdateForm
+permission_required = 'item.editar_item'
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-72'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-72'>#</a>
+      </div>
+      <pre><code>def form_valid(self, form):
+    object = form.save()
+    return redirect('item:item_modificar_import_ti', pk=object.pk)
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-73'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-73'>#</a>
+      </div>
+      <p>class ItemModificarImportTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-74'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-74'>#</a>
+      </div>
+      <pre><code>Permite la modificacion de importacion de Tipo de Item de una instancia de modelo Item.&lt;br/&gt;
+**:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.&lt;br/&gt;
+**:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.&lt;br/&gt;
+**:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.&lt;br/&gt;
+**:return:** Modifica una instancia del modelo Item, luego se redirige para setear los atrobutos del Tipo de Item importado&lt;br/&gt;
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-75'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-75'>#</a>
+      </div>
+      <pre><code>model = Item
+template_name = 'item/item_importar_tipo_item.html'
+form_class = ItemImportarTipoItemForm
+permission_required = 'item.item_modificar_import_ti'
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-76'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-76'>#</a>
+      </div>
+      <pre><code>def form_valid(self, form):
+    object = form.save()
+    return redirect('item:item_modificar_atr_ti', pk=object.pk)
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-77'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-77'>#</a>
+      </div>
+      <p>class ItemModificarAtrTI(UpdateView, PermissionRequiredMixin, LoginRequiredMixin):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-78'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-78'>#</a>
+      </div>
+      <pre><code>Permite la modificacion de atributos de una instancia de modelo Item.&lt;br/&gt;
+**:param PermissionRequiredMixin:** Maneja multiple permisos, de la libreria guardian.mixins.&lt;br/&gt;
+**:param UpdateView:** Recibe una vista generica de tipo UpdateView para vistas basadas en clases.&lt;br/&gt;
+**:param LoginRequiredMixin:** Acceso controlado por logueo, de la libreria auth.mixins.&lt;br/&gt;
+**:return:** Modifica na instancia del modelo Item, luego se redirige a la lista de items.&lt;br/&gt;
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="c1">#     &quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-79'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-79'>#</a>
+      </div>
+      <pre><code>model = Item
+template_name = 'item/item_atributos_tipo_item.html'
+form_class = ItemAtributosForm
+permission_required = 'item.item_modificar_atributos_ti'
+success_url = reverse_lazy('item:item_lista')
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-80'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-80'>#</a>
+      </div>
+      <p><strong>Atras</strong> :  <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-81'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-81'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación item  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -608,6 +1467,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-82'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-82'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

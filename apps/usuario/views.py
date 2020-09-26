@@ -1,5 +1,5 @@
 # === Importación de las librerias utilizadas de Django ===
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -11,6 +11,7 @@ from apps.usuario.forms import UserForm
 from django.urls import reverse_lazy
 from SGCAS.decorators import administrator_only
 from apps.usuario.models import User
+from apps.proyecto.models import Proyecto
 
 """
 Todas las vistas para la aplicación del Modulo Usuario
@@ -39,6 +40,7 @@ def usuario_view(request):
 
 @login_required
 @administrator_only
+@permission_required("usuario.gestion_usuario", raise_exception=True)
 # === gestion usuarios ===
 def usuario_opciones(request):
     """
@@ -68,7 +70,7 @@ class UsuarioLista(PermissionRequiredMixin, ListView):
         return User.objects.order_by('id').distinct().exclude(username='AnonymousUser').exclude(is_superuser=True)
 
 
-@permission_required('usuario.ver_usuarios', raise_exception=True)
+@permission_required('usuario.ver_usuario', raise_exception=True)
 # === search ===
 def search(request):
     """
@@ -81,7 +83,8 @@ def search(request):
 
     if query:
         results = User.objects.filter(Q(username__icontains=query) |
-                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(username='AnonymousUser').exclude(is_superuser=True)
+                                      Q(first_name__icontains=query)).order_by('id').distinct().exclude(
+            username='AnonymousUser').exclude(is_superuser=True)
     else:
         results = User.objects.all().order_by('id').exclude(username='AnonymousUser').exclude(is_superuser=True)
 
@@ -127,6 +130,15 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     permission_required = 'usuario.editar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
+    def get(self, request, *args, **kwargs):
+        usuario = User.objects.get(id=self.kwargs['pk'])
+        en_proyecto = Proyecto.objects.all().filter(miembros=usuario)
+        form = self.form_class(request.POST or None, instance=usuario)
+
+        if en_proyecto.exists():
+            return render(request, self.template_name, {'form': form, 'en_proyecto': en_proyecto})
+        return render(request, self.template_name, {'form': form, 'en_proyecto': en_proyecto})
+
 
 # === eliminar usuario ===
 class EliminarUsuario(PermissionRequiredMixin, DeleteView):
@@ -141,7 +153,15 @@ class EliminarUsuario(PermissionRequiredMixin, DeleteView):
     permission_required = 'usuario.eliminar_usuario'
     success_url = reverse_lazy('usuario:usuario_lista')
 
+    def post(self, request, *args, **kwargs):
+        usuario = User.objects.get(id=self.kwargs['pk'])
+        en_proyecto = Proyecto.objects.all().filter(miembros=usuario)
+        if en_proyecto.exists():
+            return render(request, self.template_name, {'en_proyecto': en_proyecto})
+        usuario.delete()
+        return redirect(self.success_url)
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
+# 0.admin          : [[admin.py]]<br/>
 # 1.apps        : [[apps.py]]<br/>
 # 2.forms       : [[forms.py]]<br/>
 # 3.middleware  : [[middleware.py]]<br/>

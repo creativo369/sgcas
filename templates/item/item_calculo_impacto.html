@@ -1,48 +1,39 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% block extracss %}
-    <link rel="stylesheet" href="{% static 'css/calculo_impacto.css' %}">
-{% endblock extracss %}
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
     <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
         <div class="card-header">
             <strong>{{ target }} - Cálculo de impacto</strong>
         </div>
-        {% if path %}
             <div class="card-body card-block" style="margin: 0 auto">
-                <table cellspacing='0'>
-                    <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Fase</th>
-                        <th>Costo</th>
-                        <th>Impacto</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in path %}
-                        <tr>
-                            <td>{{ item }}</td>
-                            <td>{{ item.fase }}</td>
-                            <td>{{ item.costo }}</td>
-                            <td>{{ item.impacto }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                <h3>
+                    Item
+                    <small class="text-muted">{{item}}</small>
+                </h3>
+                <h3>
+                    Fase
+                    <small class="text-muted">{{item.fase}}</small>
+                </h3>
+                <h3>
+                    Costo
+                    <small class="text-muted">{{item.costo}}</small>
+                </h3>
+                <h3>
+                    Complejidad del proyecto
+                    <small class="text-muted">{{complejidad_proyecto}}</small>
+                </h3>
+                <h3>
+                    Cálculo de impacto
+                    <small class="text-muted">{{calculo_impacto}}</small>
+                </h3>
                 <div class="text-center">
                     <button type="submit" class="btn btn-success" onclick="window.history.back()">Aceptar</button>
                 </div>
             </div>
-        {% else %}
-            <h1 style="text-align: center; margin: 25px 0 0 0">No se encontró una ruta</h1>
-            <h5 style="text-align: center; margin: 25px 0 0 0"><small class="text-muted">Esto se debe a que el item no
-                posee
-                relación directa o indirecta con el inicio del proyecto.</small></h5>
-            <div class="text-center">
-                <a style="margin: 25px 0"
-                   type="button" class="btn btn-success" href="#" onclick="window.history.back()">Aceptar</a>
-            </div>
-        {% endif %}
     </div>
 {% endblock %}

@@ -20,7 +20,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span><span class="p">,</span> <span class="n">Group</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span></pre></div>
     </div>
   </div>
@@ -53,25 +53,7 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
-        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;crear_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;crear_usuario&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;editar_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;editar_usuario&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;agregrar_usuario_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;agregrar_usuario_proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;eliminar_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;eliminar_usuario&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;crear_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;crear_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;eliminar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;eliminar_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;asignar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;asignar_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;ver_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;ver_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;ver_usuarios&quot;</span><span class="p">,</span> <span class="s2">&quot;ver_usuarios&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;listar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;listar_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;editar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;editar_rol&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;agregar_usuario_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;agregar_usuario_fase&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;quitar_usuario_proyecto&quot;</span><span class="p">,</span> <span class="s2">&quot;quitar_usuario_proyecto&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;quitar_usuario_fase&quot;</span><span class="p">,</span> <span class="s2">&quot;quitar_usuario_fase&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;mensaje_eliminar&quot;</span><span class="p">,</span> <span class="s2">&quot;mensaje_eliminar&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;mensaje_editar&quot;</span><span class="p">,</span> <span class="s2">&quot;mensaje_editar&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;ver_mensaje&quot;</span><span class="p">,</span> <span class="s2">&quot;ver_mensaje&quot;</span><span class="p">),</span>
-        <span class="p">]</span></pre></div>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -80,11 +62,34 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p><strong>Función para asignar un alias al modelo Usuario</strong><br/>
-<strong>:return:</strong> el nombre usuario<br/></p>
+      <p>(&ldquo;crear_usuario&rdquo;, &ldquo;crear_usuario&rdquo;),
+(&ldquo;editar_usuario&rdquo;, &ldquo;editar_usuario&rdquo;),
+(&ldquo;agregrar_usuario_proyecto&rdquo;, &ldquo;agregrar_usuario_proyecto&rdquo;),
+(&ldquo;eliminar_usuario&rdquo;, &ldquo;eliminar_usuario&rdquo;),
+(&ldquo;crear_rol&rdquo;, &ldquo;crear_rol&rdquo;),
+(&ldquo;eliminar_rol&rdquo;, &ldquo;eliminar_rol&rdquo;),
+(&ldquo;asignar_rol&rdquo;, &ldquo;asignar_rol&rdquo;),
+(&ldquo;ver_rol&rdquo;, &ldquo;ver_rol&rdquo;),
+(&ldquo;ver_usuarios&rdquo;, &ldquo;ver_usuarios&rdquo;),
+(&ldquo;listar_rol&rdquo;, &ldquo;listar_rol&rdquo;),
+(&ldquo;editar_rol&rdquo;, &ldquo;editar_rol&rdquo;),
+(&ldquo;agregar_usuario_fase&rdquo;, &ldquo;agregar_usuario_fase&rdquo;),
+(&ldquo;quitar_usuario_proyecto&rdquo;, &ldquo;quitar_usuario_proyecto&rdquo;),
+(&ldquo;quitar_usuario_fase&rdquo;, &ldquo;quitar_usuario_fase&rdquo;),
+(&ldquo;mensaje_eliminar&rdquo;, &ldquo;mensaje_eliminar&rdquo;),
+(&ldquo;mensaje_editar&rdquo;, &ldquo;mensaje_editar&rdquo;),
+(&ldquo;ver_mensaje&rdquo;, &ldquo;ver_mensaje&rdquo;),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;registrar_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede registrar usuario&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar usuario&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar usuario&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver usuario&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;gestion_usuario&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede gestionar usuario&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ver_mensaje&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede ver mensaje&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;mensaje_editar&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar mensaje&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;mensaje_rechazar&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede rechazar mensaje&quot;</span><span class="p">),</span>
+        <span class="p">]</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -93,10 +98,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      
+      <p><strong>Función para asignar un alias al modelo Usuario</strong><br/>
+<strong>:return:</strong> el nombre usuario<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -108,10 +114,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_superuser</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -120,7 +123,23 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_superuser</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
       <p>=== Indice de la documentación de la Aplicación Usuario  === <br/>
+0.admin          :  <a href="admin.html">admin.py</a><br/>
 1.apps        :  <a href="apps.html">apps.py</a><br/>
 2.forms       :  <a href="forms.html">forms.py</a><br/>
 3.middleware  :  <a href="middleware.html">middleware.py</a><br/>
@@ -134,10 +153,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

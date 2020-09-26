@@ -1,6 +1,11 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
     {% if image_name %}
         <div class="card-header">
                 <strong>Trazabilidad del &iacute;tem "{{ item_name }}"</strong>

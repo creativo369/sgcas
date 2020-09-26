@@ -21,8 +21,11 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
-<span class="kn">from</span> <span class="nn">apps.rol.views</span> <span class="kn">import</span> <span class="n">crear_rol_view</span><span class="p">,</span> <span class="n">rol_opciones</span><span class="p">,</span> <span class="n">ListaRol</span><span class="p">,</span> <span class="n">EditarRol</span><span class="p">,</span> <span class="n">EliminarRol</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.rol.views</span> <span class="kn">import</span> <span class="n">crear_rol_view_sistema</span><span class="p">,</span> <span class="n">lista_rol</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">editar_rol</span><span class="p">,</span> <span class="n">eliminar_rol</span><span class="p">,</span> <span class="n">asignar_rol_usuario</span>
+<span class="kn">from</span> <span class="nn">apps.rol.views</span> <span class="kn">import</span> <span class="n">crear_rol_view</span><span class="p">,</span> <span class="n">rol_opciones_sistema</span><span class="p">,</span> <span class="n">ListaRol_sistema</span><span class="p">,</span> <span class="n">EditarRol_sistema</span><span class="p">,</span> \
+    <span class="n">EliminarRol_sistema</span><span class="p">,</span> <span class="n">search_sistema</span><span class="p">,</span> <span class="n">Usuario_roles</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -43,11 +46,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p><strong>1.Opciones :</strong> Vista que despliega la gestión de roles<br/>
-<strong>2.lista :</strong> Vista que despliega la lista de roles existentes en el sistema<br/>
-<strong>3.eliminar rol :</strong> Vista que despliega eliminar un rol<br/>
-<strong>4.crear rol :</strong> Vista que despliega la definición de un rol<br/>
-<strong>5.modificar rol :</strong> Vista que despliega modificar un rol<br/></p>
+      <p><strong>1.lista :</strong> Vista que despliega la lista de roles existentes en el sistema<br/>
+<strong>2.eliminar rol :</strong> Vista que despliega eliminar un rol<br/>
+<strong>3.crear rol :</strong> Vista que despliega la definición de un rol<br/>
+<strong>4.modificar rol :</strong> Vista que despliega modificar un rol<br/>
+<strong>5.search :</strong> Vista que despliega una lista de roles buscados.<br/></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span></pre></div>
@@ -62,12 +65,12 @@
       <p><strong> Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. </strong></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^opciones/&#39;</span><span class="p">,</span> <span class="n">rol_opciones</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_opciones&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/&#39;</span><span class="p">,</span> <span class="n">ListaRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_lista&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">EliminarRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_eliminar&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/&#39;</span><span class="p">,</span> <span class="n">crear_rol_view</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_crear&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^modificar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">EditarRol</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Group</span><span class="p">,</span> <span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_editar&#39;</span><span class="p">),</span>
-<span class="p">]</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_rol</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_lista&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar-rol/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">eliminar_rol</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_eliminar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">crear_rol_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_crear&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^modificar-rol/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">editar_rol</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_editar&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^results/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">search</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;search&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^asignar/(?P&lt;pk&gt;\d+)/(?P&lt;id_fase&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">asignar_rol_usuario</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_asignar_usuario&#39;</span><span class="p">),</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -76,12 +79,55 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
+      <h3><span id="rol-sistema" href="rol-sistema"> ROL SISTEMA </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^opciones/&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.gestion_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">rol_opciones_sistema</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_opciones_sistema&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista/&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.listar_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">ListaRol_sistema</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_lista_sistema&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^results/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.listar_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">search_sistema</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;search_sistema&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.eliminar_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">EliminarRol_sistema</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_eliminar_sistema&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear/&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.crear_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">crear_rol_view_sistema</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_crear_sistema&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^modificar/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;rol.editar_rol_sistema&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">EditarRol_sistema</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">Group</span><span class="p">,</span> <span class="p">))),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;rol_editar_sistema&#39;</span><span class="p">),</span>
+    
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^usuario-roles/&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">Usuario_roles</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;usuario_rol&#39;</span><span class="p">),</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h3><span id="fin" href="fin"> FIN </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
       <p>=== Indice de la documentación de la Aplicación rol  === <br/>
 1.apps     :  <a href="apps.html">apps.py</a><br/>
 2.forms    :  <a href="forms.html">forms.py</a><br/>
 3.tests    :  <a href="tests.html">tests.py</a><br/>
 4.urls     :  <a href="urls.html">urls.py</a><br/>
 5.views    :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

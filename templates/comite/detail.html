@@ -4,6 +4,10 @@
 
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=comite.proyecto.pk %}"></a>Proyecto {{ comite.proyecto }}</li>
+      <li class="breadcrumb-item active">Comité {{ comite }}</li>
+    </ol>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -29,4 +33,5 @@
     <a type=" button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
     <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}">Eliminar</a>
     {% endif %}
+    <a type="button" class="btn btn-secondary" href="{% url 'comite:solicitudes' comite.id %}">Solicitudes</a>
 {% endblock content %}

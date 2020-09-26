@@ -6,12 +6,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 urlpatterns = [
     url(r'^opciones/', login_required(fase_opciones), name='fase_opciones'),
     url(r'^results/(?P<_id>\d+)/$', login_required(permission_required('fase.listar_fase', raise_exception=True)(search)), name='search'),
-    url(r'^cambiar_estado/(?P<pk>\d+)/(?P<_id>\d+)/$', login_required(cambiar_estado_fase), name='fase_cambiar_estado'),
-    url(r'^fase_detalles/(?P<pk>\d+)/$', login_required(fase_detalles), name='fase_detalles'),
+    url(r'^cambiar_estado/(?P<id_fase>\d+)/(?P<_id>\d+)/$', login_required(cambiar_estado_fase), name='fase_cambiar_estado'),
+    url(r'^fase_detalles/(?P<id_fase>\d+)/$', login_required(fase_detalles), name='fase_detalles'),
     url(r'^crear/(?P<_id>\d+)/$', login_required(permission_required('fase.crear_fase',raise_exception=True)(FaseCrear.as_view())), name='crear_fase'),
     url(r'^lista/(?P<_id>\d+)/$', login_required(permission_required('fase.listar_fase', raise_exception=True)(lista_fase)), name='fase_lista'),
-    url(r'^eliminar/(?P<pk>\d+)/(?P<_id>\d+)/$', login_required(eliminar_fase), name='fase_eliminar'),
-    url(r'^editar/(?P<pk>\d+)/(?P<_id>\d+)/$', login_required(fase_modificar), name='fase_modificar'),
+    url(r'^eliminar/(?P<id_fase>\d+)/(?P<_id>\d+)/$', login_required(eliminar_fase), name='fase_eliminar'),
+    url(r'^editar/(?P<id_fase>\d+)/(?P<_id>\d+)/$', login_required(fase_modificar), name='fase_modificar'),
 ]
 
 # **Volver atras** : [[forms.py]]

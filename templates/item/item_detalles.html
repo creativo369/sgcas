@@ -1,6 +1,11 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
+      <li class="breadcrumb-item">Fase {{ fase }} </li>
+      <li class="breadcrumb-item active">Item {{ item }} </li>   
+    </ol>
     <div class="card">
         <div class="card-header">
             <strong>Item {{ item.nombre }} - Detalles</strong>
@@ -20,7 +25,7 @@
             </h4>
             <h4>Archivo:
                 {% if item.archivo %}
-                    <a href="{{ item.archivo.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
+                    <a href="{{ item.file_url_cloud }}" target="_blank" class="btn btn-outline-primary btn-sm">Ver
                         archivo</a>
                 {% else %}
                     <small class="text-muted">No adjunto.</small>

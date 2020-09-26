@@ -23,8 +23,10 @@
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
 <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
 
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">apps.proyecto.views</span> <span class="kn">import</span> <span class="n">manage_projects</span><span class="p">,</span> <span class="n">CreateProject</span><span class="p">,</span> <span class="n">ListProject</span><span class="p">,</span> <span class="n">UpdateProject</span><span class="p">,</span> <span class="n">DeleteProject</span><span class="p">,</span> \
-    <span class="n">success</span><span class="p">,</span> <span class="n">DetailProject</span><span class="p">,</span> <span class="n">change_state</span>
+    <span class="n">success</span><span class="p">,</span> <span class="n">DetailProject</span><span class="p">,</span> <span class="n">change_state</span><span class="p">,</span> <span class="n">search</span>
 
 <span class="n">app_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto&#39;</span></pre></div>
     </div>
@@ -40,13 +42,14 @@
     <div class='code'>
       <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">manage_projects</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;manage_projects&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear-proyecto/$&#39;</span><span class="p">,</span> <span class="n">CreateProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;create&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^listado-proyecto/$&#39;</span><span class="p">,</span> <span class="n">ListProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">UpdateProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;update&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">DeleteProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;delete&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^detalles-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">DetailProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^operacion-exitosa/$&#39;</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^transicion-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">change_state</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;change&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear-proyecto/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.crear_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">CreateProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;create&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^listado-proyecto/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.ver_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">ListProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^results/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.ver_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">search</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;search&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.editar_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">UpdateProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;update&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.eliminar_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DeleteProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;delete&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^detalles-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.detalles_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^operacion-exitosa/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">success</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^transicion-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">change_state</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;change&#39;</span><span class="p">),</span>
 <span class="p">]</span></pre></div>
     </div>
   </div>
@@ -88,6 +91,18 @@
 5.tests   :  <a href="tests.html">tests.py</a><br/>
 6.urls    :  <a href="urls.html">urls.py</a><br/>
 7.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

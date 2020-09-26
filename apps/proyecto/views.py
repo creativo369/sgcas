@@ -34,6 +34,7 @@ Actualmente se despliega en las plantillas 9 vistas:
 
 
 @login_required
+@permission_required('proyecto.gestion_proyecto', raise_exception=True)
 # === manage_projects ===
 def manage_projects(request):
     """
@@ -57,7 +58,7 @@ def success(request):
 
 
 @login_required
-@requiere_permiso('cambiar_estado')
+@permission_required('proyecto.cambiar_estado', raise_exception=True)
 # === change_state ===
 def change_state(request, pk):
     """
@@ -136,7 +137,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
             'id').distinct()
 
 
-@requiere_permiso('ver_proyecto')
+@permission_required('proyecto.ver_proyecto',raise_exception=True)
 # === search ===
 def search(request):
     """

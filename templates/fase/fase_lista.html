@@ -2,7 +2,7 @@
 {% block title %} Listar fases {% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center">Fases del proyecto "{{ proyecto.nombre }}"</h1>
+    <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
     {% if page_obj %}
     <form method="GET" action="{% url 'fase:search' proyecto.id %}">
         <div id="custom-search-input">
@@ -44,8 +44,8 @@
                                 Item
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'item:crear_item' id_fase=fase.id %}">Crear</a>
-                                <a class="dropdown-item" href="{% url 'item:item_lista' id_fase=fase.id %}">Lista de
+                                <a class="dropdown-item" href="{% url 'item:crear_item' fase.id %}">Crear</a>
+                                <a class="dropdown-item" href="{% url 'item:item_lista' fase.id %}">Lista de
                                     items</a>
                             </div>
                         </div>

@@ -70,8 +70,10 @@ class ItemImportarTipoItemForm(forms.ModelForm):
             for field in fields_not_required:
                 self.fields[field].required = False
                 self.fields[field].disabled = True
-            tipo_item_default = TipoItem.objects.first()
-            self.fields['tipo_item'].initial = tipo_item_default
+            ti_queryset = TipoItem.objects.none()
+            for fase in Fase.objects.filter(proyecto=kwargs['instance'].fase.proyecto): #Queryset de los tipos de item del proyecto
+                ti_queryset |= TipoItem.objects.filter(fase=fase)
+            self.fields['tipo_item'].queryset = ti_queryset
 
     # **Clase Meta para para el despliegue en una plantilla de los campos necesarios del modelo**
     class Meta(ItemForm.Meta):

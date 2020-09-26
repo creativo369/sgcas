@@ -79,6 +79,9 @@
                         {% if request.user.is_superuser == False %}
                             <a class="dropdown-item" href="{% url 'usuario:usuario_home' %}">dashboard</a>
                         {% endif %}
+                        {% if request.user.is_superuser == False %}
+                            <a class="dropdown-item" href="{% url 'rol:usuario_rol' %}">Mis roles</a>
+                        {% endif %}
                         {% if request.user.is_superuser == True %}
                             <a class="dropdown-item" href="/admin/">{% trans 'Admin Panel' %}</a>
                         {% endif %}

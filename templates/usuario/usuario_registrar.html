@@ -33,11 +33,18 @@
                     <div class="row form-group">
                         <div class="col col-md-3">{{ form.roles.label }}</div>
                         <div class="col-12 col-md-9">{{ form.roles }}</div>
-                    </div> 
+                    </div>
+                    {% if en_proyecto.exists == False %}
                     <div class="row form-group">
                         <div class="col col-md-3">{{ form.is_active.label }}</div>
                         <div class="col-12 col-md-9">{{ form.is_active  }} {{ form.is_active.help_text }}</div>                       
-                    </div>                     
+                    </div>
+                    {% else %}
+                        <div class="row form-group">
+                            <div class="col col-md-3">{{ form.is_active.label }}</div>
+                            <div class="col-12 col-md-9"><h6>Activado</h6><h5><span class="badge badge-danger">No se permite desactivar al usuario porque el mismo esta asociado a un proyecto</span></h5></div>
+                        </div>
+                    {% endif %}
                     <div class="text-center">
                         <button type="submit" class="btn btn-success">Guardar</button>
 						<a class="btn btn-secondary" href="{% url 'usuario:usuario_lista' %}">Cancelar</a>

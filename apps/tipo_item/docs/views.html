@@ -20,12 +20,17 @@
       <h3><span id="importación-de-las-librerias-utilizadas-de-django" href="importación-de-las-librerias-utilizadas-de-django"> Importación de las librerias utilizadas de Django </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span>
-<span class="kn">from</span> <span class="nn">guardian.decorators</span> <span class="kn">import</span> <span class="n">permission_required</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">guardian.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
+
+<span class="kn">from</span> <span class="nn">SGCAS.decorators</span> <span class="kn">import</span> <span class="n">requiere_permiso</span>
 <span class="kn">from</span> <span class="nn">apps.tipo_item.forms</span> <span class="kn">import</span> <span class="n">TipoItemForm</span><span class="p">,</span> <span class="n">TipoItemUpdateForm</span>
+
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
 <span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">UpdateView</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span></pre></div>
     </div>
@@ -36,14 +41,15 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>Todas las vistas para la aplicación del Modulo Comité
-Actualmente se despliega en las plantillas 5 vistas:</p>
+      <p>Todas las vistas para la aplicación del Modulo Tipo de Ítem
+Actualmente se despliega en las plantillas 6 vistas:</p>
 <ol>
-<li><strong>crear tipo de item</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#creartipo">views.py</a> )</li>
-<li><strong>Gestión de tipo de item</strong> - modificar una instancia del modelo comité (Ir a la sección:  <a href="views.html#gestiontipo">views.py</a> )</li>
-<li><strong>Listar tipo de items </strong> - suprimir una instancia del modelo comité (Ir a la sección:  <a href="views.html#listaitem">views.py</a> )</li>
-<li><strong>Tipo de item eliminar </strong> - ver detalles de una instancia del modelo comité (Ir a la sección:  <a href="views.html#eliminartipo">views.py</a> )</li>
-<li><strong>Tipo de Item modificar</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#tipoiteupdate">views.py</a> )</li>
+<li><strong>crear_tipo_item</strong> - definición de una instancia del modelo TipoItem (Ir a la sección:  <a href="views.html#crear tipo de ítem">views.py </a> )</li>
+<li><strong>tipo_item_opciones</strong> - despliega opciones (Ir a la sección:  <a href="views.html#gestión tipo de ítem">views.py </a> )</li>
+<li><strong>tipo_item_lista</strong> - lista los tipos de ítems del sistema (Ir a la sección:  <a href="views.html#lista tipo de ítem">views.py </a> )</li>
+<li><strong>search</strong> - lista los tipos de ítems buscados del sistema (Ir a la sección:  <a href="views.html#search">views.py </a> )</li>
+<li><strong>eliminar_tipo_item</strong> - elimina un tipo de ítem (Ir a la sección:  <a href="views.html#eliminar tipo de ítem">views.py </a> )</li>
+<li><strong>editar_tipo_item</strong> - modifica los atributos de un tipo de ítem (Ir a la sección:  <a href="views.html#tipo de ítem update">views.py </a> )</li>
 </ol>
     </div>
     <div class='code'>
@@ -59,8 +65,7 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@login_required</span>
-<span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;tipo_item.add_tipo_item&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@login_required</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -69,10 +74,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <h3><span id="creartipo" href="creartipo"> creartipo </span></h3>
+      <p>@permission_required(&lsquo;tipo_item.crear_tipo_item&rsquo;, raise_exception=True)</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_tipo_item</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;crear_tipo_item&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -81,20 +86,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p>Permite la creacion de instancias de modelo TipoItem.<br/>
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:return:</strong>  Retorna una instancia del modelo TipoItem.<br/></p>
+      <h3><span id="crear-tipo-de-ítem" href="crear-tipo-de-ítem"> crear tipo de ítem </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">TipoItemForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">form</span> <span class="o">=</span> <span class="n">TipoItemForm</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_tipo_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -103,11 +98,22 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      
+      <p>Permite la creacion de instancias de modelo TipoItem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param id_fase:</strong> Recibe el id de la fase en la que se creará el tipo de ítem.<br/>
+<strong>:return:</strong>  Retorna una instancia del modelo TipoItem.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@login_required</span>
-<span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;tipo_item.view_tipo_item&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">TipoItemForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">ti</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">ti</span><span class="o">.</span><span class="n">fase</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+            <span class="n">ti</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">TipoItemForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_crear.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -116,10 +122,11 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <h3><span id="gestiontipo" href="gestiontipo"> gestiontipo </span></h3>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">tipo_item_opciones</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@login_required</span>
+<span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;ver_tipo_item&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -128,12 +135,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p>Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo TipoItem.
-<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
-<strong>:return:</strong> Renderiza la plantilla usuario_home.html que es el home del sistema<br/></p>
+      <h3><span id="gestión-tipo-de-ítem" href="gestión-tipo-de-ítem"> gestión tipo de ítem </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_opciones.html&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">tipo_item_opciones</span><span class="p">(</span><span class="n">request</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -142,10 +147,12 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <h3><span id="listaitem" href="listaitem"> listaitem </span></h3>
+      <p>Permite visualizar la plantilla de opciones que se pueden realizar sobre un modelo TipoItem.
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:return:</strong> Renderiza la plantilla usuario_home.html que es el home del sistema.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TipoItemLista</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_opciones.html&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -154,15 +161,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>Permite la visualizacion en lista de todas las intancias del modelo TipoItem<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-<strong>:param ListView:</strong> Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-<strong>:return:</strong> Una vista de todas las intancias a traves del archivo tipo_item_lista.html.<br/></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">TipoItem</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;tipo_item/tipo_item_lista.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;tipo_item.view_tipo_item&#39;</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_tipo_item&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -171,11 +173,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      <p>La lista a mostrar estara por orden ascendente</p>
+      <h3><span id="lista-tipo-de-ítem" href="lista-tipo-de-ítem"> lista tipo de ítem </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-id&#39;</span><span class="p">]</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">tipo_item_lista</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -184,10 +185,19 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <h3><span id="eliminartipo" href="eliminartipo"> eliminartipo </span></h3>
+      <p>Permite la visualizacion en lista de todas las intancias del modelo TipoItem.<br/>
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+ <strong>:param pk:</strong> Recibe el pk de la fase a la que pertenece el tipo de ítem para listarlo.<br/>
+ <strong>:return:</strong> Una vista de todas las intancias de tipo de ítem que se encuentra en la fase.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TipoItemEliminar</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">tipo_item</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_lista.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">),</span>
+                                                              <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -196,16 +206,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>Permite la eliminacion instancias de modelos TipoItem.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos sobre objetos, de la libreria guardian.mixins.<br/>
-<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-<strong>:return:</strong> Elimina una instancia del modelo TipoItem del sistema.<br/></p>
+      <p>@requiere_permiso(&lsquo;editar_tipo_item&rsquo;)</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">TipoItem</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;tipo_item/tipo_item_eliminar.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;tipo_item.delete_tipo_item&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;tipo_item.editar_tipo_item&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -214,10 +218,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      <h3><span id="tipoiteupdate" href="tipoiteupdate"> tipoiteupdate </span></h3>
+      <h3><span id="tipo-de-ítem-update" href="tipo-de-ítem-update"> tipo de ítem update </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TipoItemModificar</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">editar_tipo_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_item</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -227,16 +231,17 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
       <p>Permite la modificacion de informacion de una instancia de modelo TipoItem.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria guardian.mixins.<br/>
-<strong>:param UpdateView:</strong> Recibe una vista generica de tipo UpdateView para vistas basadas en clases.<br/>
-<strong>:return:</strong> Modficia na instancia del modelo TipoItem, luego se redirige a la lista de tipo de items.<br/></p>
+ <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+ <strong>:param pk:</strong> Recibe el pk de la fase a la que pertenece el tipo de ítem para modificarlo.<br/>
+ <strong>:return:</strong> Modifica una instancia del modelo TipoItem, luego se redirige a la lista de tipo de ítems.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">TipoItem</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;tipo_item/tipo_item_modificar.html&#39;</span>
-    <span class="n">form_class</span> <span class="o">=</span> <span class="n">TipoItemUpdateForm</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;tipo_item.change_tipo_item&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">ti</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">TipoItem</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">id_item</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">TipoItemUpdateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">ti</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">ti</span><span class="o">.</span><span class="n">fase_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;tipo_item/tipo_item_modificar.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -245,13 +250,121 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;tipo_item.eliminar_tipo_item&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;eliminar_tipo_item&rsquo;)
+=== eliminar tipo de ítem ===</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">eliminar_tipo_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Permite la visualizacion en lista de todas las intancias del modelo TipoItem que se encuentran en una fase.<br/>
+ <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+ <strong>:param pk:</strong> Recibe el pk de la fase a la que pertenece el tipo de ítem para eliminarlo.<br/>
+ <strong>:return:</strong> Una vista de todas las intancias  de TipoItem existentes en la fase.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">ti</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">TipoItem</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">id_fase</span> <span class="o">=</span> <span class="n">ti</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span>
+    <span class="n">ti</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;tipo_item:tipo_item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_tipo_item&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <h3><span id="search" href="search"> search </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Permite realizar la búsqueda de las intancias del modelo TipoItem.<br/>
+<em>:param request:</em><em> Recibe un request por parte un usuario.<br/> 
+</em><em>:param id_fase:</em><em> Recibe el id de la instancia de fase, de la cual requerimos la lista de tipos de ítem.<br/><br />
+</em><em>:return:</em>* retorna una lista con todos los Tipos de Ítem  de que cumplen con los criterios de búsqueda.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;tipo_item/list_busqueda.html&#39;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;buscar&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">query</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_fase</span><span class="p">))</span>
+                                          <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">nombre__icontains</span><span class="o">=</span><span class="n">query</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">descripcion__contains</span><span class="o">=</span><span class="n">query</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">page_obj</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">),</span> <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>=== Índice de la documentación de la Aplicación Comité  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
 2.forms   :  <a href="forms.html">forms.py</a><br/>
 3.models  :  <a href="models.html">models.py</a><br/>
 4.tests   :  <a href="tests.html">tests.py</a><br/>
 5.urls    :  <a href="urls.html">urls.py</a><br/>
 6.views   :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

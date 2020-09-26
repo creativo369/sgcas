@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from apps.tipo_item.models import TipoItem
 
 
@@ -16,17 +15,20 @@ class TipoItemTest(TestCase):
 
     def test_crear_tipo_item(self):
         nombre = self.tipo_item.nombre
-        #self.assertEqual(self.tipo_item.nombre, nombre)
-        if not self.tipo_item.nombre == nombre:
-            raise ValidationError('Datos proporcionados no coinciden.')
+        try:
+            self.assertEqual(self.tipo_item.nombre, nombre)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
 
     def test_modificar_tipo_item(self):
         atributos_anterior = self.tipo_item.atributos
         self.tipo_item.atributos = ('Char', 'Char')
         self.tipo_item.save()
-        #self.assertNotEqual(self.tipo_item.atributos, atributos_anterior)
-        if self.tipo_item.atributos == atributos_anterior:
-            raise ValidationError('Datos proporcionados son iguales.')
+        try:
+            self.assertNotEqual(self.tipo_item.atributos, atributos_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
         
 
     def test_eliminar_ti(self):

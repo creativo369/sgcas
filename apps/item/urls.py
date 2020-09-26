@@ -20,11 +20,11 @@ from django.contrib.auth.decorators import login_required
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
 urlpatterns = [
     url(r'^cambiar_estado/(?P<pk>\d+)/$', login_required(item_cambiar_estado), name='item_cambiar_estado'),
-    url(r'^item_detalles/(?P<pk>\d+)/$', login_required(item_detalles), name='item_detalles'),
-    url(r'^versiones/(?P<pk>\d+)/(?P<id_fases>\d+)/$', login_required(item_versiones), name='versiones'),
+    url(r'^item_detalles/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_detalles), name='item_detalles'),
+    url(r'^versiones/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_versiones), name='versiones'),
     url(r'^calculo-de-impacto/(?P<pk>\d+)/$', login_required(calculo_impacto), name='calculo_impacto'),
     url(r'^trazabilidad-de-item/(?P<pk>\d+)/$', login_required(trazabilidad_item), name='trazabilidad'),
-    url(r'^restaurar_version/(?P<pk>\d+)/$', login_required(restaurar_version), name='restaurar_version'),
+    url(r'^restaurar_version/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(restaurar_version), name='restaurar_version'),
     url(r'^fases_relaciones/(?P<pk>\d+)/$', login_required(fases_rel), name='fases_rel'),
     url(r'^relaciones/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(relaciones), name='relaciones'),
     url(r'^crear/(?P<id_fase>\d+)/$', login_required(crear_item_basico), name='crear_item'),
@@ -32,8 +32,8 @@ urlpatterns = [
     url(r'^atributos/(?P<pk>\d+)/$', login_required(item_set_atributos), name='set_atributos'),
     url(r'^results/(?P<id_fase>\d+)/$', login_required(search), name='search'),
     url(r'^lista/(?P<id_fase>\d+)/$', login_required(item_lista_fase), name='item_lista'),
-    url(r'^eliminar/(?P<pk>\d+)/$', login_required(item_eliminar), name='item_eliminar'),
-    url(r'^editar/(?P<pk>\d+)/$', login_required(item_modificar_basico), name='item_modificar'),
+    url(r'^eliminar/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_eliminar), name='item_eliminar'),
+    url(r'^editar/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_modificar_basico), name='item_modificar'),
     url(r'^editar_import_ti/(?P<pk>\d+)/$', login_required(item_modificar_ti),name='item_modificar_import_ti'),
     url(r'^editar_atributos_ti/(?P<pk>\d+)/$', login_required(item_modificar_atributos),name='item_modificar_atr_ti'),
 ]

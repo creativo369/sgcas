@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>models.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>models.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Rol</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">nombre</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s1">&#39;auth.Group&#39;</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">fase</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Fase</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">usuarios</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span>
+        <span class="n">User</span><span class="p">,</span>
+        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">default_permissions</span> <span class="o">=</span> <span class="p">()</span>  <span class="c1"># se deshabilita la creacion de permisos por defecto de django</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;crear_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear rol&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar rol&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar rol&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar rol&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;asignar_rol&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede asignar rol&quot;</span><span class="p">),</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h3><span id="permisos-sobre-los-roles-de-sistema" href="permisos-sobre-los-roles-de-sistema"> PERMISOS SOBRE LOS ROLES DE SISTEMA </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="p">(</span><span class="s2">&quot;crear_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede crear rol sistema&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;editar_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede editar rol sistema&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;gestion_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede gestionar rol sistema&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;listar_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede listar rol sistema&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;eliminar_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede eliminar rol sistema&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;asignar_rol_sistema&quot;</span><span class="p">,</span> <span class="s2">&quot;Puede asignar rol sistema&quot;</span><span class="p">),</span>
+
+        <span class="p">]</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="s1">&#39;Rol&#39;</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s1">&#39;Roles&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nombre</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

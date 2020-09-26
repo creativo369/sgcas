@@ -32,14 +32,13 @@ def crear_linea_base(request, id_fase):
     **:param id_fase:** Recibe pk de la instancia de fase en donde se esta creando la línea base.<br/>
     **:return:** Retorna una instancia de línea base creada.<br/>
     """
-    query_item = Item.objects.all().filter(fase_id=id_fase)
-    flag = False
+    # query_item = Item.objects.all().filter(fase_id=id_fase)
+    # flag = False
     fase = Fase.objects.get(id=id_fase)
-    print(fase.proyecto.estado)
-    for item in query_item:
-        if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
-            flag = True
-
+    # for item in query_item:
+    #     if item.estado == "Aprobado" and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
+    #         flag = True
+    cant_items_sueltos = cant_item_libres(fase)
     if request.method == 'POST':
         form = LineaBaseForm(request.POST)
         if form.is_valid():
@@ -47,11 +46,26 @@ def crear_linea_base(request, id_fase):
             lb.fase = Fase.objects.get(id=id_fase)
             lb.save()
             return redirect('linea_base:agregar_items_lb', pk=lb.pk, id_fase=id_fase)
-    elif flag and fase.proyecto.estado == "Iniciado":
+    # elif flag and fase.proyecto.estado == "Iniciado":
+    elif fase.proyecto.estado == "Iniciado":
         form = LineaBaseForm()
-        return render(request, 'linea_base/linea_crear.html', {'form': form})
+        return render(request, 'linea_base/linea_crear.html', {'form': form, 'cant_items_sueltos':cant_items_sueltos})
     else:
-        return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
+        # return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
+        return render(request, 'linea_base/linea_crear.html', {'fase': fase, 'cant_items_sueltos':cant_items_sueltos})
+
+
+def cant_item_libres(fase):
+    """
+    Permite conocer la cantidad de items libres en una fase.<br/>
+    **:param fase:** Recibe la instancia de fase sobre el cual se desea se desea operar.<br/>
+    **:return:** Retorna un numero entero que es la cantidad de items libres en la fase.<br/>
+    """
+    items_en_lb = 0
+    for lb in LineaBase.objects.filter(fase=fase):
+        if lb.estado != 'Rota':
+            items_en_lb += lb.items.all().count()
+    return items_en_lb-Item.objects.filter(fase=fase).count()
 
 
 @requiere_permiso('agregar_item_linea_base')
@@ -168,7 +182,7 @@ def search(request, id_fase):
 
 @requiere_permiso('listar_item_linea_base')
 # === lista ítems lb ===
-def lista_items_linea_base(request, pk, id_fases):
+def lista_items_linea_base(request, pk, id_fase):
     """
     Permite visualizar la lista de ítems correspondientes a una línea base en particular.<br/>
     **:param request:**Recibe un request por parte de un usuario.<br/>
@@ -177,7 +191,7 @@ def lista_items_linea_base(request, pk, id_fases):
     **:return:** Retorna una lista de ítems correspondientes a una línea base.<br/>
     """
     lista_item_lb = get_object_or_404(LineaBase, pk=pk).items.all().order_by('id').distinct()
-    fase = Fase.objects.get(id=id_fases)
+    fase = Fase.objects.get(id=id_fase)
 
     paginator = Paginator(lista_item_lb, 3)
     page_number = request.GET.get('page')

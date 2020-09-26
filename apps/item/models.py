@@ -2,7 +2,6 @@ from django.db import models
 from apps.usuario.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from SGCAS.settings.desarrollo import MEDIA_ROOT
 import datetime
 
 from apps.fase.models import Fase

@@ -20,11 +20,11 @@
       <h3><span id="importación-de-las-librerias-utilizadas-de-django" href="importación-de-las-librerias-utilizadas-de-django"> Importación de las librerias utilizadas de Django </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">DeleteView</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
-<span class="kn">from</span> <span class="nn">apps.usuario.forms</span> <span class="kn">import</span> <span class="n">UserForm</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.usuario.forms</span> <span class="kn">import</span> <span class="n">FormularioUsuarioActivar</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -34,11 +34,11 @@
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
       <p>Todas las vistas para la aplicación del Modulo Mensaje
-Actualmente se despliega en las plantillas 5 vistas:</p>
+Actualmente se despliega en las plantillas 3 vistas:</p>
 <ol>
-<li><strong>Mensajes</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#mensajes">views.py</a> )</li>
-<li><strong>Actualizar Usuario</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#actualizacionusuario">views.py</a> )</li>
-<li><strong>Eliminar Usuario</strong> - modificar una instancia del modelo comité (Ir a la sección:  <a href="views.html#eliminarusuario">views.py</a> )</li>
+<li><strong>Mensajes</strong> - lista los usuarios cuya entrada al sistema debe ser aprobada (Ir a la sección:  <a href="views.html#mensajes">views.py </a> )</li>
+<li><strong>Actualizar Usuario</strong> - modifica la información correspondiente a cada usuario (Ir a la sección:  <a href="views.html#actualizacion usuario">views.py </a> )</li>
+<li><strong>Eliminar Usuario</strong> - quita  del sistema a un determinado usuario (Ir a la sección:  <a href="views.html#eliminar usuario">views.py </a> )</li>
 </ol>
     </div>
     <div class='code'>
@@ -68,8 +68,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
 <strong>:return:</strong> Renderiza la plantilla mensaje_lista.html con las instancias del modelo User de estado inactivo.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;mensajes/mensajes_lista.html&#39;</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;mensajes/mensajes_lista.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;usuario.ver_mensaje&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -78,10 +80,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <h3><span id="actualizacionusuario" href="actualizacionusuario"> actualizacionusuario </span></h3>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ActualizarUsuarioMensaje</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -89,6 +91,30 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>ordena la lista de usuarios excluyendo al AnonymousUser</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">return</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;AnonymousUser&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h3><span id="actualizacion-usuario" href="actualizacion-usuario"> actualizacion usuario </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ActualizarUsuarioMensaje</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>Permite la actualizacion de informacion de una instancia de modelo User.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins<br/>
@@ -98,38 +124,8 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
     <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;mensajes/mensaje_editar.html&#39;</span>
-    <span class="n">form_class</span> <span class="o">=</span> <span class="n">UserForm</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;auth.change_user&#39;</span>
-    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;mensajes:mensaje_lista&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-6'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
-      </div>
-      <h3><span id="eliminarusuario" href="eliminarusuario"> eliminarusuario </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">EliminarUsuarioMensaje</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-7'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
-      </div>
-      <p>Permite la eliminacion de una instancia del modelo User inactivo.<br/>
-<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins<br/>
-<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
-<strong>:return:</strong> Se elimina la instancia del modelo User referenciado y se regresa a la lista de usuarios activos del sistema.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;mensajes/mensajes_eliminar.html&#39;</span>
-    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;auth.delete_user&#39;</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">FormularioUsuarioActivar</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;usuario.mensaje_editar&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;mensajes:mensaje_lista&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -139,10 +135,10 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <p><strong>Volver atras</strong> : <a href="urls.html">urls.py</a></p>
+      <h3><span id="eliminar-usuario" href="eliminar-usuario"> eliminar usuario </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">EliminarUsuarioMensaje</span><span class="p">(</span><span class="n">PermissionRequiredMixin</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -151,12 +147,54 @@ Actualmente se despliega en las plantillas 5 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
+      <p>Permite la eliminacion de una instancia del modelo User inactivo.<br/>
+<strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins<br/>
+<strong>:param DeleteView:</strong> Recibe una vista generica de tipo DeleteView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Se elimina la instancia del modelo User referenciado y se regresa a la lista de usuarios activos del sistema.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;mensajes/mensajes_eliminar.html&#39;</span>
+    <span class="n">permission_required</span> <span class="o">=</span> <span class="s1">&#39;usuario.mensaje_rechazar&#39;</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;mensajes:mensaje_lista&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> : <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
       <p>=== Indice de la documentación de la Aplicación mensajes  === <br/>
 1.apps                :  <a href="apps.html">apps.py</a><br/>
 2.context_processors  :  <a href="context_processors.html">context_processors.py</a><br/>
 3.test                :  <a href="tests.html">tests.py</a><br/>
 4.urls                :  <a href="urls.html">urls.py</a><br/>
 5.views               :  <a href="views.html">views.py</a><br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

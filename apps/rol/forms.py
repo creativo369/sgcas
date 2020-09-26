@@ -47,11 +47,11 @@ class GroupForm(forms.ModelForm):
         | Q(codename='agregar_item_linea_base')
         | Q(codename='quitar_item_linea_base')
         | Q(codename='listar_item_linea_base')
-        | Q(codename='crear_rol')
-        | Q(codename='editar_rol')
-        | Q(codename='listar_rol')
-        | Q(codename='eliminar_rol')
-        | Q(codename='asignar_rol')
+        # | Q(codename='editar_rol')
+        # | Q(codename='eliminar_rol')
+        # # | Q(codename='asignar_rol')
+        # # | Q(codename='crear_rol')
+        # # | Q(codename='listar_rol')
     ),
         required=False,
         # widget=forms.Select(attrs={'class':'form-control'}))
@@ -121,6 +121,7 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(codename='crear_proyecto')
         | Q(codename='editar_proyecto')
         | Q(codename='ver_proyecto')
+        | Q(codename='gestion_proyecto')
         | Q(codename='eliminar_proyecto')
         | Q(codename='cambiar_estado')
         | Q(codename='detalles_proyecto')
@@ -131,6 +132,13 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(codename='crear_fase')
         | Q(codename='listar_fase')
         | Q(codename='gestion_fase')
+        # === Permisos para roles por fase
+        | Q(codename='crear_rol')
+        | Q(codename='listar_rol')
+        | Q(codename='asignar_rol')
+        | Q(codename='editar_rol')
+        | Q(codename='eliminar_rol')
+
     ),
         required=True,
         # widget=forms.Select(attrs={'class':'form-control'}))

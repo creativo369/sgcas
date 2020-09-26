@@ -1,14 +1,15 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from apps.proyecto.models import Proyecto
 from apps.fase.models import Fase
+from apps.item.models import Item
 
 class TestLBSetUp(TestCase):
     def setUp(self):
         self.descripcion = 'descripcion_LB'        
         self.fase = Fase.objects.create(nombre='fase_test', descripcion='fase_test',
         		proyecto=Proyecto.objects.first())
-        
+        self.items = Item.objects.none()
+
 class LBTestCrear(TestLBSetUp):
 
     def setUp(self):
@@ -16,17 +17,20 @@ class LBTestCrear(TestLBSetUp):
 
     def test_descripcion(self):
         descripcion_lb = 'descripcion_LB'
-        
-        if not self.descripcion == descripcion_lb:
-            raise ValidationError('Datos proporcionados no coinciden')
+        try:        
+            self.assertEqual(self.descripcion, descripcion_lb)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
   
 
     def test_pertenece_fase(self):
-        fase = Fase.objects.none()
-        fase = Fase.objects.first()
-        
-        if not self.fase == fase:
-            raise ValidationError ('Datos proporcionados no coinciden')
+        try:        
+            self.assertEqual(self.fase, Fase.objects.first())
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+          
+
+
 
 
 class LBTestEditar(TestLBSetUp):
@@ -37,9 +41,21 @@ class LBTestEditar(TestLBSetUp):
     def test_editar_descripcion(self):
         descripcion_anterior = self.descripcion
         self.descripcion = 'lb-test-descripcion-cambiada'        
+        try:        
+            self.assertNotEqual(self.descripcion,descripcion_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
         
-        if self.descripcion == descripcion_anterior:
-            raise ValidationError('Datos proporcionados son iguales.')
+
+    def test_editar_item(self):
+        item_anterior = self.items
+        self.items = Item.objects.create(nombre= 'Item1', descripcion='descripcion item 1', costo=6)        
+        try:        
+            self.assertNotEqual(self.items,item_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+        
+
 
 
 # **Volver atras** : [[apps.py]]
