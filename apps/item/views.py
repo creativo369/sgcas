@@ -20,6 +20,7 @@ from apps.item.graph import exclude_potencial_cycles, shortest_path, create_grap
     item_has_path
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
+from apps.proyecto.models import Proyecto
 from apps.tipo_item.models import TipoItem
 from apps.proyecto.models import Proyecto
 
@@ -77,7 +78,6 @@ def crear_item_basico(request, id_fase):
             item.fase = Fase.objects.get(id=id_fase)
             item.save()
             form.save_m2m()
-
             ##Actualizamos la complejidad del proyecto
             proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.pk)
             proyecto.complejidad += item.costo
@@ -343,7 +343,6 @@ def item_modificar_ti(request, pk):
     return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
 
 
-
 # === ítem modificar atributos ===
 def item_modificar_atributos(request, pk):
     """
@@ -476,10 +475,11 @@ def item_cambiar_estado(request, pk):
                 return redirect('comite:solicitud_item', pk)
             form.save()
             return redirect('item:item_lista', id_fase=item.fase.pk)
-        return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
-                                                                  'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
+        return render(request, 'item/item_cambiar_estado.html',
+                      {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
+                       'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
-    
+
 
 ##Retorna la linea base de item (si tiene)
 def get_lb(pk):
@@ -622,13 +622,28 @@ def calculo_impacto(request, pk):
     complejidad_proyecto = get_object_or_404(Fase, pk=item.fase.pk).proyecto.complejidad
     calculo = explore(item, impacto=0)
     context = {
-        'complejidad_proyecto':complejidad_proyecto, 
-        'item':item,
+        'complejidad_proyecto': complejidad_proyecto,
+        'item': item,
         'fase': Fase.objects.get(id=item.fase.pk),
         'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
-        'calculo_impacto':round((calculo/complejidad_proyecto), 2)
+        'calculo_impacto': round((calculo / complejidad_proyecto), 2)
     }
     return render(request, 'item/item_calculo_impacto.html', context)
+
+
+def explore(item, impacto):
+    """
+    Explora el arbol sumando los costos.<br/>
+    **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+    **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+    **:return:** El impacto de un item en el proyecto.<br/>
+    """
+    impacto += item.costo
+    for hijo in item.hijos.all():
+        return explore(hijo, impacto)
+    for sucesor in item.sucesores.all():
+        return explore(sucesor, impacto)
+    return impacto
 
 
 def explore(item, impacto):

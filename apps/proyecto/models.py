@@ -37,7 +37,6 @@ class Proyecto(models.Model):
     miembros = models.ManyToManyField(User, blank=True)
     complejidad = models.DecimalField(max_digits=500, decimal_places=2, default=0)
 
-
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de permisos por defecto de django
         permissions = [
