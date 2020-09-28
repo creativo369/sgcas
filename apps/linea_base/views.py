@@ -143,7 +143,7 @@ def lista_linea_base(request, id_fase):
 
     return render(request, 'linea_base/linea_lista.html',
                   {'lb': LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)),
-                   'fase': Fase.objects.get(id=id_fase), 'page_obj': page_obj})
+                   'fase': Fase.objects.get(id=id_fase),'proyecto': Fase.objects.get(id=id_fase).proyecto, 'page_obj': page_obj})
 
 
 @requiere_permiso('listar_linea_base')
@@ -174,6 +174,7 @@ def search(request, id_fase):
     context = {
 
         'lb': results,
+        'proyecto': Fase.objects.get(id=id_fase).proyecto,
         'fase': fase,
         'page_obj': page_obj
     }
@@ -191,14 +192,22 @@ def lista_items_linea_base(request, pk, id_fase):
     **:return:** Retorna una lista de ítems correspondientes a una línea base.<br/>
     """
     lista_item_lb = get_object_or_404(LineaBase, pk=pk).items.all().order_by('id').distinct()
+    linea_base = LineaBase.objects.get(pk=pk)
     fase = Fase.objects.get(id=id_fase)
 
     paginator = Paginator(lista_item_lb, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'linea_base/linea_items_lista.html',
-                  {'items': lista_item_lb, 'page_obj': page_obj, 'fase': fase})
+    context={
+    'linea_base':linea_base,
+    'items': lista_item_lb,
+    'proyecto': Fase.objects.get(id=id_fase).proyecto,
+    'page_obj': page_obj,
+    'fase': fase
+    }
+
+    return render(request, 'linea_base/linea_items_lista.html',context)
 
 
 @requiere_permiso('eliminar_linea_base')

@@ -2,7 +2,11 @@
 {% block title %} B&uacute;squeda de Fases {% endblock%}
 
 {% block content %}
-    <h1 style="text-align: center">Fases del proyecto "{{ proyecto.nombre }}"</h1>
+    <ol class="breadcrumb">      
+      <li class="breadcrumb-item active">Proyecto {{ proyecto }}</li>            
+    </ol>
+
+    <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
     <form method="GET" action="{% url 'fase:search' proyecto.id %}">
         <div id="custom-search-input">
                     <div class="input-group col-md-12">

@@ -2,6 +2,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -268,10 +269,17 @@ def lista_solicitudes(request, pk):
     **:param pk:** Recibe el pk de la instancia de comite, del cual se desea renderizar las solicitudes.<br/>
     **:return:** Retorna el template de solicitudes en proceso del comite de instancia.<br/>
     """
+    solicitud = Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto).order_by('id')
+
+    paginator = Paginator(solicitud, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
+        #'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
         'miembro_comite': request.user,
-        'comite':Comite.objects.get(pk=pk)
+        'comite':Comite.objects.get(pk=pk),
+        'page_obj': page_obj
     }
 
     return render(request, 'comite/solicitudes.html', context)

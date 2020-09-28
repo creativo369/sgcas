@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 # **2.UpdateComite :** Vista que despliega la modificación de un comité<br/>
 # **3.DeleteComite :** Vista que despliega eliminar un comité<br/>
 from apps.comite.views import CreateComite, UpdateComite, DeleteComite, success, solicitud_item, lista_solicitudes, voto_favor, voto_contra,\
-solicitud_linea_base
+solicitud_linea_base, DetailComite
 
 app_name = 'comite'
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^crear-comite/(?P<_id>\d+)/$', login_required(permission_required('comite.crear_comite', raise_exception=True)(CreateComite.as_view())), name='create'),
     url(r'^editar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.editar_comite', raise_exception=True)(UpdateComite.as_view())), name='update'),
     url(r'^eliminar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.eliminar_comite', raise_exception=True)(DeleteComite.as_view())), name='delete'),
+    url(r'^detalles-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.crear_comite', raise_exception=True)(DetailComite.as_view())), name='detail'),
     url(r'^operacion-exitosa/$', login_required(success), name='success'),
     url(r'^solicitud-item/(?P<pk>\d+)/$', login_required(solicitud_item), name='solicitud_item'),
     url(r'^solicitud-linea-base/(?P<pk>\d+)/$', login_required(solicitud_linea_base), name='solicitud_linea_base'),

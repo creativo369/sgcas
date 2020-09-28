@@ -2,6 +2,11 @@
 {% block title %} B&uacute;squeda de L&iacute;neas Base {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">      
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }}</li>       
+    </ol>
+    
     {% if lb %}
         <h1 style="text-align: center">Lineas bases - Fase {{ fase.nombre }}</h1>
     {% endif %}
