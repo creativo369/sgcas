@@ -35,8 +35,10 @@ class Comite(models.Model):
             # ("agregar_usuario_comite", "agregar_usuario_comite"),
             # ("quitar_usuario_comite", "quitar_usuario_comite"),
             ("crear_comite", "Puede crear comite"),
+            ("crear_solicitud", "Puede crear solicitud"),
             ("editar_comite", "Puede editar comite"),
             ("ver_comite", "Puede ver comite"),
+            ("ver_solicitud", "Puede ver solicitud"),
             ("eliminar_comite", "Puede eliminar comite"),
         ]
 

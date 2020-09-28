@@ -1,5 +1,6 @@
 # === Importación de las librerias utilizadas de Django ===
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -21,10 +22,7 @@ from apps.item.views import get_lb
 
 """
 Todas las vistas para la aplicación del Modulo Comité
-Actualmente se despliega en las plantillas 5 vistas:
-
-
-
+Actualmente se despliega en las plantillas 13 vistas:
 
 1. **success** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py #success]] )
 2. **CreateComite** - definición de una instancia del modelo comité (Ir a la sección: [[views.py #create comite]] )
@@ -32,6 +30,14 @@ Actualmente se despliega en las plantillas 5 vistas:
 4. **DeleteComite** - suprimir una instancia del modelo comité (Ir a la sección: [[views.py #delete comite]] )
 5. **DetailComite** - ver detalles de una instancia del modelo comité (Ir a la sección: [[views.py #detail comite]] )
 
+6. **voto_favor** - registra los votos a favor de la solicitud de cambio (Ir a la sección: [[views.py #voto a favor]] )
+7. **voto_contra** - registra los votos en contra de la solicitud de cambio (Ir a la sección: [[views.py #voto en contra]] )
+8. **revision_votacion** - determina que opción obtiene la mayoria de votos (Ir a la sección: [[views.py #revision votacion]] )
+9. **decision_comite** - notifica al solicitante la decision del comité (Ir a la sección: [[views.py #decision comite]] )
+10. **lista_solicitudes** - lista las solicitudes que deben ser votadas (Ir a la sección: [[views.py #lista de solicitudes]] )
+11. **solicitud_item** - remite la solicitud de cambio del ítem al comité (Ir a la sección: [[views.py #solicitud de ítem]] )
+12. **solicitud_linea_base** - remite la solicitud de rotura de la linea base al comité (Ir a la sección: [[views.py #socilitud de linea base]] )
+13. **send_notification** - se ecarga del envío de los correos al usuario solicitante (Ir a la sección: [[views.py #enviar correo]] )
 
 """
 
@@ -186,6 +192,8 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     success_url = reverse_lazy('comite:detail')
 
 
+@permission_required('comite.ver_comite', raise_exception=True)
+# === voto a favor ===
 def voto_favor(request, pk):
     """
     Realiza la votacion a favor de la aprobacion del artefacto.
@@ -201,7 +209,8 @@ def voto_favor(request, pk):
         decision_comite(solicitud)
     return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
 
-
+@permission_required('comite.ver_comite', raise_exception=True)
+# === voto en contra ===
 def voto_contra(request, pk):
     """
     Realiza la votacion en contra de la aprobacion del artefacto.
@@ -218,7 +227,9 @@ def voto_contra(request, pk):
     return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
 
 
+
 ##Revisa la votacion para ver si ya votaron todos los miembros, si ya votaron todos
+# === revision votacion ===
 def revision_votacion(solicitud):
     """
     Realiza la revision de la votacion.
@@ -232,6 +243,8 @@ def revision_votacion(solicitud):
     return True
 
 
+
+# === decision comite ===
 def decision_comite(solicitud):
     """
     Realiza la decision sobre el artefacto de acuerdo al resultado de la votacion, notificando por correo al solicitante sobre el resultado.
@@ -262,6 +275,8 @@ def decision_comite(solicitud):
     solicitud.delete()
 
 
+@permission_required('comite.ver_solicitud', raise_exception=True)
+# === lista de solicitudes ===
 def lista_solicitudes(request, pk):
     """
     Renderiza la lista de solicitudes que se encuentran en proceso de votacion.
@@ -285,6 +300,8 @@ def lista_solicitudes(request, pk):
     return render(request, 'comite/solicitudes.html', context)
 
 
+@permission_required('comite.crear_solicitud', raise_exception=True)
+# === solicitud de ítem ===
 def solicitud_item(request, pk):
     """
     Realiza la solicitud del usuario para la modificacion de un item.
@@ -311,6 +328,8 @@ def solicitud_item(request, pk):
             return redirect('item:item_lista', id_fase=Item.objects.get(pk=pk).fase.pk)
 
 
+@permission_required('comite.crear_solicitud', raise_exception=True)
+# === socilitud de linea base ===
 def solicitud_linea_base(request, pk):
     """
     Realiza la solicitud del usuario para la rotura de la linea base.
@@ -338,6 +357,7 @@ def solicitud_linea_base(request, pk):
 
 
 ##Envia el correo
+# === enviar correo ===
 def send_notification(to, subject, message):
     """
     Realiza el envio de correo electronico.
