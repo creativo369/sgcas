@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from SGCAS.decorators import requiere_permiso
 from .models import Proyecto
 from apps.fase.models import Fase
+from apps.usuario.models import User
 
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -99,6 +100,12 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'proyecto.crear_proyecto'
     template_name = 'proyecto/create.html'
     success_url = reverse_lazy('proyecto:success')
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(CreateProject, self).get_form_kwargs(**kwargs)
+        kwargs['gerente'] = self.request.user #se envia al formulario el username del gerente
+        return kwargs
+
 
     def form_valid(self, form):
         """
