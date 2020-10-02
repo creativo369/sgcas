@@ -1,12 +1,13 @@
 from django.test import TestCase
 from apps.usuario.models import User
-
+from apps.proyecto.models import Proyecto
 
 class TestProyectoSetUp(TestCase):
     def setUp(self):
-        self.gerente = User.objects.create(username='gerente-proyecto')
-        self.nombre = 'proyecto-prueba'
-        self.descripcion = 'descripcion-proyecto-prueba'
+        self.proyecto= Proyecto.objects.create(gerente=User.objects.create(username='Pepe'), 
+                                                nombre= 'proyecto-prueba', 
+                                                descripcion= 'descripcion-proyecto-prueba' )
+        self.proyecto.miembros.add(User.objects.create(username= 'Maria'))
 
 
 class ProyectoTestCrear(TestProyectoSetUp):
@@ -16,13 +17,13 @@ class ProyectoTestCrear(TestProyectoSetUp):
 
     def test_nombre(self):
         try:
-            self.assertEqual(self.nombre, 'proyecto-prueba')
+            self.assertEqual(self.proyecto.nombre, 'proyecto-prueba')
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
     def test_descripcion(self):
         try:
-            self.assertEqual(self.descripcion, 'descripcion-proyecto-prueba')
+            self.assertEqual(self.proyecto.descripcion, 'descripcion-proyecto-prueba')
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
@@ -31,23 +32,53 @@ class ProyectoTestEditar(TestProyectoSetUp):
 
     def setUp(self):
         super(ProyectoTestEditar, self).setUp()
-        self.gerente = User.objects.create(username='gerente2')
+        self.proyecto.gerente = User.objects.create(username='gerente2')
 
     def test_editar_nombre(self):
-        nombre_anterior = self.nombre
-        self.nombre = 'Proyecto-test-nombre-cambiado'
+        nombre_anterior = self.proyecto.nombre
+        self.proyecto.nombre = 'Proyecto-test-nombre-cambiado'
         try:
-            self.assertNotEqual(self.nombre, nombre_anterior)
+            self.assertNotEqual(self.proyecto.nombre, nombre_anterior)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
     def test_editar_descripcion(self):
-        descripcion_anterior = self.descripcion
-        self.descripcion = 'descripcion-cambiada-test'
+        descripcion_anterior = self.proyecto.descripcion
+        self.proyecto.descripcion = 'descripcion-cambiada-test'
         try:
-            self.assertNotEqual(self.descripcion, descripcion_anterior)
+            self.assertNotEqual(self.proyecto.descripcion, descripcion_anterior)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
+
+    def test_agregar_y_eliminar_miembros(self):
+        #Agregar miembros
+        for r in 'abc':    
+          self.proyecto.miembros.add(User.objects.create(username='Pepe'+r))
+
+        try:
+            self.assertEqual(len(self.proyecto.miembros.all()),4)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+        #Eliminar miembros    
+        cantidad_miembros= len(self.proyecto.miembros.all())
+
+        try:
+            self.assertNotEqual(len(self.proyecto.miembros.first().delete()),cantidad_miembros)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+
+class ProyectoTestEliminar(TestProyectoSetUp):
+    def setUp(self):
+        super(ProyectoTestEliminar, self).setUp()
+        self.id_proyecto = self.proyecto.id
+
+    def __del__(self):
+        pass        
+
+    def test_eliminar_proyecto(self):
+        self.proyecto.delete()
 
 # **Volver atras** : [[models.py]]
 
