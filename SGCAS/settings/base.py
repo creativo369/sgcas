@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'import_export',
+    'finalware',
 ]
 
 AUTH_USER_MODEL = 'usuario.User'
@@ -233,4 +234,15 @@ EMAIL_HOST_USER = 'is2.equipo7.sgcas@gmail.com'
 EMAIL_HOST_PASSWORD = 'is212345678'
 EMAIL_PORT = 587
 
+# To create/update a superuser account automatically, add the following to your settings file.
+# This will disable the `superuser` creation option of syncdb.
 
+# This field is stored in `User.USERNAME_FIELD`. This is usually a `username` or  an `email`.
+SITE_SUPERUSER_USERNAME = 'AdminSGCAS'
+
+# This field is stored in the `email` field, provided, that `User.USERNAME_FIELD` is not an `email`.
+# If `User.USERNAME_FIELD` is already an email address, set `SITE_SUPERUSER_EMAIL = SITE_SUPERUSER_USERNAME`
+SITE_SUPERUSER_EMAIL = 'is2.equipo7.sgcas@gmail.com'
+
+# A hashed version of `SITE_SUPERUSER_PASSWORD` will be store in superuser's `password` field.
+SITE_SUPERUSER_PASSWORD = 'qwertysgcas'
