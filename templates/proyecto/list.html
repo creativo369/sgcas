@@ -24,8 +24,8 @@
         </tr>
         </thead>
         <tbody>
-        {% if object_list %}
-            {% for proyecto in object_list %}
+        {% if page_obj %}
+            {% for proyecto in page_obj %}
                 <tr>
                     <td>{{ proyecto.nombre }}</td>
                     <td>{{ proyecto.gerente }}</td>
@@ -34,10 +34,8 @@
                         <a type="button" class="btn btn-info" href="{% url 'proyecto:detail' proyecto.id %}">Más
                             Detalles</a>
                         {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado'  %}
-                           {% if request.user == proyecto.gerente %}
-                                <a type="button" class="btn btn-info" href="{% url 'proyecto:change' proyecto.id %}">
-                                Transici&oacute;n del Proyecto</a>
-                               {% endif %}
+                            <a type="button" class="btn btn-info" href="{% url 'proyecto:change' proyecto.id %}">
+                                Transici&oacute;n del Proyecto</a>                       
                         {% endif %}
 
                     </td>

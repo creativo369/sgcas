@@ -72,18 +72,20 @@ def change_state(request, pk):
     """
     proyecto = get_object_or_404(Proyecto, id=pk)
     form = ChangeProject(request.POST or None, instance=proyecto)
-    if form.is_valid():
-        if proyecto.estado == 'Iniciado':
-            proyecto.fecha_iniciado = datetime.date.today()
-        elif proyecto.estado == 'Cancelado':
-            proyecto.fecha_cancelado = datetime.date.today()
-        elif proyecto.estado == 'Finalizado':
-            proyecto.fecha_finalizado = datetime.date.today()
-        proyecto.save()
-        form.save()
-        return redirect('proyecto:list')
-    return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
-
+    if proyecto.gerente == request.user:
+        if form.is_valid():
+            if proyecto.estado == 'Iniciado':
+                proyecto.fecha_iniciado = datetime.date.today()
+            elif proyecto.estado == 'Cancelado':
+                proyecto.fecha_cancelado = datetime.date.today()
+            elif proyecto.estado == 'Finalizado':
+                proyecto.fecha_finalizado = datetime.date.today()
+            proyecto.save()
+            form.save()
+            return redirect('proyecto:list')
+        return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
+    else:
+        return render(request,'proyecto/validate_estado_transicion.html')
 
 # === create project ===
 class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
