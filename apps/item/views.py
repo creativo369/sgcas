@@ -223,16 +223,23 @@ def item_eliminar(request, pk, id_fase):
        **:return:** Se elimina el ítem y se redirige a la lista de ítems de la fase.<br/>
        """
     item = Item.objects.get(id=pk)
+    verificacion_relaciones = 0
+    verificacion_relaciones = len(item.antecesores.all()) + len(item.sucesores.all()) + len(item.padres.all()) + len(item.hijos.all())
+
+       
     if item.estado == 'Desarrollo':
-        id_fase = item.fase.pk
-        proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
-        proyecto.complejidad -= item.costo
-        proyecto.save()
-        actualizar_punteros(item)
-        item.delete()
-        return redirect('item:item_lista', id_fase=id_fase)
+        if verificacion_relaciones == 0:    
+            id_fase = item.fase.pk
+            proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+            proyecto.complejidad -= item.costo
+            proyecto.save()
+            actualizar_punteros(item)
+            item.delete()
+            return redirect('item:item_lista', id_fase=id_fase)
+        else:
+            return render(request,'item/validate_eliminacion.html')
     else:
-        return render(request,'item/validate_item_aprobado.html')
+        return render(request,'item/validate_item_aprobado.html',{'item':item})
 
 
 ##Actualiza los punteros de las relaciones
@@ -325,7 +332,7 @@ def item_modificar_basico(request, pk, id_fase):
         }
         return render(request, 'item/item_modificar.html', context)
     else:
-        return render(request, 'item/validate_item_aprobado.html')
+        return render(request, 'item/validate_item_aprobado.html',{'item':item})
 
 # === modificar ti ===
 def item_modificar_ti(request, pk):

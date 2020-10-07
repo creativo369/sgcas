@@ -253,7 +253,7 @@ def decision_comite(solicitud):
     """
     subject = ''
     message = ''
-    if solicitud.votacion > 1:
+    if solicitud.votacion >= 1:
         subject = 'Solicitud aprobada.'
         if solicitud.item is not None:
             item = solicitud.item
