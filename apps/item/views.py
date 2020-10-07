@@ -412,22 +412,32 @@ def get_item_snapshot(pk):
 @requiere_permiso('versiones_item')
 # === ítem versiones ===
 def item_versiones(request, pk, id_fase):
-    lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
-    fase = Fase.objects.get(id=id_fase)
+    """
+    Permite obtener una lista con todas las versiones disponibles de un ítem, para su posterior restauración.<br/>
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe pk de una instancia del ítem cuya lista de versiones se desea obtener.<br/>
+    **:param id_fase:** Recibe el id de la fase en la que se halla el ítem para realizar los breadcrumbs.<br/>
+    **:return:** Retorna una lista con las versiones disponibles de un ítem, para su posteriosr restauración.<br/>
+    """
+    item = Item.objects.get(pk=pk)
+    if item.estado != 'Aprobado':
+        lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
+        fase = Fase.objects.get(id=id_fase)
 
-    paginator = Paginator(lista_item_version, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'versiones': lista_item_version,
-        'fase': fase,
-        'proyecto': Fase.objects.get(id=id_fase).proyecto,
-        'item': Item.objects.get(pk=pk),
-        'page_obj': page_obj
-    }
+        paginator = Paginator(lista_item_version, 3)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'versiones': lista_item_version,
+            'fase': fase,
+            'proyecto': Fase.objects.get(id=id_fase).proyecto,
+            'item': Item.objects.get(pk=pk),
+            'page_obj': page_obj
+        }
 
-    return render(request, 'item/item_versiones.html', context)
-
+        return render(request, 'item/item_versiones.html', context)
+    else:
+        return render(request, 'item/validate_item_aprobado.html', {'item':item})
 
 @requiere_permiso('versiones_item')
 # === restaurar versión ===
@@ -436,6 +446,7 @@ def restaurar_version(request, pk, id_fase):
     Permite la restauración de la versión de un ítem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
     **:param pk:** Recibe pk de una instancia del ítem el cual representa la versión a la cual se desea regresar.<br/>
+    **:param id_fase:** Recibe el id de la fase para buscar la versión del ítem que se desea restaurar.<br/>
     **:return:** Retorna una instancia de ítem actualizada.<br/>
     """
     nr_item = Item.objects.get(pk=pk)  ##new release item
