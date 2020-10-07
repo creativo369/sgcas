@@ -219,8 +219,11 @@ def eliminar_lb(request, pk, id_fase):
     **:param id_fase:** Recibe pk de una instancia de fase, en donde se encuentra la linea base.<br/>
     **:return:** Retorna una instancia de linea base eliminada.<br/>
     """
-    get_object_or_404(LineaBase, pk=pk).delete()
-    return redirect('linea_base:linea_lista', id_fase=id_fase)
+    if len(LineaBase.objects.get(pk=pk).items.all())==0:
+        get_object_or_404(LineaBase, pk=pk).delete()
+        return redirect('linea_base:linea_lista', id_fase=id_fase)
+    else:
+        return render(request,'linea_base/validate_eliminar_lb.html')
 
 # **Volver atras** : [[urls.py]]
 

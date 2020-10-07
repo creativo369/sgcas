@@ -517,15 +517,16 @@ def fases_rel(request, pk):
     **:param pk:** Recibe pk de una instancia del ítem, ejecutor de la acción de 'establecer relación'.<br/>
     **:return:** Retorna un template de las fases de un proyecto.<br/>
     """
-
-    proyecto = Item.objects.get(pk=pk).fase.proyecto
-    context = {
-        'item': get_object_or_404(Item, pk=pk),
-        'fase': get_object_or_404(Item, pk=pk).fase,
-        'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
-    }
-    return render(request, 'item/item_fases_relaciones.html', context)
-
+    if Item.objects.get(pk=pk).estado != 'Aprobado':
+        proyecto = Item.objects.get(pk=pk).fase.proyecto
+        context = {
+            'item': get_object_or_404(Item, pk=pk),
+            'fase': get_object_or_404(Item, pk=pk).fase,
+            'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
+        }
+        return render(request, 'item/item_fases_relaciones.html', context)
+    else:
+        return render(request, 'item/validate_item_aprobado.html', {'item':Item.objects.get(pk=pk)})    
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===
