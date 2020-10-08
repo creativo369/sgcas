@@ -94,6 +94,7 @@ class ComiteTestEliminar(TestComiteSetUp):
 
     def test_eliminar_comite(self):
         self.comite.delete()
+        
 # **Volver atras** : [[models.py]]
 
 # **Ir a la documentación de URLS del modulo comité** : [[urls.py]]

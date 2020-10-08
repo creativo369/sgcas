@@ -41,6 +41,49 @@
                 </ul>
             </h4>
             <h4>Versión: <small class="text-muted">{{ item.nro_version }}</small></h4>
+
+            <h4>Relaciones:</h4>
+
+            <ul> 
+                <h5>Antecesores:
+                     <ul style="list-style: circle">
+                        {% for antecesores in item.antecesores.all %}
+                            <li><small class="text-muted"> &iacute;tem {{ antecesores.nombre }}, de fase {{ antecesores.fase }}</small></li>
+                        {% endfor%}
+                     </ul>
+                </h5>
+            </ul>
+
+            <ul>
+                <h5>Sucesores:
+                     <ul style="list-style: circle">
+                        {% for sucesores in item.sucesores.all %}
+                            <li><small class="text-muted"> &iacute;tem {{ sucesores.nombre }}, de fase {{ sucesores.fase }}</small></li>
+                        {% endfor%}
+                     </ul>
+                </h5>
+             </ul>
+
+             <ul>
+                <h5>Padres:
+                     <ul style="list-style: circle">
+                        {% for padres in item.padres.all %}
+                            <li><small class="text-muted"> &iacute;tem {{ padres.nombre }}, de fase {{ padres.fase }}</small></li>
+                        {% endfor%}
+                     </ul>   
+                </h5>
+             </ul>
+
+             <ul>   
+                <h5>Hijos:
+                     <ul style="list-style: circle"> 
+                        {% for hijos in item.hijos.all %}
+                            <li><small class="text-muted"> &iacute;tem {{ hijos.nombre }}, de fase {{ hijos.fase }}</small></li>
+                        {% endfor%}
+                     </ul>
+                </h5>
+             </ul>
+
             <button type="button" class="btn btn-link" onclick="window.history.back()">Volver</button>
         </div>
     </div>

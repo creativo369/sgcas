@@ -2,6 +2,10 @@
 {% block title %} Listar fases {% endblock %}
 
 {% block content %}
+    <ol class="breadcrumb">      
+      <li class="breadcrumb-item active">Proyecto {{ proyecto }}</li>            
+    </ol>
+    
     <h1 style="text-align: center">Fases del proyecto {{ proyecto.nombre }}</h1>
     {% if page_obj %}
     <form method="GET" action="{% url 'fase:search' proyecto.id %}">

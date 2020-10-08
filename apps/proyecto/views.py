@@ -10,6 +10,7 @@ from django.urls import reverse_lazy
 from SGCAS.decorators import requiere_permiso
 from .models import Proyecto
 from apps.fase.models import Fase
+from apps.usuario.models import User
 
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -71,18 +72,20 @@ def change_state(request, pk):
     """
     proyecto = get_object_or_404(Proyecto, id=pk)
     form = ChangeProject(request.POST or None, instance=proyecto)
-    if form.is_valid():
-        if proyecto.estado == 'Iniciado':
-            proyecto.fecha_iniciado = datetime.date.today()
-        elif proyecto.estado == 'Cancelado':
-            proyecto.fecha_cancelado = datetime.date.today()
-        elif proyecto.estado == 'Finalizado':
-            proyecto.fecha_finalizado = datetime.date.today()
-        proyecto.save()
-        form.save()
-        return redirect('proyecto:list')
-    return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
-
+    if proyecto.gerente == request.user:
+        if form.is_valid():
+            if proyecto.estado == 'Iniciado':
+                proyecto.fecha_iniciado = datetime.date.today()
+            elif proyecto.estado == 'Cancelado':
+                proyecto.fecha_cancelado = datetime.date.today()
+            elif proyecto.estado == 'Finalizado':
+                proyecto.fecha_finalizado = datetime.date.today()
+            proyecto.save()
+            form.save()
+            return redirect('proyecto:list')
+        return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
+    else:
+        return render(request,'proyecto/validate_estado_transicion.html')
 
 # === create project ===
 class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
@@ -99,6 +102,12 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'proyecto.crear_proyecto'
     template_name = 'proyecto/create.html'
     success_url = reverse_lazy('proyecto:success')
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(CreateProject, self).get_form_kwargs(**kwargs)
+        kwargs['gerente'] = self.request.user #se envia al formulario el username del gerente
+        return kwargs
+
 
     def form_valid(self, form):
         """

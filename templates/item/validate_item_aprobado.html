@@ -7,6 +7,7 @@
   <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="window.history.back()">&times;</a>
   <div><strong><h3>Acci&oacute;n Denegada!</h3></strong> </div>
   <div><h5>No se permite la modificaci&oacute;n o eliminaci&oacute;n de un &iacute;tem aprobado.</h5></div>
-   <a type="button" class="btn btn-link" onclick="window.history.back()"">Aceptar</a>
+    <a type="button" class="btn btn-link" href="{% url 'item:item_cambiar_estado' item.pk %}">Solicitar Cambio de Estado</a>
+   <a type="button" class="btn btn-link" onclick="window.history.back()"">Aceptar</a> 
 </div>
 {% endblock content %}

@@ -20,6 +20,7 @@ from apps.item.graph import exclude_potencial_cycles, shortest_path, create_grap
     item_has_path
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
+from apps.proyecto.models import Proyecto
 from apps.tipo_item.models import TipoItem
 from apps.proyecto.models import Proyecto
 
@@ -77,7 +78,6 @@ def crear_item_basico(request, id_fase):
             item.fase = Fase.objects.get(id=id_fase)
             item.save()
             form.save_m2m()
-
             ##Actualizamos la complejidad del proyecto
             proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.pk)
             proyecto.complejidad += item.costo
@@ -223,16 +223,23 @@ def item_eliminar(request, pk, id_fase):
        **:return:** Se elimina el ítem y se redirige a la lista de ítems de la fase.<br/>
        """
     item = Item.objects.get(id=pk)
+    verificacion_relaciones = 0
+    verificacion_relaciones = len(item.antecesores.all()) + len(item.sucesores.all()) + len(item.padres.all()) + len(item.hijos.all())
+
+       
     if item.estado == 'Desarrollo':
-        id_fase = item.fase.pk
-        proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
-        proyecto.complejidad -= item.costo
-        proyecto.save()
-        actualizar_punteros(item)
-        item.delete()
-        return redirect('item:item_lista', id_fase=id_fase)
+        if verificacion_relaciones == 0:    
+            id_fase = item.fase.pk
+            proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+            proyecto.complejidad -= item.costo
+            proyecto.save()
+            actualizar_punteros(item)
+            item.delete()
+            return redirect('item:item_lista', id_fase=id_fase)
+        else:
+            return render(request,'item/validate_eliminacion.html')
     else:
-        return render(request,'item/validate_item_aprobado.html')
+        return render(request,'item/validate_item_aprobado.html',{'item':item})
 
 
 ##Actualiza los punteros de las relaciones
@@ -325,7 +332,7 @@ def item_modificar_basico(request, pk, id_fase):
         }
         return render(request, 'item/item_modificar.html', context)
     else:
-        return render(request, 'item/validate_item_aprobado.html')
+        return render(request, 'item/validate_item_aprobado.html',{'item':item})
 
 # === modificar ti ===
 def item_modificar_ti(request, pk):
@@ -341,7 +348,6 @@ def item_modificar_ti(request, pk):
         item = form.save()
         return redirect('item:item_modificar_atr_ti', pk=item.pk)
     return render(request, 'item/item_importar_tipo_item.html', {'form': form, 'fase': item.fase, 'item': item})
-
 
 
 # === ítem modificar atributos ===
@@ -406,22 +412,32 @@ def get_item_snapshot(pk):
 @requiere_permiso('versiones_item')
 # === ítem versiones ===
 def item_versiones(request, pk, id_fase):
-    lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
-    fase = Fase.objects.get(id=id_fase)
+    """
+    Permite obtener una lista con todas las versiones disponibles de un ítem, para su posterior restauración.<br/>
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe pk de una instancia del ítem cuya lista de versiones se desea obtener.<br/>
+    **:param id_fase:** Recibe el id de la fase en la que se halla el ítem para realizar los breadcrumbs.<br/>
+    **:return:** Retorna una lista con las versiones disponibles de un ítem, para su posteriosr restauración.<br/>
+    """
+    item = Item.objects.get(pk=pk)
+    if item.estado != 'Aprobado':
+        lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
+        fase = Fase.objects.get(id=id_fase)
 
-    paginator = Paginator(lista_item_version, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'versiones': lista_item_version,
-        'fase': fase,
-        'proyecto': Fase.objects.get(id=id_fase).proyecto,
-        'item': Item.objects.get(pk=pk),
-        'page_obj': page_obj
-    }
+        paginator = Paginator(lista_item_version, 3)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'versiones': lista_item_version,
+            'fase': fase,
+            'proyecto': Fase.objects.get(id=id_fase).proyecto,
+            'item': Item.objects.get(pk=pk),
+            'page_obj': page_obj
+        }
 
-    return render(request, 'item/item_versiones.html', context)
-
+        return render(request, 'item/item_versiones.html', context)
+    else:
+        return render(request, 'item/validate_item_aprobado.html', {'item':item})
 
 @requiere_permiso('versiones_item')
 # === restaurar versión ===
@@ -430,6 +446,7 @@ def restaurar_version(request, pk, id_fase):
     Permite la restauración de la versión de un ítem.<br/>
     **:param request:** Recibe un request por parte de un usuario.<br/>
     **:param pk:** Recibe pk de una instancia del ítem el cual representa la versión a la cual se desea regresar.<br/>
+    **:param id_fase:** Recibe el id de la fase para buscar la versión del ítem que se desea restaurar.<br/>
     **:return:** Retorna una instancia de ítem actualizada.<br/>
     """
     nr_item = Item.objects.get(pk=pk)  ##new release item
@@ -476,10 +493,11 @@ def item_cambiar_estado(request, pk):
                 return redirect('comite:solicitud_item', pk)
             form.save()
             return redirect('item:item_lista', id_fase=item.fase.pk)
-        return render(request, 'item/item_cambiar_estado.html', {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
-                                                                  'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
+        return render(request, 'item/item_cambiar_estado.html',
+                      {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
+                       'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
     return render(request, 'item/item_cambiar_estado.html', {'item': item})
-    
+
 
 ##Retorna la linea base de item (si tiene)
 def get_lb(pk):
@@ -499,15 +517,16 @@ def fases_rel(request, pk):
     **:param pk:** Recibe pk de una instancia del ítem, ejecutor de la acción de 'establecer relación'.<br/>
     **:return:** Retorna un template de las fases de un proyecto.<br/>
     """
-
-    proyecto = Item.objects.get(pk=pk).fase.proyecto
-    context = {
-        'item': get_object_or_404(Item, pk=pk),
-        'fase': get_object_or_404(Item, pk=pk).fase,
-        'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
-    }
-    return render(request, 'item/item_fases_relaciones.html', context)
-
+    if Item.objects.get(pk=pk).estado != 'Aprobado':
+        proyecto = Item.objects.get(pk=pk).fase.proyecto
+        context = {
+            'item': get_object_or_404(Item, pk=pk),
+            'fase': get_object_or_404(Item, pk=pk).fase,
+            'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
+        }
+        return render(request, 'item/item_fases_relaciones.html', context)
+    else:
+        return render(request, 'item/validate_item_aprobado.html', {'item':Item.objects.get(pk=pk)})    
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===
@@ -622,13 +641,28 @@ def calculo_impacto(request, pk):
     complejidad_proyecto = get_object_or_404(Fase, pk=item.fase.pk).proyecto.complejidad
     calculo = explore(item, impacto=0)
     context = {
-        'complejidad_proyecto':complejidad_proyecto, 
-        'item':item,
+        'complejidad_proyecto': complejidad_proyecto,
+        'item': item,
         'fase': Fase.objects.get(id=item.fase.pk),
         'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
-        'calculo_impacto':round((calculo/complejidad_proyecto), 2)
+        'calculo_impacto': round((calculo / complejidad_proyecto), 2)
     }
     return render(request, 'item/item_calculo_impacto.html', context)
+
+
+def explore(item, impacto):
+    """
+    Explora el arbol sumando los costos.<br/>
+    **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+    **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+    **:return:** El impacto de un item en el proyecto.<br/>
+    """
+    impacto += item.costo
+    for hijo in item.hijos.all():
+        return explore(hijo, impacto)
+    for sucesor in item.sucesores.all():
+        return explore(sucesor, impacto)
+    return impacto
 
 
 def explore(item, impacto):
