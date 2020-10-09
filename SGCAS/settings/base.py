@@ -23,15 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 SECRET_KEY = 'nayi!!*seyd)t#+m)2@l&7m3^!6j=*$vytuxb86ig1#pq(=khl'
 
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
-
 
 # Application definition
 
@@ -79,7 +74,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SGCAS.urls'
 
-
 FIREBASE_CONFIG = {
     "apiKey": "AIzaSyDusx5xjeTHzgEFWGrhN-YK_rvqFt2F8QM",
     "authDomain": "sgcas-is2-team7.firebaseapp.com",
@@ -110,8 +104,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SGCAS.wsgi.application'
 
-
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -134,8 +126,6 @@ DATABASES = {
     # },
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -154,8 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -168,7 +156,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -202,7 +189,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 # ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 # The user is required to enter a username when signing up.
-#s ACCOUNT_USERNAME_REQUIRED = True
+# s ACCOUNT_USERNAME_REQUIRED = True
 
 # Attempt to bypass the signup form by using fields (e.g. username, email) retrieved from the social account provider.
 # SOCIALACCOUNT_AUTO_SIGNUP = False
@@ -242,7 +229,11 @@ SITE_SUPERUSER_USERNAME = 'AdminSGCAS'
 
 # This field is stored in the `email` field, provided, that `User.USERNAME_FIELD` is not an `email`.
 # If `User.USERNAME_FIELD` is already an email address, set `SITE_SUPERUSER_EMAIL = SITE_SUPERUSER_USERNAME`
-SITE_SUPERUSER_EMAIL = 'is2.equipo7.sgcas@gmail.com'
+SITE_SUPERUSER_EMAIL = 'geekpy@hotmail.com'
 
 # A hashed version of `SITE_SUPERUSER_PASSWORD` will be store in superuser's `password` field.
 SITE_SUPERUSER_PASSWORD = 'qwertysgcas'
+
+FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, 'fixtures'),
+)

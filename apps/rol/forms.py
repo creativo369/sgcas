@@ -13,11 +13,7 @@ from apps.usuario.models import User
 class GroupForm(forms.ModelForm):
     # ** Despliega un filtro de los permisos en el sistema **
     permissions = forms.ModelMultipleChoiceField(queryset=Permission.objects.filter(
-        Q(codename='editar_fase')
-        | Q(codename='detalles_fase')
-        | Q(codename='eliminar_fase')
-        | Q(codename='cambio_estado_fase')
-        | Q(codename='crear_item')
+        Q(codename='crear_item')
         | Q(codename='editar_item')
         | Q(codename='listar_item')
         | Q(codename='ver_item')
@@ -138,7 +134,10 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(codename='asignar_rol')
         | Q(codename='editar_rol')
         | Q(codename='eliminar_rol')
-
+        | Q(codename='editar_fase')
+        | Q(codename='detalles_fase')
+        | Q(codename='eliminar_fase')
+        | Q(codename='cambio_estado_fase')
     ),
         required=True,
         # widget=forms.Select(attrs={'class':'form-control'}))

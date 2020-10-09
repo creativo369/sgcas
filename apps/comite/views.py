@@ -184,7 +184,6 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     permission_required = 'comite.ver_comite'
     success_url = reverse_lazy('comite:detail')
 
-
 def voto_favor(request, pk):
     """
     Realiza la votacion a favor de la aprobacion del artefacto.

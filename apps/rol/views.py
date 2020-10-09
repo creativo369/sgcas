@@ -146,8 +146,8 @@ def eliminar_rol(request, pk, id_fase):
     rol = get_object_or_404(Rol, id=pk)
     # id_fase = rol.fase.pk
     if len(rol.usuarios.all()) == 0:
-        # rol.delete()
         Group.objects.get(name=rol.nombre).delete()
+        rol.delete()
         return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         return render(request, 'rol/validate_delete.html')

@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
@@ -19,21 +19,22 @@ def requiere_permiso(permiso):
             query_rol = None
             if 'pk' in kwargs:
                 query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
-            else:    
+            else:
                 query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
+
             if query_rol:
+                usuario_esta = False
                 for rol_fase in query_rol:
-                    if rol_fase.usuarios.all():
+                    if rol_fase.usuarios.count():
                         if request.user in rol_fase.usuarios.all():
+                            usuario_esta = True
                             try:
                                 if rol_fase.group.permissions.get(codename=permiso):
                                     return view_func(request, *args, **kwargs)
                             except:
                                 raise PermissionDenied
-                        else:
-                            raise PermissionDenied
-                    else:
-                        raise PermissionDenied
+                if usuario_esta == False :
+                    raise PermissionDenied
             else:
                 raise PermissionDenied
         return wrap

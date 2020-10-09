@@ -74,8 +74,9 @@ def fase_opciones(request):
     return render(request, 'fase/fase_opciones.html')
 
 
-@requiere_permiso('detalles_fase')
 # === fase detalles ===
+# @requiere_permiso('detalles_fase')
+@permission_required('fase.detalles_fase', raise_exception=True)
 def fase_detalles(request, id_fase):
     """
     Permite visualizar los detalles una fase de un proyecto.<br/>
@@ -84,14 +85,14 @@ def fase_detalles(request, id_fase):
     **:return:** Retorna una plantilla que despliega los detalles de una fase.<br/>
     """
     context = {
-    'fase': Fase.objects.get(id=id_fase),
-    'proyecto': Fase.objects.get(id=id_fase).proyecto
+        'fase': Fase.objects.get(id=id_fase),
+        'proyecto': Fase.objects.get(id=id_fase).proyecto
     }
     return render(request, 'fase/fase_detalles.html', context)
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
-#@requiere_permiso('listar_fase')
+# @requiere_permiso('listar_fase')
 # === lista fase ===
 def lista_fase(request, _id):
     """
@@ -116,7 +117,7 @@ def lista_fase(request, _id):
 
 
 @permission_required('fase.listar_fase', raise_exception=True)
-#@requiere_permiso('listar_fase')
+# @requiere_permiso('listar_fase')
 # === search ===
 def search(request, _id):
     """
@@ -148,7 +149,8 @@ def search(request, _id):
     return render(request, template, context)
 
 
-@requiere_permiso('cambio_estado_fase')
+@permission_required('fase.cambio_estado_fases', raise_exception=True)
+# @requiere_permiso('cambio_estado_fase')
 # === cambia estado fase ===
 def cambiar_estado_fase(request, id_fase, _id):
     """
@@ -164,11 +166,14 @@ def cambiar_estado_fase(request, id_fase, _id):
         form.save()
         return redirect('fase:fase_lista', _id=_id)
     elif fase.proyecto.estado == "Iniciado":
-        return render(request, 'fase/fase_cambiar_estado.html', {'form': form, 'fase': fase, 'proyecto': Fase.objects.get(id=id_fase).proyecto})
+        return render(request, 'fase/fase_cambiar_estado.html',
+                      {'form': form, 'fase': fase, 'proyecto': Fase.objects.get(id=id_fase).proyecto})
     else:
         return render(request, 'fase/fase_cambiar_estado.html', {'fase': fase})
 
-@requiere_permiso('eliminar_fase')
+
+@permission_required('fase.eliminar_fase', raise_exception=True)
+# @requiere_permiso('eliminar_fase')
 # === eliminar fase ===
 def eliminar_fase(request, id_fase, _id):
     """
@@ -187,7 +192,8 @@ def eliminar_fase(request, id_fase, _id):
     return redirect(success_url, _id=_id)
 
 
-@requiere_permiso('editar_fase')
+@permission_required('fase.editar_fase', raise_exception=True)
+# @requiere_permiso('editar_fase')
 # === fase modificar ===
 def fase_modificar(request, id_fase, _id, *args, **kwargs):
     """

@@ -1,1 +1,0 @@
-# Proyecto avanzado listo para cerrar el proyecto y posteriormente recorrer el proyecto en modo visualización 
