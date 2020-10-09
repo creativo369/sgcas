@@ -149,7 +149,7 @@ def search(request, _id):
     return render(request, template, context)
 
 
-@permission_required('fase.cambio_estado_fases', raise_exception=True)
+@permission_required('fase.cambio_estado_fase', raise_exception=True)
 # @requiere_permiso('cambio_estado_fase')
 # === cambia estado fase ===
 def cambiar_estado_fase(request, id_fase, _id):

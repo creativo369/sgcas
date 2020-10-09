@@ -107,8 +107,8 @@ class FaseCambiarEstadoForm(forms.ModelForm):
             if lb.estado == 'Abierta':
                 fase_estado_opciones = [('Abierta', 'Abierta')]
                 break
-        if total_items_fase - items_en_lb != 0:
-            fase_estado_opciones = [('Abierta', 'Abierta')]
+        if total_items_fase - items_en_lb == 0:
+            fase_estado_opciones = [('Abierta', 'Abierta'), ('Cerrada', 'Cerrada')]
         self.fields['estado'].choices = fase_estado_opciones
 
     class Meta(FaseForm.Meta):
