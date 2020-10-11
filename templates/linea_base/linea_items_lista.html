@@ -2,6 +2,11 @@
 {% block title %} Listar items {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">      
+      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item">Fase {{ fase }}</li>
+      <li class="breadcrumb-item active">Linea Base {{ linea_base }}</li>
+    </ol>
     <table class="table table-hover">
         <thead>
         <tr>

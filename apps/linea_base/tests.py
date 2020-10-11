@@ -2,13 +2,14 @@ from django.test import TestCase
 from apps.proyecto.models import Proyecto
 from apps.fase.models import Fase
 from apps.item.models import Item
+from apps.linea_base.models import LineaBase
 
 class TestLBSetUp(TestCase):
     def setUp(self):
-        self.descripcion = 'descripcion_LB'        
-        self.fase = Fase.objects.create(nombre='fase_test', descripcion='fase_test',
-        		proyecto=Proyecto.objects.first())
-        self.items = Item.objects.none()
+        self.linea_base = LineaBase.objects.create(descripcion='descripcion_LB')
+        self.linea_base.fase = Fase.objects.create(nombre='fase_test', descripcion='fase_test',
+                proyecto=Proyecto.objects.first())
+        self.linea_base.items.add(Item.objects.create(nombre='Item1', estado='Aprobado', descripcion= 'descripcion Item1',costo=8))
 
 class LBTestCrear(TestLBSetUp):
 
@@ -18,14 +19,21 @@ class LBTestCrear(TestLBSetUp):
     def test_descripcion(self):
         descripcion_lb = 'descripcion_LB'
         try:        
-            self.assertEqual(self.descripcion, descripcion_lb)
+            self.assertEqual(self.linea_base.descripcion, descripcion_lb)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
   
 
     def test_pertenece_fase(self):
         try:        
-            self.assertEqual(self.fase, Fase.objects.first())
+            self.assertEqual(self.linea_base.fase, Fase.objects.first())
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+    def test_item(self):
+        nombre_item = 'Item1'
+        try:        
+            self.assertEqual(self.linea_base.items.first().nombre, nombre_item)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
           
@@ -39,24 +47,41 @@ class LBTestEditar(TestLBSetUp):
         super(LBTestEditar, self).setUp()        
 
     def test_editar_descripcion(self):
-        descripcion_anterior = self.descripcion
-        self.descripcion = 'lb-test-descripcion-cambiada'        
+        descripcion_anterior = self.linea_base.descripcion
+        self.linea_base.descripcion = 'lb-test-descripcion-cambiada'        
         try:        
-            self.assertNotEqual(self.descripcion,descripcion_anterior)
+            self.assertNotEqual(self.linea_base.descripcion, descripcion_anterior)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
         
 
     def test_editar_item(self):
-        item_anterior = self.items
-        self.items = Item.objects.create(nombre= 'Item1', descripcion='descripcion item 1', costo=6)        
+        nombre_item_anterior = self.linea_base.items.first().nombre
+        self.linea_base.items.all().update(nombre = 'Item2')
+            
         try:        
-            self.assertNotEqual(self.items,item_anterior)
+            self.assertNotEqual(self.linea_base.items.first().nombre, nombre_item_anterior)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
         
+    def test_agregar_y_quitar_items(self):        
+        #Agregar ítems
+        for r in 'abc':
+            self.linea_base.items.add(Item.objects.create(nombre='Item1'+r, descripcion= 'descripcion Item1'+r,
+                estado='Aprobado',costo=8))
 
+        try:        
+            self.assertEqual(len(self.linea_base.items.all()),4)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
+        #Quitar ítems
+        cantidad_ítems=len(self.linea_base.items.all())
+
+        try:        
+            self.assertNotEqual(len(self.linea_base.items.first().delete()), cantidad_ítems)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
 # **Volver atras** : [[apps.py]]
 

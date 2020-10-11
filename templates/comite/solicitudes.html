@@ -12,7 +12,7 @@
       <li class="breadcrumb-item"><a href="#" onclick="window.history.back()">Comité {{ comite }}</a></li>
       <li class="breadcrumb-item active">Solicitudes</li>
     </ol>
-    {% if solicitudes %}
+    {% if page_obj %}
         <table class="table table-hover">
             <thead>
             <tr>
@@ -23,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-                {% for solicitud in solicitudes %}
+                {% for solicitud in page_obj %}
                     <tr>
                         {% if solicitud.item %}
                             <td>Item</td>
@@ -58,8 +58,29 @@
                 {% endfor %}
             </tbody>
         </table>
+
+    <div class="text-center">
+        <div class="pagination">
+                <span class="step-links">
+
+                    <span class="current">
+                          <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                    </span>
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; Inicio</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                    {% endif %}
+                </span>
+        </div>
+    </div>
+
     {% else %}
         <h2>No se encontraron solicitudes.</h2>
     {% endif %}
-     <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>
+<a type="button" class="btn btn-secondary" href="{% url 'comite:detail' comite.id %}">Regresar a Detalles del comit&eacute;</a> 
+ <!--    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>  -->
 {% endblock content %}

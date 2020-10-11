@@ -1,0 +1,13 @@
+{% extends 'base/base.html'%}
+
+{% block content%}
+<br>
+<br>
+<div class="alert alert-danger alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="window.history.back()">&times;</a>
+  <div><strong><h3>Acci&oacute;n Denegada!</h3></strong> </div>
+  <div><h5>S&oacute;lo se permite la eliminaci&oacute;n de &iacute;tems no relacionados. Verifique las relaciones antes de eliminar.
+  </h5></div>
+   <a type="button" class="btn btn-link" onclick="window.history.back()"">Aceptar</a>
+</div>
+{% endblock content %}

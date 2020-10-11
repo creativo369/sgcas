@@ -124,6 +124,8 @@ class GroupForm_sistema(forms.ModelForm):
         | Q(codename='crear_comite')
         | Q(codename='editar_comite')
         | Q(codename='ver_comite')
+        | Q(codename='crear_solicitud')
+        | Q(codename='ver_solicitud')
         | Q(codename='eliminar_comite')
         | Q(codename='crear_fase')
         | Q(codename='listar_fase')
