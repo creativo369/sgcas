@@ -5,8 +5,10 @@
 {% block head_title %}{% trans "Cuenta inactiva!" %}{% endblock %}
 
 {% block content %}
+
 {% block welcome %}¡Su cuenta aún no se encuentra activada!{% endblock welcome %}
+
 {% block login %}
-    <a class="btn btn-info" href="{% url 'account_logout' %}" class="btn btn-link" >Volver</a>
+     <a class="btn btn-info" href="{% url 'account_logout' %}" class="btn btn-link" >Volver</a>
 {% endblock login %}
 {% endblock %}
