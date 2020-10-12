@@ -2,6 +2,10 @@
 {% block title %} Crear item {% endblock%}
 
 {% block content %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>     
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+    </ol>
     <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
         <div class="card-header">
             {% if validacion_proyecto.proyecto.estado == "Iniciado" %}
@@ -13,8 +17,7 @@
         </div>
         <div class="card-body card-block">
             {% if tipo_item %}
-                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal"
-                ">
+                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}
                 <div class="row form-group">
                     <div class="col col-md-3">{{ form.nombre.label }}</div>

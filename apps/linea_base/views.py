@@ -49,10 +49,12 @@ def crear_linea_base(request, id_fase):
     # elif flag and fase.proyecto.estado == "Iniciado":
     elif fase.proyecto.estado == "Iniciado":
         form = LineaBaseForm()
-        return render(request, 'linea_base/linea_crear.html', {'form': form, 'cant_items_sueltos':cant_items_sueltos})
+        return render(request, 'linea_base/linea_crear.html', {'form': form, 'cant_items_sueltos':cant_items_sueltos,
+                                'proyecto': Fase.objects.get(id=id_fase).proyecto, 'fase': Fase.objects.get(id=id_fase)})
     else:
         # return render(request, 'linea_base/linea_crear.html', {'flag': flag, 'fase': fase})
-        return render(request, 'linea_base/linea_crear.html', {'fase': fase, 'cant_items_sueltos':cant_items_sueltos})
+        return render(request, 'linea_base/linea_crear.html', {'fase': fase, 'cant_items_sueltos':cant_items_sueltos,
+                                'proyecto': Fase.objects.get(id=id_fase).proyecto, 'fase': Fase.objects.get(id=id_fase)})
 
 
 def cant_item_libres(fase):

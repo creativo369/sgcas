@@ -46,7 +46,8 @@ def crear_tipo_item(request, id_fase):
         return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
     else:
         form = TipoItemForm()
-    return render(request, 'tipo_item/tipo_item_crear.html', {'form': form})
+    return render(request, 'tipo_item/tipo_item_crear.html', {'form': form, 'proyecto': Fase.objects.get(id=id_fase).proyecto,
+                                                               'fase': Fase.objects.get(id=id_fase)})
 
 
 @login_required

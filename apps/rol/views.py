@@ -62,7 +62,8 @@ def crear_rol_view(request, id_fase):
             return redirect('rol:rol_lista', id_fase=id_fase)
     else:
         form = GroupForm()
-    return render(request, 'rol/rol_crear.html', {'form': form})
+    return render(request, 'rol/rol_crear.html', {'form': form, 'proyecto': Fase.objects.get(id=id_fase).proyecto,
+                                                    'fase': Fase.objects.get(id=id_fase)})
 
 
 @permission_required('rol.listar_rol', raise_exception=True)

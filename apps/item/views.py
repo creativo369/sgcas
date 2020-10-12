@@ -67,6 +67,13 @@ def crear_item_basico(request, id_fase):
     """
     query_fase = Fase.objects.get(
         id=id_fase)  # Obtenemos la instancia de la fase para poder acceder desde ella hasta el estado del proyecto
+    
+    context ={
+        'validacion_proyecto': query_fase,
+        'proyecto': Fase.objects.get(id=id_fase).proyecto,
+        'fase': Fase.objects.get(id=id_fase)
+    }
+
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES, id_fase=id_fase)
         if form.is_valid():
@@ -97,9 +104,10 @@ def crear_item_basico(request, id_fase):
     elif query_fase.proyecto.estado == "Iniciado":  # Solamente cuando el proyecto este en estado iniciado se pueden crear los items
         form = ItemForm(id_fase=id_fase)
     else:
-        return render(request, 'item/item_crear.html', {'validacion_proyecto': query_fase})
+        return render(request, 'item/item_crear.html', context)
     return render(request, 'item/item_crear.html',
-                  {'form': form, 'tipo_item': TipoItem.objects.exists(), 'validacion_proyecto': query_fase})
+                  {'form': form, 'tipo_item': TipoItem.objects.exists(), 'validacion_proyecto': query_fase,
+                                'proyecto': Fase.objects.get(id=id_fase).proyecto, 'fase': Fase.objects.get(id=id_fase)})
 
 
 # === importar tipo de ítem ===
