@@ -98,22 +98,33 @@ class ChangeProject(forms.ModelForm):
         # No se permite la modificacion del nombre del proyecto si su estado es pendiente
         gerente = kwargs['instance'].gerente
 
+        cerrado = True      # Cerrado valida que todas las fases esten cerradas para finalizar un proyecto, asumo entonces que inicialmente todas las fases estan cerradas
+        for fase in Fase.objects.filter(proyecto=kwargs['instance']):   # y en este for lo que hago es, si encuentra al menos 1 fase abierta entonces no se puede finalizar el proyecto
+            if fase.estado == 'Abierta':
+                cerrado = False
+
         if Fase.objects.filter(proyecto=kwargs['instance']) and kwargs['instance'].estado == "Pendiente":
-            print(Fase.objects.filter(proyecto=kwargs['instance']))
         # if kwargs['instance'].estado == 'Pendiente':
             estado_proyecto = [
                 ('Pendiente', 'Pendiente'),
                 ('Iniciado', 'Iniciado'),
             ]
             self.fields['estado'].choices = estado_proyecto
-        elif kwargs['instance'].estado == 'Iniciado':
+
+        elif kwargs['instance'].estado == 'Iniciado' and cerrado:       # Cerrado valida que todas las fases esten cerradas para finalizar un proyecto
             estado_proyecto = [
                 ('Iniciado', 'Iniciado'),
                 ('Cancelado', 'Cancelado'),
                 ('Finalizado', 'Finalizado'),
             ]
             self.fields['estado'].choices = estado_proyecto
-        else:
+        elif kwargs['instance'].estado == 'Iniciado':
+            estado_proyecto = [
+                ('Iniciado', 'Iniciado'),
+                ('Cancelado', 'Cancelado'),
+            ]
+            self.fields['estado'].choices = estado_proyecto
+        elif kwargs['instance'].estado == 'Pendiente':
             estado_proyecto = [
                 ('Pendiente', 'Pendiente'),
             ]
