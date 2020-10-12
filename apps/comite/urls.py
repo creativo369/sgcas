@@ -16,7 +16,7 @@ from apps.comite.views import CreateComite, UpdateComite, DeleteComite, success,
 app_name = 'comite'
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
 urlpatterns = [
-    url(r'^crear-comite/(?P<_id>\d+)/$', login_required(permission_required('comite.crear_comite', raise_exception=True)(CreateComite.as_view())), name='create'),
+    url(r'^crear-comite/(?P<_id>\d+)/$', login_required(CreateComite.as_view()), name='create'),
     url(r'^editar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.editar_comite', raise_exception=True)(UpdateComite.as_view())), name='update'),
     url(r'^ver-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.ver_comite', raise_exception=True)(DetailComite.as_view())), name='detail'),
     url(r'^eliminar-comite/(?P<pk>\d+)/$', login_required(permission_required('comite.eliminar_comite', raise_exception=True)(DeleteComite.as_view())), name='delete'),

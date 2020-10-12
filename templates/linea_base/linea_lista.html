@@ -67,15 +67,24 @@
                                     Mas
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
                                     {% if linea.estado == 'Abierta' %}     
                                         <a class="dropdown-item"
                                            href="{% url 'linea_base:editar_lb' linea.id fase.id %}">Editar</a>
-                                        <a class="dropdown-item" href="{% url 'linea_base:eliminar_lb' linea.id fase.id %}">Eliminar</a> 
-                                        <a class="dropdown-item" href="{% url 'linea_base:linea_estado' linea.id fase.id %}">Cambiar estado</a>                                          
+                                        {% if linea.items.all.count %}
+                                            <a class="dropdown-item"
+                                               href="{% url 'linea_base:linea_estado' linea.id fase.id %}">Cambiar estado</a>
+                                        {% endif %}
+
+                                        {% if linea.items.all.count == 0 %}
+                                            <a class="dropdown-item" href="{% url 'linea_base:eliminar_lb' linea.id fase.id %}">Eliminar</a>
+                                        {% endif%}
+
                                     {% endif %}      
                                     {% if linea.estado == 'Cerrada' %}
                                             <a class="dropdown-item"  href="{% url 'comite:solicitud_linea_base' linea.id %}">Cambiar estado</a>
                                     {% endif %} 
+                                    
                                 </div>
                             </div>
                         {% endif %}     
@@ -107,5 +116,7 @@
     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 {% endblock content %}
+
+
 
 

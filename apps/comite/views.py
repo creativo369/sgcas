@@ -63,7 +63,7 @@ class CreateComite(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     **:return:** Crea una instancia del modelo comite y lo guarda en la base de datos.<br/>
     """
     model = Comite
-    permission_required = 'comite.crear_comite'
+    # permission_required = 'comite.crear_comite'
     template_name = 'comite/create.html'
     template_detail = 'comite/detail.html'
     template_alert = 'comite/alert.html'
