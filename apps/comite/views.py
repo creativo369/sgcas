@@ -141,12 +141,15 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
         """
-        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))
-        form = self.form_class(request.POST or None, instance=comite)
-        if form.is_valid():
-            form.save()
-            return redirect(self.success_url)
-        return render(request, self.template_name, {'form': form})
+        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))        
+        if not Solicitud.objects.filter(proyecto=comite.proyecto).exists():    
+            form = self.form_class(request.POST or None, instance=comite)
+            if form.is_valid():
+                form.save()
+                return redirect(self.success_url)
+            return render(request, self.template_name, {'form': form})
+        else:
+            return render(request, 'comite/validate_editar_comite.html')
 
     def form_valid(self, form):
         """
@@ -174,6 +177,14 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     permission_required = 'comite.eliminar_comite'
     success_url = reverse_lazy('proyecto:list')
 
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.pop('pk')  # se obtiene el pk para eliminar
+        comite = Comite.objects.get(pk=pk)
+        if Solicitud.objects.filter(proyecto=comite.proyecto).exists():
+            return render(request, 'comite/validate_editar_comite.html')
+        else:
+            Comite.objects.get(pk=pk).delete()
+            return redirect(self.success_url)
 
 # === detail comite ===
 class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):

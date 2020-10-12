@@ -56,14 +56,10 @@
     <a type="button" class="btn btn-secondary" href="{% url 'proyecto:list' %}">Salir</a>
     {% if proyecto.estado != 'Cancelado' and proyecto.estado != 'Finalizado'%}
         {% if request.user == proyecto.gerente %}
-            <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
-            <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
-            <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
-
+        <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
+        <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
         {% endif %}
-    {% if proyecto.estado != 'Pendiente' %}
-        <a type="button" class="btn btn-info" href="{% url 'comite:detail' proyecto.id %}">Comité</a>
-    {% endif %}
+        <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
 
             <div class="dropdown" style="display: inline">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
