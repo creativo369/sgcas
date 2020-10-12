@@ -62,31 +62,23 @@ class FormularioComiteUpdate(forms.ModelForm):
 
 class FormularioSolicitud(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        tipo = kwargs.pop('tipo')
-        request = kwargs.pop('request')
-        to_approve = None
-        if tipo == 0:
-            to_approve = get_object_or_404(Item, pk=kwargs.pop('pk'))
-        else:
-            to_approve = get_lb(kwargs.pop('pk'))
+        
+        request = kwargs.pop('request')        
+
+        pk_lb = kwargs.pop('pk')
 
         super(FormularioSolicitud, self).__init__(*args, **kwargs)
         fields_not_required = ['asunto', 'solicitante', 'item', 'tipo', 'linea_base', 'votacion']
         self.fields['solicitante'].initial = request.user
-        self.fields['proyecto'].initial = to_approve.fase.proyecto
+        self.fields['proyecto'].initial = LineaBase.objects.get(pk=pk_lb).fase.proyecto
 
         for field in fields_not_required:
             self.fields[field].required = False
             self.fields[field].disabled = True
 
-        if tipo == 0:
-            self.fields['asunto'].initial = 'Item: {} | Fase: {} | Proyecto: {}.'.format(to_approve, to_approve.fase, to_approve.fase.proyecto)
-            self.fields['item'].initial = to_approve
-            self.fields['linea_base'].initial = None
-        else:
-            self.fields['asunto'].initial = 'Rotura de Linea Base: {}.'.format(to_approve)
+            self.fields['asunto'].initial = 'Rotura de Linea Base: {}.'.format(LineaBase.objects.get(pk=pk_lb))
             self.fields['item'].initial = None
-            self.fields['linea_base'].initial = to_approve
+            self.fields['linea_base'].initial = LineaBase.objects.get(pk=pk_lb)
 
     class Meta:
         model = Solicitud

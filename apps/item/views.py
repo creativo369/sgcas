@@ -23,6 +23,7 @@ from apps.linea_base.models import LineaBase
 from apps.proyecto.models import Proyecto
 from apps.tipo_item.models import TipoItem
 from apps.proyecto.models import Proyecto
+from apps.fase.models import Fase
 
 from SGCAS.decorators import requiere_permiso
 from SGCAS.settings.desarrollo import MEDIA_ROOT
@@ -223,23 +224,24 @@ def item_eliminar(request, pk, id_fase):
        **:return:** Se elimina el ítem y se redirige a la lista de ítems de la fase.<br/>
        """
     item = Item.objects.get(id=pk)
-    verificacion_relaciones = 0
-    verificacion_relaciones = len(item.antecesores.all()) + len(item.sucesores.all()) + len(item.padres.all()) + len(item.hijos.all())
 
-       
-    if item.estado == 'Desarrollo':
-        if verificacion_relaciones == 0:    
-            id_fase = item.fase.pk
-            proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
-            proyecto.complejidad -= item.costo
-            proyecto.save()
-            actualizar_punteros(item)
-            item.delete()
-            return redirect('item:item_lista', id_fase=id_fase)
-        else:
-            return render(request,'item/validate_eliminacion.html')
+    linea_base = LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)).all()
+    flag = 0
+
+    for linea in linea_base:
+      if linea.estado == 'Cerrada' and linea.items.filter(id=pk).exists():
+        flag = 1 #se verifica si el ítem pertenece a una línea base cerrada
+
+    if flag == 0:
+        id_fase = item.fase.pk
+        proyecto = get_object_or_404(Proyecto, pk=get_object_or_404(Fase, pk=id_fase).proyecto.pk)
+        proyecto.complejidad -= item.costo
+        proyecto.save()
+        actualizar_punteros(item)
+        item.delete()
+        return redirect('item:item_lista', id_fase=id_fase)
     else:
-        return render(request,'item/validate_item_aprobado.html',{'item':item})
+        return render(request,'item/validate_en_lb_cerrada.html')
 
 
 ##Actualiza los punteros de las relaciones
@@ -297,7 +299,15 @@ def item_modificar_basico(request, pk, id_fase):
     **:return:**  Retorna una instancia de un item con sus configuraciones basicas modificadas.<br/>
     """
     item = get_object_or_404(Item, pk=pk)
-    if item.estado == 'Desarrollo': 
+
+    linea_base = LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)).all()
+    flag = 0
+
+    for linea in linea_base:
+      if linea.estado == 'Cerrada' and linea.items.filter(id=pk).exists():
+        flag = 1
+
+    if flag == 0:    
         fase = item.fase
         l_base = LineaBase.objects.filter(fase=fase)
         l_base = [lb for lb in l_base if
@@ -332,7 +342,8 @@ def item_modificar_basico(request, pk, id_fase):
         }
         return render(request, 'item/item_modificar.html', context)
     else:
-        return render(request, 'item/validate_item_aprobado.html',{'item':item})
+        return render(request,'item/validate_en_lb_cerrada.html')
+
 
 # === modificar ti ===
 def item_modificar_ti(request, pk):
@@ -418,9 +429,16 @@ def item_versiones(request, pk, id_fase):
     **:param pk:** Recibe pk de una instancia del ítem cuya lista de versiones se desea obtener.<br/>
     **:param id_fase:** Recibe el id de la fase en la que se halla el ítem para realizar los breadcrumbs.<br/>
     **:return:** Retorna una lista con las versiones disponibles de un ítem, para su posteriosr restauración.<br/>
-    """
-    item = Item.objects.get(pk=pk)
-    if item.estado != 'Aprobado':
+    """    
+
+    linea_base = LineaBase.objects.filter(fase=Fase.objects.get(id=id_fase)).all()
+    flag = 0
+
+    for linea in linea_base:
+      if linea.estado == 'Cerrada' and linea.items.filter(id=pk).exists():
+        flag = 1
+
+    if flag == 0:
         lista_item_version = Item.objects.get(pk=pk).item_set.all().order_by('id')
         fase = Fase.objects.get(id=id_fase)
 
@@ -437,7 +455,8 @@ def item_versiones(request, pk, id_fase):
 
         return render(request, 'item/item_versiones.html', context)
     else:
-        return render(request, 'item/validate_item_aprobado.html', {'item':item})
+        return render(request,'item/validate_en_lb_cerrada.html')
+
 
 @requiere_permiso('versiones_item')
 # === restaurar versión ===
@@ -480,24 +499,35 @@ def item_cambiar_estado(request, pk):
     **:param pk:** Recibe pk de una instancia del ítem que se desea modificar.<br/>
     **:return:** Retorna una instancia de un ítem con su estado modificado.<br/>
     """
-    item = get_object_or_404(Item, pk=pk)
-    prev_estado = item.estado
-    if item.antecesores.all().exists() or item.sucesores.all().exists() or item.padres.all().exists() or item.hijos.all().exists():
-        form = ItemCambiarEstado(request.POST or None, instance=item)
-        if form.is_valid():
-            lb = get_lb(pk)
-            new_estado = form.cleaned_data['estado']
-            if prev_estado == 'Aprobado' and new_estado == 'Desarrollo':
-                if lb is not None and lb.estado == 'Cerrada':
-                    return redirect('comite:solicitud_linea_base', pk)
-                return redirect('comite:solicitud_item', pk)
-            form.save()
-            return redirect('item:item_lista', id_fase=item.fase.pk)
-        return render(request, 'item/item_cambiar_estado.html',
-                      {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
-                       'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
-    return render(request, 'item/item_cambiar_estado.html', {'item': item})
 
+    linea_base = LineaBase.objects.filter(fase=Item.objects.get(pk=pk).fase).all()
+    flag = 0
+
+    for linea in linea_base:
+      if linea.estado == 'Cerrada' and linea.items.filter(id=pk).exists():
+        flag = 1  #se verifica si el ítem pertenece a una línea base cerrada
+
+    if flag == 0:
+
+        item = get_object_or_404(Item, pk=pk)
+        prev_estado = item.estado
+        if item.antecesores.all().exists() or item.sucesores.all().exists() or item.padres.all().exists() or item.hijos.all().exists():
+            form = ItemCambiarEstado(request.POST or None, instance=item)
+            if form.is_valid():
+                lb = get_lb(pk)
+                new_estado = form.cleaned_data['estado']
+            #    if prev_estado == 'Aprobado' and new_estado == 'Desarrollo':
+            #        if lb is not None and lb.estado == 'Cerrada':
+            #            return redirect('comite:solicitud_linea_base', pk)
+            #        return redirect('comite:solicitud_item', pk)
+                form.save()
+                return redirect('item:item_lista', id_fase=item.fase.pk)
+            return render(request, 'item/item_cambiar_estado.html',
+                          {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
+                           'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
+        return render(request, 'item/item_cambiar_estado.html', {'item': item})
+    else:
+        return render(request,'item/validate_en_lb_cerrada.html') 
 
 ##Retorna la linea base de item (si tiene)
 def get_lb(pk):
@@ -517,16 +547,25 @@ def fases_rel(request, pk):
     **:param pk:** Recibe pk de una instancia del ítem, ejecutor de la acción de 'establecer relación'.<br/>
     **:return:** Retorna un template de las fases de un proyecto.<br/>
     """
-    if Item.objects.get(pk=pk).estado != 'Aprobado':
-        proyecto = Item.objects.get(pk=pk).fase.proyecto
-        context = {
-            'item': get_object_or_404(Item, pk=pk),
-            'fase': get_object_or_404(Item, pk=pk).fase,
-            'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
-        }
-        return render(request, 'item/item_fases_relaciones.html', context)
+    linea_base = LineaBase.objects.filter(fase=Item.objects.get(pk=pk).fase).all()
+    flag = 0
+
+    for linea in linea_base:
+      if linea.estado == 'Cerrada' and linea.items.filter(id=pk).exists():
+        flag = 1 #se verifica si el ítem pertenece a una línea base cerrada
+
+    if flag == 0:
+
+        if Item.objects.get(pk=pk).estado != 'Aprobado':
+            proyecto = Item.objects.get(pk=pk).fase.proyecto
+            context = {
+                'item': get_object_or_404(Item, pk=pk),
+                'fase': get_object_or_404(Item, pk=pk).fase,
+                'fases_proyecto': Fase.objects.filter(proyecto=proyecto),
+            }
+            return render(request, 'item/item_fases_relaciones.html', context)
     else:
-        return render(request, 'item/validate_item_aprobado.html', {'item':Item.objects.get(pk=pk)})    
+        return render(request,'item/validate_en_lb_cerrada.html')    
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===

@@ -19,7 +19,8 @@
                 <th scope="col">Artefacto</th>
                 <th scope="col">Descripcion de la solicitud</th>
                 <th scope="col">Solicitante</th>
-                <th scope="col">Opciones</th>
+      <!--      <th scope="col">Opciones</th>       -->
+                <th scope="col">Decisi&oacute;n</th>
             </tr>
             </thead>
             <tbody>
@@ -33,11 +34,11 @@
                         <td>{{ solicitud.descripcion }}</td>
                         <td>{{ solicitud.solicitante }}</td>
                         <td>
-                            {% if solicitud.item %}
+<!--                        {% if solicitud.item %}
                                 <a type="button" class="btn btn-secondary" href="{% url 'item:item_detalles' solicitud.item.id solicitud.item.fase.id %}">Detalles</a>
                             {% else %}
                                 <a type="button" class="btn btn-secondary" href="#">Detalles</a>
-                            {% endif %}
+                            {% endif %}     -->
                             {% if miembro_comite not in solicitud.votantes.all %}
                                <div class="dropdown" style="display: inline">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

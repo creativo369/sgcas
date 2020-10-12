@@ -59,23 +59,26 @@
                                     items</a>
                             </div>
                         </div>
-                        {% if linea.estado == 'Abierta' %}
-                            <div class="dropdown" style="display: inline">
+                        {% if linea.estado != 'Rota' %}  
+                           <div class="dropdown" style="display: inline">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                         data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                     Mas
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                       href="{% url 'linea_base:editar_lb' linea.id fase.id %}">Editar</a>
-                                    <a class="dropdown-item"
-                                       href="{% url 'linea_base:linea_estado' linea.id fase.id %}">Cambiar
-                                        estado</a>
-                                    <a class="dropdown-item" href="{% url 'linea_base:eliminar_lb' linea.id fase.id %}">Eliminar</a>
+                                    {% if linea.estado == 'Abierta' %}     
+                                        <a class="dropdown-item"
+                                           href="{% url 'linea_base:editar_lb' linea.id fase.id %}">Editar</a>
+                                        <a class="dropdown-item" href="{% url 'linea_base:eliminar_lb' linea.id fase.id %}">Eliminar</a> 
+                                        <a class="dropdown-item" href="{% url 'linea_base:linea_estado' linea.id fase.id %}">Cambiar estado</a>                                          
+                                    {% endif %}      
+                                    {% if linea.estado == 'Cerrada' %}
+                                            <a class="dropdown-item"  href="{% url 'comite:solicitud_linea_base' linea.id %}">Cambiar estado</a>
+                                    {% endif %} 
                                 </div>
                             </div>
-                        {% endif %}
+                        {% endif %}     
                     </td>
                 </tr>
             {% endfor %}
@@ -104,3 +107,5 @@
     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 {% endblock content %}
+
+
