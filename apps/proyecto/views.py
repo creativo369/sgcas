@@ -186,6 +186,11 @@ class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     form_class = FormularioProyectoUpdate
     permission_required = 'proyecto.editar_proyecto'
 
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(UpdateProject, self).get_form_kwargs(**kwargs)        
+        kwargs['gerente'] = self.request.user #se envia al formulario el username del gerente        
+        return kwargs
+
     def form_valid(self, form):
         """
 

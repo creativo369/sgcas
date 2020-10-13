@@ -20,7 +20,6 @@ class FormularioProyecto(forms.ModelForm):
         **:param kwargs:** Un diccionario del formulario de registro del proyecto<br/>
         """
         user_gerente = kwargs.pop('gerente') #se obtiene el username del gerente, que será excluido de los posibles miembros de su proyecto
-
         super(FormularioProyecto, self).__init__(*args, **kwargs)
         self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True) & ~Q(is_active=False)).exclude(username='AnonymousUser').exclude(username=user_gerente)
         # queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
@@ -67,9 +66,11 @@ class FormularioProyectoUpdate(FormularioProyecto):
     # **Clase que modela el formulario de la definición de un proyecto a ser usado en la plantilla**<br/>
 
     # Para read - only los fields que se presentan en la siguiente lista.<br/>
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):               
         super(FormularioProyectoUpdate, self).__init__(*args, **kwargs)
-
+        
+        user_gerente = kwargs.pop('gerente')
+        self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True) & ~Q(is_active=False)).exclude(username='AnonymousUser').exclude(username=user_gerente)
         # fields representa los campos que no son editables de acuerdo al estado del proyecto<br/>
         fields = ['nombre', 'fecha_creacion', 'estado']
         if 'instance' in kwargs:
