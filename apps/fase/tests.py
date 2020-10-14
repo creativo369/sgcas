@@ -2,6 +2,7 @@ from django.test import TestCase
 from apps.fase.models import Fase
 from apps.proyecto.models import Proyecto
 from apps.usuario.models import User
+from apps.item.models import Item
 
 class TestFaseSetUp(TestCase):
     def setUp(self):
@@ -79,6 +80,17 @@ class FaseTestEditar(TestFaseSetUp):
         except AssertionError as e:        
              print("Error de comparacion: {}".format(e))
 
+    def test_agregar_item_fase(self):
+        cant_item_de_fase = len(Item.objects.filter(fase=self.fase)) #inicialmente hay cero ítems
+
+        for i in 'abc':
+            Item.objects.create(nombre='item '+i, descripcion='decripcion '+i, costo=5, fase= self.fase)
+
+        try:
+            self.assertNotEqual(len(Item.objects.filter(fase=self.fase)),cant_item_de_fase)
+        except AssertionError as e:        
+             print("Error de comparacion: {}".format(e))
+             
 
 class FaseTestEliminar(TestFaseSetUp):
     def setUp(self):
