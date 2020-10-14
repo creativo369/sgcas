@@ -2,9 +2,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
-from apps.rol.models import Rol
-from apps.fase.models import Fase
-
 from apps.fase.models import Fase
 from apps.rol.models import Rol
 from apps.item.models import Item
@@ -18,25 +15,26 @@ def requiere_permiso(permiso):
                 return view_func(request, *args, **kwargs)
             query_rol = None
             if 'pk' in kwargs:
-                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
+                query_rol = Rol.objects.filter(
+                    fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
             else:
-                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')))
-
-            if query_rol:
+                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')).id)
+            if query_rol.count():
                 usuario_esta = False
                 for rol_fase in query_rol:
-                    if rol_fase.usuarios.count():
+                    if rol_fase.usuarios.count():  # Si un rol de fase no esta asignado a ningun usuario -> acceso denegado
                         if request.user in rol_fase.usuarios.all():
                             usuario_esta = True
-                            try:
-                                if rol_fase.group.permissions.get(codename=permiso):
-                                    return view_func(request, *args, **kwargs)
-                            except:
-                                raise PermissionDenied
-                if usuario_esta == False :
-                    raise PermissionDenied
+                            if rol_fase.group.permissions.filter(codename=permiso):
+                                return view_func(request, *args, **kwargs)
+                            else:
+                                usuario_esta = False
             else:
                 raise PermissionDenied
+
+            if usuario_esta == False:
+                raise PermissionDenied
+
         return wrap
 
     return decorator

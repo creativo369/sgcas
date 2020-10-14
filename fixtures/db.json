@@ -177,190 +177,10 @@
 },
 {
     "model": "sessions.session",
-    "pk": "rdv9g280kmmif51lpanhdkwzkibzmnzn",
+    "pk": "j2oxcmf7pbl7nowzduc4rl3oz89cf6qw",
     "fields": {
-        "session_data": "MzY1MWViOTAwOWFlYjNkYWJhZDQ5MGIxMjY5NDAyZjJjNDIyMGQyODp7Il9hdXRoX3VzZXJfaWQiOiIzIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiYWxsYXV0aC5hY2NvdW50LmF1dGhfYmFja2VuZHMuQXV0aGVudGljYXRpb25CYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiYzRmYjRmOTQ1ZjNkNDc5MjIwMDVlMzQ4YTRlMjU4NDU5NGM2OTNmMyJ9",
-        "expire_date": "2020-10-23T17:30:28.901Z"
-    }
-},
-{
-    "model": "linea_base.lineabase",
-    "pk": 1,
-    "fields": {
-        "identificador": "LMDHtpDH8",
-        "descripcion": "Esta es la linea base de la Fase I del Proyecto Escenario III - P3F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Abierta",
-        "fase": 9,
-        "items": [
-            1,
-            2
-        ]
-    }
-},
-{
-    "model": "linea_base.lineabase",
-    "pk": 3,
-    "fields": {
-        "identificador": "rK1rMCHPP",
-        "descripcion": "Esta es la linea base de la Fase I del Proyecto Escenario IV- P4F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "fase": 12,
-        "items": [
-            15,
-            16
-        ]
-    }
-},
-{
-    "model": "linea_base.lineabase",
-    "pk": 4,
-    "fields": {
-        "identificador": "EHynOk5J9",
-        "descripcion": "Esta es la linea base de la Fase II del Proyecto Escenario IV - P4F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "fase": 13,
-        "items": [
-            17,
-            18
-        ]
-    }
-},
-{
-    "model": "linea_base.lineabase",
-    "pk": 5,
-    "fields": {
-        "identificador": "CXpLoxf3g",
-        "descripcion": "Esta es la linea base de la Fase III del Proyecto Escenario IV- P4F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "fase": 14,
-        "items": [
-            19,
-            20
-        ]
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 1,
-    "fields": {
-        "nombre": "Tipo de Item I P3F1",
-        "descripcion": "Este es un tipo de item de prueba P1F1",
-        "atributos": "Boolean,Date",
-        "fase": 9
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 2,
-    "fields": {
-        "nombre": "Tipo de Item II P3F1",
-        "descripcion": "Este es un tipo de item de prueba P1F1",
-        "atributos": "Date,Numerico",
-        "fase": 9
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 3,
-    "fields": {
-        "nombre": "Tipo de Item I P3F2",
-        "descripcion": "Este es un tipo de item de prueba P3F2",
-        "atributos": "Boolean,Numerico",
-        "fase": 10
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 4,
-    "fields": {
-        "nombre": "Tipo de Item II P3F2",
-        "descripcion": "Este es un tipo de item II de prueba P3F2",
-        "atributos": "Char",
-        "fase": 10
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 5,
-    "fields": {
-        "nombre": "Tipo de Item I P3F3",
-        "descripcion": "Este es un tipo de item I de prueba P3F3",
-        "atributos": "Char",
-        "fase": 11
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 6,
-    "fields": {
-        "nombre": "Tipo de Item II P3F3",
-        "descripcion": "Este es un tipo de item I de prueba P3F3",
-        "atributos": "Date,Numerico",
-        "fase": 11
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 7,
-    "fields": {
-        "nombre": "Tipo de Item I P4F1",
-        "descripcion": "Este es un tipo de item I de prueba P4F1",
-        "atributos": "Date",
-        "fase": 12
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 8,
-    "fields": {
-        "nombre": "Tipo de Item II P4F1",
-        "descripcion": "Este es un tipo de item  II de prueba P4F1",
-        "atributos": "Boolean",
-        "fase": 12
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 9,
-    "fields": {
-        "nombre": "Tipo de Item I P4F2",
-        "descripcion": "Este es un tipo de item II de prueba P4F2",
-        "atributos": "Boolean,Char,Date,Numerico",
-        "fase": 13
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 10,
-    "fields": {
-        "nombre": "Tipo de Item II P4F2",
-        "descripcion": "Este es un tipo de item  II de prueba P4F2",
-        "atributos": "Char,Date",
-        "fase": 13
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 11,
-    "fields": {
-        "nombre": "Tipo de Item I P4F3",
-        "descripcion": "Este es un tipo de item  I de prueba P4F3",
-        "atributos": "Boolean,Char",
-        "fase": 14
-    }
-},
-{
-    "model": "tipo_item.tipoitem",
-    "pk": 12,
-    "fields": {
-        "nombre": "Tipo de Item II P4F3",
-        "descripcion": "Este es un tipo de item  II de prueba P4F3",
-        "atributos": "Date,Numerico",
-        "fase": 14
+        "session_data": "MjJmNmVjYTFlZmUwZTU2NzY0ZWZlZWQwMWY4NTJmN2YxOGZkZjZiYzp7Il9hdXRoX3VzZXJfaWQiOiIzIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiYWxsYXV0aC5hY2NvdW50LmF1dGhfYmFja2VuZHMuQXV0aGVudGljYXRpb25CYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNmYxODgwNGUxMzRkOTA1YTE0ZTU1YzU1M2UzYjE0ODFiM2VlOWZkYiJ9",
+        "expire_date": "2020-10-27T18:04:58.338Z"
     }
 },
 {
@@ -391,9 +211,9 @@
     "fields": {
         "app": 1,
         "account": 1,
-        "token": "ya29.a0AfH6SMCxTLKXRm0jgI50UU_OsFfWz4dE0iQlsZ-Bb_Dmr6y7-GiA--oVltq2GvtssMC9VY_K4LltKGCA5PFAGaaBisvHIBEXXUYi3Y_AQpW4Mrg71QXG4TpYQ2amzCy9iHo3dnGQluUaej_wHua1RdQUHRmDfp5JsGeUUw",
+        "token": "ya29.a0AfH6SMBOY1Whm-5iKqonxu6zk_670RFKIY9P6ZBh3d6KEPydqN4lCxgNElDRdlahx9t-vgD8QQedjKhUUePxJ90xhyK4DcZSHe6zerRJjicwcxyoF8I8h6HjLM9GHX5yTRofbBYZCnnHJKMqUslrR6riPgFAN-fArujK2g",
         "token_secret": "",
-        "expires_at": "2020-10-09T18:30:27.586Z"
+        "expires_at": "2020-10-13T19:04:57.039Z"
     }
 },
 {
@@ -402,9 +222,9 @@
     "fields": {
         "app": 1,
         "account": 2,
-        "token": "ya29.a0AfH6SMCN5Wz3HPoowqxzgGFo6_u24qw1AoH5WdTzk-8ZTQKhWIToaIwk6_BVj4oa4iAgAdSvVHtTuP1UwCJf593dlMijwxSbb2sxFcsDQIRYhA7Tpwl2q9YfRkp8WRKyKC1jsz-no4tumOP4SNCEqaN-NUbBD-CT0_k",
+        "token": "ya29.a0AfH6SMB23r_Jy7zjTZu3NgRRdviYSLdwN2WvsRFKU8tkAvaIEuVxECm6zf0urgDu9hQVYcYFQ0oqBMlB8V4uaXdliWO2SjueQTGJVaAzfw4X9rlZiFqNvreFKitVgMIeq_LZ2L1T9A2fBwAUzj3piEGFLjOjGl2TJi8",
         "token_secret": "",
-        "expires_at": "2020-10-09T18:29:57.471Z"
+        "expires_at": "2020-10-13T17:49:02.928Z"
     }
 },
 {
@@ -413,9 +233,9 @@
     "fields": {
         "app": 1,
         "account": 3,
-        "token": "ya29.a0AfH6SMB68CAltrnfExByQYOCte8xZGCeGf0eAMpy7xFtRiYTGo92g6uOBbaWsjtw5s1QfRSQ95Ve9SSi9cuyQS6Mow-NajVVMjfQT5agGjDVNUEIOWmZcb8QpR20MmQp7PxEGfbpWOLX6wAhC6hq0UpKS0InaWDFEY4",
+        "token": "ya29.a0AfH6SMCfFFC2vgDk1sx--_Z6b_ILfnNvpexl52h7c9RVgg-Y47jS9xf-jC_AqZnP-fh7awy8iTzx80-yE1Uo4xOaUjlcI6dmQMTcwOz4aEq1zzbkZbRsVXfBneqH4R84_21Tzd2tcYhIJiz2tvhEatoiX7C7jr0PBfg",
         "token_secret": "",
-        "expires_at": "2020-10-09T18:30:05.251Z"
+        "expires_at": "2020-10-13T16:15:27.350Z"
     }
 },
 {
@@ -424,1116 +244,31 @@
     "fields": {
         "app": 1,
         "account": 4,
-        "token": "ya29.a0AfH6SMBsoQ6dtVYoa80ZU2PsNhNPgmU5oBxeWDuTLTuY7IN4_EvbyyvZSrB34jIOFs8Y2CacsK8qJCgRXj-obnZOu0W6SOMjO4Y0vWiKMkXvCldZsDCOYp2Xt8Wa4rBgNSOMkLIbpQyCgQXTphNgZkJH3QeFn_WB-JU",
+        "token": "ya29.a0AfH6SMD7nW5_ik6bhuz77g41PUcVIz05HNni8mL9VtSzAKYjI25YSgajw_R0IlRnqrpbCUbzbWFfwMjQBC7-YXc3YAkVVWQdc2Ztv5kf2h734t338n5Y1YGRX_13x1JJufybKjz5FT1WGIg4KJm19XqQM6UqZBWftlE",
         "token_secret": "",
-        "expires_at": "2020-10-09T18:13:06.037Z"
+        "expires_at": "2020-10-13T16:15:32.862Z"
     }
 },
 {
-    "model": "auth.permission",
-    "pk": 1,
-    "fields": {
-        "name": "Can add log entry",
-        "content_type": 1,
-        "codename": "add_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 2,
-    "fields": {
-        "name": "Can change log entry",
-        "content_type": 1,
-        "codename": "change_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 3,
-    "fields": {
-        "name": "Can delete log entry",
-        "content_type": 1,
-        "codename": "delete_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 4,
-    "fields": {
-        "name": "Can view log entry",
-        "content_type": 1,
-        "codename": "view_logentry"
-    }
-},
-{
-    "model": "auth.permission",
+    "model": "socialaccount.socialtoken",
     "pk": 5,
     "fields": {
-        "name": "Can add permission",
-        "content_type": 2,
-        "codename": "add_permission"
+        "app": 1,
+        "account": 5,
+        "token": "ya29.a0AfH6SMAFir1wn5WC_38qk1CsPBcxUnxu7z2dGpn1NmUnhtGvcYGz2ifAYPzrisDlgGWlIb1Sb5TfL1CQuTj3yYFIe6sFAAkGOckDfr3rHhCSaTb8In29Yg05L-ISQQEOz85I-4Yrl6e1oiv2NEiJWQfgE1mAMJgazOM",
+        "token_secret": "",
+        "expires_at": "2020-10-13T16:15:40.538Z"
     }
 },
 {
-    "model": "auth.permission",
+    "model": "socialaccount.socialtoken",
     "pk": 6,
     "fields": {
-        "name": "Can change permission",
-        "content_type": 2,
-        "codename": "change_permission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 7,
-    "fields": {
-        "name": "Can delete permission",
-        "content_type": 2,
-        "codename": "delete_permission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 8,
-    "fields": {
-        "name": "Can view permission",
-        "content_type": 2,
-        "codename": "view_permission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 9,
-    "fields": {
-        "name": "Can add group",
-        "content_type": 3,
-        "codename": "add_group"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 10,
-    "fields": {
-        "name": "Can change group",
-        "content_type": 3,
-        "codename": "change_group"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 11,
-    "fields": {
-        "name": "Can delete group",
-        "content_type": 3,
-        "codename": "delete_group"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 12,
-    "fields": {
-        "name": "Can view group",
-        "content_type": 3,
-        "codename": "view_group"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 13,
-    "fields": {
-        "name": "Can add content type",
-        "content_type": 4,
-        "codename": "add_contenttype"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 14,
-    "fields": {
-        "name": "Can change content type",
-        "content_type": 4,
-        "codename": "change_contenttype"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 15,
-    "fields": {
-        "name": "Can delete content type",
-        "content_type": 4,
-        "codename": "delete_contenttype"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 16,
-    "fields": {
-        "name": "Can view content type",
-        "content_type": 4,
-        "codename": "view_contenttype"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 17,
-    "fields": {
-        "name": "Can add session",
-        "content_type": 5,
-        "codename": "add_session"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 18,
-    "fields": {
-        "name": "Can change session",
-        "content_type": 5,
-        "codename": "change_session"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 19,
-    "fields": {
-        "name": "Can delete session",
-        "content_type": 5,
-        "codename": "delete_session"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 20,
-    "fields": {
-        "name": "Can view session",
-        "content_type": 5,
-        "codename": "view_session"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 21,
-    "fields": {
-        "name": "Puede registrar usuario",
-        "content_type": 6,
-        "codename": "registrar_usuario"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 22,
-    "fields": {
-        "name": "Puede editar usuario",
-        "content_type": 6,
-        "codename": "editar_usuario"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 23,
-    "fields": {
-        "name": "Puede eliminar usuario",
-        "content_type": 6,
-        "codename": "eliminar_usuario"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 24,
-    "fields": {
-        "name": "Puede ver usuario",
-        "content_type": 6,
-        "codename": "ver_usuario"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 25,
-    "fields": {
-        "name": "Puede gestionar usuario",
-        "content_type": 6,
-        "codename": "gestion_usuario"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 26,
-    "fields": {
-        "name": "Puede ver mensaje",
-        "content_type": 6,
-        "codename": "ver_mensaje"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 27,
-    "fields": {
-        "name": "Puede editar mensaje",
-        "content_type": 6,
-        "codename": "mensaje_editar"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 28,
-    "fields": {
-        "name": "Puede rechazar mensaje",
-        "content_type": 6,
-        "codename": "mensaje_rechazar"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 29,
-    "fields": {
-        "name": "Puede crear proyecto",
-        "content_type": 7,
-        "codename": "crear_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 30,
-    "fields": {
-        "name": "Puede editar proyecto",
-        "content_type": 7,
-        "codename": "editar_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 31,
-    "fields": {
-        "name": "Puede gestionar proyecto",
-        "content_type": 7,
-        "codename": "gestion_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 32,
-    "fields": {
-        "name": "Puede ver proyecto",
-        "content_type": 7,
-        "codename": "ver_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 33,
-    "fields": {
-        "name": "Puede eliminar proyecto",
-        "content_type": 7,
-        "codename": "eliminar_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 34,
-    "fields": {
-        "name": "Puede cambiar estado proyecto",
-        "content_type": 7,
-        "codename": "cambiar_estado"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 35,
-    "fields": {
-        "name": "Puede ver detalles proyecto",
-        "content_type": 7,
-        "codename": "detalles_proyecto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 36,
-    "fields": {
-        "name": "Puede crear fase",
-        "content_type": 8,
-        "codename": "crear_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 37,
-    "fields": {
-        "name": "Puede editar fase",
-        "content_type": 8,
-        "codename": "editar_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 38,
-    "fields": {
-        "name": "Puede ver gestion de fase",
-        "content_type": 8,
-        "codename": "gestion_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 39,
-    "fields": {
-        "name": "Puede ver los detalles de fase",
-        "content_type": 8,
-        "codename": "detalles_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 40,
-    "fields": {
-        "name": "Puede eliminar fase",
-        "content_type": 8,
-        "codename": "eliminar_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 41,
-    "fields": {
-        "name": "Puede listar fase",
-        "content_type": 8,
-        "codename": "listar_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 42,
-    "fields": {
-        "name": "Puede cambiar estado fase",
-        "content_type": 8,
-        "codename": "cambio_estado_fase"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 43,
-    "fields": {
-        "name": "Puede crear linea base",
-        "content_type": 9,
-        "codename": "crear_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 44,
-    "fields": {
-        "name": "Puede editar linea base",
-        "content_type": 9,
-        "codename": "editar_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 45,
-    "fields": {
-        "name": "Puede eliminar linea base",
-        "content_type": 9,
-        "codename": "eliminar_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 46,
-    "fields": {
-        "name": "Puede listar linea base",
-        "content_type": 9,
-        "codename": "listar_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 47,
-    "fields": {
-        "name": "Puede cambiar estado linea base",
-        "content_type": 9,
-        "codename": "estado_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 48,
-    "fields": {
-        "name": "Puede agregar item linea base",
-        "content_type": 9,
-        "codename": "agregar_item_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 49,
-    "fields": {
-        "name": "Puede quitar item linea base",
-        "content_type": 9,
-        "codename": "quitar_item_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 50,
-    "fields": {
-        "name": "Puede listar item linea base",
-        "content_type": 9,
-        "codename": "listar_item_linea_base"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 51,
-    "fields": {
-        "name": "Puede crear comite",
-        "content_type": 10,
-        "codename": "crear_comite"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 52,
-    "fields": {
-        "name": "Puede editar comite",
-        "content_type": 10,
-        "codename": "editar_comite"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 53,
-    "fields": {
-        "name": "Puede ver comite",
-        "content_type": 10,
-        "codename": "ver_comite"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 54,
-    "fields": {
-        "name": "Puede eliminar comite",
-        "content_type": 10,
-        "codename": "eliminar_comite"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 55,
-    "fields": {
-        "name": "Can add solicitud",
-        "content_type": 11,
-        "codename": "add_solicitud"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 56,
-    "fields": {
-        "name": "Can change solicitud",
-        "content_type": 11,
-        "codename": "change_solicitud"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 57,
-    "fields": {
-        "name": "Can delete solicitud",
-        "content_type": 11,
-        "codename": "delete_solicitud"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 58,
-    "fields": {
-        "name": "Can view solicitud",
-        "content_type": 11,
-        "codename": "view_solicitud"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 59,
-    "fields": {
-        "name": "Puede crear rol",
-        "content_type": 12,
-        "codename": "crear_rol"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 60,
-    "fields": {
-        "name": "Puede editar rol",
-        "content_type": 12,
-        "codename": "editar_rol"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 61,
-    "fields": {
-        "name": "Puede listar rol",
-        "content_type": 12,
-        "codename": "listar_rol"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 62,
-    "fields": {
-        "name": "Puede eliminar rol",
-        "content_type": 12,
-        "codename": "eliminar_rol"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 63,
-    "fields": {
-        "name": "Puede asignar rol",
-        "content_type": 12,
-        "codename": "asignar_rol"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 64,
-    "fields": {
-        "name": "Puede crear rol sistema",
-        "content_type": 12,
-        "codename": "crear_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 65,
-    "fields": {
-        "name": "Puede editar rol sistema",
-        "content_type": 12,
-        "codename": "editar_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 66,
-    "fields": {
-        "name": "Puede gestionar rol sistema",
-        "content_type": 12,
-        "codename": "gestion_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 67,
-    "fields": {
-        "name": "Puede listar rol sistema",
-        "content_type": 12,
-        "codename": "listar_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 68,
-    "fields": {
-        "name": "Puede eliminar rol sistema",
-        "content_type": 12,
-        "codename": "eliminar_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 69,
-    "fields": {
-        "name": "Puede asignar rol sistema",
-        "content_type": 12,
-        "codename": "asignar_rol_sistema"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 70,
-    "fields": {
-        "name": "Puede crear tipo item",
-        "content_type": 13,
-        "codename": "crear_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 71,
-    "fields": {
-        "name": "Puede editar tipo item",
-        "content_type": 13,
-        "codename": "editar_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 72,
-    "fields": {
-        "name": "Puede listar tipo item",
-        "content_type": 13,
-        "codename": "listar_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 73,
-    "fields": {
-        "name": "Puede ver tipo item",
-        "content_type": 13,
-        "codename": "ver_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 74,
-    "fields": {
-        "name": "Puede eliminar tipo item",
-        "content_type": 13,
-        "codename": "eliminar_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 75,
-    "fields": {
-        "name": "Puede adjuntar tipo item",
-        "content_type": 13,
-        "codename": "adjuntar_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 76,
-    "fields": {
-        "name": "Puede importar tipo item",
-        "content_type": 13,
-        "codename": "importar_tipo_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 77,
-    "fields": {
-        "name": "Puede crear item",
-        "content_type": 14,
-        "codename": "crear_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 78,
-    "fields": {
-        "name": "Puede editar item",
-        "content_type": 14,
-        "codename": "editar_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 79,
-    "fields": {
-        "name": "Puede listar item",
-        "content_type": 14,
-        "codename": "listar_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 80,
-    "fields": {
-        "name": "Puede ver item",
-        "content_type": 14,
-        "codename": "ver_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 81,
-    "fields": {
-        "name": "Puede eliminar item",
-        "content_type": 14,
-        "codename": "eliminar_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 82,
-    "fields": {
-        "name": "Puede cambiar estado item",
-        "content_type": 14,
-        "codename": "cambiar_estado_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 83,
-    "fields": {
-        "name": "Puede gestionar relacion de item",
-        "content_type": 14,
-        "codename": "relacion_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 84,
-    "fields": {
-        "name": "Puede calcular impacto item",
-        "content_type": 14,
-        "codename": "calcular_impacto"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 85,
-    "fields": {
-        "name": "Puede ver trazabilidad item",
-        "content_type": 14,
-        "codename": "ver_trazabilidad"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 86,
-    "fields": {
-        "name": "Puede versionar item",
-        "content_type": 14,
-        "codename": "versiones_item"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 87,
-    "fields": {
-        "name": "Puede restaurar version item",
-        "content_type": 14,
-        "codename": "restaurar_item_version"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 88,
-    "fields": {
-        "name": "Puede modificar atributos item",
-        "content_type": 14,
-        "codename": "item_modificar_atributos"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 89,
-    "fields": {
-        "name": "Puede modificar TI de item",
-        "content_type": 14,
-        "codename": "item_modificar_ti"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 90,
-    "fields": {
-        "name": "Puede modificar atributos ti de item",
-        "content_type": 14,
-        "codename": "item_modificar_atributos_ti"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 91,
-    "fields": {
-        "name": "Puede modificar  import ti de item",
-        "content_type": 14,
-        "codename": "item_modificar_import_ti"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 92,
-    "fields": {
-        "name": "Can add group object permission",
-        "content_type": 15,
-        "codename": "add_groupobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 93,
-    "fields": {
-        "name": "Can change group object permission",
-        "content_type": 15,
-        "codename": "change_groupobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 94,
-    "fields": {
-        "name": "Can delete group object permission",
-        "content_type": 15,
-        "codename": "delete_groupobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 95,
-    "fields": {
-        "name": "Can view group object permission",
-        "content_type": 15,
-        "codename": "view_groupobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 96,
-    "fields": {
-        "name": "Can add user object permission",
-        "content_type": 16,
-        "codename": "add_userobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 97,
-    "fields": {
-        "name": "Can change user object permission",
-        "content_type": 16,
-        "codename": "change_userobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 98,
-    "fields": {
-        "name": "Can delete user object permission",
-        "content_type": 16,
-        "codename": "delete_userobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 99,
-    "fields": {
-        "name": "Can view user object permission",
-        "content_type": 16,
-        "codename": "view_userobjectpermission"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 100,
-    "fields": {
-        "name": "Can add site",
-        "content_type": 17,
-        "codename": "add_site"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 101,
-    "fields": {
-        "name": "Can change site",
-        "content_type": 17,
-        "codename": "change_site"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 102,
-    "fields": {
-        "name": "Can delete site",
-        "content_type": 17,
-        "codename": "delete_site"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 103,
-    "fields": {
-        "name": "Can view site",
-        "content_type": 17,
-        "codename": "view_site"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 104,
-    "fields": {
-        "name": "Can add email address",
-        "content_type": 18,
-        "codename": "add_emailaddress"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 105,
-    "fields": {
-        "name": "Can change email address",
-        "content_type": 18,
-        "codename": "change_emailaddress"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 106,
-    "fields": {
-        "name": "Can delete email address",
-        "content_type": 18,
-        "codename": "delete_emailaddress"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 107,
-    "fields": {
-        "name": "Can view email address",
-        "content_type": 18,
-        "codename": "view_emailaddress"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 108,
-    "fields": {
-        "name": "Can add email confirmation",
-        "content_type": 19,
-        "codename": "add_emailconfirmation"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 109,
-    "fields": {
-        "name": "Can change email confirmation",
-        "content_type": 19,
-        "codename": "change_emailconfirmation"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 110,
-    "fields": {
-        "name": "Can delete email confirmation",
-        "content_type": 19,
-        "codename": "delete_emailconfirmation"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 111,
-    "fields": {
-        "name": "Can view email confirmation",
-        "content_type": 19,
-        "codename": "view_emailconfirmation"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 112,
-    "fields": {
-        "name": "Can add social account",
-        "content_type": 20,
-        "codename": "add_socialaccount"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 113,
-    "fields": {
-        "name": "Can change social account",
-        "content_type": 20,
-        "codename": "change_socialaccount"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 114,
-    "fields": {
-        "name": "Can delete social account",
-        "content_type": 20,
-        "codename": "delete_socialaccount"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 115,
-    "fields": {
-        "name": "Can view social account",
-        "content_type": 20,
-        "codename": "view_socialaccount"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 116,
-    "fields": {
-        "name": "Can add social application",
-        "content_type": 21,
-        "codename": "add_socialapp"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 117,
-    "fields": {
-        "name": "Can change social application",
-        "content_type": 21,
-        "codename": "change_socialapp"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 118,
-    "fields": {
-        "name": "Can delete social application",
-        "content_type": 21,
-        "codename": "delete_socialapp"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 119,
-    "fields": {
-        "name": "Can view social application",
-        "content_type": 21,
-        "codename": "view_socialapp"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 120,
-    "fields": {
-        "name": "Can add social application token",
-        "content_type": 22,
-        "codename": "add_socialtoken"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 121,
-    "fields": {
-        "name": "Can change social application token",
-        "content_type": 22,
-        "codename": "change_socialtoken"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 122,
-    "fields": {
-        "name": "Can delete social application token",
-        "content_type": 22,
-        "codename": "delete_socialtoken"
-    }
-},
-{
-    "model": "auth.permission",
-    "pk": 123,
-    "fields": {
-        "name": "Can view social application token",
-        "content_type": 22,
-        "codename": "view_socialtoken"
+        "app": 1,
+        "account": 6,
+        "token": "ya29.a0AfH6SMBT2WQ8UxtPMT_V2zzXh0TwEO7ZVLtu5uVRFoF0YBORo8IkJnfEo9D0OY7FZW3e9vnT1P0seIPUp2db5cgSugfg8BKj7XT_6xXIsWvpQILRJdxIwv3VVKV3ZcHxEG75Jfc0TXu7U92dCCmyL4Gd_XjOzh7rfvQ",
+        "token_secret": "",
+        "expires_at": "2020-10-13T16:32:40.906Z"
     }
 },
 {
@@ -1542,17 +277,12 @@
     "fields": {
         "name": "AdministradorSGCAS",
         "permissions": [
-            63,
-            69,
-            59,
-            64,
-            60,
-            65,
-            62,
-            68,
+            71,
             66,
-            61,
             67,
+            70,
+            68,
+            69,
             22,
             23,
             25,
@@ -1571,9 +301,9 @@
         "name": "Gerente",
         "permissions": [
             51,
-            52,
-            54,
             53,
+            56,
+            54,
             42,
             36,
             39,
@@ -1588,11 +318,11 @@
             33,
             31,
             32,
-            63,
-            59,
-            60,
+            65,
+            61,
             62,
-            61
+            64,
+            63
         ]
     }
 },
@@ -1600,14 +330,54 @@
     "model": "auth.group",
     "pk": 3,
     "fields": {
-        "name": "B\u00e1sico",
+        "name": "Rol B\u00e1sico SGCAS",
         "permissions": [
-            53,
+            54,
+            39,
             38,
             41,
             35,
             31,
-            32
+            32,
+            63
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 4,
+    "fields": {
+        "name": "Rol B\u00e1sico F1E1",
+        "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
+            82,
+            87,
+            50,
+            46,
+            74,
+            75
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 5,
+    "fields": {
+        "name": "QA F1E1",
+        "permissions": [
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -1615,17 +385,31 @@
     "model": "auth.group",
     "pk": 6,
     "fields": {
-        "name": "QA-P1F1",
+        "name": "Desarrollador F1E1",
         "permissions": [
+            52,
+            86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
+            88,
+            87,
+            77,
+            72,
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1633,30 +417,19 @@
     "model": "auth.group",
     "pk": 7,
     "fields": {
-        "name": "Desarrollador-P1F1",
+        "name": "Rol B\u00e1sico F2E1",
         "permissions": [
-            84,
-            82,
-            77,
-            78,
+            55,
+            39,
+            38,
+            41,
             81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
+            82,
             87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
+            50,
+            46,
             74,
-            76,
-            72,
-            73
+            75
         ]
     }
 },
@@ -1664,15 +437,17 @@
     "model": "auth.group",
     "pk": 8,
     "fields": {
-        "name": "Rol B\u00e1sico P2F1",
+        "name": "QA F2E1",
         "permissions": [
-            79,
-            80,
-            85,
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
             50,
             46,
-            72,
-            73
+            49
         ]
     }
 },
@@ -1680,17 +455,31 @@
     "model": "auth.group",
     "pk": 9,
     "fields": {
-        "name": "QA P2F1",
+        "name": "Desarrollador F2E1",
         "permissions": [
+            52,
+            86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
+            88,
+            87,
+            77,
+            72,
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1698,30 +487,19 @@
     "model": "auth.group",
     "pk": 10,
     "fields": {
-        "name": "Desarrollador P2F1",
+        "name": "Rol B\u00e1sico F3E1",
         "permissions": [
-            84,
-            82,
-            77,
-            78,
+            55,
+            39,
+            38,
+            41,
             81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
+            82,
             87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
+            50,
+            46,
             74,
-            76,
-            72,
-            73
+            75
         ]
     }
 },
@@ -1729,9 +507,17 @@
     "model": "auth.group",
     "pk": 11,
     "fields": {
-        "name": "Rol B\u00e1sico P1F2",
+        "name": "QA F3E1",
         "permissions": [
-            44
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -1739,17 +525,31 @@
     "model": "auth.group",
     "pk": 12,
     "fields": {
-        "name": "QA P1F2",
+        "name": "Desarrollador F3E1",
         "permissions": [
+            52,
+            86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
+            88,
+            87,
+            77,
+            72,
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1757,30 +557,19 @@
     "model": "auth.group",
     "pk": 13,
     "fields": {
-        "name": "Desarrollador P1F2",
+        "name": "Rol B\u00e1sico F1E2",
         "permissions": [
-            84,
-            82,
-            77,
-            78,
+            55,
+            39,
+            38,
+            41,
             81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
+            82,
             87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
+            50,
+            46,
             74,
-            76,
-            72,
-            73
+            75
         ]
     }
 },
@@ -1788,14 +577,17 @@
     "model": "auth.group",
     "pk": 14,
     "fields": {
-        "name": "Rol B\u00e1sico P1F3",
+        "name": "QA F1E2",
         "permissions": [
-            79,
-            80,
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
             50,
             46,
-            72,
-            73
+            49
         ]
     }
 },
@@ -1803,17 +595,31 @@
     "model": "auth.group",
     "pk": 15,
     "fields": {
-        "name": "QA P1F3",
+        "name": "Desarrollador F2E2",
         "permissions": [
+            52,
+            86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
+            88,
+            87,
+            77,
+            72,
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1821,30 +627,31 @@
     "model": "auth.group",
     "pk": 16,
     "fields": {
-        "name": "Desarrollador P1F3",
+        "name": "Desarrollador F1E2",
         "permissions": [
-            84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
+            52,
             86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
             85,
-            75,
-            70,
-            71,
-            74,
-            76,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1852,13 +659,19 @@
     "model": "auth.group",
     "pk": 17,
     "fields": {
-        "name": "Rol B\u00e1sicoP1F2",
+        "name": "Rol B\u00e1sico F2E2",
         "permissions": [
-            80,
+            55,
+            39,
+            38,
+            41,
+            81,
+            82,
+            87,
             50,
             46,
-            72,
-            73
+            74,
+            75
         ]
     }
 },
@@ -1866,13 +679,17 @@
     "model": "auth.group",
     "pk": 18,
     "fields": {
-        "name": "Rol B\u00e1sico P1F1",
+        "name": "QA F2E2",
         "permissions": [
-            79,
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
             50,
             46,
-            72,
-            73
+            49
         ]
     }
 },
@@ -1880,17 +697,19 @@
     "model": "auth.group",
     "pk": 19,
     "fields": {
-        "name": "QA P1F1",
+        "name": "Rol B\u00e1sico F3E2",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -1898,30 +717,17 @@
     "model": "auth.group",
     "pk": 20,
     "fields": {
-        "name": "Desarrollador P1F1",
+        "name": "QA F3E2",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -1929,13 +735,31 @@
     "model": "auth.group",
     "pk": 21,
     "fields": {
-        "name": "Rol B\u00e1sico P2F2",
+        "name": "Desarrollador F3E2",
         "permissions": [
+            52,
+            86,
+            84,
             79,
-            50,
-            46,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -1943,17 +767,19 @@
     "model": "auth.group",
     "pk": 22,
     "fields": {
-        "name": "QA P2F2",
+        "name": "Rol B\u00e1sico F1E3",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -1961,30 +787,17 @@
     "model": "auth.group",
     "pk": 23,
     "fields": {
-        "name": "Desarrollador P2F2",
+        "name": "QA F1E3",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -1992,13 +805,31 @@
     "model": "auth.group",
     "pk": 24,
     "fields": {
-        "name": "Rol B\u00e1sico P2F3",
+        "name": "Desarrollador F1E3",
         "permissions": [
+            52,
+            86,
+            84,
             79,
-            50,
-            46,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -2006,17 +837,19 @@
     "model": "auth.group",
     "pk": 25,
     "fields": {
-        "name": "QAP2F3",
+        "name": "Rol B\u00e1sico F2E3",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -2024,30 +857,17 @@
     "model": "auth.group",
     "pk": 26,
     "fields": {
-        "name": "Desarrollador P2F3",
+        "name": "QA F2E3",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -2055,9 +875,69 @@
     "model": "auth.group",
     "pk": 27,
     "fields": {
-        "name": "dada",
+        "name": "Desarrollador F2E3",
         "permissions": [
-            81
+            52,
+            86,
+            84,
+            79,
+            80,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
+            72,
+            73,
+            76,
+            78,
+            74,
+            75
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 28,
+    "fields": {
+        "name": "Rol B\u00e1sico F3E3",
+        "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
+            82,
+            87,
+            50,
+            46,
+            74,
+            75
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 29,
+    "fields": {
+        "name": "QA F3E3",
+        "permissions": [
+            84,
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -2065,14 +945,31 @@
     "model": "auth.group",
     "pk": 30,
     "fields": {
-        "name": "Rol B\u00e1sico P3F1",
+        "name": "Desarrollador F3E3",
         "permissions": [
+            52,
+            86,
+            84,
             79,
             80,
-            50,
-            46,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -2080,17 +977,19 @@
     "model": "auth.group",
     "pk": 31,
     "fields": {
-        "name": "QA P3F1",
+        "name": "Rol B\u00e1sico F1E4",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -2098,30 +997,17 @@
     "model": "auth.group",
     "pk": 32,
     "fields": {
-        "name": "Desarrollador P3F1",
+        "name": "QA F1E4",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -2129,14 +1015,31 @@
     "model": "auth.group",
     "pk": 33,
     "fields": {
-        "name": "Rol B\u00e1sico P3F2",
+        "name": "Desarrollador F1E4",
         "permissions": [
+            52,
+            86,
+            84,
             79,
             80,
-            50,
-            46,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -2144,17 +1047,19 @@
     "model": "auth.group",
     "pk": 34,
     "fields": {
-        "name": "QA P3F2",
+        "name": "Rol B\u00e1sico F2E4",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -2162,30 +1067,17 @@
     "model": "auth.group",
     "pk": 35,
     "fields": {
-        "name": "Desarrollador P3F2",
+        "name": "QA F2E4",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -2193,14 +1085,31 @@
     "model": "auth.group",
     "pk": 36,
     "fields": {
-        "name": "Rol B\u00e1sico P3F3",
+        "name": "Desarrollador F2E4",
         "permissions": [
+            52,
+            86,
+            84,
             79,
             80,
-            50,
-            46,
+            83,
+            90,
+            92,
+            93,
+            91,
+            81,
+            85,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -2208,17 +1117,19 @@
     "model": "auth.group",
     "pk": 37,
     "fields": {
-        "name": "QA P3F3",
+        "name": "Rol B\u00e1sico F3E4",
         "permissions": [
+            55,
+            39,
+            38,
+            41,
+            81,
             82,
-            48,
-            43,
-            44,
-            45,
-            47,
+            87,
             50,
             46,
-            49
+            74,
+            75
         ]
     }
 },
@@ -2226,30 +1137,17 @@
     "model": "auth.group",
     "pk": 38,
     "fields": {
-        "name": "Desarrollador P3F3",
+        "name": "QA F3E4",
         "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
+            48,
+            43,
+            44,
+            45,
+            47,
+            50,
+            46,
+            49
         ]
     }
 },
@@ -2257,189 +1155,31 @@
     "model": "auth.group",
     "pk": 39,
     "fields": {
-        "name": "Rol B\u00e1sico P4F1",
+        "name": "Desarrollador F3E4",
         "permissions": [
-            79,
-            80,
-            50,
-            46,
-            72,
-            73
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 40,
-    "fields": {
-        "name": "QA P4F1",
-        "permissions": [
-            82,
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 41,
-    "fields": {
-        "name": "Desarrollador P4F1",
-        "permissions": [
-            84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
-            79,
-            83,
-            87,
-            80,
+            52,
             86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 42,
-    "fields": {
-        "name": "Rol B\u00e1sico P4F2",
-        "permissions": [
-            79,
-            80,
-            50,
-            46,
-            72,
-            73
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 43,
-    "fields": {
-        "name": "QA P4F2",
-        "permissions": [
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 44,
-    "fields": {
-        "name": "Desarrollador P4F2",
-        "permissions": [
             84,
-            82,
-            77,
-            78,
-            81,
-            88,
-            90,
-            91,
-            89,
             79,
+            80,
             83,
-            87,
-            80,
-            86,
-            85,
-            75,
-            70,
-            71,
-            74,
-            76,
-            72,
-            73
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 45,
-    "fields": {
-        "name": "Rol B\u00e1sico P4F3",
-        "permissions": [
-            79,
-            80,
-            50,
-            46,
-            72,
-            73
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 46,
-    "fields": {
-        "name": "QA P4F3",
-        "permissions": [
-            48,
-            43,
-            44,
-            45,
-            47,
-            50,
-            46,
-            49
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 47,
-    "fields": {
-        "name": "Desarrollador P4F3",
-        "permissions": [
-            84,
-            82,
-            77,
-            78,
-            81,
-            88,
             90,
+            92,
+            93,
             91,
-            89,
-            79,
-            83,
-            87,
-            80,
-            86,
+            81,
             85,
-            75,
-            70,
-            71,
-            74,
-            76,
+            89,
+            82,
+            88,
+            87,
+            77,
             72,
-            73
+            73,
+            76,
+            78,
+            74,
+            75
         ]
     }
 },
@@ -2447,7 +1187,7 @@
     "model": "usuario.user",
     "pk": 1,
     "fields": {
-        "password": "!MKKWrzHdych4eBqqtNHU6UfEuqY6pXwSC9blkspl",
+        "password": "!pVHOu9emm0CC4q0Kbbd7a8Pv45pfoJsL5hTqZYlH",
         "last_login": null,
         "is_superuser": false,
         "username": "AnonymousUser",
@@ -2455,7 +1195,7 @@
         "last_name": "",
         "email": "",
         "is_staff": false,
-        "date_joined": "2020-10-08T17:55:35.361Z",
+        "date_joined": "2020-10-13T15:12:04.133Z",
         "is_active": false,
         "groups": [],
         "user_permissions": []
@@ -2465,15 +1205,15 @@
     "model": "usuario.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$180000$oR5wTsZuF1KF$BYCdScposj1rxBnNLcROlni25/H5+E8qpmaURtHbdnQ=",
-        "last_login": "2020-10-09T13:52:34.758Z",
+        "password": "pbkdf2_sha256$180000$GRGBXlpK7Ywc$yWeeQqS+Yx0sUXqqPBlrveDTB6UUryTdCEL80IQn1GE=",
+        "last_login": "2020-10-13T18:02:19.501Z",
         "is_superuser": true,
-        "username": "AdminSGCAS",
+        "username": "AdminDjango",
         "first_name": "",
         "last_name": "",
-        "email": "geekpy@hotmail.com",
+        "email": "",
         "is_staff": true,
-        "date_joined": "2020-10-08T17:55:35.481Z",
+        "date_joined": "2020-10-13T15:12:04.270Z",
         "is_active": true,
         "groups": [],
         "user_permissions": []
@@ -2483,24 +1223,18 @@
     "model": "usuario.user",
     "pk": 3,
     "fields": {
-        "password": "!M8Qh4vNF7c0TAwOF6Yc1LxjThYi1gDUP3aMDOYW0",
-        "last_login": "2020-10-09T17:30:28.892Z",
+        "password": "!PjSToxiWCpehhw3Bn0MovJ2aJEUoSv3Qj6ad8x4I",
+        "last_login": "2020-10-13T18:04:58.328Z",
         "is_superuser": false,
         "username": "victor_rodolfo",
         "first_name": "Victor Rodolfo",
         "last_name": "Gonzalez Galeano",
         "email": "geekpy@fpuna.edu.py",
         "is_staff": false,
-        "date_joined": "2020-10-08T18:15:21.511Z",
+        "date_joined": "2020-10-13T15:15:16.979Z",
         "is_active": true,
         "groups": [
-            2,
-            30,
-            33,
-            36,
-            39,
-            42,
-            45
+            2
         ],
         "user_permissions": []
     }
@@ -2509,34 +1243,18 @@
     "model": "usuario.user",
     "pk": 4,
     "fields": {
-        "password": "!6ixrIpO1oGYDIdDYDnq4jDr7sHB67QCMOJV7MAeS",
-        "last_login": "2020-10-09T17:29:58.789Z",
+        "password": "!4njKcVili0VpPd4PfxlwZwWJoX1i3KMNskACQcIu",
+        "last_login": "2020-10-13T16:49:04.158Z",
         "is_superuser": false,
-        "username": "alex_victor",
-        "first_name": "Alex Victor",
-        "last_name": "Maricel Guillermo",
+        "username": "adminsgcas07",
+        "first_name": "AdminSGCAS07",
+        "last_name": "",
         "email": "is2.equipo7.sgcas@gmail.com",
         "is_staff": false,
-        "date_joined": "2020-10-08T18:15:27.073Z",
+        "date_joined": "2020-10-13T15:15:22.881Z",
         "is_active": true,
         "groups": [
-            3,
-            8,
-            9,
-            12,
-            14,
-            11,
-            17,
-            18,
-            21,
-            24,
-            31,
-            33,
-            34,
-            36,
-            39,
-            42,
-            45
+            1
         ],
         "user_permissions": []
     }
@@ -2545,32 +1263,31 @@
     "model": "usuario.user",
     "pk": 5,
     "fields": {
-        "password": "!HdrVgBaLXz7hB1a7k5INUMOdLMb8jg5q2L7F4Gec",
-        "last_login": "2020-10-09T17:30:06.584Z",
+        "password": "!NypHYvlDj3GuCQeHyGsmRc27D5szI5WXOqpj6kOF",
+        "last_login": null,
         "is_superuser": false,
         "username": "geekpy123",
         "first_name": "geekpy123",
         "last_name": "",
         "email": "frikipy94@gmail.com",
         "is_staff": false,
-        "date_joined": "2020-10-08T18:15:32.979Z",
+        "date_joined": "2020-10-13T15:15:28.521Z",
         "is_active": true,
         "groups": [
             3,
-            9,
-            12,
-            6,
+            4,
             7,
-            15,
+            10,
+            13,
+            17,
             19,
             22,
             25,
-            30,
-            33,
-            37,
-            43,
-            46,
-            40
+            28,
+            29,
+            31,
+            34,
+            37
         ],
         "user_permissions": []
     }
@@ -2579,32 +1296,121 @@
     "model": "usuario.user",
     "pk": 6,
     "fields": {
-        "password": "!t6I3gwznSfAChE5RyTBNzKxReSHscwscjIs26AXK",
-        "last_login": "2020-10-09T17:13:07.373Z",
+        "password": "!Yuf7fBRwWWlQ1OOXLG3NPILmv8PW4xmFLfsIABkB",
+        "last_login": null,
         "is_superuser": false,
         "username": "victor",
         "first_name": "Victor",
         "last_name": "Gonzalez",
         "email": "chesspy123@gmail.com",
         "is_staff": false,
-        "date_joined": "2020-10-08T18:15:39.106Z",
+        "date_joined": "2020-10-13T15:15:34.074Z",
         "is_active": true,
         "groups": [
             3,
-            10,
+            4,
             6,
             7,
+            10,
             13,
-            16,
+            17,
+            19,
+            22,
+            25,
+            28,
+            29,
+            31,
+            34,
+            37
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "usuario.user",
+    "pk": 7,
+    "fields": {
+        "password": "!cvdLVWLttwiMtuuLNy31lKt3jr2DNpWWrZQc2Kyc",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "usuario_prueba",
+        "first_name": "Usuario Prueba",
+        "last_name": "sgcas",
+        "email": "usuario.prueba.is2.2020@gmail.com",
+        "is_staff": false,
+        "date_joined": "2020-10-13T15:15:41.729Z",
+        "is_active": true,
+        "groups": [
+            3,
+            4,
+            5,
+            7,
+            8,
+            10,
+            11,
+            13,
+            14,
+            17,
+            18,
+            19,
             20,
+            22,
             23,
+            25,
             26,
+            28,
+            29,
+            31,
             32,
+            34,
             35,
-            38,
-            41,
-            44,
-            47
+            37,
+            38
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "usuario.user",
+    "pk": 8,
+    "fields": {
+        "password": "!Dn2uwAerdnXv2mzIy1OFCvfOYPU7XRoTFvE3HWwC",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "usuario2_prueba2",
+        "first_name": "usuario2_prueba2",
+        "last_name": "Usuario2 Prueba2",
+        "email": "usuario2.prueba2.is2.2020@gmail.com",
+        "is_staff": false,
+        "date_joined": "2020-10-13T15:32:42.165Z",
+        "is_active": true,
+        "groups": [
+            3,
+            4,
+            6,
+            7,
+            9,
+            10,
+            12,
+            13,
+            15,
+            16,
+            17,
+            19,
+            21,
+            22,
+            24,
+            25,
+            27,
+            28,
+            29,
+            30,
+            31,
+            33,
+            34,
+            36,
+            37,
+            39
         ],
         "user_permissions": []
     }
@@ -2614,21 +1420,21 @@
     "pk": 1,
     "fields": {
         "gerente": 3,
-        "nombre": "Proyecto Escenario I",
-        "descripcion": "Escenario 1 implica: 1.Crear el proyecto :nombre, descripcion, agregar miembros. | 2.Crear comite :nombre del comite, descripcion, miembros. | 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros. | 4.Crear roles por fases y asignar a los miembros de las fases.",
-        "fecha_creacion": "2020-10-08",
-        "ultima_modificacion": "2020-10-08T18:52:22.230Z",
+        "nombre": "Escenario I",
+        "descripcion": "Proyecto escenario I :  Proyecto creado sin iniciar\r\n | 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n | 2.Crear comite :nombre del comite, descripcion, miembros.\r\n | 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n | 4.Crear roles por fases y asignar a los miembros de las fases.",
+        "fecha_creacion": "2020-10-13",
+        "ultima_modificacion": "2020-10-13T19:08:03.429Z",
         "fecha_iniciado": null,
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Pendiente",
-        "slug": "proyecto_escenario_i",
+        "slug": "escenario_i",
         "complejidad": "0.00",
         "miembros": [
-            6,
-            4,
             5,
-            3
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2637,83 +1443,67 @@
     "pk": 2,
     "fields": {
         "gerente": 3,
-        "nombre": "Proyecto Escenario II",
-        "descripcion": "Este escenario simulado implica : \r\n1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n2.Crear comite :nombre del comite, descripcion, miembros.\r\n3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n4.Crear roles por fases y asignar a los miembros de las fases.\r\n5.Iniciar Proyecto",
-        "fecha_creacion": "2020-10-08",
-        "ultima_modificacion": "2020-10-08T23:45:50.667Z",
-        "fecha_iniciado": "2020-10-08",
+        "nombre": "Escenario II",
+        "descripcion": "Proyecto iniciado pero sin items |\r\n| 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.",
+        "fecha_creacion": "2020-10-13",
+        "ultima_modificacion": "2020-10-13T20:36:37.042Z",
+        "fecha_iniciado": "2020-10-13",
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Iniciado",
-        "slug": "proyecto_escenario_ii",
+        "slug": "escenario_ii",
         "complejidad": "0.00",
         "miembros": [
-            6,
-            4,
             5,
-            3
+            6,
+            7,
+            8
         ]
     }
 },
 {
     "model": "proyecto.proyecto",
-    "pk": 5,
+    "pk": 3,
     "fields": {
         "gerente": 3,
-        "nombre": "Proyecto Escenario III",
-        "descripcion": "1.Crear el proyecto :nombre, descripcion, agregar miembros. | 2.Crear comite :nombre del comite, descripcion, miembros. | 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros | 4.Crear roles por fases y asignar a los miembros de las fases. | 5.Iniciar Proyecto |6.Creando items  |7.Relacionando items | 8.Creando lineas bases -> aprobar algunos items  | 9.Historial de modificacion de un item -> Modificar algunos items y generar historial de versiones | 10.Trazabilidad",
-        "fecha_creacion": "2020-10-09",
-        "ultima_modificacion": "2020-10-09T14:09:54.209Z",
-        "fecha_iniciado": "2020-10-09",
+        "nombre": "Escenario III",
+        "descripcion": "Proyecto avanzado con varios items, fases, linea bases, modificaciones, trazabilidad \r\n| 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.\r\n| 5.Iniciar Proyecto\r\n| 6.Crear tipo de items \r\n| 7.Creando items \t\t\t\r\n| 8.Relacionando items\r\n| 9.Creando lineas bases -> aprobar algunos items \r\n| 10.Historial de modificacion de un item -> Modificar algunos items y generar historial de versiones\r\n| 11.Trazabilidad",
+        "fecha_creacion": "2020-10-13",
+        "ultima_modificacion": "2020-10-13T21:39:03.243Z",
+        "fecha_iniciado": "2020-10-13",
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Iniciado",
-        "slug": "proyecto_escenario_iii",
-        "complejidad": "33.00",
+        "slug": "escenario_iii",
+        "complejidad": "0.00",
         "miembros": [
-            6,
-            4,
             5,
-            3
+            6,
+            7,
+            8
         ]
     }
 },
 {
     "model": "proyecto.proyecto",
-    "pk": 6,
+    "pk": 4,
     "fields": {
         "gerente": 3,
-        "nombre": "Proyecto Escenario IV",
-        "descripcion": "1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.\r\n| 5.Iniciar Proyecto\r\n| 6.Creando Tipos de items \r\n| 7.Creando items \r\n| 8.Relacionando items\r\n| 9.Creando lineas bases\r\n| 10.Historial de modificacion de un item\r\n| 11.Fases aprobadas \r\n| 12.Listo para finalizar el proyecto",
-        "fecha_creacion": "2020-10-09",
-        "ultima_modificacion": "2020-10-09T16:52:09.941Z",
-        "fecha_iniciado": "2020-10-09",
+        "nombre": "Escenario IV",
+        "descripcion": "Proyecto avanzado listo para cerrar el proyecto y posteriormente recorrer el proyecto en modo visualizaci\u00f3n  \r\n| 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.\r\n| 5.Iniciar Proyecto\r\n| 6.Creando Tipos de items \r\n| 7.Creando items \r\n| 8.Relacionando items\r\n| 9.Creando lineas bases\r\n| 10.Historial de modificacion de un item\r\n| 11.Fases aprobadas \r\n| 12.Listo para finalizar el proyecto",
+        "fecha_creacion": "2020-10-13",
+        "ultima_modificacion": "2020-10-13T21:39:25.644Z",
+        "fecha_iniciado": "2020-10-13",
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Iniciado",
-        "slug": "proyecto_escenario_iv",
-        "complejidad": "35.00",
+        "slug": "escenario_iv",
+        "complejidad": "0.00",
         "miembros": [
-            6,
-            4,
             5,
-            3
-        ]
-    }
-},
-{
-    "model": "fase.fase",
-    "pk": 1,
-    "fields": {
-        "nombre": "Fase I de Proyecto Escenario I",
-        "descripcion": "Esta es la primera fase de nuestro proyecto escenario I",
-        "fecha_creacion": "2020-10-08",
-        "estado": "Abierta",
-        "proyecto": 1,
-        "miembros": [
             6,
-            4,
-            5
+            7,
+            8
         ]
     }
 },
@@ -2721,15 +1511,16 @@
     "model": "fase.fase",
     "pk": 2,
     "fields": {
-        "nombre": "Fase II de Proyecto Escenario I",
-        "descripcion": "Esta es la segunda fase de nuestro proyecto escenario I",
-        "fecha_creacion": "2020-10-08",
+        "nombre": "Fase I del Escenario I",
+        "descripcion": "Esta es la fase I de nuestro escenario I",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
         "proyecto": 1,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7,
+            8
         ]
     }
 },
@@ -2737,15 +1528,16 @@
     "model": "fase.fase",
     "pk": 3,
     "fields": {
-        "nombre": "Fase III de Proyecto Escenario I",
-        "descripcion": "Esta es la tercera fase de nuestro proyecto escenario I",
-        "fecha_creacion": "2020-10-08",
+        "nombre": "Fase II del Escenario I",
+        "descripcion": "Esta es la fase II de nuestro escenario I",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
         "proyecto": 1,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7,
+            8
         ]
     }
 },
@@ -2753,16 +1545,16 @@
     "model": "fase.fase",
     "pk": 4,
     "fields": {
-        "nombre": "Fase I de Proyecto Escenario II",
-        "descripcion": "Esta es la primera fase de nuestro proyecto escenario II",
-        "fecha_creacion": "2020-10-08",
+        "nombre": "Fase III del Escenario I",
+        "descripcion": "Esta es la fase III de nuestro escenario I",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
-        "proyecto": 2,
+        "proyecto": 1,
         "miembros": [
-            3,
-            4,
             5,
-            6
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2770,16 +1562,16 @@
     "model": "fase.fase",
     "pk": 5,
     "fields": {
-        "nombre": "Fase II de Proyecto Escenario II",
-        "descripcion": "Esta es la segunda fase de nuestro proyecto escenario II",
-        "fecha_creacion": "2020-10-08",
+        "nombre": "Fase I del Escenario II",
+        "descripcion": "Esta es la fase I de nuestro escenario II",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
         "proyecto": 2,
         "miembros": [
-            3,
-            4,
             5,
-            6
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2787,16 +1579,50 @@
     "model": "fase.fase",
     "pk": 6,
     "fields": {
-        "nombre": "Fase III de Proyecto Escenario II",
-        "descripcion": "Esta es la tercera fase de nuestro proyecto escenario II",
-        "fecha_creacion": "2020-10-08",
+        "nombre": "Fase II del Escenario II",
+        "descripcion": "Esta es la fase II de nuestro escenario II",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
         "proyecto": 2,
         "miembros": [
-            3,
-            4,
             5,
-            6
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "fase.fase",
+    "pk": 7,
+    "fields": {
+        "nombre": "Fase III del Escenario II",
+        "descripcion": "Esta es la fase III de nuestro escenario II",
+        "fecha_creacion": "2020-10-13",
+        "estado": "Abierta",
+        "proyecto": 2,
+        "miembros": [
+            5,
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "fase.fase",
+    "pk": 8,
+    "fields": {
+        "nombre": "Fase I del Escenario III",
+        "descripcion": "Esta es la fase I de nuestro escenario III",
+        "fecha_creacion": "2020-10-13",
+        "estado": "Abierta",
+        "proyecto": 3,
+        "miembros": [
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2804,16 +1630,16 @@
     "model": "fase.fase",
     "pk": 9,
     "fields": {
-        "nombre": "Fase I de Proyecto Escenario III",
-        "descripcion": "Esta es la primera fase de nuestro proyecto escenario III",
-        "fecha_creacion": "2020-10-09",
+        "nombre": "Fase II del Escenario III",
+        "descripcion": "Esta es la fase II de nuestro escenario III",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
-        "proyecto": 5,
+        "proyecto": 3,
         "miembros": [
-            4,
             5,
             6,
-            3
+            7,
+            8
         ]
     }
 },
@@ -2821,16 +1647,16 @@
     "model": "fase.fase",
     "pk": 10,
     "fields": {
-        "nombre": "Fase II de Proyecto Escenario III",
-        "descripcion": "Esta es la segunda fase de nuestro proyecto escenario III",
-        "fecha_creacion": "2020-10-09",
+        "nombre": "Fase III del Escenario III",
+        "descripcion": "Esta es la fase III de nuestro escenario III",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
-        "proyecto": 5,
+        "proyecto": 3,
         "miembros": [
-            4,
             5,
             6,
-            3
+            7,
+            8
         ]
     }
 },
@@ -2838,16 +1664,16 @@
     "model": "fase.fase",
     "pk": 11,
     "fields": {
-        "nombre": "Fase III de Proyecto Escenario III",
-        "descripcion": "Esta es la tercera fase de nuestro proyecto escenario III",
-        "fecha_creacion": "2020-10-09",
+        "nombre": "Fase I del Escenario IV",
+        "descripcion": "Esta es la fase I de nuestro escenario IV",
+        "fecha_creacion": "2020-10-13",
         "estado": "Abierta",
-        "proyecto": 5,
+        "proyecto": 4,
         "miembros": [
-            4,
             5,
             6,
-            3
+            7,
+            8
         ]
     }
 },
@@ -2855,16 +1681,16 @@
     "model": "fase.fase",
     "pk": 12,
     "fields": {
-        "nombre": "Fase I de Proyecto Escenario IV",
-        "descripcion": "Esta es la primera fase de nuestro proyecto escenario IV",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "proyecto": 6,
+        "nombre": "Fase II del Escenario IV",
+        "descripcion": "Esta es la fase II de nuestro escenario IV",
+        "fecha_creacion": "2020-10-13",
+        "estado": "Abierta",
+        "proyecto": 4,
         "miembros": [
-            3,
-            4,
             5,
-            6
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2872,33 +1698,16 @@
     "model": "fase.fase",
     "pk": 13,
     "fields": {
-        "nombre": "Fase II de Proyecto Escenario IV",
-        "descripcion": "Esta es la segunda fase de nuestro proyecto escenario IV",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "proyecto": 6,
+        "nombre": "Fase III del Escenario IV",
+        "descripcion": "Esta es la fase III de nuestro escenario IV",
+        "fecha_creacion": "2020-10-13",
+        "estado": "Abierta",
+        "proyecto": 4,
         "miembros": [
-            3,
-            4,
+            8,
             5,
-            6
-        ]
-    }
-},
-{
-    "model": "fase.fase",
-    "pk": 14,
-    "fields": {
-        "nombre": "Fase III de Proyecto Escenario IV",
-        "descripcion": "Esta es la tercera fase de nuestro proyecto escenario IV",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Cerrada",
-        "proyecto": 6,
-        "miembros": [
-            3,
-            4,
-            5,
-            6
+            6,
+            7
         ]
     }
 },
@@ -2906,13 +1715,13 @@
     "model": "comite.comite",
     "pk": 1,
     "fields": {
-        "nombre": "Comit\u00e9 Escenario I",
-        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item en particular de las fases del proyecto Escenario I",
+        "nombre": "Comit\u00e9 del escenario I",
+        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item que se encuentran en una linea base cerrada en particular de las fases del escenario I",
         "proyecto": 1,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7
         ]
     }
 },
@@ -2920,13 +1729,13 @@
     "model": "comite.comite",
     "pk": 2,
     "fields": {
-        "nombre": "Comit\u00e9 Escenario II",
-        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item en particular de las fases del proyecto Escenario II",
+        "nombre": "Comit\u00e9 del escenario II",
+        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item que se encuentran en una linea base cerrada en particular de las fases del escenario II",
         "proyecto": 2,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7
         ]
     }
 },
@@ -2934,13 +1743,13 @@
     "model": "comite.comite",
     "pk": 3,
     "fields": {
-        "nombre": "Comit\u00e9 Escenario III",
-        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item en particular de las fases del proyecto Escenario III",
-        "proyecto": 5,
+        "nombre": "Comit\u00e9 del escenario III",
+        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item que se encuentran en una linea base cerrada en particular de las fases del escenario III",
+        "proyecto": 3,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7
         ]
     }
 },
@@ -2948,13 +1757,13 @@
     "model": "comite.comite",
     "pk": 4,
     "fields": {
-        "nombre": "Comit\u00e9 Escenario IV",
-        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item en particular de las fases del proyecto Escenario IV",
-        "proyecto": 6,
+        "nombre": "Comit\u00e9 del escenario IV",
+        "descripcion": "En este comit\u00e9 se aprobaran las solicitudes de modificaci\u00f3n de un item que se encuentran en una linea base cerrada en particular de las fases del escenario IV",
+        "proyecto": 4,
         "miembros": [
+            5,
             6,
-            4,
-            5
+            7
         ]
     }
 },
@@ -2965,7 +1774,9 @@
         "nombre": "AdministradorSGCAS",
         "group": 1,
         "fase": null,
-        "usuarios": []
+        "usuarios": [
+            4
+        ]
     }
 },
 {
@@ -2984,13 +1795,68 @@
     "model": "rol.rol",
     "pk": 3,
     "fields": {
-        "nombre": "B\u00e1sico",
+        "nombre": "Rol B\u00e1sico SGCAS",
         "group": 3,
         "fase": null,
         "usuarios": [
+            5,
             6,
-            4,
-            5
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 4,
+    "fields": {
+        "nombre": "Rol B\u00e1sico F1E1",
+        "group": 4,
+        "fase": 2,
+        "usuarios": [
+            5,
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 5,
+    "fields": {
+        "nombre": "QA F1E1",
+        "group": 5,
+        "fase": 2,
+        "usuarios": [
+            7
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 6,
+    "fields": {
+        "nombre": "Desarrollador F1E1",
+        "group": 6,
+        "fase": 2,
+        "usuarios": [
+            8
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 7,
+    "fields": {
+        "nombre": "Rol B\u00e1sico F2E1",
+        "group": 7,
+        "fase": 3,
+        "usuarios": [
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -2998,11 +1864,11 @@
     "model": "rol.rol",
     "pk": 8,
     "fields": {
-        "nombre": "Rol B\u00e1sico P2F1",
+        "nombre": "QA F2E1",
         "group": 8,
-        "fase": 4,
+        "fase": 3,
         "usuarios": [
-            4
+            7
         ]
     }
 },
@@ -3010,11 +1876,11 @@
     "model": "rol.rol",
     "pk": 9,
     "fields": {
-        "nombre": "QA P2F1",
+        "nombre": "Desarrollador F2E1",
         "group": 9,
-        "fase": 4,
+        "fase": 3,
         "usuarios": [
-            5
+            8
         ]
     }
 },
@@ -3022,11 +1888,26 @@
     "model": "rol.rol",
     "pk": 10,
     "fields": {
-        "nombre": "Desarrollador P2F1",
+        "nombre": "Rol B\u00e1sico F3E1",
         "group": 10,
         "fase": 4,
         "usuarios": [
-            6
+            5,
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 11,
+    "fields": {
+        "nombre": "QA F3E1",
+        "group": 11,
+        "fase": 4,
+        "usuarios": [
+            7
         ]
     }
 },
@@ -3034,11 +1915,11 @@
     "model": "rol.rol",
     "pk": 12,
     "fields": {
-        "nombre": "QA P1F2",
+        "nombre": "Desarrollador F3E1",
         "group": 12,
-        "fase": 2,
+        "fase": 4,
         "usuarios": [
-            4
+            8
         ]
     }
 },
@@ -3046,11 +1927,14 @@
     "model": "rol.rol",
     "pk": 13,
     "fields": {
-        "nombre": "Desarrollador P1F2",
+        "nombre": "Rol B\u00e1sico F1E2",
         "group": 13,
-        "fase": 2,
+        "fase": 5,
         "usuarios": [
-            6
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -3058,11 +1942,11 @@
     "model": "rol.rol",
     "pk": 14,
     "fields": {
-        "nombre": "Rol B\u00e1sico P1F3",
+        "nombre": "QA F1E2",
         "group": 14,
-        "fase": 3,
+        "fase": 5,
         "usuarios": [
-            4
+            7
         ]
     }
 },
@@ -3070,11 +1954,11 @@
     "model": "rol.rol",
     "pk": 15,
     "fields": {
-        "nombre": "QA P1F3",
+        "nombre": "Desarrollador F2E2",
         "group": 15,
-        "fase": 3,
+        "fase": 6,
         "usuarios": [
-            5
+            8
         ]
     }
 },
@@ -3082,11 +1966,11 @@
     "model": "rol.rol",
     "pk": 16,
     "fields": {
-        "nombre": "Desarrollador P1F3",
+        "nombre": "Desarrollador F1E2",
         "group": 16,
-        "fase": 3,
+        "fase": 5,
         "usuarios": [
-            6
+            8
         ]
     }
 },
@@ -3094,11 +1978,14 @@
     "model": "rol.rol",
     "pk": 17,
     "fields": {
-        "nombre": "Rol B\u00e1sicoP1F2",
+        "nombre": "Rol B\u00e1sico F2E2",
         "group": 17,
-        "fase": 2,
+        "fase": 6,
         "usuarios": [
-            4
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -3106,11 +1993,11 @@
     "model": "rol.rol",
     "pk": 18,
     "fields": {
-        "nombre": "Rol B\u00e1sico P1F1",
+        "nombre": "QA F2E2",
         "group": 18,
-        "fase": 1,
+        "fase": 6,
         "usuarios": [
-            4
+            7
         ]
     }
 },
@@ -3118,11 +2005,14 @@
     "model": "rol.rol",
     "pk": 19,
     "fields": {
-        "nombre": "QA P1F1",
+        "nombre": "Rol B\u00e1sico F3E2",
         "group": 19,
-        "fase": 1,
+        "fase": 7,
         "usuarios": [
-            5
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -3130,11 +2020,11 @@
     "model": "rol.rol",
     "pk": 20,
     "fields": {
-        "nombre": "Desarrollador P1F1",
+        "nombre": "QA F3E2",
         "group": 20,
-        "fase": 1,
+        "fase": 7,
         "usuarios": [
-            6
+            7
         ]
     }
 },
@@ -3142,11 +2032,11 @@
     "model": "rol.rol",
     "pk": 21,
     "fields": {
-        "nombre": "Rol B\u00e1sico P2F2",
+        "nombre": "Desarrollador F3E2",
         "group": 21,
-        "fase": 5,
+        "fase": 7,
         "usuarios": [
-            4
+            8
         ]
     }
 },
@@ -3154,11 +2044,14 @@
     "model": "rol.rol",
     "pk": 22,
     "fields": {
-        "nombre": "QA P2F2",
+        "nombre": "Rol B\u00e1sico F1E3",
         "group": 22,
-        "fase": 5,
+        "fase": 8,
         "usuarios": [
-            5
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -3166,11 +2059,11 @@
     "model": "rol.rol",
     "pk": 23,
     "fields": {
-        "nombre": "Desarrollador P2F2",
+        "nombre": "QA F1E3",
         "group": 23,
-        "fase": 5,
+        "fase": 8,
         "usuarios": [
-            6
+            7
         ]
     }
 },
@@ -3178,11 +2071,11 @@
     "model": "rol.rol",
     "pk": 24,
     "fields": {
-        "nombre": "Rol B\u00e1sico P2F3",
+        "nombre": "Desarrollador F1E3",
         "group": 24,
-        "fase": 6,
+        "fase": 8,
         "usuarios": [
-            4
+            8
         ]
     }
 },
@@ -3190,11 +2083,14 @@
     "model": "rol.rol",
     "pk": 25,
     "fields": {
-        "nombre": "QAP2F3",
+        "nombre": "Rol B\u00e1sico F2E3",
         "group": 25,
-        "fase": 6,
+        "fase": 9,
         "usuarios": [
-            5
+            5,
+            6,
+            7,
+            8
         ]
     }
 },
@@ -3202,11 +2098,50 @@
     "model": "rol.rol",
     "pk": 26,
     "fields": {
-        "nombre": "Desarrollador P2F3",
+        "nombre": "QA F2E3",
         "group": 26,
-        "fase": 6,
+        "fase": 9,
         "usuarios": [
-            6
+            7
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 27,
+    "fields": {
+        "nombre": "Desarrollador F2E3",
+        "group": 27,
+        "fase": 9,
+        "usuarios": [
+            8
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 28,
+    "fields": {
+        "nombre": "Rol B\u00e1sico F3E3",
+        "group": 28,
+        "fase": 10,
+        "usuarios": [
+            8,
+            5,
+            6,
+            7
+        ]
+    }
+},
+{
+    "model": "rol.rol",
+    "pk": 29,
+    "fields": {
+        "nombre": "QA F3E3",
+        "group": 29,
+        "fase": 10,
+        "usuarios": [
+            7
         ]
     }
 },
@@ -3214,12 +2149,11 @@
     "model": "rol.rol",
     "pk": 30,
     "fields": {
-        "nombre": "Rol B\u00e1sico P3F1",
+        "nombre": "Desarrollador F3E3",
         "group": 30,
-        "fase": 9,
+        "fase": 10,
         "usuarios": [
-            5,
-            3
+            8
         ]
     }
 },
@@ -3227,11 +2161,14 @@
     "model": "rol.rol",
     "pk": 31,
     "fields": {
-        "nombre": "QA P3F1",
+        "nombre": "Rol B\u00e1sico F1E4",
         "group": 31,
-        "fase": 9,
+        "fase": 11,
         "usuarios": [
-            4
+            8,
+            5,
+            6,
+            7
         ]
     }
 },
@@ -3239,11 +2176,11 @@
     "model": "rol.rol",
     "pk": 32,
     "fields": {
-        "nombre": "Desarrollador P3F1",
+        "nombre": "QA F1E4",
         "group": 32,
-        "fase": 9,
+        "fase": 11,
         "usuarios": [
-            6
+            7
         ]
     }
 },
@@ -3251,12 +2188,11 @@
     "model": "rol.rol",
     "pk": 33,
     "fields": {
-        "nombre": "Rol B\u00e1sico P3F2",
+        "nombre": "Desarrollador F1E4",
         "group": 33,
-        "fase": 10,
+        "fase": 11,
         "usuarios": [
-            4,
-            3
+            8
         ]
     }
 },
@@ -3264,11 +2200,14 @@
     "model": "rol.rol",
     "pk": 34,
     "fields": {
-        "nombre": "QA P3F2",
+        "nombre": "Rol B\u00e1sico F2E4",
         "group": 34,
-        "fase": 10,
+        "fase": 12,
         "usuarios": [
-            4
+            8,
+            5,
+            6,
+            7
         ]
     }
 },
@@ -3276,11 +2215,11 @@
     "model": "rol.rol",
     "pk": 35,
     "fields": {
-        "nombre": "Desarrollador P3F2",
+        "nombre": "QA F2E4",
         "group": 35,
-        "fase": 10,
+        "fase": 12,
         "usuarios": [
-            6
+            7
         ]
     }
 },
@@ -3288,12 +2227,11 @@
     "model": "rol.rol",
     "pk": 36,
     "fields": {
-        "nombre": "Rol B\u00e1sico P3F3",
+        "nombre": "Desarrollador F2E4",
         "group": 36,
-        "fase": 11,
+        "fase": 12,
         "usuarios": [
-            4,
-            3
+            8
         ]
     }
 },
@@ -3301,11 +2239,14 @@
     "model": "rol.rol",
     "pk": 37,
     "fields": {
-        "nombre": "QA P3F3",
+        "nombre": "Rol B\u00e1sico F3E4",
         "group": 37,
-        "fase": 11,
+        "fase": 13,
         "usuarios": [
-            5
+            8,
+            5,
+            6,
+            7
         ]
     }
 },
@@ -3313,11 +2254,11 @@
     "model": "rol.rol",
     "pk": 38,
     "fields": {
-        "nombre": "Desarrollador P3F3",
+        "nombre": "QA F3E4",
         "group": 38,
-        "fase": 11,
+        "fase": 13,
         "usuarios": [
-            6
+            7
         ]
     }
 },
@@ -3325,741 +2266,12 @@
     "model": "rol.rol",
     "pk": 39,
     "fields": {
-        "nombre": "Rol B\u00e1sico P4F1",
+        "nombre": "Desarrollador F3E4",
         "group": 39,
-        "fase": 12,
-        "usuarios": [
-            3,
-            4
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 40,
-    "fields": {
-        "nombre": "QA P4F1",
-        "group": 40,
-        "fase": 12,
-        "usuarios": [
-            5
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 41,
-    "fields": {
-        "nombre": "Desarrollador P4F1",
-        "group": 41,
-        "fase": 12,
-        "usuarios": [
-            6
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 42,
-    "fields": {
-        "nombre": "Rol B\u00e1sico P4F2",
-        "group": 42,
         "fase": 13,
         "usuarios": [
-            3,
-            4
+            8
         ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 43,
-    "fields": {
-        "nombre": "QA P4F2",
-        "group": 43,
-        "fase": 13,
-        "usuarios": [
-            5
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 44,
-    "fields": {
-        "nombre": "Desarrollador P4F2",
-        "group": 44,
-        "fase": 13,
-        "usuarios": [
-            6
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 45,
-    "fields": {
-        "nombre": "Rol B\u00e1sico P4F3",
-        "group": 45,
-        "fase": 14,
-        "usuarios": [
-            3,
-            4
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 46,
-    "fields": {
-        "nombre": "QA P4F3",
-        "group": 46,
-        "fase": 14,
-        "usuarios": [
-            5
-        ]
-    }
-},
-{
-    "model": "rol.rol",
-    "pk": 47,
-    "fields": {
-        "nombre": "Desarrollador P4F3",
-        "group": 47,
-        "fase": 14,
-        "usuarios": [
-            6
-        ]
-    }
-},
-{
-    "model": "item.item",
-    "pk": 1,
-    "fields": {
-        "nombre": "Item I P3F1",
-        "descripcion": "Este es un item del Proyecto P1F1 ( Mas TexT)",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 5,
-        "archivo": "Test_image.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image.jpg?alt=media&token=Test_image.jpg",
-        "fase": 9,
-        "tipo_item": 1,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": "2020-10-05",
-        "numerico": "0.00",
-        "nro_version": "0.2",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:25:38.229Z",
-        "usuarios_a_cargo": [
-            6,
-            4,
-            5
-        ],
-        "padres": [],
-        "hijos": [
-            2
-        ],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 2,
-    "fields": {
-        "nombre": "Item II P3F1",
-        "descripcion": "Este es un item del Proyecto P1F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 6,
-        "archivo": "ubuntu.png",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2Fubuntu.png?alt=media&token=ubuntu.png",
-        "fase": 9,
-        "tipo_item": 2,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "",
-        "date": "2020-10-12",
-        "numerico": "4.74",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:25:44.581Z",
-        "usuarios_a_cargo": [
-            6,
-            4,
-            5
-        ],
-        "padres": [
-            1
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": [
-            4
-        ]
-    }
-},
-{
-    "model": "item.item",
-    "pk": 3,
-    "fields": {
-        "nombre": "Item I P3F2",
-        "descripcion": "Este es un item I del Proyecto P3F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 7,
-        "archivo": "Test_image_fLENVZY.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_fLENVZY.jpg?alt=media&token=Test_image_fLENVZY.jpg",
-        "fase": 10,
-        "tipo_item": 3,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": null,
-        "numerico": "5.04",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:19:27.104Z",
-        "usuarios_a_cargo": [
-            6,
-            4,
-            3
-        ],
-        "padres": [
-            4
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": [
-            5
-        ]
-    }
-},
-{
-    "model": "item.item",
-    "pk": 4,
-    "fields": {
-        "nombre": "Item II P3F2",
-        "descripcion": "Este es un item II del Proyecto P3F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 6,
-        "archivo": "Test_image_fJC1gfQ.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_fJC1gfQ.jpg?alt=media&token=Test_image_fJC1gfQ.jpg",
-        "fase": 10,
-        "tipo_item": 3,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": null,
-        "numerico": "0.10",
-        "nro_version": "0.2",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:22:53.404Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            5,
-            6
-        ],
-        "padres": [],
-        "hijos": [
-            3
-        ],
-        "antecesores": [
-            2
-        ],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 5,
-    "fields": {
-        "nombre": "Item I P3F3",
-        "descripcion": "Este es un item I del Proyecto P3F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 5,
-        "archivo": "Test_image_762UgsI.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_762UgsI.jpg?alt=media&token=Test_image_762UgsI.jpg",
-        "fase": 11,
-        "tipo_item": 6,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "",
-        "date": "2020-10-21",
-        "numerico": "0.05",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:19:55.144Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            5,
-            6
-        ],
-        "padres": [],
-        "hijos": [
-            6
-        ],
-        "antecesores": [
-            3
-        ],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 6,
-    "fields": {
-        "nombre": "Item II P3F3",
-        "descripcion": "Este es un item II del Proyecto P3F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 8,
-        "archivo": "Test_image_WdctcvB.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_WdctcvB.jpg?alt=media&token=Test_image_WdctcvB.jpg",
-        "fase": 11,
-        "tipo_item": 5,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "V",
-        "date": null,
-        "numerico": "0.00",
-        "nro_version": "0.2",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T14:23:47.933Z",
-        "usuarios_a_cargo": [
-            5
-        ],
-        "padres": [
-            5
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 12,
-    "fields": {
-        "nombre": "Item I P3F1",
-        "descripcion": "Este es un item del Proyecto P1F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 5,
-        "archivo": "Test_image.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image.jpg?alt=media&token=Test_image.jpg",
-        "fase": 9,
-        "tipo_item": 1,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": "2020-10-05",
-        "numerico": "0.00",
-        "nro_version": "0.1",
-        "versiones": 1,
-        "last_release": false,
-        "ultima_modificacion": "2020-10-09T14:22:12.298Z",
-        "usuarios_a_cargo": [
-            6,
-            4,
-            5
-        ],
-        "padres": [],
-        "hijos": [
-            2
-        ],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 13,
-    "fields": {
-        "nombre": "Item II P3F2",
-        "descripcion": "Este es un item II del Proyecto P3F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 2,
-        "archivo": "Test_image_fJC1gfQ.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_fJC1gfQ.jpg?alt=media&token=Test_image_fJC1gfQ.jpg",
-        "fase": 10,
-        "tipo_item": 3,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": null,
-        "numerico": "0.10",
-        "nro_version": "0.1",
-        "versiones": 4,
-        "last_release": false,
-        "ultima_modificacion": "2020-10-09T14:22:51.497Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            5,
-            6
-        ],
-        "padres": [],
-        "hijos": [
-            3
-        ],
-        "antecesores": [
-            2
-        ],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 14,
-    "fields": {
-        "nombre": "Item II P3F3",
-        "descripcion": "Este es un item II del Proyecto P3F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 8,
-        "archivo": "Test_image_WdctcvB.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_WdctcvB.jpg?alt=media&token=Test_image_WdctcvB.jpg",
-        "fase": 11,
-        "tipo_item": 5,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "V",
-        "date": null,
-        "numerico": "0.00",
-        "nro_version": "0.1",
-        "versiones": 6,
-        "last_release": false,
-        "ultima_modificacion": "2020-10-09T14:23:45.941Z",
-        "usuarios_a_cargo": [
-            6,
-            5
-        ],
-        "padres": [
-            5
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 15,
-    "fields": {
-        "nombre": "Item I P4F1",
-        "descripcion": "Este es un item I del Proyecto P4F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 7,
-        "archivo": "Test_image_NpTUva6.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_NpTUva6.jpg?alt=media&token=Test_image_NpTUva6.jpg",
-        "fase": 12,
-        "tipo_item": 8,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "R",
-        "date": "2020-10-06",
-        "numerico": "0.00",
-        "nro_version": "0.2",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:09.446Z",
-        "usuarios_a_cargo": [
-            3
-        ],
-        "padres": [],
-        "hijos": [
-            16
-        ],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 16,
-    "fields": {
-        "nombre": "Item II P4F1",
-        "descripcion": "Este es un item II del Proyecto P4F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 7,
-        "archivo": "Test_image_L3a78qq.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_L3a78qq.jpg?alt=media&token=Test_image_L3a78qq.jpg",
-        "fase": 12,
-        "tipo_item": 8,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "",
-        "date": null,
-        "numerico": "0.00",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:16.854Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            5,
-            6
-        ],
-        "padres": [
-            15
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": [
-            18
-        ]
-    }
-},
-{
-    "model": "item.item",
-    "pk": 17,
-    "fields": {
-        "nombre": "Item I P4F2",
-        "descripcion": "Este es un item I del Proyecto P4F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 3,
-        "archivo": "Test_image_GNTOCLF.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_GNTOCLF.jpg?alt=media&token=Test_image_GNTOCLF.jpg",
-        "fase": 13,
-        "tipo_item": 12,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "",
-        "date": "2020-10-05",
-        "numerico": "5.80",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:27.146Z",
-        "usuarios_a_cargo": [
-            4,
-            5
-        ],
-        "padres": [
-            18
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": [
-            19
-        ]
-    }
-},
-{
-    "model": "item.item",
-    "pk": 18,
-    "fields": {
-        "nombre": "Item II P4F2",
-        "descripcion": "Este es un item II del Proyecto P4F2(Modificado)",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 2,
-        "archivo": "Test_image_yLXvfbt.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_yLXvfbt.jpg?alt=media&token=Test_image_yLXvfbt.jpg",
-        "fase": 13,
-        "tipo_item": 9,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "V",
-        "date": "2020-10-21",
-        "numerico": "5.80",
-        "nro_version": "0.2",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:34.132Z",
-        "usuarios_a_cargo": [
-            6,
-            4,
-            5,
-            3
-        ],
-        "padres": [],
-        "hijos": [
-            17
-        ],
-        "antecesores": [
-            16
-        ],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 19,
-    "fields": {
-        "nombre": "Item I P4F3",
-        "descripcion": "Este es un item I del Proyecto P4F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 3,
-        "archivo": "Test_image_i9tFlEh.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_i9tFlEh.jpg?alt=media&token=Test_image_i9tFlEh.jpg",
-        "fase": 14,
-        "tipo_item": 11,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "R",
-        "date": null,
-        "numerico": "0.00",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:48.573Z",
-        "usuarios_a_cargo": [
-            4,
-            5
-        ],
-        "padres": [],
-        "hijos": [
-            20
-        ],
-        "antecesores": [
-            17
-        ],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 20,
-    "fields": {
-        "nombre": "Item II P4F3",
-        "descripcion": "Este es un item II del Proyecto P4F3",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Aprobado",
-        "en_linea_base": false,
-        "costo": 12,
-        "archivo": "Test_image_gEitIwe.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_gEitIwe.jpg?alt=media&token=Test_image_gEitIwe.jpg",
-        "fase": 14,
-        "tipo_item": 9,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "V",
-        "date": "2020-10-12",
-        "numerico": "1.10",
-        "nro_version": "0.1",
-        "versiones": null,
-        "last_release": true,
-        "ultima_modificacion": "2020-10-09T16:56:53.069Z",
-        "usuarios_a_cargo": [
-            4,
-            5
-        ],
-        "padres": [
-            19
-        ],
-        "hijos": [],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 26,
-    "fields": {
-        "nombre": "Item I P4F1",
-        "descripcion": "Este es un item I del Proyecto P4F1",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 3,
-        "archivo": "Test_image_NpTUva6.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_NpTUva6.jpg?alt=media&token=Test_image_NpTUva6.jpg",
-        "fase": 12,
-        "tipo_item": 10,
-        "impacto": "0.00",
-        "boolean": false,
-        "char": "R",
-        "date": "2020-10-06",
-        "numerico": "0.00",
-        "nro_version": "0.1",
-        "versiones": 15,
-        "last_release": false,
-        "ultima_modificacion": "2020-10-09T16:54:49.068Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            5,
-            6
-        ],
-        "padres": [],
-        "hijos": [
-            16
-        ],
-        "antecesores": [],
-        "sucesores": []
-    }
-},
-{
-    "model": "item.item",
-    "pk": 27,
-    "fields": {
-        "nombre": "Item II P4F2",
-        "descripcion": "Este es un item II del Proyecto P4F2",
-        "fecha_creacion": "2020-10-09",
-        "estado": "Desarrollo",
-        "en_linea_base": false,
-        "costo": 7,
-        "archivo": "Test_image_yLXvfbt.jpg",
-        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-09%2FTest_image_yLXvfbt.jpg?alt=media&token=Test_image_yLXvfbt.jpg",
-        "fase": 13,
-        "tipo_item": 9,
-        "impacto": "0.00",
-        "boolean": true,
-        "char": "V",
-        "date": "2020-10-21",
-        "numerico": "5.80",
-        "nro_version": "0.1",
-        "versiones": 18,
-        "last_release": false,
-        "ultima_modificacion": "2020-10-09T16:55:21.589Z",
-        "usuarios_a_cargo": [
-            3,
-            4,
-            6
-        ],
-        "padres": [],
-        "hijos": [
-            17
-        ],
-        "antecesores": [
-            16
-        ],
-        "sucesores": []
     }
 },
 {
@@ -4103,14 +2315,34 @@
     }
 },
 {
+    "model": "account.emailaddress",
+    "pk": 5,
+    "fields": {
+        "user": 7,
+        "email": "usuario.prueba.is2.2020@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
+    "model": "account.emailaddress",
+    "pk": 6,
+    "fields": {
+        "user": 8,
+        "email": "usuario2.prueba2.is2.2020@gmail.com",
+        "verified": true,
+        "primary": true
+    }
+},
+{
     "model": "socialaccount.socialaccount",
     "pk": 1,
     "fields": {
         "user": 3,
         "provider": "google",
         "uid": "103824764691276845893",
-        "last_login": "2020-10-09T17:30:28.857Z",
-        "date_joined": "2020-10-08T18:15:21.530Z",
+        "last_login": "2020-10-13T18:04:58.291Z",
+        "date_joined": "2020-10-13T15:15:17.006Z",
         "extra_data": "{\"id\": \"103824764691276845893\", \"email\": \"geekpy@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Victor Rodolfo Gonzalez Galeano\", \"given_name\": \"Victor Rodolfo\", \"family_name\": \"Gonzalez Galeano\", \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14Ghhn_GjzxJrYMgNSJxNukzP9ojoa09rosK_sT2n0Q\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
     }
 },
@@ -4121,9 +2353,9 @@
         "user": 4,
         "provider": "google",
         "uid": "118256556279508509402",
-        "last_login": "2020-10-09T17:29:58.748Z",
-        "date_joined": "2020-10-08T18:15:27.091Z",
-        "extra_data": "{\"id\": \"118256556279508509402\", \"email\": \"is2.equipo7.sgcas@gmail.com\", \"verified_email\": true, \"name\": \"Alex Victor Maricel Guillermo\", \"given_name\": \"Alex Victor\", \"family_name\": \"Maricel Guillermo\", \"picture\": \"https://lh4.googleusercontent.com/-WQrUe1wI13M/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnbRDlJWZERxqQKTvdsBvgzlXbmdw/photo.jpg\", \"locale\": \"es-419\"}"
+        "last_login": "2020-10-13T16:49:04.117Z",
+        "date_joined": "2020-10-13T15:15:22.900Z",
+        "extra_data": "{\"id\": \"118256556279508509402\", \"email\": \"is2.equipo7.sgcas@gmail.com\", \"verified_email\": true, \"name\": \"AdminSGCAS07\", \"given_name\": \"AdminSGCAS07\", \"picture\": \"https://lh4.googleusercontent.com/-WQrUe1wI13M/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnbRDlJWZERxqQKTvdsBvgzlXbmdw/photo.jpg\", \"locale\": \"es-419\"}"
     }
 },
 {
@@ -4133,8 +2365,8 @@
         "user": 5,
         "provider": "google",
         "uid": "105238539156633014195",
-        "last_login": "2020-10-09T17:30:06.536Z",
-        "date_joined": "2020-10-08T18:15:33.001Z",
+        "last_login": "2020-10-13T15:15:28.535Z",
+        "date_joined": "2020-10-13T15:15:28.535Z",
         "extra_data": "{\"id\": \"105238539156633014195\", \"email\": \"frikipy94@gmail.com\", \"verified_email\": true, \"name\": \"geekpy123\", \"given_name\": \"geekpy123\", \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GiXBKz-_14Z1X-CpoDP-yCCWYMcqM1NN3LL1AyRDw=s96-c\", \"locale\": \"es-419\"}"
     }
 },
@@ -4145,16 +2377,40 @@
         "user": 6,
         "provider": "google",
         "uid": "111113584675318030426",
-        "last_login": "2020-10-09T17:13:07.335Z",
-        "date_joined": "2020-10-08T18:15:39.129Z",
+        "last_login": "2020-10-13T15:15:34.087Z",
+        "date_joined": "2020-10-13T15:15:34.087Z",
         "extra_data": "{\"id\": \"111113584675318030426\", \"email\": \"chesspy123@gmail.com\", \"verified_email\": true, \"name\": \"Victor Gonzalez\", \"given_name\": \"Victor\", \"family_name\": \"Gonzalez\", \"picture\": \"https://lh6.googleusercontent.com/-VdYSo7z_VWM/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucn-1o-Q3aH4XLBjagngL8yR3XZuBw/photo.jpg\", \"locale\": \"en\"}"
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 5,
+    "fields": {
+        "user": 7,
+        "provider": "google",
+        "uid": "114249641593496019449",
+        "last_login": "2020-10-13T15:15:41.749Z",
+        "date_joined": "2020-10-13T15:15:41.749Z",
+        "extra_data": "{\"id\": \"114249641593496019449\", \"email\": \"usuario.prueba.is2.2020@gmail.com\", \"verified_email\": true, \"name\": \"Usuario Prueba sgcas\", \"given_name\": \"Usuario Prueba\", \"family_name\": \"sgcas\", \"picture\": \"https://lh3.googleusercontent.com/-38bVFDYIpW8/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnlvdsA8QokHZK6ERJfU9Jg6JytUg/photo.jpg\", \"locale\": \"en\"}"
+    }
+},
+{
+    "model": "socialaccount.socialaccount",
+    "pk": 6,
+    "fields": {
+        "user": 8,
+        "provider": "google",
+        "uid": "111266230336854021861",
+        "last_login": "2020-10-13T15:32:42.184Z",
+        "date_joined": "2020-10-13T15:32:42.184Z",
+        "extra_data": "{\"id\": \"111266230336854021861\", \"email\": \"usuario2.prueba2.is2.2020@gmail.com\", \"verified_email\": true, \"name\": \"usuario2_prueba2 Usuario2 Prueba2\", \"given_name\": \"usuario2_prueba2\", \"family_name\": \"Usuario2 Prueba2\", \"picture\": \"https://lh4.googleusercontent.com/-M0km-jSz32A/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucm9-kHo7HCuIn6kUcP8wpwZg8OdGQ/s96-c/photo.jpg\", \"locale\": \"en\"}"
     }
 },
 {
     "model": "admin.logentry",
     "pk": 1,
     "fields": {
-        "action_time": "2020-10-08T17:56:36.926Z",
+        "action_time": "2020-10-13T15:14:55.653Z",
         "user": 2,
         "content_type": 21,
         "object_id": "1",
@@ -4167,7 +2423,7 @@
     "model": "admin.logentry",
     "pk": 2,
     "fields": {
-        "action_time": "2020-10-08T17:56:47.922Z",
+        "action_time": "2020-10-13T15:15:06.823Z",
         "user": 2,
         "content_type": 17,
         "object_id": "1",

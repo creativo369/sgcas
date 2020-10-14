@@ -225,14 +225,14 @@ EMAIL_PORT = 587
 # This will disable the `superuser` creation option of syncdb.
 
 # This field is stored in `User.USERNAME_FIELD`. This is usually a `username` or  an `email`.
-SITE_SUPERUSER_USERNAME = 'AdminSGCAS'
+SITE_SUPERUSER_USERNAME = 'AdminDjango'
 
 # This field is stored in the `email` field, provided, that `User.USERNAME_FIELD` is not an `email`.
 # If `User.USERNAME_FIELD` is already an email address, set `SITE_SUPERUSER_EMAIL = SITE_SUPERUSER_USERNAME`
-SITE_SUPERUSER_EMAIL = 'geekpy@hotmail.com'
+SITE_SUPERUSER_EMAIL = ''
 
 # A hashed version of `SITE_SUPERUSER_PASSWORD` will be store in superuser's `password` field.
-SITE_SUPERUSER_PASSWORD = 'qwertysgcas'
+SITE_SUPERUSER_PASSWORD = 'qwertydjango'
 
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),

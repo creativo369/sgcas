@@ -43,7 +43,7 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         proyecto = Proyecto.objects.get(pk=kwargs.get('_id'))
         if proyecto.estado != 'Iniciado':
             form = FaseForm(_id=kwargs.get('_id'))
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'proyecto': proyecto})
         return render(request, self.template_name, {'proyecto': proyecto})
 
     def post(self, request, *args, **kwargs):
