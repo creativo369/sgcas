@@ -177,10 +177,130 @@
 },
 {
     "model": "sessions.session",
-    "pk": "j2oxcmf7pbl7nowzduc4rl3oz89cf6qw",
+    "pk": "faee957wia131nlfrhffrkccanzypw8x",
     "fields": {
-        "session_data": "MjJmNmVjYTFlZmUwZTU2NzY0ZWZlZWQwMWY4NTJmN2YxOGZkZjZiYzp7Il9hdXRoX3VzZXJfaWQiOiIzIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiYWxsYXV0aC5hY2NvdW50LmF1dGhfYmFja2VuZHMuQXV0aGVudGljYXRpb25CYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNmYxODgwNGUxMzRkOTA1YTE0ZTU1YzU1M2UzYjE0ODFiM2VlOWZkYiJ9",
-        "expire_date": "2020-10-27T18:04:58.338Z"
+        "session_data": "ZTNjNmExZGU2OWJjODMwNjg3YzQ0ZDgyYjkyYzkxMDg4OTI5OTA5Nzp7Il9hdXRoX3VzZXJfaWQiOiI4IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiYWxsYXV0aC5hY2NvdW50LmF1dGhfYmFja2VuZHMuQXV0aGVudGljYXRpb25CYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiODg2MGQ1NTZiZTIxMTA4MmY5ODUyMzIwMTM1M2RkZDA0MDI1MWI2ZSJ9",
+        "expire_date": "2020-10-28T12:21:47.353Z"
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 1,
+    "fields": {
+        "nombre": "Tipo de Item I F1E3",
+        "descripcion": "Este es un tipo de item I de prueba F1E3",
+        "atributos": "Char,Date",
+        "fase": 8
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 2,
+    "fields": {
+        "nombre": "Tipo de Item II F1E3",
+        "descripcion": "Este es un tipo de item II de prueba F1E3",
+        "atributos": "Date",
+        "fase": 8
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 3,
+    "fields": {
+        "nombre": "Tipo de Item I F2E3",
+        "descripcion": "Este es un tipo de item I de prueba F2E3",
+        "atributos": "Boolean,Numerico",
+        "fase": 9
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 4,
+    "fields": {
+        "nombre": "Tipo de Item II F2E3",
+        "descripcion": "Este es un tipo de item II de prueba F2E3",
+        "atributos": "Boolean",
+        "fase": 9
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 5,
+    "fields": {
+        "nombre": "Tipo de Item I F3E3",
+        "descripcion": "Este es un tipo de item I de prueba F3E3",
+        "atributos": "Boolean,Char,Date,Numerico",
+        "fase": 10
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 6,
+    "fields": {
+        "nombre": "Tipo de Item II F3E3",
+        "descripcion": "Este es un tipo de item II de prueba F3E3",
+        "atributos": "Char,Date",
+        "fase": 10
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 7,
+    "fields": {
+        "nombre": "Tipo de Item I F1E4",
+        "descripcion": "Este es un tipo de item I de prueba F1E4",
+        "atributos": "Boolean,Char,Date,Numerico",
+        "fase": 11
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 8,
+    "fields": {
+        "nombre": "Tipo de Item II F1E4",
+        "descripcion": "Este es un tipo de item II de prueba F1E4",
+        "atributos": "Boolean",
+        "fase": 11
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 9,
+    "fields": {
+        "nombre": "Tipo de Item I F2E4",
+        "descripcion": "Este es un tipo de item I de prueba F2E4",
+        "atributos": "Char,Date",
+        "fase": 12
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 10,
+    "fields": {
+        "nombre": "Tipo de Item II F2E4",
+        "descripcion": "Este es un tipo de item II de prueba F2E4",
+        "atributos": "Date,Numerico",
+        "fase": 12
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 11,
+    "fields": {
+        "nombre": "Tipo de Item I F3E4",
+        "descripcion": "Este es un tipo de item I de prueba F3E4",
+        "atributos": "Char",
+        "fase": 13
+    }
+},
+{
+    "model": "tipo_item.tipoitem",
+    "pk": 12,
+    "fields": {
+        "nombre": "Tipo de Item II F3E4",
+        "descripcion": "Este es un tipo de item II de prueba F3E4",
+        "atributos": "Char",
+        "fase": 13
     }
 },
 {
@@ -211,9 +331,9 @@
     "fields": {
         "app": 1,
         "account": 1,
-        "token": "ya29.a0AfH6SMBOY1Whm-5iKqonxu6zk_670RFKIY9P6ZBh3d6KEPydqN4lCxgNElDRdlahx9t-vgD8QQedjKhUUePxJ90xhyK4DcZSHe6zerRJjicwcxyoF8I8h6HjLM9GHX5yTRofbBYZCnnHJKMqUslrR6riPgFAN-fArujK2g",
+        "token": "ya29.a0AfH6SMBn9DDOwrPERhKQkUNe6Y7KcMSiEv_g4K8roJjm2TPHN22qjp8xF8Ko3yx5TqLblsFcpdzMU9VDGdEaixREtyh9NZpf8hkf9kP1zkXmLllbELyh8iozNWIu6rVA-3nv72jZpSBm5_97L94c-afyXNLJ6clNEBEQUA",
         "token_secret": "",
-        "expires_at": "2020-10-13T19:04:57.039Z"
+        "expires_at": "2020-10-14T13:21:30.677Z"
     }
 },
 {
@@ -255,9 +375,9 @@
     "fields": {
         "app": 1,
         "account": 5,
-        "token": "ya29.a0AfH6SMAFir1wn5WC_38qk1CsPBcxUnxu7z2dGpn1NmUnhtGvcYGz2ifAYPzrisDlgGWlIb1Sb5TfL1CQuTj3yYFIe6sFAAkGOckDfr3rHhCSaTb8In29Yg05L-ISQQEOz85I-4Yrl6e1oiv2NEiJWQfgE1mAMJgazOM",
+        "token": "ya29.a0AfH6SMBn0nY_IIyMWummqKiFikPeEoEgY-txXIUn5pxbCEhelr869wyHIsFu5L0S8s-tVcpyTHuTAWGt9l-cZ-KNuHB7fxSCtu8-YQ1I98xvx5VfJiIWUXxci8f8CMNEMWvK9nYJhW0Yuj1OD0_dmKegIb6531oMKz0",
         "token_secret": "",
-        "expires_at": "2020-10-13T16:15:40.538Z"
+        "expires_at": "2020-10-14T04:50:46.263Z"
     }
 },
 {
@@ -266,9 +386,9 @@
     "fields": {
         "app": 1,
         "account": 6,
-        "token": "ya29.a0AfH6SMBT2WQ8UxtPMT_V2zzXh0TwEO7ZVLtu5uVRFoF0YBORo8IkJnfEo9D0OY7FZW3e9vnT1P0seIPUp2db5cgSugfg8BKj7XT_6xXIsWvpQILRJdxIwv3VVKV3ZcHxEG75Jfc0TXu7U92dCCmyL4Gd_XjOzh7rfvQ",
+        "token": "ya29.a0AfH6SMDu0zm6mmZERDN1_Ei4ZCComaUT3_O3MF30iY8JX52F3M6d7WRz7hpd0o-KL4E7hfapAjvEImpjw7od543Ci2BWpGlI9WFwwSMU4_dhtDPKHRrI-8Y9MF08mqBTHBluWjQCuzdof0EaMFyvKJAlTswICM6hIBk",
         "token_secret": "",
-        "expires_at": "2020-10-13T16:32:40.906Z"
+        "expires_at": "2020-10-14T13:21:46.090Z"
     }
 },
 {
@@ -1184,6 +1304,47 @@
     }
 },
 {
+    "model": "auth.group",
+    "pk": 40,
+    "fields": {
+        "name": "1",
+        "permissions": [
+            72
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 41,
+    "fields": {
+        "name": "wdw",
+        "permissions": [
+            74
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 42,
+    "fields": {
+        "name": "2",
+        "permissions": [
+            47,
+            72
+        ]
+    }
+},
+{
+    "model": "auth.group",
+    "pk": 43,
+    "fields": {
+        "name": "3",
+        "permissions": [
+            74
+        ]
+    }
+},
+{
     "model": "usuario.user",
     "pk": 1,
     "fields": {
@@ -1224,7 +1385,7 @@
     "pk": 3,
     "fields": {
         "password": "!PjSToxiWCpehhw3Bn0MovJ2aJEUoSv3Qj6ad8x4I",
-        "last_login": "2020-10-13T18:04:58.328Z",
+        "last_login": "2020-10-14T12:21:32.053Z",
         "is_superuser": false,
         "username": "victor_rodolfo",
         "first_name": "Victor Rodolfo",
@@ -1331,7 +1492,7 @@
     "pk": 7,
     "fields": {
         "password": "!cvdLVWLttwiMtuuLNy31lKt3jr2DNpWWrZQc2Kyc",
-        "last_login": null,
+        "last_login": "2020-10-14T03:50:47.492Z",
         "is_superuser": false,
         "username": "usuario_prueba",
         "first_name": "Usuario Prueba",
@@ -1375,7 +1536,7 @@
     "pk": 8,
     "fields": {
         "password": "!Dn2uwAerdnXv2mzIy1OFCvfOYPU7XRoTFvE3HWwC",
-        "last_login": null,
+        "last_login": "2020-10-14T12:21:47.301Z",
         "is_superuser": false,
         "username": "usuario2_prueba2",
         "first_name": "usuario2_prueba2",
@@ -1410,7 +1571,10 @@
             34,
             36,
             37,
-            39
+            39,
+            40,
+            41,
+            43
         ],
         "user_permissions": []
     }
@@ -1469,13 +1633,13 @@
         "nombre": "Escenario III",
         "descripcion": "Proyecto avanzado con varios items, fases, linea bases, modificaciones, trazabilidad \r\n| 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.\r\n| 5.Iniciar Proyecto\r\n| 6.Crear tipo de items \r\n| 7.Creando items \t\t\t\r\n| 8.Relacionando items\r\n| 9.Creando lineas bases -> aprobar algunos items \r\n| 10.Historial de modificacion de un item -> Modificar algunos items y generar historial de versiones\r\n| 11.Trazabilidad",
         "fecha_creacion": "2020-10-13",
-        "ultima_modificacion": "2020-10-13T21:39:03.243Z",
+        "ultima_modificacion": "2020-10-14T12:49:03.293Z",
         "fecha_iniciado": "2020-10-13",
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Iniciado",
         "slug": "escenario_iii",
-        "complejidad": "0.00",
+        "complejidad": "18.00",
         "miembros": [
             5,
             6,
@@ -1492,13 +1656,13 @@
         "nombre": "Escenario IV",
         "descripcion": "Proyecto avanzado listo para cerrar el proyecto y posteriormente recorrer el proyecto en modo visualizaci\u00f3n  \r\n| 1.Crear el proyecto :nombre, descripcion, agregar miembros.\r\n| 2.Crear comite :nombre del comite, descripcion, miembros.\r\n| 3.Crear al menos 3 fases :nombre de la fase, descripci\u00f3n y miembros\r\n| 4.Crear roles por fases y asignar a los miembros de las fases.\r\n| 5.Iniciar Proyecto\r\n| 6.Creando Tipos de items \r\n| 7.Creando items \r\n| 8.Relacionando items\r\n| 9.Creando lineas bases\r\n| 10.Historial de modificacion de un item\r\n| 11.Fases aprobadas \r\n| 12.Listo para finalizar el proyecto",
         "fecha_creacion": "2020-10-13",
-        "ultima_modificacion": "2020-10-13T21:39:25.644Z",
+        "ultima_modificacion": "2020-10-14T12:55:02.769Z",
         "fecha_iniciado": "2020-10-13",
         "fecha_cancelado": null,
         "fecha_finalizado": null,
         "estado": "Iniciado",
         "slug": "escenario_iv",
-        "complejidad": "0.00",
+        "complejidad": "26.00",
         "miembros": [
             5,
             6,
@@ -1517,10 +1681,10 @@
         "estado": "Abierta",
         "proyecto": 1,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1534,10 +1698,10 @@
         "estado": "Abierta",
         "proyecto": 1,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1551,10 +1715,10 @@
         "estado": "Abierta",
         "proyecto": 1,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1568,10 +1732,10 @@
         "estado": "Abierta",
         "proyecto": 2,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1585,10 +1749,10 @@
         "estado": "Abierta",
         "proyecto": 2,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1602,10 +1766,10 @@
         "estado": "Abierta",
         "proyecto": 2,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1619,10 +1783,10 @@
         "estado": "Abierta",
         "proyecto": 3,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1636,10 +1800,10 @@
         "estado": "Abierta",
         "proyecto": 3,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1653,10 +1817,10 @@
         "estado": "Abierta",
         "proyecto": 3,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1670,10 +1834,10 @@
         "estado": "Abierta",
         "proyecto": 4,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1687,10 +1851,10 @@
         "estado": "Abierta",
         "proyecto": 4,
         "miembros": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1799,10 +1963,10 @@
         "group": 3,
         "fase": null,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1814,10 +1978,10 @@
         "group": 4,
         "fase": 2,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1853,10 +2017,10 @@
         "group": 7,
         "fase": 3,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1892,10 +2056,10 @@
         "group": 10,
         "fase": 4,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1931,10 +2095,10 @@
         "group": 13,
         "fase": 5,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -1982,10 +2146,10 @@
         "group": 17,
         "fase": 6,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -2009,10 +2173,10 @@
         "group": 19,
         "fase": 7,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -2048,10 +2212,10 @@
         "group": 22,
         "fase": 8,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -2087,10 +2251,10 @@
         "group": 25,
         "fase": 9,
         "usuarios": [
+            8,
             5,
             6,
-            7,
-            8
+            7
         ]
     }
 },
@@ -2275,6 +2439,444 @@
     }
 },
 {
+    "model": "item.item",
+    "pk": 1,
+    "fields": {
+        "nombre": "Item I F1E3",
+        "descripcion": "Este es un item I del Proyecto F1E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 3,
+        "archivo": "450_1000.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000.jpg?alt=media&token=450_1000.jpg",
+        "fase": 8,
+        "tipo_item": 2,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "",
+        "date": "2020-10-12",
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:10:10.147Z",
+        "usuarios_a_cargo": [
+            8,
+            5,
+            6
+        ],
+        "padres": [],
+        "hijos": [
+            2
+        ],
+        "antecesores": [],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 2,
+    "fields": {
+        "nombre": "Item II F1E3",
+        "descripcion": "Este es un item II del Proyecto F1E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 6,
+        "archivo": "Test_image_MVWUIv6.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2FTest_image_MVWUIv6.jpg?alt=media&token=Test_image_MVWUIv6.jpg",
+        "fase": 8,
+        "tipo_item": 2,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "",
+        "date": "2020-10-20",
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:10:46.564Z",
+        "usuarios_a_cargo": [
+            8,
+            6,
+            7
+        ],
+        "padres": [
+            1
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": [
+            4
+        ]
+    }
+},
+{
+    "model": "item.item",
+    "pk": 3,
+    "fields": {
+        "nombre": "Item I F2E3",
+        "descripcion": "Este es un item I del Proyecto F2E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 1,
+        "archivo": "Test_image_Ms9K20O.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2FTest_image_Ms9K20O.jpg?alt=media&token=Test_image_Ms9K20O.jpg",
+        "fase": 9,
+        "tipo_item": 4,
+        "impacto": "0.00",
+        "boolean": true,
+        "char": "",
+        "date": null,
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:11:50.808Z",
+        "usuarios_a_cargo": [
+            8,
+            6
+        ],
+        "padres": [
+            4
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": [
+            5
+        ]
+    }
+},
+{
+    "model": "item.item",
+    "pk": 4,
+    "fields": {
+        "nombre": "Item II F2E3",
+        "descripcion": "Este es un tipo de item II de prueba F2E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 4,
+        "archivo": "Test_image_4rKHmQv.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2FTest_image_4rKHmQv.jpg?alt=media&token=Test_image_4rKHmQv.jpg",
+        "fase": 9,
+        "tipo_item": 3,
+        "impacto": "0.00",
+        "boolean": true,
+        "char": "",
+        "date": null,
+        "numerico": "3.13",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:11:04.295Z",
+        "usuarios_a_cargo": [
+            8,
+            5
+        ],
+        "padres": [],
+        "hijos": [
+            3
+        ],
+        "antecesores": [
+            2
+        ],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 5,
+    "fields": {
+        "nombre": "Item I F3E3",
+        "descripcion": "Este es un item II del Proyecto F3E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 2,
+        "archivo": "450_1000_0R3A9wL.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_0R3A9wL.jpg?alt=media&token=450_1000_0R3A9wL.jpg",
+        "fase": 10,
+        "tipo_item": 5,
+        "impacto": "0.00",
+        "boolean": true,
+        "char": "R",
+        "date": "2020-10-05",
+        "numerico": "3.56",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:12:06.803Z",
+        "usuarios_a_cargo": [
+            5,
+            6
+        ],
+        "padres": [],
+        "hijos": [
+            6
+        ],
+        "antecesores": [
+            3
+        ],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 6,
+    "fields": {
+        "nombre": "Item II F3E3",
+        "descripcion": "Este es un item II del Proyecto F3E3",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 2,
+        "archivo": "450_1000_4BtbVrG.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_4BtbVrG.jpg?alt=media&token=450_1000_4BtbVrG.jpg",
+        "fase": 10,
+        "tipo_item": 5,
+        "impacto": "0.00",
+        "boolean": true,
+        "char": "",
+        "date": "2020-11-04",
+        "numerico": "3.66",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T12:49:11.473Z",
+        "usuarios_a_cargo": [
+            8,
+            5
+        ],
+        "padres": [
+            5
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 7,
+    "fields": {
+        "nombre": "Item I F1E4",
+        "descripcion": "Este es un item I del Proyecto F1E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 5,
+        "archivo": "450_1000_ZN1InK1.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_ZN1InK1.jpg?alt=media&token=450_1000_ZN1InK1.jpg",
+        "fase": 11,
+        "tipo_item": 11,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "A",
+        "date": null,
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:12:31.676Z",
+        "usuarios_a_cargo": [
+            8,
+            5
+        ],
+        "padres": [],
+        "hijos": [
+            8
+        ],
+        "antecesores": [],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 8,
+    "fields": {
+        "nombre": "Item II F1E4",
+        "descripcion": "Este es un item II del Proyecto F1E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 6,
+        "archivo": "Test_image_q4Cz75v.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2FTest_image_q4Cz75v.jpg?alt=media&token=Test_image_q4Cz75v.jpg",
+        "fase": 11,
+        "tipo_item": 9,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "T",
+        "date": null,
+        "numerico": "0.00",
+        "nro_version": "0.2",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:12:43.556Z",
+        "usuarios_a_cargo": [
+            5,
+            6
+        ],
+        "padres": [
+            7
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": [
+            11
+        ]
+    }
+},
+{
+    "model": "item.item",
+    "pk": 10,
+    "fields": {
+        "nombre": "Item I F2E4",
+        "descripcion": "Este es un item I del Proyecto F2E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 7,
+        "archivo": "450_1000_53SYVfs.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_53SYVfs.jpg?alt=media&token=450_1000_53SYVfs.jpg",
+        "fase": 12,
+        "tipo_item": 12,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "Y",
+        "date": null,
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:13:10.957Z",
+        "usuarios_a_cargo": [
+            8,
+            5
+        ],
+        "padres": [
+            11
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": [
+            13
+        ]
+    }
+},
+{
+    "model": "item.item",
+    "pk": 11,
+    "fields": {
+        "nombre": "Item II F2E4",
+        "descripcion": "Este es un item II del Proyecto F2E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 3,
+        "archivo": "450_1000_6gwTPuP.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_6gwTPuP.jpg?alt=media&token=450_1000_6gwTPuP.jpg",
+        "fase": 12,
+        "tipo_item": 10,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "",
+        "date": "2020-10-11",
+        "numerico": "0.00",
+        "nro_version": "0.2",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:13:03.088Z",
+        "usuarios_a_cargo": [
+            5,
+            6
+        ],
+        "padres": [],
+        "hijos": [
+            10
+        ],
+        "antecesores": [
+            8
+        ],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 13,
+    "fields": {
+        "nombre": "Item I F3E4",
+        "descripcion": "Este es un item I del Proyecto F3E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 3,
+        "archivo": "450_1000_m7p1qir.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2F450_1000_m7p1qir.jpg?alt=media&token=450_1000_m7p1qir.jpg",
+        "fase": 13,
+        "tipo_item": 10,
+        "impacto": "0.00",
+        "boolean": false,
+        "char": "",
+        "date": "2020-09-28",
+        "numerico": "67.90",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T13:13:22.641Z",
+        "usuarios_a_cargo": [
+            5,
+            6
+        ],
+        "padres": [],
+        "hijos": [
+            14
+        ],
+        "antecesores": [
+            10
+        ],
+        "sucesores": []
+    }
+},
+{
+    "model": "item.item",
+    "pk": 14,
+    "fields": {
+        "nombre": "Item II F3E4",
+        "descripcion": "Este es un item II del Proyecto F3E4",
+        "fecha_creacion": "2020-10-14",
+        "estado": "Desarrollo",
+        "en_linea_base": false,
+        "costo": 2,
+        "archivo": "Test_image_jWnY3g9.jpg",
+        "file_url_cloud": "https://firebasestorage.googleapis.com/v0/b/sgcas-is2-team7.appspot.com/o/2020-10-14%2FTest_image_jWnY3g9.jpg?alt=media&token=Test_image_jWnY3g9.jpg",
+        "fase": 13,
+        "tipo_item": 8,
+        "impacto": "0.00",
+        "boolean": true,
+        "char": "",
+        "date": null,
+        "numerico": "0.00",
+        "nro_version": "0.1",
+        "versiones": null,
+        "last_release": true,
+        "ultima_modificacion": "2020-10-14T12:55:09.108Z",
+        "usuarios_a_cargo": [
+            6,
+            7
+        ],
+        "padres": [
+            13
+        ],
+        "hijos": [],
+        "antecesores": [],
+        "sucesores": []
+    }
+},
+{
     "model": "account.emailaddress",
     "pk": 1,
     "fields": {
@@ -2341,9 +2943,9 @@
         "user": 3,
         "provider": "google",
         "uid": "103824764691276845893",
-        "last_login": "2020-10-13T18:04:58.291Z",
+        "last_login": "2020-10-14T12:21:31.887Z",
         "date_joined": "2020-10-13T15:15:17.006Z",
-        "extra_data": "{\"id\": \"103824764691276845893\", \"email\": \"geekpy@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Victor Rodolfo Gonzalez Galeano\", \"given_name\": \"Victor Rodolfo\", \"family_name\": \"Gonzalez Galeano\", \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14Ghhn_GjzxJrYMgNSJxNukzP9ojoa09rosK_sT2n0Q\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
+        "extra_data": "{\"id\": \"103824764691276845893\", \"email\": \"geekpy@fpuna.edu.py\", \"verified_email\": true, \"name\": \"Victor Rodolfo Gonzalez Galeano\", \"given_name\": \"Victor Rodolfo\", \"family_name\": \"Gonzalez Galeano\", \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14Ghhn_GjzxJrYMgNSJxNukzP9ojoa09rosK_sT2n0Q=s96-c\", \"locale\": \"es\", \"hd\": \"fpuna.edu.py\"}"
     }
 },
 {
@@ -2389,9 +2991,9 @@
         "user": 7,
         "provider": "google",
         "uid": "114249641593496019449",
-        "last_login": "2020-10-13T15:15:41.749Z",
+        "last_login": "2020-10-14T03:50:47.457Z",
         "date_joined": "2020-10-13T15:15:41.749Z",
-        "extra_data": "{\"id\": \"114249641593496019449\", \"email\": \"usuario.prueba.is2.2020@gmail.com\", \"verified_email\": true, \"name\": \"Usuario Prueba sgcas\", \"given_name\": \"Usuario Prueba\", \"family_name\": \"sgcas\", \"picture\": \"https://lh3.googleusercontent.com/-38bVFDYIpW8/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnlvdsA8QokHZK6ERJfU9Jg6JytUg/photo.jpg\", \"locale\": \"en\"}"
+        "extra_data": "{\"id\": \"114249641593496019449\", \"email\": \"usuario.prueba.is2.2020@gmail.com\", \"verified_email\": true, \"name\": \"Usuario Prueba sgcas\", \"given_name\": \"Usuario Prueba\", \"family_name\": \"sgcas\", \"picture\": \"https://lh3.googleusercontent.com/-38bVFDYIpW8/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnlvdsA8QokHZK6ERJfU9Jg6JytUg/s96-c/photo.jpg\", \"locale\": \"en\"}"
     }
 },
 {
@@ -2401,7 +3003,7 @@
         "user": 8,
         "provider": "google",
         "uid": "111266230336854021861",
-        "last_login": "2020-10-13T15:32:42.184Z",
+        "last_login": "2020-10-14T12:21:47.267Z",
         "date_joined": "2020-10-13T15:32:42.184Z",
         "extra_data": "{\"id\": \"111266230336854021861\", \"email\": \"usuario2.prueba2.is2.2020@gmail.com\", \"verified_email\": true, \"name\": \"usuario2_prueba2 Usuario2 Prueba2\", \"given_name\": \"usuario2_prueba2\", \"family_name\": \"Usuario2 Prueba2\", \"picture\": \"https://lh4.googleusercontent.com/-M0km-jSz32A/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucm9-kHo7HCuIn6kUcP8wpwZg8OdGQ/s96-c/photo.jpg\", \"locale\": \"en\"}"
     }
