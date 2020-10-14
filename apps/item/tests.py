@@ -6,15 +6,14 @@ from apps.tipo_item.models import TipoItem
 
 
 class ItemSetUpTest(TestCase):
-    def setUp(self):
-        self.usarios_a_cargo = User.objects.create(username='user-a-cargo-item')
+    def setUp(self):        
         self.item = Item.objects.create(nombre='item-test', descripcion='descripcion-test', estado='Desarrollo',
                                         costo=2)
-        self.item.usuarios_a_cargo.add(self.usarios_a_cargo)
-        self.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
+        self.item.usuarios_a_cargo.add(User.objects.create(username='usuario1'))
+        self.item.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
                                                  atributos=('Boolean', 'Boolean'))
 
-        self.padres = Item.objects.create(nombre='Item', descripcion='descripcion item', costo=3)
+        self.item.padres.add(Item.objects.create(nombre='Item', descripcion='descripcion item', costo=3))
 
     def test_crear_item(self):
         nombre_item = self.item.nombre
@@ -33,21 +32,31 @@ class ItemSetUpTest(TestCase):
 
     def test_modificar_padres_y_TI(self):
         anterior_TI = TipoItem.objects.none()
-        anterior_TI = self.tipo_item
-        self.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
+        anterior_TI = self.item.tipo_item
+        self.item.tipo_item = TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
                                                  atributos=('Char', 'Char'))
 
         try:
-            self.assertNotEqual(self.tipo_item, anterior_TI)
+            self.assertNotEqual(self.item.tipo_item, anterior_TI)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
-        anterior_padres = Item.objects.none()
-        anterior_padres = self.padres
-        self.padres = Item.objects.create(nombre='Item1', descripcion='descripcion item 1', costo=5)
+        cant_padres = len(self.item.padres.all())
+        self.item.padres.add(Item.objects.create(nombre='Item1', descripcion='descripcion item 1', costo=5))
 
         try:
-            self.assertNotEqual(self.padres, anterior_padres)
+            self.assertNotEqual(len(self.item.padres.all()), cant_padres)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+    def test_aprobar_item(self):
+        estado_anterior = self.item.estado
+
+        if (len(self.item.padres.all())+len(self.item.hijos.all())+len(self.item.antecesores.all())+
+            len(self.item.sucesores.all()))!=0:
+                self.item.estado ='Aprobado' #un ítem solo puede ser aprobado si al menos tiene una relación
+        try:
+            self.assertNotEqual(self.item.estado, estado_anterior)
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
