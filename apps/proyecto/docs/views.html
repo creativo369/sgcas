@@ -42,6 +42,7 @@
       <div class="highlight"><pre><span class="kn">from</span> <span class="nn">SGCAS.decorators</span> <span class="kn">import</span> <span class="n">requiere_permiso</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
 
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
@@ -191,17 +192,20 @@ para el registro de sus cambios de estado.<br/>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">ChangeProject</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">proyecto</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Iniciado&#39;</span><span class="p">:</span>
-            <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_iniciado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Cancelado&#39;</span><span class="p">:</span>
-            <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_cancelado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Finalizado&#39;</span><span class="p">:</span>
-            <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_finalizado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
-        <span class="n">proyecto</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;proyecto/change.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span></pre></div>
+    <span class="k">if</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">gerente</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Iniciado&#39;</span><span class="p">:</span>
+                <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_iniciado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Cancelado&#39;</span><span class="p">:</span>
+                <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_cancelado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Finalizado&#39;</span><span class="p">:</span>
+                <span class="n">proyecto</span><span class="o">.</span><span class="n">fecha_finalizado</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="n">proyecto</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;proyecto:list&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;proyecto/change.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;proyecto/validate_estado_transicion.html&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -243,6 +247,21 @@ debe poseer el permiso correspondiente de crear proyectos.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_form_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CreateProject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_form_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gerente&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="c1">#se envia al formulario el username del gerente</span>
+        <span class="k">return</span> <span class="n">kwargs</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
       <p>Función de validación de los registros de un formulario y ademas guarda los datos que se obtuvieron en los cambpos en la base de datos<br/>
 <strong>:param form:</strong> recibe el formulario form<br/>
 <strong>:return:</strong> guarda los datos en la base de datos y redirige a una plantilla de Operación exitosa<br/></p>
@@ -252,10 +271,10 @@ debe poseer el permiso correspondiente de crear proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       
     </div>
@@ -270,10 +289,10 @@ debe poseer el permiso correspondiente de crear proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
       <h3><span id="list-project" href="list-project"> list project </span></h3>
     </div>
@@ -282,10 +301,10 @@ debe poseer el permiso correspondiente de crear proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>Permite la visualizacion de los proyectos.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -302,10 +321,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
       
     </div>
@@ -314,10 +333,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>Queryset que muestra los proyectos del que el usuario forma parte</p>
     </div>
@@ -327,10 +346,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-20'>
+  <div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
       </div>
       
     </div>
@@ -339,10 +358,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-22'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <h3><span id="search" href="search"> search </span></h3>
     </div>
@@ -351,10 +370,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>Permite la búsqueda de los proyectos.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -379,10 +398,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-23'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       <h3><span id="update-project" href="update-project"> update project </span></h3>
     </div>
@@ -391,10 +410,10 @@ debe poseer el permiso correspondiente de visualizar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-24'>
+  <div class='section' id='section-25'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <p>Permite la actualizacion una instancia de modelo Proyecto.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -411,10 +430,25 @@ debe poseer el permiso correspondiente de modificación de proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-25'>
+  <div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_form_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">UpdateProject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_form_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>        
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;gerente&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="c1">#se envia al formulario el username del gerente        </span>
+        <span class="k">return</span> <span class="n">kwargs</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
       </div>
       <p>Función que valida los campos requeridos fueron completados y los guarda en la base de datos.<br/>
 <strong>:param form:</strong> recibe el formulario con los datos.<br/>
@@ -425,10 +459,10 @@ debe poseer el permiso correspondiente de modificación de proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-26'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       
     </div>
@@ -438,10 +472,10 @@ debe poseer el permiso correspondiente de modificación de proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <h3><span id="delete-project" href="delete-project"> delete project </span></h3>
     </div>
@@ -450,10 +484,10 @@ debe poseer el permiso correspondiente de modificación de proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-30'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
+        <a class='octothorpe' href='#section-30'>#</a>
       </div>
       <p>Permite suprimir una instancia del modelo de Proyecto.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -470,10 +504,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-29'>
+  <div class='section' id='section-31'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
+        <a class='octothorpe' href='#section-31'>#</a>
       </div>
       <h3><span id="detail-project" href="detail-project"> detail project </span></h3>
     </div>
@@ -482,10 +516,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-30'>
+  <div class='section' id='section-32'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
+        <a class='octothorpe' href='#section-32'>#</a>
       </div>
       <p>Despliega los detalles de una instancia del modelo de Proyecto.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -502,10 +536,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-31'>
+  <div class='section' id='section-33'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-31'>#</a>
+        <a class='octothorpe' href='#section-33'>#</a>
       </div>
       <p><strong>Volver atras</strong> :  <a href="urls.html">urls.py</a></p>
     </div>
@@ -514,10 +548,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-32'>
+  <div class='section' id='section-34'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-32'>#</a>
+        <a class='octothorpe' href='#section-34'>#</a>
       </div>
       <p><strong>Ir al principio </strong> : <a href="admin.html">admin.py</a></p>
     </div>
@@ -526,10 +560,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-33'>
+  <div class='section' id='section-35'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-33'>#</a>
+        <a class='octothorpe' href='#section-35'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Proyecto  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -545,10 +579,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-34'>
+  <div class='section' id='section-36'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-34'>#</a>
+        <a class='octothorpe' href='#section-36'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

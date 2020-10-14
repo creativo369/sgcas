@@ -293,8 +293,8 @@ No debe de haber un solo item sin linea base</p>
             <span class="k">if</span> <span class="n">lb</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">:</span>
                 <span class="n">fase_estado_opciones</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Abierta&#39;</span><span class="p">,</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">)]</span>
                 <span class="k">break</span>
-        <span class="k">if</span> <span class="n">total_items_fase</span> <span class="o">-</span> <span class="n">items_en_lb</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">fase_estado_opciones</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Abierta&#39;</span><span class="p">,</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">total_items_fase</span> <span class="o">-</span> <span class="n">items_en_lb</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fase_estado_opciones</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Abierta&#39;</span><span class="p">,</span> <span class="s1">&#39;Abierta&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cerrada&#39;</span><span class="p">,</span> <span class="s1">&#39;Cerrada&#39;</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;estado&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">fase_estado_opciones</span></pre></div>
     </div>
   </div>

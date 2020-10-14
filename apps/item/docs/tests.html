@@ -53,10 +53,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item-test&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-test&#39;</span><span class="p">,</span> <span class="n">estado</span><span class="o">=</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">,</span>
                                         <span class="n">costo</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">usuarios_a_cargo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usarios_a_cargo</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span><span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
                                                  <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Boolean&#39;</span><span class="p">,</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span></pre></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -70,7 +70,10 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_crear_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">nombre_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">nombre</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span> <span class="n">nombre_item</span><span class="p">)</span></pre></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span> <span class="n">nombre_item</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -85,7 +88,10 @@
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_modificar_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">descripcion_pasada</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">descripcion</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s1">&#39;Nueva descripcion&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span> <span class="n">descripcion_pasada</span><span class="p">)</span></pre></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">descripcion</span><span class="p">,</span> <span class="n">descripcion_pasada</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -103,14 +109,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
                                                  <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Char&#39;</span><span class="p">,</span> <span class="s1">&#39;Char&#39;</span><span class="p">))</span>
 
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span><span class="p">,</span><span class="n">anterior_TI</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span><span class="p">,</span> <span class="n">anterior_TI</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
         <span class="n">anterior_padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
         <span class="n">anterior_padres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">padres</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item 1&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item 1&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padres</span><span class="p">,</span> <span class="n">anterior_padres</span><span class="p">)</span></pre></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padres</span><span class="p">,</span> <span class="n">anterior_padres</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

@@ -62,11 +62,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">permissions</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelMultipleChoiceField</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-        <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;editar_fase&#39;</span><span class="p">)</span>
-        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;detalles_fase&#39;</span><span class="p">)</span>
-        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;eliminar_fase&#39;</span><span class="p">)</span>
-        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;cambio_estado_fase&#39;</span><span class="p">)</span>
-        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;crear_item&#39;</span><span class="p">)</span>
+        <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;crear_item&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;editar_item&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;listar_item&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;ver_item&#39;</span><span class="p">)</span>
@@ -95,7 +91,9 @@
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;estado_linea_base&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;agregar_item_linea_base&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;quitar_item_linea_base&#39;</span><span class="p">)</span>
-        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;listar_item_linea_base&#39;</span><span class="p">)</span></pre></div>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;listar_item_linea_base&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;crear_solicitud&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;ver_solicitud&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -111,7 +109,13 @@
 <h1>| Q(codename=&rsquo;listar_rol&rsquo;)</h1>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="p">),</span>
+      <div class="highlight"><pre>        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;editar_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;detalles_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;eliminar_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;cambio_estado_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;listar_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;gestion_fase&#39;</span><span class="p">)</span>
+    <span class="p">),</span>
         <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span></pre></div>
     </div>
   </div>
@@ -293,7 +297,10 @@ print(permiso.name)</p>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;asignar_rol&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;editar_rol&#39;</span><span class="p">)</span>
         <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;eliminar_rol&#39;</span><span class="p">)</span>
-
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;editar_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;detalles_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;eliminar_fase&#39;</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">codename</span><span class="o">=</span><span class="s1">&#39;cambio_estado_fase&#39;</span><span class="p">)</span>
     <span class="p">),</span>
         <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span></pre></div>
     </div>

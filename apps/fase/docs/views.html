@@ -100,7 +100,7 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
         <span class="n">proyecto</span> <span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">!=</span> <span class="s1">&#39;Iniciado&#39;</span><span class="p">:</span>
             <span class="n">form</span> <span class="o">=</span> <span class="n">FaseForm</span><span class="p">(</span><span class="n">_id</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span></pre></div>
     </div>
   </div>
@@ -173,10 +173,12 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      
+      <p>=== fase detalles ===
+@requiere_permiso(&lsquo;detalles_fase&rsquo;)</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;detalles_fase&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;fase.detalles_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fase_detalles</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -185,10 +187,17 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      <h3><span id="fase-detalles" href="fase-detalles"> fase detalles </span></h3>
+      <p>Permite visualizar los detalles una fase de un proyecto.<br/>
+<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe un pk correspondiente a la fase que se desea visualizar.<br/>
+<strong>:return:</strong> Retorna una plantilla que despliega los detalles de una fase.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">fase_detalles</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">),</span>
+        <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;fase/fase_detalles.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -197,21 +206,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>Permite visualizar los detalles una fase de un proyecto.<br/>
-<strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
-<strong>:param pk:</strong> Recibe un pk correspondiente a la fase que se desea visualizar.<br/>
-<strong>:return:</strong> Retorna una plantilla que despliega los detalles de una fase.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;fase/fase_detalles.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)})</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-12'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
-      </div>
       
     </div>
     <div class='code'>
@@ -219,10 +213,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-13'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-13'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>@requiere_permiso(&lsquo;listar_fase&rsquo;)
 === lista fase ===</p>
@@ -232,10 +226,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-14'>
+  <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
       <p>Permite visualizar todas las fases de un proyecto.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -259,10 +253,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-14'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-14'>#</a>
       </div>
       
     </div>
@@ -271,10 +265,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-15'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-15'>#</a>
       </div>
       <p>@requiere_permiso(&lsquo;listar_fase&rsquo;)
 === search ===</p>
@@ -284,10 +278,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>Permite realizar la búsqueda de fases en dentro de un determinado proyecto.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -319,15 +313,28 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;fase.cambio_estado_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
   <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-18'>#</a>
       </div>
-      
+      <p>@requiere_permiso(&lsquo;cambio_estado_fase&rsquo;)
+=== cambia estado fase ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;cambio_estado_fase&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">cambiar_estado_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -335,18 +342,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-19'>#</a>
-      </div>
-      <h3><span id="cambia-estado-fase" href="cambia-estado-fase"> cambia estado fase </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">cambiar_estado_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-20'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>Permite la modificación del estado de una fase.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -361,9 +356,22 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
         <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;fase:fase_lista&#39;</span><span class="p">,</span> <span class="n">_id</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s2">&quot;Iniciado&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;fase/fase_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;fase/fase_cambiar_estado.html&#39;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">})</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;fase/fase_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">fase</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;fase.eliminar_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -372,10 +380,11 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-21'>#</a>
       </div>
-      
+      <p>@requiere_permiso(&lsquo;eliminar_fase&rsquo;)
+=== eliminar fase ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;eliminar_fase&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">eliminar_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -383,18 +392,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-22'>#</a>
-      </div>
-      <h3><span id="eliminar-fase" href="eliminar-fase"> eliminar fase </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">eliminar_fase</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-23'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>Permite la eliminación de una instancia de objecto fase.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -413,15 +410,28 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;fase.editar_fase&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
   <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-24'>#</a>
       </div>
-      
+      <p>@requiere_permiso(&lsquo;editar_fase&rsquo;)
+=== fase modificar ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;editar_fase&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">fase_modificar</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -429,18 +439,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-25'>#</a>
-      </div>
-      <h3><span id="fase-modificar" href="fase-modificar"> fase modificar </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">fase_modificar</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-26'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <p>Permite la modificación de una instancia de objecto fase.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -459,12 +457,24 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
   <div class='section' id='section-27'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-27'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+      <p><strong>Ir a la documentación de pruebas unitarias del modulo fase</strong> :  <a href="tests.html">tests.py</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -475,18 +485,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-28'>#</a>
-      </div>
-      <p><strong>Ir a la documentación de pruebas unitarias del modulo fase</strong> :  <a href="tests.html">tests.py</a></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-29'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación fase  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -502,10 +500,10 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-30'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
