@@ -41,6 +41,7 @@
                     <td>{{ fase.estado }}</td>
                     <td>{{ fase.fecha_creacion }}</td>
                     <td>
+                     {% if fase.estado != 'Cerrada' %}   
                         <div class="dropdown" style="display: inline">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-toggle="dropdown"
@@ -94,6 +95,8 @@
                                 {#                                <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>#}
                             </div>
                         </div>
+                    {% endif %}
+
                         <div class="dropdown" style="display: inline">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-toggle="dropdown"
@@ -102,12 +105,14 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{% url 'fase:fase_detalles' fase.id %}">Detalles</a>
+                              {% if fase.estado == 'Abierta' %}
                                 <a class="dropdown-item"
                                    href="{% url 'fase:fase_cambiar_estado' fase.id proyecto.id %}">Cambiar estado</a>
                                 <a class="dropdown-item" href="{% url 'fase:fase_modificar' fase.id proyecto.id %}">Editar</a>
-{#                                {% if proyecto.estado != 'Iniciado' %}#}
+                              {% endif %}
+                                {% if proyecto.estado != 'Iniciado' %}
                                     <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
-{#                                {% endif %}#}
+                                {% endif %}
                             </div>
                         </div>
                     </td>

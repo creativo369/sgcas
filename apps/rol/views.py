@@ -158,6 +158,12 @@ def eliminar_rol(request, pk, id_fase):
 # @requiere_permiso('asignar_rol')
 @permission_required('rol.asignar_rol', raise_exception=True)
 def asignar_rol_usuario(request, pk, id_fase):
+    """
+     Permite la asignación de una instancia del modelo Rol a un usuario de la fase.<br/>
+     **:param request:** Recibe un request por parte de un usuario.<br/>
+     **:param pk:** Recibe el pk de la instancia del modelo Rol que se desea asignar al usuario.<br/>
+     **:return:** Redirige a la plantilla que despliega el formulario de asignación de roles.<br/>
+    """
     rol = get_object_or_404(Rol, pk=pk)
     # id_fase = rol.fase.id
     form = RolFormUser(request.POST or None, instance=rol)
@@ -279,6 +285,15 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('rol:rol_lista_sistema')
 
     def post(self, request, *args, **kwargs):
+        """
+
+        Elimina una instancia del modelo rol dentro del sistema.<br/>
+        **:param request:** recibe la petición del admistrador que solicita eliminar un rol.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo rol.<br/>
+        **:return:** Redirige una plantilla que contiene la lista de todos los roles del sistema.<br/>
+
+        """
         pk = kwargs.pop('pk')  # se obtiene el pk para eliminar
         rol = Rol.objects.get(pk=pk)
         if not len(rol.usuarios.all()) == 0:
@@ -288,9 +303,7 @@ class EliminarRol_sistema(PermissionRequiredMixin, DeleteView):
             # rol.delete()
             return redirect(self.success_url)
 
-        # === lista rol usuarios ===
-
-
+# === lista rol usuarios ===
 class Usuario_roles(ListView):
     """
     Permite la visualizacion de todas las intancias del modelo Rol que posee un usuario.<br/>
@@ -301,8 +314,17 @@ class Usuario_roles(ListView):
     template_name = 'rol/usuario_roles.html'
 
     def get(self, request, *args, **kwargs):
+        """
+
+        Obtiene todos los roles asignados a un usuario dentro del sistema.<br/>
+        **:param request:** recibe la petición del cliente que solicita ver todos sus roles en el sistema.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo rol.<br/>
+        **:return:** Redirige una plantilla que despliega la lista de los roles que posee el usuario.<br/>
+
+        """
         rol = Rol.objects.filter(usuarios__in=User.objects.filter(id=request.user.id))
-        print(rol.exists())
+        
         if rol.exists():
             return render(request, self.template_name, {'rol': rol})
         return render(request, self.template_name, {'rol': rol})

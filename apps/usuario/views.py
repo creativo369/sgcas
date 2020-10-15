@@ -131,6 +131,15 @@ class ActualizarUsuario(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy('usuario:usuario_lista')
 
     def get(self, request, *args, **kwargs):
+        """
+
+        Obtiene una instancia del modelo usuario cuyos atributos han de ser modificados.<br/>
+        **:param request:** recibe la petición del administrador del sistema para modificar a otro usuario.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo usuario.<br/>
+        **:return:** Redirige una plantilla que despliega el formulario con los campos que podrán ser modificados.<br/>
+
+        """
         usuario = User.objects.get(id=self.kwargs['pk'])
         en_proyecto = Proyecto.objects.all().filter(miembros=usuario)
         form = self.form_class(request.POST or None, instance=usuario)
@@ -154,12 +163,22 @@ class EliminarUsuario(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('usuario:usuario_lista')
 
     def post(self, request, *args, **kwargs):
+        """
+
+        Elimina una instancia del modelo usuario del sistema.<br/>
+        **:param request:** recibe la petición del administrador que solicita eliminar a un usuario.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo usuario.<br/>
+        **:return:** Redirige una plantilla que despliega la lista de los usuarios restantes en el sistema.<br/>
+
+        """
         usuario = User.objects.get(id=self.kwargs['pk'])
         en_proyecto = Proyecto.objects.all().filter(miembros=usuario)
         if en_proyecto.exists():
             return render(request, self.template_name, {'en_proyecto': en_proyecto})
         usuario.delete()
         return redirect(self.success_url)
+
 # === Indice de la documentación de la Aplicación Usuario  === <br/>
 # 0.admin          : [[admin.py]]<br/>
 # 1.apps        : [[apps.py]]<br/>

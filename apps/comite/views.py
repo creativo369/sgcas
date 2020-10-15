@@ -178,6 +178,15 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
     success_url = reverse_lazy('proyecto:list')
 
     def post(self, request, *args, **kwargs):
+        """
+
+        Elimina la instancia del modelo comité de la base de datos.<br/>
+        **:param request:** La petición del cliente.<br/>
+        **:param args:**<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo comite.<br/>
+        **:return:** Redirige a la plantilla de proyectos del usuario.<br/>
+
+        """
         pk = kwargs.pop('pk')  # se obtiene el pk para eliminar
         comite = Comite.objects.get(pk=pk)
         if Solicitud.objects.filter(proyecto=comite.proyecto).exists():

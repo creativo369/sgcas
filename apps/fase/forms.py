@@ -1,5 +1,6 @@
 # === Importamos las librerias necesarias para la implementación de un Formulario ===
 from django import forms
+from django.db.models import Q
 from .models import Fase, Proyecto
 
 # === Clase para abstraer en un formulario el registro de una fase ===
@@ -99,18 +100,23 @@ class FaseCambiarEstadoForm(forms.ModelForm):
         # Para cerrar una fase todas las lineas bases deben de estar cerradas
         # No debe de haber un solo item sin linea base
         total_items_fase = Item.objects.filter(fase=kwargs['instance'].id).count()
-        lb_fase_queryset = LineaBase.objects.filter(fase=kwargs['instance'].id)
+        lb_fase_queryset = LineaBase.objects.filter(Q(fase=kwargs['instance'].id) & Q(estado='Cerrada'))
         items_en_lb = 0
-        fase_estado_opciones = [('Abierta', 'Abierta'), ('Cerrada', 'Cerrada')]
+        #fase_estado_opciones = [('Abierta', 'Abierta'), ('Cerrada', 'Cerrada')]
         for lb in lb_fase_queryset:
             items_en_lb += lb.items.all().count()
-            if lb.estado == 'Abierta':
-                fase_estado_opciones = [('Abierta', 'Abierta')]
-                break
+           # if lb.estado == 'Abierta':
+            #    fase_estado_opciones = [('Abierta', 'Abierta')]
+             #   break
         if total_items_fase - items_en_lb == 0:
             fase_estado_opciones = [('Abierta', 'Abierta'), ('Cerrada', 'Cerrada')]
+        else:
+             fase_estado_opciones = [('Abierta', 'Abierta')]
+        #self.fields['estado'].choices = fase_estado_opciones
+        if not lb_fase_queryset:
+            fase_estado_opciones = [('Abierta', 'Abierta')]
         self.fields['estado'].choices = fase_estado_opciones
-
+            
     class Meta(FaseForm.Meta):
         model = Fase
 # **Volver atras** : [[apps.py]]

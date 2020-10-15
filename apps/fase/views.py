@@ -40,6 +40,15 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     success_url = 'fase:fase_lista'
 
     def get(self, request, *args, **kwargs):
+        """
+
+        Se obtiene la instacia del modelo proyecto en el cual se desea crear la fase.<br/>
+        **:param request:** recibe la petición del cliente de crear una instancia de fase dentro del proyecto.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia del proyecto al que estará asociada la fase.<br/>
+        **:return:** redirige a la plantilla de creación de la fase.<br/>
+
+        """
         proyecto = Proyecto.objects.get(pk=kwargs.get('_id'))
         if proyecto.estado != 'Iniciado':
             form = FaseForm(_id=kwargs.get('_id'))
@@ -47,6 +56,15 @@ class FaseCrear(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         return render(request, self.template_name, {'proyecto': proyecto})
 
     def post(self, request, *args, **kwargs):
+        """
+
+        Se almacena en la base de datos la intancia de la fase recien creada.<br/>
+        **:param request:** recibe la petición del cliente para guardar la fase recién creada.<br/>
+        :param args:<br/>
+        **:param kwargs:** Diccionario 'clave':valor que recibe la referencia del proyecto al que estará asociada la fase.<br/>
+        **:return:** redirige a la plantilla que contiene la lista de fases del proyecto.<br/>
+
+        """
         id_proyecto = kwargs.pop('_id')
         form = FaseForm(request.POST, _id=id_proyecto)
         if form.is_valid():
