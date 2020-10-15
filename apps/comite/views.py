@@ -273,21 +273,14 @@ def decision_comite(solicitud):
     message = ''
     if solicitud.votacion >= 1:
         subject = 'Solicitud aprobada.'
-        if solicitud.item is not None:
-            item = solicitud.item
-            item.estado = 'Desarrollo'
+        lb = solicitud.linea_base
+        lb.estado = 'Rota'
+        lb.save()
+        for item in lb.items.all():
+            item.estado ='Desarrollo'
             item.save()
-            message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
-        else:
-            lb = solicitud.linea_base
-            lb.estado = 'Rota'
-            lb.save()
-            message = 'Su solicitud correspondiente a la linea base {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
-    else:
-        subject = 'Solicitud no aprobada.'
-        if solicitud.item is not None:
-            message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
-        else:
+        message = 'Su solicitud correspondiente a la linea base {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
+    else: 
             message = 'Su solicitud correspondiente a la linea base {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
     send_notification(solicitud.solicitante.email, subject, message)
     solicitud.delete()

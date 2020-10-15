@@ -1,6 +1,7 @@
 from django.test import TestCase
 from apps.usuario.models import User
 from apps.proyecto.models import Proyecto
+from apps.fase.models import Fase
 
 class TestProyectoSetUp(TestCase):
     def setUp(self):
@@ -68,6 +69,29 @@ class ProyectoTestEditar(TestProyectoSetUp):
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
+    def test_cerrar_proyecto(self):
+        estado_anterior = self.proyecto.estado
+
+        for r in 'abc':
+            Fase.objects.create(nombre='fase'+r, descripcion='descripcion'+r, proyecto=self.proyecto,
+                                estado='Cerrada')
+        #se agregan las fases al proyecto
+
+        fases_de_proyecto= Fase.objects.filter(proyecto=self.proyecto)
+
+        no_cerrada = 0
+
+        for fase in fases_de_proyecto:
+            if not fase.estado=='Cerrada':
+                no_cerrada +=1  #se verifica si todas la fases del proyecto estan 'Cerradas'
+
+        if no_cerrada == 0:
+            self.proyecto.estado = 'Finalizado'
+
+        try:
+            self.assertNotEqual(self.proyecto.estado,estado_anterior)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
 class ProyectoTestEliminar(TestProyectoSetUp):
     def setUp(self):

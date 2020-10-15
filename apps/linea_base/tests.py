@@ -83,6 +83,28 @@ class LBTestEditar(TestLBSetUp):
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
 
+    def test_cerrar_linea_base(self):
+        #se cargan los items aprobados a la LB para la prueba
+        for a in 'abc':
+            self.linea_base.items.add(Item.objects.create(nombre='Item '+ a, descripcion='descripcion ' + a,
+                                                    costo=17, estado= 'Aprobado' ))
+
+        no_aprobados = 0
+        anterior_estado= self.linea_base.estado
+
+        for item in self.linea_base.items.all():
+            if not item.estado == 'Aprobado':
+                no_aprobados = 1    #verifica si todos los ítems de la LB están aprobados
+
+        if no_aprobados==0:
+            self.linea_base.estado= 'Cerrada'
+
+        try:        
+            self.assertNotEqual(anterior_estado, self.linea_base.estado)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e)) 
+
+
 # **Volver atras** : [[apps.py]]
 
 # **Ir a la documentación del URL de linea base** : [[urls.py]]
