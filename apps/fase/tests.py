@@ -1,8 +1,11 @@
 from django.test import TestCase
 from apps.fase.models import Fase
+from django.contrib.auth.models import Group
 from apps.proyecto.models import Proyecto
 from apps.usuario.models import User
 from apps.item.models import Item
+from apps.tipo_item.models import TipoItem
+from apps.rol.models import Rol
 
 class TestFaseSetUp(TestCase):
     def setUp(self):
@@ -90,7 +93,29 @@ class FaseTestEditar(TestFaseSetUp):
             self.assertNotEqual(len(Item.objects.filter(fase=self.fase)),cant_item_de_fase)
         except AssertionError as e:        
              print("Error de comparacion: {}".format(e))
-             
+
+    def test_agregar_tipo_item_fase(self):
+        cant_tipo_item_de_fase = len(TipoItem.objects.filter(fase=self.fase)) #inicialmente hay cero tipos de ítem
+
+        for i in 'abc':
+            TipoItem.objects.create(nombre='tipo-item-test ' + i, descripcion='descripcion-test',
+                                                 atributos=('Boolean', 'Boolean'), fase= self.fase)
+
+        try:
+            self.assertNotEqual(len(TipoItem.objects.filter(fase=self.fase)),cant_tipo_item_de_fase)
+        except AssertionError as e:        
+             print("Error de comparacion: {}".format(e))
+
+    def test_agregar_rol_fase(self):
+        cant_rol_de_fase = len(Rol.objects.filter(fase=self.fase)) #inicialmente hay cero roles
+
+        for i in 'abc':
+            Rol.objects.create(nombre='rol '+ i, group= Group.objects.create(name='grupo-fase '+i), fase= self.fase)
+
+        try:
+            self.assertNotEqual(len(Rol.objects.filter(fase=self.fase)), cant_rol_de_fase)
+        except AssertionError as e:        
+             print("Error de comparacion: {}".format(e))         
 
 class FaseTestEliminar(TestFaseSetUp):
     def setUp(self):
