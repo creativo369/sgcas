@@ -51,8 +51,10 @@
                                         <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
                                     </div>
                                 </div>
+                                <a type="button" class="btn btn-secondary" href="{% url 'comite:auditoria' solicitud.id %}">Auditoria</a>
                             {% else %}
                                 <a type="button" class="btn btn-secondary" href="#">Votado <i class="fa fa-check" aria-hidden="true"></i></a>
+                                <a type="button" class="btn btn-secondary" href="{% url 'comite:auditoria' solicitud.id %}">Auditoria</a>
                             {% endif %}
                         </td>
                     </tr>

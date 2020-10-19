@@ -712,6 +712,21 @@ def explore(item, impacto):
     return impacto
 
 
+# def traz(item):
+#     """
+#     Explora el arbol sumando los costos.<br/>
+#     **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
+#     **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
+#     **:return:** El impacto de un item en el proyecto.<br/>
+#     """
+#     impacto += item.costo
+#     for hijo in item.hijos.all():
+#         return explore(hijo, impacto)
+#     for sucesor in item.sucesores.all():
+#         return explore(sucesor, impacto)
+#     return impacto
+
+
 def explore(item, impacto):
     """
     Explora el arbol sumando los costos.<br/>
@@ -720,6 +735,8 @@ def explore(item, impacto):
     **:return:** El impacto de un item en el proyecto.<br/>
     """
     impacto += item.costo
+    for padre in item.padres.all():
+        return explore(hijo, impacto)
     for hijo in item.hijos.all():
         return explore(hijo, impacto)
     for sucesor in item.sucesores.all():

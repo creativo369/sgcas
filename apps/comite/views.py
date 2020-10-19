@@ -14,6 +14,7 @@ from SGCAS.settings import base
 
 # === Importación de los codigos fuentes de la aplicación ===
 from .models import Comite, Solicitud
+from apps.comite.models.solicitud import Voto
 from .forms import FormularioComite, FormularioComiteUpdate, FormularioSolicitud
 from ..proyecto.models import Proyecto
 from apps.item.models import Item
@@ -219,9 +220,11 @@ def voto_favor(request, pk):
     **:param pk:** Recibe el pk de la instancia de artefacto a ser votado.<br/>
     **:return:** Retorna al template de solicitudes del comite.<br/>
     """
+    voto = Voto.objects.create(votante=request.user, decision=True)
     solicitud = get_object_or_404(Solicitud, pk=pk)
     solicitud.votacion += 1
     solicitud.votantes.add(request.user)
+    solicitud.auditoria.add(voto)
     solicitud.save()
     if revision_votacion(solicitud):
         decision_comite(solicitud)
@@ -236,9 +239,11 @@ def voto_contra(request, pk):
     **:param pk:** Recibe el pk de la instancia de artefacto a ser votado.<br/>
     **:return:** Retorna al template de solicitudes del comite.<br/>
     """
+    voto = Voto.objects.create(votante=request.user, decision=False)
     solicitud = get_object_or_404(Solicitud, pk=pk)
     solicitud.votacion -= 1
     solicitud.votantes.add(request.user)
+    solicitud.auditoria.add(voto)
     solicitud.save()
     if revision_votacion(solicitud):
         decision_comite(solicitud)
@@ -309,6 +314,20 @@ def lista_solicitudes(request, pk):
     }
 
     return render(request, 'comite/solicitudes.html', context)
+
+
+def auditoria_solicitudes(request, pk):
+    """
+    Renderiza una adutoria sobre un artefacto.
+    **:param request:** Recibe un request por parte de un usuario.<br/>
+    **:param pk:** Recibe el pk de la solicitud sobre la cual se desea realizar la auditoria.<br/>
+    **:return:** Retorna el template sobre la auditoria de una solicitud.<br/>
+    """
+    context = {
+        'solicitud': get_object_or_404(Solicitud, pk=pk)
+    }
+
+    return render(request, 'comite/auditoria.html', context)
 
 
 #@permission_required('comite.crear_solicitud', raise_exception=True)

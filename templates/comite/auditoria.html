@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <strong>Auditoria</strong>
+        </div>
+        <div class="card-body card-block">
+            <h4>Votantes:
+                <ul style="list-style: circle">
+                    {% for voto in solicitud.auditoria.all %}
+                        <li><small class="text-muted">{{ voto.votante }} votó 
+                            {% if voto.decision == True %}
+                                a favor
+                            {% else %}
+                                en contra
+                            {% endif %}
+                            en fecha {{ voto.fecha_voto }}
+                        </small></li>
+                    {% endfor %}
+                </ul>
+            </h4>
+            <button type="button" class="btn btn-link" onclick="window.history.back()">Volver</button>
+        </div>
+    </div>
+{% endblock content %}
