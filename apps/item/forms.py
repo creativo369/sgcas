@@ -92,7 +92,7 @@ class ItemImportarTipoItemForm(forms.ModelForm):
             'tipo_item',
         ]
         labels = {
-            'tipo_item': 'Importar tipo de item',
+            'tipo_item': 'Plantilla de Tipo de ítem:',
         }
         widgets = {
             'tipo_item': forms.RadioSelect(),
