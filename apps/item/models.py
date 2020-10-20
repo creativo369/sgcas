@@ -18,6 +18,7 @@ from apps.tipo_item.models import TipoItem
 item_estado = [
     ('Desarrollo', 'Desarrollo'),
     ('Aprobado', 'Aprobado'),
+    ('Revision', 'Revision'),
 ]
 
 

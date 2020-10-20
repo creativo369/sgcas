@@ -59,7 +59,7 @@
                                     items</a>
                             </div>
                         </div>
-                        {% if linea.estado != 'Rota' %}  
+                        {% if linea.estado == 'Abierta' %}  
                            <div class="dropdown" style="display: inline">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                         data-toggle="dropdown"
@@ -81,9 +81,6 @@
                                         {% endif%}
 
                                     {% endif %}      
-                                    {% if linea.estado == 'Cerrada' %}
-                                            <a class="dropdown-item"  href="{% url 'comite:solicitud_linea_base' linea.id %}">Romper Linea Base</a>
-                                    {% endif %} 
                                     
                                 </div>
                             </div>

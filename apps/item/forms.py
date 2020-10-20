@@ -190,8 +190,11 @@ class ItemUpdateForm(forms.ModelForm):
         # fields representa los campos que no son editables de acuerdo al estado del item
         fields = ['estado']
         if 'instance' in kwargs:
-            # No se permite la modificacion del nombre del item si su estado no es desarrollo
+            # No se permite la modificacion del nombre del item si su estado no es desarrollo.
             if kwargs['instance'].estado == 'Desarrollo':
+                fields.append('nombre')
+            #No se permite la modificacion del nombre del item si esta en revision.    
+            if kwargs['instance'].estado == 'Revision':
                 fields.append('nombre')
             for field in fields:
                 self.fields[field].required = False
@@ -217,18 +220,18 @@ class ItemCambiarEstado(forms.ModelForm):
                 ('Aprobado', 'Aprobado'),
             ]
             self.fields['estado'].choices = item_estado
-        # if kwargs['instance'].estado == 'Revision':
-        #     item_estado = [
-        #         ('Revision', 'Revision'),
-        #         ('Aprobado', 'Aprobado'),
-        #     ]
-        #     self.fields['estado'].choices = item_estado
-        # if kwargs['instance'].estado == 'Aprobado':
-        #     item_estado = [
-        #         ('Aprobado', 'Aprobado'),
-        #         ('Revision', 'Revision'),
-        #     ]
-        #     self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Revision':
+            item_estado = [
+                ('Revision', 'Revision'),
+                ('Aprobado', 'Aprobado'),
+             ]
+            self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Aprobado':
+            item_estado = [
+                ('Desarrollo', 'Desarrollo'),
+                ('Aprobado', 'Aprobado'),
+            ]
+            self.fields['estado'].choices = item_estado
         for field in fields_not_required:
             self.fields[field].required = False
             self.fields[field].disabled = True

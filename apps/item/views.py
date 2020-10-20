@@ -249,7 +249,7 @@ def item_eliminar(request, pk, id_fase):
         item.delete()
         return redirect('item:item_lista', id_fase=id_fase)
     else:
-        return render(request,'item/validate_en_lb_cerrada.html')
+        return render(request,'item/validate_en_lb_cerrada.html', {'item':Item.objects.get(pk=pk)})
 
 
 ##Actualiza los punteros de las relaciones
@@ -350,7 +350,7 @@ def item_modificar_basico(request, pk, id_fase):
         }
         return render(request, 'item/item_modificar.html', context)
     else:
-        return render(request,'item/validate_en_lb_cerrada.html')
+        return render(request,'item/validate_en_lb_cerrada.html',{'item':Item.objects.get(pk=pk)})
 
 
 # === modificar ti ===
@@ -463,7 +463,7 @@ def item_versiones(request, pk, id_fase):
 
         return render(request, 'item/item_versiones.html', context)
     else:
-        return render(request,'item/validate_en_lb_cerrada.html')
+        return render(request,'item/validate_en_lb_cerrada.html',{'item':Item.objects.get(pk=pk)})
 
 
 @requiere_permiso('versiones_item')
@@ -535,7 +535,7 @@ def item_cambiar_estado(request, pk):
                            'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
         return render(request, 'item/item_cambiar_estado.html', {'item': item})
     else:
-        return render(request,'item/validate_en_lb_cerrada.html') 
+        return render(request,'item/validate_en_lb_cerrada.html',{'item':Item.objects.get(pk=pk)}) 
 
 ##Retorna la linea base de item (si tiene)
 def get_lb(pk):
@@ -573,7 +573,7 @@ def fases_rel(request, pk):
             }
             return render(request, 'item/item_fases_relaciones.html', context)
     else:
-        return render(request,'item/validate_en_lb_cerrada.html')    
+        return render(request,'item/validate_en_lb_cerrada.html',{'item':Item.objects.get(pk=pk)})    
 
 ##Obtiene el contexto para el template de las relaciones
 # === contexto ítem ===

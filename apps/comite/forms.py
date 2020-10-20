@@ -61,24 +61,26 @@ class FormularioComiteUpdate(forms.ModelForm):
 
 
 class FormularioSolicitud(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):             
         
-        request = kwargs.pop('request')        
-
-        pk_lb = kwargs.pop('pk')
+        request = kwargs.pop('request') 
+        pk = kwargs.pop('pk')      
 
         super(FormularioSolicitud, self).__init__(*args, **kwargs)
         fields_not_required = ['asunto', 'solicitante', 'item', 'tipo', 'linea_base', 'votacion']
+        
         self.fields['solicitante'].initial = request.user
-        self.fields['proyecto'].initial = LineaBase.objects.get(pk=pk_lb).fase.proyecto
+        self.fields['proyecto'].initial = Item.objects.get(pk=pk).fase.proyecto
+        
 
         for field in fields_not_required:
             self.fields[field].required = False
             self.fields[field].disabled = True
 
-            self.fields['asunto'].initial = 'Rotura de Linea Base: {}.'.format(LineaBase.objects.get(pk=pk_lb))
-            self.fields['item'].initial = None
-            self.fields['linea_base'].initial = LineaBase.objects.get(pk=pk_lb)
+        
+        self.fields['asunto'].initial = 'Item: {} | Fase: {} | Proyecto: {}.'.format( Item.objects.get(pk=pk),Item.objects.get(pk=pk).fase, Item.objects.get(pk=pk).fase.proyecto)
+        self.fields['item'].initial = Item.objects.get(pk=pk)
+        self.fields['linea_base'].initial = None
 
     class Meta:
         model = Solicitud

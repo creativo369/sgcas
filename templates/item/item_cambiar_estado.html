@@ -6,16 +6,9 @@
       <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
       <li class="breadcrumb-item">Fase {{ fase }} </li>
       <li class="breadcrumb-item active">Item {{ item }} </li>   
-    </ol>
-    {% if item.padres.all.exists or item.hijos.all.exists or item.antecesores.all.exists or item.sucesores.all.exists %}
-         {% if item.estado == "Revision" %}
-            <div class="alert alert-dismissible alert-warning">
-                <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
-                <h4 class="alert-heading">Advertencia!</h4>
-                El ítem se encuentra en estado de revisión. Una vez aprobado la solicitud del comité se podra cambiar
-                nuevamente su estado a aprobado.
-            </div>
-        {% else %}
+    </ol>     
+
+    {% if item.padres.all.exists or item.hijos.all.exists or item.antecesores.all.exists or item.sucesores.all.exists %} 
             {% if error %}
                 <h2>{{ error }}</h2>
             {% else %}
@@ -38,8 +31,7 @@
                     </form>
                 </div>
                 </div>
-            {% endif %}
-        {% endif %}
+            {% endif %} 
     {% else %}
         <div class="alert alert-dismissible alert-warning">
                 <button type="button" class="close" data-dismiss="alert" onclick="window.history.back()">&times;</button>
