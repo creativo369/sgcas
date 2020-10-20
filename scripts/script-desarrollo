@@ -1,0 +1,163 @@
+#!/usr/bin/bash
+echo -e "\n\n=========================== Bienvenido! =========================="
+echo -e "\n\nEstamos preparando el despliegue de desarrollo del Proyecto SGCAS!"
+echo -e "\n\n=== SELECCIONE UNA OPCIÓN DE DESCARGA DEL PROYECTO DE GITHUB ==="
+echo -e "\n1 > Descargar rama Alex"
+echo -e "\n2 > Descargar rama Guillermo"
+echo -e "\n3 > Descargar rama Victor"
+echo -e "\n4 > Descargar rama Maricel"
+echo -e "\nSeleccione una opción : "
+read VAR
+
+if [ -d "/home/victor/SGCAS" ] 
+then
+	rm -rf SGCAS
+	cd /home/victor/Projects/SGCAS/scripts
+	python3 desarrollo.py
+	case $VAR in 
+	1)
+		echo -e "\nDescargando rama Alex."
+		sleep 3
+		cd /home/victor/Projects/SGCAS/scripts
+		python3 desarrollo.py
+		cd /home/victor
+		git clone -b alex --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	2)
+		echo -e "\nDescargando rama Guillermo."
+		sleep 3
+		cd /home/victor/Projects/SGCAS/scripts
+		python3 desarrollo.py
+		cd /home/victor
+		git clone -b guillermo --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	3)
+		echo -e "\nDescargando rama Victor."
+		sleep 3
+		cd /home/victor/Projects/SGCAS/scripts
+		python3 desarrollo.py
+		cd /home/victor
+		git clone -b victor --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	4)
+		echo -e "\nDescargando rama Maricel."
+		sleep 3
+		cd /home/victor/Projects/SGCAS/scripts
+		python3 desarrollo.py
+		cd /home/victor
+		git clone -b maricel --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	esac
+ 
+else
+    cd /home/victor/Projects/SGCAS/scripts
+    echo -e "\n===Accediendo a postgreSQL y creando la base de datos de desarrollo ==="
+    python3 desarrollo.py
+    cd /home/victor
+    case $VAR in 
+	1)
+		echo -e "\nDescargando rama Alex."
+		sleep 3
+		git clone -b alex --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	2)
+		echo -e "\nDescargando rama Guillermo."
+		sleep 3
+		git clone -b guillermo --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	3)
+		echo -e "\nDescargando rama Victor."
+		sleep 3
+		git clone -b victor --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	4)
+		echo -e "\nDescargando rama Maricel."
+		sleep 3
+		git clone -b maricel --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS ;;
+	esac
+fi
+
+echo -e "\n=== CLONACIÓN CULMINADO SATISFACTORIAMENTE! Proyecto en maquina local. ==="
+echo -e "\n=== Creando entorno virtual ==="
+sleep 6
+python3 -m venv /home/victor/SGCAS/venv
+
+if [ ~/SGCAS/venv ]
+then 
+	echo -e "\n=== ENTORNO VIRTUAL CREADO SATISFACTORIAMENTE! ==="
+else
+	echo -e "\nError! no se ha podido completar la acción!!!"
+fi
+
+cd /home/victor/SGCAS/deployment
+mkdir media
+
+cd /home/victor/SGCAS/apps
+
+# # Creando las carpetas para " makemigrations y migrate"
+mkdir comite/migrations
+touch comite/migrations/__init__.py
+mkdir fase/migrations
+touch fase/migrations/__init__.py
+mkdir item/migrations
+touch item/migrations/__init__.py
+mkdir linea_base/migrations
+touch linea_base/migrations/__init__.py
+mkdir proyecto/migrations
+touch proyecto/migrations/__init__.py
+mkdir rol/migrations
+touch rol/migrations/__init__.py
+mkdir tipo_item/migrations
+touch tipo_item/migrations/__init__.py
+mkdir usuario/migrations
+touch usuario/migrations/__init__.py
+
+
+cd /home/victor/SGCAS/venv
+
+source ./bin/activate
+PS1="(`basename \"$VIRTUAL_ENV\"`)\e[1;34m:/\W\033[00m$ "
+sleep 2
+
+echo -e "\n=== Entorno virtual activado ==="
+
+cd /home/victor/SGCAS/
+echo -e "\n=== Preparando instalación de dependencias...porfavor aguarde! ==="
+sleep 6
+pip install -r requirements.txt
+
+echo -e "\n=== Realizando las migraciones a la base de datos...Aguarde un momento! ==="
+sleep 6
+# # migrate
+cd /home/victor/SGCAS/
+python manage.py makemigrations
+python manage.py migrate
+
+echo -e "\n=== Poblando la base de datos con los escenarios ==="
+python manage.py loaddata fixtures/db.json
+
+
+echo -e "\n=== Generando documentación ==="
+cd /home/victor/SGCAS/apps/comite
+pycco *.py -p
+cd /home/victor/SGCAS/apps/fase
+pycco *.py -p
+cd /home/victor/SGCAS/apps/item
+pycco *.py -p
+cd /home/victor/SGCAS/apps/linea_base
+pycco *.py -p
+cd /home/victor/SGCAS/apps/mensajes
+pycco *.py -p
+cd /home/victor/SGCAS/apps/proyecto
+pycco *.py -p
+cd /home/victor/SGCAS/apps/rol
+pycco *.py -p
+cd /home/victor/SGCAS/apps/tipo_item
+pycco *.py -p
+cd /home/victor/SGCAS/apps/usuario
+pycco *.py -p
+
+echo -e "\n=== Documentación Generada! Abriendo en el navegador ==="
+cd /home/victor/Projects/SGCAS/scripts
+python open_doc.py
+
+echo -e "\n=== Iniciando el servidor de desarrollo...==="
+echo -e "\n=== Ya puede abrir el siguiente enlace :\n\n"
+cd /home/victor/SGCAS/
+python manage.py runserver
+
+
+## RUTA PARA EJECUTAR EL SCRIPT: bash /home/victor/Projects/SGCAS/scripts/script-desarrollo
