@@ -36,7 +36,7 @@ Actualmente se despliega en las plantillas 12 vistas:
 8. **revision_votacion** - determina que opción obtiene la mayoria de votos (Ir a la sección: [[views.py #revision votacion]] )
 9. **decision_comite** - notifica al solicitante la decision del comité (Ir a la sección: [[views.py #decision comite]] )
 10. **lista_solicitudes** - lista las solicitudes que deben ser votadas (Ir a la sección: [[views.py #lista de solicitudes]] )
-11. **solicitud_linea_base** - remite la solicitud de rotura de la linea base al comité (Ir a la sección: [[views.py #socilitud de linea base]] )
+11. **solicitud_item** - solicita el cambio de estado de un ítem aprobado que Permiteenece a una línea base cerrada (Ir a la sección: [[views.py #socilitud de linea base]] )
 12. **send_notification** - se ecarga del envío de los correos al usuario solicitante (Ir a la sección: [[views.py #enviar correo]] )
 
 """
@@ -277,16 +277,33 @@ def decision_comite(solicitud):
     subject = ''
     message = ''
     if solicitud.votacion >= 1:
-        subject = 'Solicitud aprobada.'
-        lb = solicitud.linea_base
-        lb.estado = 'Rota'
-        lb.save()
-        for item in lb.items.all():
-            item.estado ='Desarrollo'
+        subject = 'Solicitud aprobada'
+        if solicitud.item is not None:
+
+            item = solicitud.item
+            item.estado = 'Desarrollo'
+            item.en_linea_base = False        
             item.save()
-        message = 'Su solicitud correspondiente a la linea base {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
-    else: 
-            message = 'Su solicitud correspondiente a la linea base {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.linea_base)
+
+            for lineas in LineaBase.objects.all():
+                if lineas.items.get(pk=solicitud.item.pk):
+
+                    lineas.estado = 'Rota' #rompe la linea base a la que pertenece el ítem
+                    lineas.save()
+
+                    for item in lineas.items.all():
+                        if item != solicitud.item:
+                          
+                            item.estado = 'Revision' #se pone en revisión los ítems que salen de la línea base cerrada
+                            item.en_linea_base = False
+                            item.save()
+
+            message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+    else:
+        subject = 'Solicitud no aprobada'
+        message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+
+    
     send_notification(solicitud.solicitante.email, subject, message)
     solicitud.delete()
 
@@ -316,6 +333,7 @@ def lista_solicitudes(request, pk):
     return render(request, 'comite/solicitudes.html', context)
 
 
+
 def auditoria_solicitudes(request, pk):
     """
     Renderiza una adutoria sobre un artefacto.
@@ -331,8 +349,10 @@ def auditoria_solicitudes(request, pk):
 
 
 #@permission_required('comite.crear_solicitud', raise_exception=True)
+
+@permission_required('comite.crear_solicitud', raise_exception=True)
 # === solicitud de ítem ===
-#def solicitud_item(request, pk):
+def solicitud_item(request, pk):
     """
     Realiza la solicitud del usuario para la modificacion de un item.
     **:param request:** Recibe un request por parte del usuario que realiza la solicitud.<br/>
@@ -340,8 +360,8 @@ def auditoria_solicitudes(request, pk):
     **:return:** Retorna al template de lista de items.<br/>
     """
     #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
-    """
-    form = FormularioSolicitud(request.POST or None, pk=pk, request=request, tipo=0)
+    
+    form = FormularioSolicitud(request.POST or None, pk=pk, request=request)
     if request.method == 'GET':
         context = {
             'form':form,
@@ -357,11 +377,11 @@ def auditoria_solicitudes(request, pk):
                 message='{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
                 send_notification(miembro_comite.email, solicitud.asunto, message)
             return redirect('item:item_lista', id_fase=Item.objects.get(pk=pk).fase.pk)
-"""
 
-@permission_required('comite.crear_solicitud', raise_exception=True)
+
+#@permission_required('comite.crear_solicitud', raise_exception=True)
 # === socilitud de linea base ===
-def solicitud_linea_base(request, pk):
+#def solicitud_linea_base(request, pk):
     """
     Realiza la solicitud del usuario para la rotura de la linea base.
     **:param request:** Recibe un request por parte del usuario que realiza la solicitud.<br/>
@@ -369,6 +389,7 @@ def solicitud_linea_base(request, pk):
     **:return:** Retorna al template de lista de items.<br/>
     """
     #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+"""
     form = FormularioSolicitud(request.POST or None, pk=pk, request=request)
     if request.method == 'GET':
         context = {
@@ -382,10 +403,10 @@ def solicitud_linea_base(request, pk):
             solicitud.proyecto = get_object_or_404(LineaBase, pk=pk).fase.proyecto
             solicitud.save()
             for miembro_comite in Comite.objects.get(proyecto=solicitud.linea_base.fase.proyecto).miembros.all():
-                message='{}:\n\nSe realizó una petición de aprobación para una línea base con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
+                message='{}:Se realizó una petición de aprobación para una línea base con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
                 send_notification(miembro_comite.email, solicitud.asunto, message)
         return redirect('linea_base:linea_lista', id_fase=LineaBase.objects.get(pk=pk).fase.pk)
-
+"""
 
 ##Envia el correo
 # === enviar correo ===

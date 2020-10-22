@@ -7,6 +7,7 @@
   <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="window.history.back()">&times;</a>
   <div><strong><h3>Acción Denegada!</h3></strong> </div>
   <div><h5>Este &iacute;tem forma parte de una l&iacute;nea base cerrada.</h5></div>
-   <a type="button" class="btn btn-link" onclick="window.history.back()"">Aceptar</a>
+   <a type="button" class="btn btn-link" href="{% url 'comite:solicitud_item' item.pk %}">Solicitar ruptura de L&iacute;nea Base</a>
+   <a type="button" class="btn btn-link" onclick="window.history.back()">Aceptar</a>
 </div>
 {% endblock content %}
