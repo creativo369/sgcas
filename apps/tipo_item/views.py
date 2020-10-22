@@ -8,8 +8,9 @@ from apps.tipo_item.forms import TipoItemForm, TipoItemUpdateForm
 
 from django.db.models import Q
 from django.core.paginator import Paginator
-from apps.tipo_item.models import TipoItem
+from apps.tipo_item.models import TipoItem, ItemImportado
 from apps.fase.models import Fase
+from apps.proyecto.models import Proyecto
 from django.views.generic import ListView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
@@ -42,12 +43,15 @@ def crear_tipo_item(request, id_fase):
         if form.is_valid():
             ti = form.save(commit=False)
             ti.fase = get_object_or_404(Fase, pk=id_fase)
+            fase = Fase.objects.get(id=id_fase)
+            ti.proyecto = get_object_or_404(Proyecto, id=fase.proyecto.pk)
             ti.save()
         return redirect('tipo_item:tipo_item_lista', id_fase=id_fase)
     else:
         form = TipoItemForm()
-    return render(request, 'tipo_item/tipo_item_crear.html', {'form': form, 'proyecto': Fase.objects.get(id=id_fase).proyecto,
-                                                               'fase': Fase.objects.get(id=id_fase)})
+    return render(request, 'tipo_item/tipo_item_crear.html',
+                  {'form': form, 'proyecto': Fase.objects.get(id=id_fase).proyecto,
+                   'fase': Fase.objects.get(id=id_fase)})
 
 
 @login_required
@@ -78,7 +82,7 @@ def tipo_item_lista(request, id_fase):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'tipo_item/tipo_item_lista.html', {'fase': Fase.objects.get(id=id_fase),
-                                                               'proyecto': Fase.objects.get(id=id_fase).proyecto,
+                                                              'proyecto': Fase.objects.get(id=id_fase).proyecto,
                                                               'page_obj': page_obj})
 
 
@@ -139,8 +143,34 @@ def search(request, id_fase):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, template, {'fase': Fase.objects.get(id=id_fase), 'proyecto':Fase.objects.get(id=id_fase).proyecto,
-                                      'page_obj': page_obj})
+    return render(request, template,
+                  {'fase': Fase.objects.get(id=id_fase), 'proyecto': Fase.objects.get(id=id_fase).proyecto,
+                   'page_obj': page_obj})
+
+
+def listar_importar_item(request, id_fase):
+    query_tipo_item = TipoItem.objects.all().exclude(proyecto=Fase.objects.get(id=id_fase).proyecto.pk)
+    proyecto_actual = Fase.objects.get(id=id_fase).proyecto
+    # paginator = Paginator(tipo_item, 3)
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
+    return render(request, 'tipo_item/listar_importacion.html', {'query_tipo_item': query_tipo_item,
+                                                                 'proyecto_actual': proyecto_actual,
+                                                                 'idfase': id_fase})
+
+
+def tipo_item_importar(request, id_proyecto, id_item, id_fase):
+    """
+     Permite la visualizacion en lista de todas las intancias del modelo TipoItem que se encuentran en una fase.<br/>
+     **:param request:** Recibe un request por parte de un usuario.<br/>
+     **:param pk:** Recibe el pk de la fase a la que pertenece el tipo de ítem para eliminarlo.<br/>
+     **:return:** Una vista de todas las intancias  de TipoItem existentes en la fase.<br/>
+    """
+    ti = TipoItem.objects.get(id=id_item)
+    proyecto = Proyecto.objects.get(id=id_proyecto)
+    tipo_importado = ItemImportado.objects.create(id_item=ti, proyecto_destino=proyecto)
+    tipo_importado.save()
+    return redirect('tipo_item:listar_importacion', id_fase=id_fase)
 
 # === Índice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
