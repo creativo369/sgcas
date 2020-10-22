@@ -2,7 +2,7 @@
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, permission_required
 from apps.tipo_item.views import tipo_item_opciones, crear_tipo_item, eliminar_tipo_item, \
-    editar_tipo_item, search, tipo_item_lista
+    editar_tipo_item, search, tipo_item_lista, listar_importar_item, tipo_item_importar
 
 # **Vistas basadas en clases**
 
@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^opciones/', login_required(tipo_item_opciones), name='tipo_item_opciones'),
     url(r'^crear-tipo-item/(?P<id_fase>\d+)/$', login_required(crear_tipo_item), name='crear_tipo_item'),
     url(r'^lista-tipo-item/(?P<id_fase>\d+)/$', login_required(tipo_item_lista), name='tipo_item_lista'),
+    url(r'^importar-item/(?P<id_fase>\d+)/$', login_required(listar_importar_item), name='listar_importacion'),
+    url(r'^importar/(?P<id_proyecto>\d+)/(?P<id_item>\d+)/(?P<id_fase>\d+)/$', login_required(tipo_item_importar), name='importar'),
     url(r'^editar-tipo-item/(?P<id_item>\d+)/$', login_required(editar_tipo_item), name='tipo_item_modificar'),
     url(r'^eliminar-tipo-item/(?P<pk>\d+)/$', login_required(eliminar_tipo_item), name='tipo_item_eliminar'),
     url(r'^results/(?P<id_fase>\d+)/$', login_required(search), name='search'),    

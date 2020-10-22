@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-{% block title %} Importar TI {% endblock%}
+{% block title %} Tipo de Item {% endblock%}
 
 {% block content %}
     <form method="post">
@@ -10,9 +10,9 @@
             <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
                 <div class="card-header">
                     {% if not item.tipo_item %}
-                        <strong>Registro de Item - Importación de Tipo de Item</strong>
+                        Registro de Item - Tipos de Items del Proyecto : <span class="badge badge-light">{{ proyecto.nombre }}</span>
                     {% else %}
-                        <strong>Actualización de Item - Importación de Tipo de Item</strong>
+                        <strong>Actualización de Item - Plantilla de Tipo de Item</strong>
                     {% endif %}
                 </div>
                 <div class="card-body card-block">

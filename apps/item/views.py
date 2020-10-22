@@ -121,12 +121,14 @@ def item_importar_ti(request, pk):
     """
     item = get_object_or_404(Item, pk=pk)
     form = ItemImportarTipoItemForm(request.POST or None, instance=item)
+    proyecto = get_object_or_404(Proyecto,id=item.fase.proyecto.pk)
     if form.is_valid():
         item = form.save()
         return redirect('item:set_atributos', pk=item.id)
     return render(request, 'item/item_importar_tipo_item.html', {'form': form,
                                                                  'tipo_item': TipoItem.objects.all().exists(),
-                                                                 'fase': item.fase})
+                                                                 'fase': item.fase,
+                                                                 'proyecto': proyecto})
 
 
 # === settear atributos ítem ===
