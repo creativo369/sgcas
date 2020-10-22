@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^item_detalles/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_detalles), name='item_detalles'),
     url(r'^versiones/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(item_versiones), name='versiones'),
     url(r'^calculo-de-impacto/(?P<pk>\d+)/$', login_required(calculo_impacto), name='calculo_impacto'),
-    url(r'^trazabilidad-de-item/(?P<pk>\d+)/$', login_required(trazabilidad_item), name='trazabilidad'),
+    url(r'^trazabilidad-de-item/(?P<pk>\d+)/$', login_required(trazabilidad), name='trazabilidad'),
     url(r'^restaurar_version/(?P<pk>\d+)/(?P<id_fase>\d+)/$', login_required(restaurar_version),
         name='restaurar_version'),
     url(r'^fases_relaciones/(?P<pk>\d+)/$', login_required(fases_rel), name='fases_rel'),

@@ -714,66 +714,42 @@ def explore(item, impacto):
     return impacto
 
 
-# def traz(item):
-#     """
-#     Explora el arbol sumando los costos.<br/>
-#     **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
-#     **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
-#     **:return:** El impacto de un item en el proyecto.<br/>
-#     """
-#     impacto += item.costo
-#     for hijo in item.hijos.all():
-#         return explore(hijo, impacto)
-#     for sucesor in item.sucesores.all():
-#         return explore(sucesor, impacto)
-#     return impacto
+@requiere_permiso('ver_trazabilidad')
+def trazabilidad(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    nodes, links = explore_relations(item, nodes = [], links = [])
+    G = create_graph_trazabilidad(nodes, links)
+    draw_graph(G)
+    context = {
+        'image_name': 'item_trazabilidad.png',
+        'item': item,
+        'fase': Fase.objects.get(id=item.fase.pk),
+        'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
+    }
+    return render(request, 'item/item_trazabilidad.html', context)
 
 
-def explore(item, impacto):
+def explore_relations(item, nodes, links):
     """
     Explora el arbol sumando los costos.<br/>
     **:param item:** El item del cual se desea averiguar el calculo de impacto.<br/>
     **:param impacto:** Variable recursiva utilizada para compartir entre las llamadas.<br/>
     **:return:** El impacto de un item en el proyecto.<br/>
     """
-    impacto += item.costo
+    nodes.append(item)
     for padre in item.padres.all():
-        return explore(hijo, impacto)
+        if padre not in nodes:
+            links.append((item, padre))
+            return explore_relations(padre, nodes, links)
     for hijo in item.hijos.all():
-        return explore(hijo, impacto)
+        if hijo not in nodes:
+            links.append((item, hijo))
+            return explore_relations(hijo, nodes, links)
     for sucesor in item.sucesores.all():
-        return explore(sucesor, impacto)
-    return impacto
+        links.append((item, sucesor))
+        return explore_relations(sucesor, nodes, links)
+    return nodes, links
 
-
-@requiere_permiso('ver_trazabilidad')
-# === trazabilidad ítem ===
-def trazabilidad_item(request, pk):
-    """
-    Permite obtener la trazabilidad de un item.<br/>
-    **:param request:** Recibe un request por parte del usuario.<br/>
-    **:param pk:** Recibe el pk de una instancia de item sobre el cual se realizara la trazabilidad.<br/>
-    **:return:** La trazabilidad de un ítem (Si posee) en formato .png renderizado en el template.<br/>
-    """
-    target = Item.objects.get(pk=pk)
-    fase = Fase.objects.filter(proyecto=target.fase.proyecto).first()
-    source = Item.objects.filter(fase=fase).filter(last_release=True).earliest('id')
-    item = Item.objects.get(id=pk)
-    if item_has_path(fase.pk, source, target):
-        G = create_graph_trazabilidad(shortest_path(source, target, fase.pk))
-        draw_graph(G)
-        context = {
-            'image_name': 'item_trazabilidad.png',
-            'item': item,
-            'fase': Fase.objects.get(id=item.fase.pk),
-            'proyecto': Fase.objects.get(id=item.fase.pk).proyecto,
-            'item_name': target.nombre
-        }
-    else:
-        context = {
-            'item_name': target.nombre
-        }
-    return render(request, 'item/item_trazabilidad.html', context)
 
 # **Atras** : [[urls.py]]
 
