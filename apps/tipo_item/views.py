@@ -150,13 +150,24 @@ def search(request, id_fase):
 
 def listar_importar_item(request, id_fase):
     query_tipo_item = TipoItem.objects.all().exclude(proyecto=Fase.objects.get(id=id_fase).proyecto.pk)
+    proyecto_actual_pk = Fase.objects.get(id=id_fase).proyecto.pk
     proyecto_actual = Fase.objects.get(id=id_fase).proyecto
+    ti_importado = ItemImportado.objects.filter(proyecto_destino=proyecto_actual)
+    to_be_deleted = []
+    to_be_deleted_2 = []
+    for ti_import in ti_importado:
+        to_be_deleted_2.append(ti_import.proyecto_destino.pk)
+        to_be_deleted.append(ti_import.id_item)
+
     # paginator = Paginator(tipo_item, 3)
     # page_number = request.GET.get('page')
     # page_obj = paginator.get_page(page_number)
     return render(request, 'tipo_item/listar_importacion.html', {'query_tipo_item': query_tipo_item,
                                                                  'proyecto_actual': proyecto_actual,
-                                                                 'idfase': id_fase})
+                                                                 'idfase': id_fase,
+                                                                 'to_be_deleted': to_be_deleted,
+                                                                 'to_be_deleted_2': to_be_deleted_2,
+                                                                 'proyecto_actual_pk': proyecto_actual_pk})
 
 
 def tipo_item_importar(request, id_proyecto, id_item, id_fase):
