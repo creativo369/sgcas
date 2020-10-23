@@ -2,6 +2,9 @@
 {% block title %}Importación-Tipo de items{% endblock%}
 
 {% block content %}
+    {% block extracss %}
+    <script src="https://kit.fontawesome.com/aa90bcc874.js" crossorigin="anonymous"></script>
+{% endblock %}
     <ol class="breadcrumb">
        <li class="breadcrumb-item">Estamos en : {{ proyecto_actual }}</li>
     </ol>
@@ -24,7 +27,7 @@
             <th scope="col">Descripcion</th>
             <th scope="col">Atributos</th>
             <th scope="col">Proyecto origen</th>
-            <th scope="col">Opciones</th>
+            <th scope="col">Estado</th>
         </tr>
         </thead>
         <tbody>
@@ -41,7 +44,7 @@
 {#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
                             {% if TipoItem in to_be_deleted and proyecto_actual_pk in to_be_deleted_2 %}
 {#                                {% if proyecto_actual_pk in to_be_deleted_2 %}#}
-                                    <h6>Ya importado</h6>
+                                    <a type="button" class="btn btn-secondary" href="#">Importado&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true"></i></a>
 {#                                {% else %}#}
 {#                                    <a type="button" class="btn btn-warning"#}
 {#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
