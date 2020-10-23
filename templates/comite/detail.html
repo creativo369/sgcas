@@ -28,7 +28,7 @@
         </tr>
         </tbody>
     </table>
-    <a type="button" class="btn btn-secondary" href="#" onclick="window.history.back()">Regresar al Proyecto</a>
+    <a type="button" class="btn btn-secondary" href="{% url 'proyecto:detail' comite.proyecto.id %}">Regresar al Proyecto</a>
     {% if request.user.id == comite.proyecto.gerente_id %}
     <a type=" button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
     <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}">Eliminar</a>

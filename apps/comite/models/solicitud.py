@@ -24,6 +24,7 @@ class Solicitud(models.Model):
 	votacion = models.IntegerField(default=0)
 	descripcion = models.TextField()
 	auditoria = models.ManyToManyField(Voto,blank=True)
+	en_proceso = models.BooleanField(default=True)
     
 
 

@@ -40,17 +40,19 @@
                                 <a type="button" class="btn btn-secondary" href="#">Detalles</a>
                             {% endif %}     -->
                             {% if miembro_comite not in solicitud.votantes.all %}
-                               <div class="dropdown" style="display: inline">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                        Votar
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{% url 'comite:voto_favor' solicitud.id %}">A favor</a>
-                                        <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
-                                    </div>
-                                </div>
+                                {% if request.user != proyecto.gerente %}
+                                       <div class="dropdown" style="display: inline">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                Votar
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="{% url 'comite:voto_favor' solicitud.id %}">A favor</a>
+                                                <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
+                                            </div>
+                                        </div>
+                                {% endif %}
                                 <a type="button" class="btn btn-secondary" href="{% url 'comite:auditoria' solicitud.id %}">Auditoria</a>
                             {% else %}
                                 <a type="button" class="btn btn-secondary" href="#">Votado <i class="fa fa-check" aria-hidden="true"></i></a>

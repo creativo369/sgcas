@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import permission_required
 from guardian.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -303,9 +304,10 @@ def decision_comite(solicitud):
         subject = 'Solicitud no aprobada'
         message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
 
-    
+    solicitud.en_proceso=False
+    solicitud.save()
     send_notification(solicitud.solicitante.email, subject, message)
-    solicitud.delete()
+    #solicitud.delete()
 
 
 # @permission_required('comite.ver_solicitud', raise_exception=True)
@@ -327,9 +329,10 @@ def lista_solicitudes(request, pk):
         #'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
         'miembro_comite': request.user,
         'comite':Comite.objects.get(pk=pk),
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'proyecto': Comite.objects.get(pk=pk).proyecto
     }
-
+    print(Solicitud.proyecto)
     return render(request, 'comite/solicitudes.html', context)
 
 
@@ -365,14 +368,19 @@ def solicitud_item(request, pk):
     if request.method == 'GET':
         context = {
             'form':form,
-            'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
+            #'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
+            'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).exclude(en_proceso=False).count()
+
         }
+        print(Solicitud.objects.filter(item=Item.objects.get(pk=pk)).exclude(en_proceso=False).count())
         return render(request, 'comite/solicitud.html', context)
     else:
         if form.is_valid():
             solicitud = form.save(commit=False)
             solicitud.proyecto = get_object_or_404(Item, pk=pk).fase.proyecto
             solicitud.save()
+            print(solicitud.item.fase.proyecto)
+            print(Comite.objects.get(proyecto=solicitud.item.fase.proyecto))
             for miembro_comite in Comite.objects.get(proyecto=solicitud.item.fase.proyecto).miembros.all():
                 message='{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
                 send_notification(miembro_comite.email, solicitud.asunto, message)
