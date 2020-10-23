@@ -37,8 +37,19 @@
                     <td>{{ TipoItem.atributos }}</td>
                     <td>{{ TipoItem.proyecto }}</td>
                     <td>
-                        <a type="button" class="btn btn-warning"
-                           href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>
+{#                        <a type="button" class="btn btn-warning"#}
+{#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
+                            {% if TipoItem in to_be_deleted and proyecto_actual_pk in to_be_deleted_2 %}
+{#                                {% if proyecto_actual_pk in to_be_deleted_2 %}#}
+                                    <h6>Ya importado</h6>
+{#                                {% else %}#}
+{#                                    <a type="button" class="btn btn-warning"#}
+{#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
+{#                                {% endif %}#}
+                            {% else %}
+                                <a type="button" class="btn btn-warning"
+                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>
+                            {% endif %}
                     </td>
                 </tr>
             {% endfor %}
