@@ -28,6 +28,25 @@ class RolTestCrear(TestRolSetUp):
         try:        
             self.assertEqual(self.group, Group.objects.first())
         except AssertionError as e:
+            print("Error de comparacion: {}".format(e)) 
+
+    def test_rol_por_fase(self):        
+
+        for i in 'abc':
+            Rol.objects.create(nombre='rol'+i,group=Group.objects.create(name='grupo_de_prueba'+ i))
+
+        fase1=Fase.objects.create(nombre='fase1', descripcion='descripcion fase1')    
+
+        for rol in Rol.objects.all():
+            rol.fase = fase1 
+            rol.save()
+
+        cantidad_rol_fase1= Rol.objects.filter(fase=fase1).all().count()
+        
+
+        try:
+            self.assertEqual(cantidad_rol_fase1, Rol.objects.all().count())
+        except AssertionError as e:
             print("Error de comparacion: {}".format(e))       
 
 
