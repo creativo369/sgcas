@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% block title %} Reporte de Fase {% endblock%}
+{% block content %}
+    <h1>INFORMACION DETALLADA DEL REPORTE</h1>
+    <div class="card">
+        <div class="card-header">
+            <strong>&nbsp;&nbsp;Proyecto: </strong>{{ proyecto.nombre }}
+            <strong>&nbsp;&nbsp;Reporte de la Fase: </strong>{{ fase.nombre }}
+            <strong>&nbsp;&nbsp;Cantidad de &iacute;tems: </strong>{{ items.count }}
+            <strong>&nbsp;&nbsp;Cantidad de lineas bases: </strong>{{ lbs.count }}
+            <strong>&nbsp;&nbsp;Cantidad de tipos de items: </strong>{{ tipos.count }}
+            <br><br><br>
+            <h4>ITEMS</h4>
+            <hr>
+            <table>
+                <tr>
+                    <th scope="col">Nombre del &iacute;tem</th>
+                    <th scope="col">Fecha de Creaci&oacute;n</th>
+                    <th scope="col">Estado</th>
+                </tr>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.fecha_creacion }}</td>
+                        <td>{{ item.estado }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        <br><br><br>
+        <h4>LINEAS BASES</h4>
+            <hr>
+        <table>
+            <tr>
+                <th scope="col">Identificador</th>
+                <th scope="col">Fecha de Creaci&oacute;n</th>
+                <th scope="col">Cantidad de &iacute;tems</th>
+{#                <th scope="col">Items</th>#}
+                <th scope="col">Estado</th>
+            </tr>
+            <tbody>
+            {% for lb in lbs %}
+                <tr>
+                    <td>{{ lb.identificador }}</td>
+                    <td>{{ lb.fecha_creacion }}</td>
+                    <td>{{ lb.items.count }}</td>
+{#                    {% for item in lb.items.all %}#}
+{#                        <td>{{ item.nombre}}</td>#}
+{#                    {% endfor %}#}
+                    <td>{{ lb.estado }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br><br><br>
+        <h4>TIPOS DE ITEMS</h4>
+        <h6></h6>
+            <hr>
+        <table>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Atributos</th>
+                <th scope="col">Fase</th>
+                <th scope="col">Proyecto origen</th>
+            </tr>
+            <tbody>
+            {% for ti in tipos %}
+                <tr>
+                    <td>{{ ti.nombre }}</td>
+                    <td>{{ ti.atributos }}</td>
+                    <td>{{ ti.fase }}</td>
+                    <td>{{ ti.proyecto }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock content %}

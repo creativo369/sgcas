@@ -113,6 +113,9 @@
                                 {% if proyecto.estado != 'Iniciado' %}
                                     <a class="dropdown-item" href="{% url 'fase:fase_eliminar' fase.id proyecto.id %}">Eliminar</a>
                                 {% endif %}
+                                {% if proyecto.estado != 'Pendiente' %}
+                                    <a class="dropdown-item" href="{% url 'fase:reporte_fase' fase.id %}">Generar Reporte Fase</a>
+                                {% endif %}
                             </div>
                         </div>
                     </td>

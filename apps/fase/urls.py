@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^lista/(?P<_id>\d+)/$', login_required(permission_required('fase.listar_fase', raise_exception=True)(lista_fase)), name='fase_lista'),
     url(r'^eliminar/(?P<id_fase>\d+)/(?P<_id>\d+)/$', login_required(eliminar_fase), name='fase_eliminar'),
     url(r'^editar/(?P<id_fase>\d+)/(?P<_id>\d+)/$', login_required(fase_modificar), name='fase_modificar'),
+    url(r'^generar-reporte/(?P<id_fase>\d+)/$', login_required(render_pdf_view), name='reporte_fase'),
 ]
 
 # **Volver atras** : [[forms.py]]
