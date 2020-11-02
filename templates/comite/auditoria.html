@@ -7,18 +7,22 @@
         </div>
         <div class="card-body card-block">
             <h4>Votantes:
-                <ul style="list-style: circle">
-                    {% for voto in solicitud.auditoria.all %}
-                        <li><small class="text-muted">{{ voto.votante }} votó 
-                            {% if voto.decision == True %}
-                                a favor
-                            {% else %}
-                                en contra
-                            {% endif %}
-                            en fecha {{ voto.fecha_voto }}
-                        </small></li>
-                    {% endfor %}
-                </ul>
+                {% if solicitud.auditoria.all.exists %}
+                    <ul style="list-style: circle">
+                        {% for voto in solicitud.auditoria.all %}
+                            <li><small class="text-muted">{{ voto.votante }} votó 
+                                {% if voto.decision == True %}
+                                    a favor
+                                {% else %}
+                                    en contra
+                                {% endif %}
+                                en fecha {{ voto.fecha_voto }}
+                            </small></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h5 style="text-align: center" class="table-warning">Ning&uacute;n miembro del comit&eacute; ha votado a&uacute;n.</h5>                    
+                {% endif %}
             </h4>
             <button type="button" class="btn btn-link" onclick="window.history.back()">Volver</button>
         </div>

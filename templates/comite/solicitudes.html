@@ -18,6 +18,7 @@
             <tr>
                 <th scope="col">Artefacto</th>
                 <th scope="col">Descripcion de la solicitud</th>
+                <th scope="col">Fecha solicitada</th>
                 <th scope="col">Solicitante</th>
       <!--      <th scope="col">Opciones</th>       -->
                 <th scope="col">Decisi&oacute;n</th>
@@ -32,6 +33,7 @@
                             <td>Linea Base</td>
                         {% endif %}
                         <td>{{ solicitud.descripcion }}</td>
+                        <td>{{ solicitud.fecha_solicitada }}</td>
                         <td>{{ solicitud.solicitante }}</td>
                         <td>
 <!--                        {% if solicitud.item %}
