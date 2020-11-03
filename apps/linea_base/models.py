@@ -26,7 +26,7 @@ class LineaBase(models.Model):
     # 6. **items**: relación que almacena los items con la linea base.<br/>
     identificador = models.CharField(max_length=9, default=random_id, editable=False)
     descripcion = models.TextField(default=None, null=True)
-    fecha_creacion = models.DateField(default=datetime.date.today)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=30, choices=linea_estado, default='Abierta')
     fase = models.ForeignKey(Fase, on_delete=models.CASCADE, default=None, null=True)
     items = models.ManyToManyField(Item, blank=True, related_name="LineaBase")

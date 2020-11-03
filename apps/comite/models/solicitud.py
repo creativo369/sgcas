@@ -21,7 +21,7 @@ class Solicitud(models.Model):
 	proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, blank=True, null=True)
 	tipo = models.CharField(max_length=100, choices=tipo_solicitud, default='Item')
 	linea_base = models.ForeignKey(LineaBase, on_delete=models.CASCADE, blank=True, null=True)
-	fecha_solicitada = models.DateField(default=datetime.date.today)  
+	fecha_solicitada = models.DateTimeField(auto_now_add=True)
 	votacion = models.IntegerField(default=0)
 	descripcion = models.TextField()
 	auditoria = models.ManyToManyField(Voto,blank=True)
