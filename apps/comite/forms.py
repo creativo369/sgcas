@@ -67,7 +67,7 @@ class FormularioSolicitud(forms.ModelForm):
         pk = kwargs.pop('pk')      
 
         super(FormularioSolicitud, self).__init__(*args, **kwargs)
-        fields_not_required = ['asunto', 'solicitante', 'item', 'tipo', 'linea_base', 'votacion','en_proceso',]
+        fields_not_required = ['asunto', 'solicitante', 'item', 'tipo', 'linea_base', 'votacion','en_proceso','estado']
         
         self.fields['solicitante'].initial = request.user
         self.fields['proyecto'].initial = Item.objects.get(pk=pk).fase.proyecto

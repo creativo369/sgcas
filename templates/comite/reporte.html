@@ -15,7 +15,7 @@
                     <th scope="col">Asunto</th>
                     <th scope="col">Descripcion de la Solicitud</th>
                     <th scope="col">Fecha Solicitada</th>
-{#                    <th scope="col">Estado</th>#}
+                    <th scope="col">Estado</th>
                 </tr>
                 <tbody>
                 {% for solicitud in solicitudes %}
@@ -23,7 +23,7 @@
                         <td>{{ solicitud.asunto }}</td>
                         <td>{{ solicitud.descripcion }}</td>
                         <td>{{ solicitud.fecha_solicitada }}</td>
-{#                      <td>{{ solicitud.estado }}</td>#}
+                      <td>{{ solicitud.estado }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -282,6 +282,8 @@ def decision_comite(solicitud):
     message = ''
     if solicitud.votacion >= 1:
         subject = 'Solicitud aprobada'
+        solicitud.estado = 'Aprobada'
+        solicitud.save()
         if solicitud.item is not None:
 
             item = solicitud.item
@@ -304,6 +306,9 @@ def decision_comite(solicitud):
             message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(
                 solicitud.item)
     else:
+        solicitud.estado = 'Rechazada'
+        solicitud.save()
+
         subject = 'Solicitud no aprobada'
         message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(
             solicitud.item)
