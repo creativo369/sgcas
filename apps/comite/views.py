@@ -11,8 +11,6 @@ from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from SGCAS.settings import base
 
-
-
 # === Importación de los codigos fuentes de la aplicación ===
 from .models import Comite, Solicitud
 from apps.comite.models.solicitud import Voto
@@ -21,6 +19,10 @@ from ..proyecto.models import Proyecto
 from apps.item.models import Item
 from apps.linea_base.models import LineaBase
 from apps.item.views import get_lb
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 """
 Todas las vistas para la aplicación del Modulo Comité
@@ -143,8 +145,8 @@ class UpdateComite(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
         **:param kwargs:** Diccionario 'clave':valor que recibe la referencia de la instancia del modelo proyecto.<br/>
         **:return:** el formulario , la plantilla donde se va desplegar el formulario de creación.<br/>
         """
-        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))        
-        if not Solicitud.objects.filter(proyecto=comite.proyecto).exists():    
+        comite = get_object_or_404(Comite, pk=kwargs.get('pk'))
+        if not Solicitud.objects.filter(proyecto=comite.proyecto).exists():
             form = self.form_class(request.POST or None, instance=comite)
             if form.is_valid():
                 form.save()
@@ -197,6 +199,7 @@ class DeleteComite(LoginRequiredMixin, DeleteView, PermissionRequiredMixin):
             Comite.objects.get(pk=pk).delete()
             return redirect(self.success_url)
 
+
 # === detail comite ===
 class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     """
@@ -211,6 +214,7 @@ class DetailComite(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     template_name = 'comite/detail.html'
     permission_required = 'comite.ver_comite'
     success_url = reverse_lazy('comite:detail')
+
 
 # @permission_required('comite.ver_comite', raise_exception=True)
 # === voto a favor ===
@@ -230,6 +234,7 @@ def voto_favor(request, pk):
     if revision_votacion(solicitud):
         decision_comite(solicitud)
     return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
+
 
 # @permission_required('comite.ver_comite', raise_exception=True)
 # === voto en contra ===
@@ -251,7 +256,6 @@ def voto_contra(request, pk):
     return redirect('comite:solicitudes', pk=Comite.objects.get(proyecto=solicitud.proyecto).pk)
 
 
-
 ##Revisa la votacion para ver si ya votaron todos los miembros, si ya votaron todos
 # === revision votacion ===
 def revision_votacion(solicitud):
@@ -260,12 +264,11 @@ def revision_votacion(solicitud):
     **:param solicitud:** Recibe la instancia de solicitud sobre la cual se hara la revision de la votacion.<br/>
     **:return:** Retorna True si todos los miembros del comite ya votaron, en caso contrario retorna False.<br/>
     """
-    cant_miembros_comite=Comite.objects.get(proyecto=solicitud.proyecto).miembros.all().count()
-    cant_votantes_solicitud=solicitud.votantes.all().count()
+    cant_miembros_comite = Comite.objects.get(proyecto=solicitud.proyecto).miembros.all().count()
+    cant_votantes_solicitud = solicitud.votantes.all().count()
     if cant_miembros_comite > cant_votantes_solicitud:
         return False
     return True
-
 
 
 # === decision comite ===
@@ -283,31 +286,32 @@ def decision_comite(solicitud):
 
             item = solicitud.item
             item.estado = 'Desarrollo'
-            item.en_linea_base = False        
+            item.en_linea_base = False
             item.save()
 
             for lineas in LineaBase.objects.all():
                 if lineas.items.get(pk=solicitud.item.pk):
 
-                    lineas.estado = 'Rota' #rompe la linea base a la que pertenece el ítem
+                    lineas.estado = 'Rota'  # rompe la linea base a la que pertenece el ítem
                     lineas.save()
 
                     for item in lineas.items.all():
                         if item != solicitud.item:
-                          
-                            item.estado = 'Revision' #se pone en revisión los ítems que salen de la línea base cerrada
+                            item.estado = 'Revision'  # se pone en revisión los ítems que salen de la línea base cerrada
                             item.en_linea_base = False
                             item.save()
 
-            message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+            message = 'Su solicitud correspondiente al item {} ha sido aprobada por el comité.\n\nSGCAS.'.format(
+                solicitud.item)
     else:
         subject = 'Solicitud no aprobada'
-        message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(solicitud.item)
+        message = 'Su solicitud correspondiente al item {} no ha sido aprobada por el comité.\n\nSGCAS.'.format(
+            solicitud.item)
 
-    solicitud.en_proceso=False
+    solicitud.en_proceso = False
     solicitud.save()
     send_notification(solicitud.solicitante.email, subject, message)
-    #solicitud.delete()
+    # solicitud.delete()
 
 
 # @permission_required('comite.ver_solicitud', raise_exception=True)
@@ -326,15 +330,14 @@ def lista_solicitudes(request, pk):
     page_obj = paginator.get_page(page_number)
 
     context = {
-        #'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
+        # 'solicitudes': Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),
         'miembro_comite': request.user,
-        'comite':Comite.objects.get(pk=pk),
+        'comite': Comite.objects.get(pk=pk),
         'page_obj': page_obj,
         'proyecto': Comite.objects.get(pk=pk).proyecto
     }
     print(Solicitud.proyecto)
     return render(request, 'comite/solicitudes.html', context)
-
 
 
 def auditoria_solicitudes(request, pk):
@@ -351,7 +354,7 @@ def auditoria_solicitudes(request, pk):
     return render(request, 'comite/auditoria.html', context)
 
 
-#@permission_required('comite.crear_solicitud', raise_exception=True)
+# @permission_required('comite.crear_solicitud', raise_exception=True)
 
 @permission_required('comite.crear_solicitud', raise_exception=True)
 # === solicitud de ítem ===
@@ -362,14 +365,15 @@ def solicitud_item(request, pk):
     **:param pk:** Recibe el pk de la instancia de item que el usuario desea modificar.<br/>
     **:return:** Retorna al template de lista de items.<br/>
     """
-    #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
-    
+    # Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+
     form = FormularioSolicitud(request.POST or None, pk=pk, request=request)
     if request.method == 'GET':
         context = {
-            'form':form,
-            #'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
-            'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).exclude(en_proceso=False).count()
+            'form': form,
+            # 'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
+            'solicitud_en_proceso': Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).exclude(
+                en_proceso=False).count()
 
         }
         print(Solicitud.objects.filter(item=Item.objects.get(pk=pk)).exclude(en_proceso=False).count())
@@ -382,21 +386,23 @@ def solicitud_item(request, pk):
             print(solicitud.item.fase.proyecto)
             print(Comite.objects.get(proyecto=solicitud.item.fase.proyecto))
             for miembro_comite in Comite.objects.get(proyecto=solicitud.item.fase.proyecto).miembros.all():
-                message='{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
+                message = '{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(
+                    miembro_comite, solicitud.descripcion)
                 send_notification(miembro_comite.email, solicitud.asunto, message)
             return redirect('item:item_lista', id_fase=Item.objects.get(pk=pk).fase.pk)
 
-
-#@permission_required('comite.crear_solicitud', raise_exception=True)
-# === socilitud de linea base ===
-#def solicitud_linea_base(request, pk):
+    # @permission_required('comite.crear_solicitud', raise_exception=True)
+    # === socilitud de linea base ===
+    # def solicitud_linea_base(request, pk):
     """
     Realiza la solicitud del usuario para la rotura de la linea base.
     **:param request:** Recibe un request por parte del usuario que realiza la solicitud.<br/>
     **:param pk:** Recibe el pk de la instancia de item donde se encuentra la linea base que se desea romper.<br/>
     **:return:** Retorna al template de lista de items.<br/>
     """
-    #Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+    # Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase
+
+
 """
     form = FormularioSolicitud(request.POST or None, pk=pk, request=request)
     if request.method == 'GET':
@@ -416,6 +422,7 @@ def solicitud_item(request, pk):
         return redirect('linea_base:linea_lista', id_fase=LineaBase.objects.get(pk=pk).fase.pk)
 """
 
+
 ##Envia el correo
 # === enviar correo ===
 def send_notification(to, subject, message):
@@ -433,6 +440,37 @@ def send_notification(to, subject, message):
         fail_silently=False,
     )
 
+
+def render_pdf_view(request, id_proyecto, id_comite):
+    """
+       Permite generar un reporte en pdf cantidad de solicitudes de cambio en un periodo de tiempo<br/>
+       **:param request:**Recibe un request por parte de un usuario.<br/>
+       **:param pk:**Recibe el pk del comite que se desea emitir el reporte.<br/>
+       **:return:** La vista preliminar de la cantidad de solicitudes de cambio en un periodo de tiempo en formato de pdf para descargar el reporte.<br/>
+       """
+    template_path = 'comite/reporte.html'
+    query_solicitud = Solicitud.objects.filter(proyecto=id_proyecto)
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    comite = Comite.objects.get(pk=id_comite)
+    context = {'solicitudes': query_solicitud, 'proyecto': proyecto, 'comite': comite}
+    # context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    # if download :
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # if view_pdf:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 # **Atras** : [[urls.py]]
 

@@ -4,7 +4,7 @@ from django.conf.urls import url
 
 from django.contrib.auth.decorators import login_required, permission_required
 from apps.proyecto.views import manage_projects, CreateProject, ListProject, UpdateProject, DeleteProject, \
-    success, DetailProject, change_state, search
+    success, DetailProject, change_state, search, render_pdf_view
 
 app_name = 'proyecto'
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^detalles-proyecto/(?P<pk>\d+)/$', login_required(permission_required('proyecto.detalles_proyecto', raise_exception=True)(DetailProject.as_view())), name='detail'),
     url(r'^operacion-exitosa/$', login_required(success), name='success'),
     url(r'^transicion-proyecto/(?P<pk>\d+)/$', login_required(change_state), name='change'),
+url(r'^generar-reporte/(?P<id_proyecto>\d+)/$', login_required(render_pdf_view), name='reporte_items'),
 ]
 
 

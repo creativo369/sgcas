@@ -78,6 +78,9 @@
             <a class="dropdown-item" href="{% url 'fase:crear_fase' _id=proyecto.id %}">Crear fase</a>
             {% endif %}
             <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
+            {% if proyecto.estado == 'Iniciado' %}
+            <a class="dropdown-item" href="{% url 'proyecto:reporte_items' proyecto.id %}">Reporte items</a>
+            {% endif %}
         </div>
     </div>
     

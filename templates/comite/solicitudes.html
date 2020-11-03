@@ -89,5 +89,6 @@
         <h2>No se encontraron solicitudes.</h2>
     {% endif %}
 <a type="button" class="btn btn-secondary" href="{% url 'comite:detail' comite.id %}">Regresar a Detalles del comit&eacute;</a> 
+<a type="button" class="btn btn-secondary" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Generar reporte de solicitudes</a>
  <!--    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>  -->
 {% endblock content %}

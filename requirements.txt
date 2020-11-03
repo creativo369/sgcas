@@ -1,3 +1,4 @@
+arabic-reshaper==2.1.0
 asgiref==3.2.10
 certifi==2020.6.20
 cffi==1.14.0
@@ -15,9 +16,11 @@ django-guardian==2.3.0
 django-import-export==2.2.0
 django-multiselectfield==0.1.12
 et-xmlfile==1.0.1
+future==0.18.2
 gcloud==0.17.0
 googleapis-common-protos==1.52.0
 gunicorn==20.0.4
+html5lib==1.1
 httplib2==0.18.1
 idna==2.10
 jdcal==1.4.1
@@ -33,6 +36,7 @@ oauth2client==3.0.0
 oauthlib==3.1.0
 odfpy==1.4.1
 openpyxl==3.0.4
+pathtools==0.1.2
 Pillow==7.2.0
 protobuf==3.12.2
 psycopg2==2.8.5
@@ -44,13 +48,16 @@ pycparser==2.20
 pycryptodome==3.4.3
 Pygments==2.6.1
 pyparsing==2.4.7
+PyPDF2==1.26.0
 Pyrebase==3.0.27
 pystache==0.5.4
+python-bidi==0.4.2
 python-dateutil==2.8.1
 python-jwt==2.0.1
 python3-openid==3.2.0
 pytz==2020.1
 PyYAML==5.3.1
+reportlab==3.5.55
 requests==2.11.1
 requests-oauthlib==1.3.0
 requests-toolbelt==0.7.0
@@ -61,5 +68,8 @@ sqlparse==0.3.1
 static3==0.7.0
 tablib==2.0.0
 urllib3==1.25.9
+watchdog==0.10.3
+webencodings==0.5.1
+xhtml2pdf==0.2.5
 xlrd==1.2.0
 xlwt==1.3.0

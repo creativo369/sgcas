@@ -240,6 +240,12 @@ def fase_modificar(request, id_fase, _id, *args, **kwargs):
 
 
 def render_pdf_view(request, id_fase):
+    """
+       Permite generar un reporte en pdf de los componentes de una fase en particular<br/>
+       **:param request:**Recibe un request por parte de un usuario.<br/>
+       **:param pk:**Recibe el pk de la fase que se desea emitir el reporte.<br/>
+       **:return:** La vista preliminar de los estados de los componentes de una fase en formato de pdf para descargar el reporte.<br/>
+       """
     template_path = 'fase/reporte.html'
     items_fase = Item.objects.filter(fase=id_fase)
     fase = get_object_or_404(Fase, id=id_fase)
