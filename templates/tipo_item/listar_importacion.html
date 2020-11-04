@@ -6,7 +6,8 @@
     <script src="https://kit.fontawesome.com/aa90bcc874.js" crossorigin="anonymous"></script>
 {% endblock %}
     <ol class="breadcrumb">
-       <li class="breadcrumb-item">Estamos en : {{ proyecto_actual }}</li>
+       <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
     </ol>
 {#<form method="GET" action="{% url 'tipo_item:search' fase.id %}">#}
 {#        <div id="custom-search-input">#}
@@ -79,6 +80,6 @@
 {#            </span>#}
 {#        </div>#}
 {#      </div>#}
-     <a type="button" class="btn btn-link" onclick="window.history.back()">Volver a fases del
+     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 {% endblock content %}
