@@ -2,7 +2,7 @@
 {% block title %}Solicitudes{% endblock%}
 
 {% block content %}
-    <form method="POST" action="{% url 'comite:reporte_solicitud' id_proyecto id_proyecto %}">
+    <form method="POST" action="{% url 'comite:reporte_solicitud' id_proyecto id_comite %}">
         {% csrf_token %}
         <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
             <div class="card-header">
