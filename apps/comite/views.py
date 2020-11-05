@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from SGCAS.settings import base
+from datetime import timedelta, datetime
 
 # === Importación de los codigos fuentes de la aplicación ===
 from .models import Comite, Solicitud
@@ -465,7 +466,9 @@ def render_pdf_view(request, id_proyecto, id_comite):
     if fecha_inicio == None and fecha_fin == None:
         query_solicitud = Solicitud.objects.filter(proyecto=id_proyecto)
     else:
-        query_solicitud = Solicitud.objects.filter(Q(proyecto=id_proyecto) & Q(fecha_solicitada__range=[fecha_inicio, fecha_fin]))
+        date = datetime.strptime(fecha_fin, "%Y-%m-%d")
+        modified_date = date + timedelta(days=1)
+        query_solicitud = Solicitud.objects.filter(Q(proyecto=id_proyecto) & Q(fecha_solicitada__range=[fecha_inicio, datetime.strftime(modified_date, "%Y-%m-%d")]))
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     comite = Comite.objects.get(pk=id_comite)
     context = {'solicitudes': query_solicitud, 'proyecto': proyecto, 'comite': comite}

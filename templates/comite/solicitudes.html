@@ -97,8 +97,8 @@
                                 Generar reporte de solicitudes
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Todos</a>
-                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud_rango' comite.proyecto.id comite.id %}">Por rango de fecha</a>
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Todas las solicitudes</a>
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud_rango' comite.proyecto.id comite.id %}">Por periodo de tiempo</a>
                             </div>
                         </div>
  <!--    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>  -->
