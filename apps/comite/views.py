@@ -27,7 +27,7 @@ from xhtml2pdf import pisa
 
 """
 Todas las vistas para la aplicación del Modulo Comité
-Actualmente se despliega en las plantillas 12 vistas:
+Actualmente se despliega en las plantillas 14 vistas:
 
 1. **success** - operación exitosa para la creación de un comite (Ir a la sección: [[views.py #success]] )
 2. **CreateComite** - definición de una instancia del modelo comité (Ir a la sección: [[views.py #create comite]] )
@@ -42,6 +42,8 @@ Actualmente se despliega en las plantillas 12 vistas:
 10. **lista_solicitudes** - lista las solicitudes que deben ser votadas (Ir a la sección: [[views.py #lista de solicitudes]] )
 11. **solicitud_item** - solicita el cambio de estado de un ítem aprobado que Permiteenece a una línea base cerrada (Ir a la sección: [[views.py #socilitud de linea base]] )
 12. **send_notification** - se ecarga del envío de los correos al usuario solicitante (Ir a la sección: [[views.py #enviar correo]] )
+13. **reporte_solicitud_rango** - se ecarga de establecer el periodo de tiempo en el que el usuario desea contar los reportes. (Ir a la sección: [[views.py #reporte PDF rango]] )
+14. **render_pdf_view** - se ecarga de la generacion del reporte de las solicitudes (Ir a la sección: [[views.py #reporte PDF]] )
 
 """
 
@@ -446,18 +448,28 @@ def send_notification(to, subject, message):
         fail_silently=False,
     )
 
-
+# === reporte PDF rango ===
 def reporte_solicitud_rango(request, id_proyecto, id_comite):
-    return render(request, 'comite/reporte_rango.html', context={'id_proyecto':id_proyecto,'id_comite': id_comite })
+    """
+       Permite establecer un periodo de tiempo definido por el usuario para contar la cantidad de reportes.<br/>
+       **:param request:**Recibe un request por parte de un usuario.<br/>
+       **:param id_proyecto:**Recibe el id del proyecto al que están asociadadas las solicitudes.<br/>
+       **:param id_comite:**Recibe el id del comite que se desea emitir el reporte.<br/>
+       **:return:** renderiza a un template donde se elige el periodo de tiempo.<br/>
+    """
+    return render(request, 'comite/reporte_rango.html', context={'id_proyecto':id_proyecto,'id_comite': id_comite ,
+                                                                  'proyecto': Proyecto.objects.get(id=id_proyecto),
+                                                                  'comite': Comite.objects.get(id=id_comite)})
 
-
+# === reporte PDF ===
 def render_pdf_view(request, id_proyecto, id_comite):
     """
        Permite generar un reporte en pdf cantidad de solicitudes de cambio en un periodo de tiempo<br/>
        **:param request:**Recibe un request por parte de un usuario.<br/>
-       **:param pk:**Recibe el pk del comite que se desea emitir el reporte.<br/>
+       **:param id_proyecto:**Recibe el id del proyecto al que están asociadadas las solicitudes.<br/>
+       **:param id_comite:**Recibe el id del comite que se desea emitir el reporte.<br/>
        **:return:** La vista preliminar de la cantidad de solicitudes de cambio en un periodo de tiempo en formato de pdf para descargar el reporte.<br/>
-       """
+    """
 
     template_path = 'comite/reporte.html'
     fecha_inicio = request.POST.get('fecha_inicio')

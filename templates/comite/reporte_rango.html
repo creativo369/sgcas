@@ -2,6 +2,13 @@
 {% block title %}Solicitudes{% endblock%}
 
 {% block content %}
+    
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=comite.proyecto.pk %}">Proyecto {{ comite.proyecto }}</a></li>
+      <li class="breadcrumb-item"><a href="#" onclick="window.history.back()">Comité {{ comite }}</a></li>
+      <li class="breadcrumb-item active">Solicitudes</li>
+    </ol>
+    
     <form method="POST" action="{% url 'comite:reporte_solicitud' id_proyecto id_comite %}">
         {% csrf_token %}
         <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
