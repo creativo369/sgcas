@@ -63,6 +63,10 @@
                     <a type="submit" class="btn btn-danger"
                        href="{% url 'item:item_eliminar' item.id item.fase.id %}">Eliminar</a>
                     {% endif %}
+                    {% if not item.en_linea_base and item.estado == 'Revision'%}
+                    <a type="button" class="btn btn-warning"
+                       href="{% url 'item:item_modificar' item.id item.fase.id %}">Editar</a>        
+                    {% endif %}
                     <div class="dropdown" style="display: inline">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown"

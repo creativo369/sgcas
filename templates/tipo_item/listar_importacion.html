@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% block title %}Importación-Tipo de items{% endblock%}
+
+{% block content %}
+    {% block extracss %}
+    <script src="https://kit.fontawesome.com/aa90bcc874.js" crossorigin="anonymous"></script>
+{% endblock %}
+    <ol class="breadcrumb">
+       <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>
+      <li class="breadcrumb-item active">Fase {{ fase }} </li>
+    </ol>
+{#<form method="GET" action="{% url 'tipo_item:search' fase.id %}">#}
+{#        <div id="custom-search-input">#}
+{#                    <div class="input-group col-md-12">#}
+{#                        <input type="text" class="form-control search-users" placeholder="Ingrese el nombre o de la descripci&oacute;n del tipo de &iacute;tem" name="buscar" value="{{ request.GET.buscar }}">#}
+{#                        <span class="input-group-list">#}
+{#                            <i class="icon icon-search"></i>#}
+{#                            <button type="submit" class="btn btn-success btn-search-users">Buscar</button>#}
+{#                        </span>#}
+{#                    </div>#}
+{#                </div>   #}
+{#</form>#}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+       {#   <th scope="col">ID</th> #}
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Atributos</th>
+            <th scope="col">Proyecto origen</th>
+            <th scope="col">Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if query_tipo_item %}
+            {% for TipoItem in query_tipo_item %}
+                <tr>
+{#                  <td>{{ TipoItem.id }}</td>#}
+                    <td>{{ TipoItem.nombre }}</td>
+                    <td>{{ TipoItem.descripcion }}</td>
+                    <td>{{ TipoItem.atributos }}</td>
+                    <td>{{ TipoItem.proyecto }}</td>
+                    <td>
+{#                        <a type="button" class="btn btn-warning"#}
+{#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
+                            {% if TipoItem in to_be_deleted and proyecto_actual_pk in to_be_deleted_2 %}
+{#                                {% if proyecto_actual_pk in to_be_deleted_2 %}#}
+                                    <a type="button" class="btn btn-secondary" href="#">Importado&nbsp;&nbsp;<i class="fa fa-check" aria-hidden="true"></i></a>
+{#                                {% else %}#}
+{#                                    <a type="button" class="btn btn-warning"#}
+{#                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>#}
+{#                                {% endif %}#}
+                            {% else %}
+                                <a type="button" class="btn btn-warning"
+                                    href="{% url 'tipo_item:importar' proyecto_actual.pk TipoItem.id idfase %}">Importar</a>
+                            {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <h2>No se encontraron registros de tipos de items de otros proyectos.</h2>
+        {% endif %}
+        </tbody>
+    </table>
+{#    <div class="text-center">#}
+{#        <div class="pagination">#}
+{#            <span class="step-links">#}
+{##}
+{#                <span class="current">#}
+{#                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>#}
+{#                </span>#}
+{#                {% if page_obj.has_previous %}#}
+{#                    <a href="?page=1">&laquo; Inicio</a>#}
+{#                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>#}
+{#                {% endif %}               #}
+{##}
+{#                {% if page_obj.has_next %}#}
+{#                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            #}
+{#                {% endif %}#}
+{#            </span>#}
+{#        </div>#}
+{#      </div>#}
+     <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
+        proyecto</a>
+{% endblock content %}

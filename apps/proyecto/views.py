@@ -16,6 +16,12 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from .forms import FormularioProyecto, FormularioProyectoUpdate, ChangeProject
 import datetime
+
+from ..item.models import Item
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
 """
 Todas las vistas para la aplicación del Modulo Proyecto
 
@@ -85,7 +91,8 @@ def change_state(request, pk):
             return redirect('proyecto:list')
         return render(request, 'proyecto/change.html', {'form': form, 'proyecto': proyecto})
     else:
-        return render(request,'proyecto/validate_estado_transicion.html')
+        return render(request, 'proyecto/validate_estado_transicion.html')
+
 
 # === create project ===
 class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
@@ -103,11 +110,16 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     template_name = 'proyecto/create.html'
     success_url = reverse_lazy('proyecto:success')
 
+    # def get(self, request, **kwargs):
+    #     ##revisar si existen usuarios en el sistema.
+    #     ##si no existen, redirigir a un template que diga que no existen usuarios en el sistema
+    #     ## si existen llamar get_form_kwargs(self, **kwargs)
+        
+
     def get_form_kwargs(self, **kwargs):
         kwargs = super(CreateProject, self).get_form_kwargs(**kwargs)
-        kwargs['gerente'] = self.request.user #se envia al formulario el username del gerente
+        kwargs['gerente'] = self.request.user  # se envia al formulario el username del gerente
         return kwargs
-
 
     def form_valid(self, form):
         """
@@ -146,7 +158,7 @@ class ListProject(ListView, LoginRequiredMixin, PermissionRequiredMixin):
             'id').distinct()
 
 
-@permission_required('proyecto.ver_proyecto',raise_exception=True)
+@permission_required('proyecto.ver_proyecto', raise_exception=True)
 # === search ===
 def search(request):
     """
@@ -187,8 +199,8 @@ class UpdateProject(LoginRequiredMixin, UpdateView, PermissionRequiredMixin):
     permission_required = 'proyecto.editar_proyecto'
 
     def get_form_kwargs(self, **kwargs):
-        kwargs = super(UpdateProject, self).get_form_kwargs(**kwargs)        
-        kwargs['gerente'] = self.request.user #se envia al formulario el username del gerente        
+        kwargs = super(UpdateProject, self).get_form_kwargs(**kwargs)
+        kwargs['gerente'] = self.request.user  # se envia al formulario el username del gerente
         return kwargs
 
     def form_valid(self, form):
@@ -233,6 +245,40 @@ class DetailProject(LoginRequiredMixin, DetailView, PermissionRequiredMixin):
     template_name = 'proyecto/detail.html'
     permission_required = 'proyecto.detalles_proyecto'
     success_url = reverse_lazy('proyecto:list')
+
+
+def render_pdf_view(request, id_proyecto):
+    """
+       Permite generar un reporte en pdf de todos los items en estado desarrollo de un proyecto<br/>
+       **:param request:**Recibe un request por parte de un usuario.<br/>
+       **:param pk:**Recibe el pk del comite que se desea emitir el reporte.<br/>
+       **:return:** La vista preliminar de los items en estado desarrollo en formato de pdf para descargar el reporte.<br/>
+       """
+    template_path = 'proyecto/reporte.html'
+    item_queryset = Item.objects.none()
+    for fase in Fase.objects.filter(proyecto=id_proyecto):  # Queryset de los item del proyecto
+        item_queryset |= Item.objects.filter(fase=fase).filter(estado='Desarrollo')
+
+    proyecto = Proyecto.objects.get(pk=id_proyecto)
+    context = {'items': item_queryset, 'proyecto': proyecto, }
+    # context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    # if download :
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # if view_pdf:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 # **Volver atras** : [[urls.py]]
 

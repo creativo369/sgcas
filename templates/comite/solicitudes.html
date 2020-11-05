@@ -18,6 +18,7 @@
             <tr>
                 <th scope="col">Artefacto</th>
                 <th scope="col">Descripcion de la solicitud</th>
+                <th scope="col">Fecha solicitada</th>
                 <th scope="col">Solicitante</th>
       <!--      <th scope="col">Opciones</th>       -->
                 <th scope="col">Decisi&oacute;n</th>
@@ -32,6 +33,7 @@
                             <td>Linea Base</td>
                         {% endif %}
                         <td>{{ solicitud.descripcion }}</td>
+                        <td>{{ solicitud.fecha_solicitada }}</td>
                         <td>{{ solicitud.solicitante }}</td>
                         <td>
 <!--                        {% if solicitud.item %}
@@ -40,19 +42,23 @@
                                 <a type="button" class="btn btn-secondary" href="#">Detalles</a>
                             {% endif %}     -->
                             {% if miembro_comite not in solicitud.votantes.all %}
-                               <div class="dropdown" style="display: inline">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                        Votar
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{% url 'comite:voto_favor' solicitud.id %}">A favor</a>
-                                        <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
-                                    </div>
-                                </div>
+                                {% if request.user != proyecto.gerente %}
+                                       <div class="dropdown" style="display: inline">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                Votar
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="{% url 'comite:voto_favor' solicitud.id %}">A favor</a>
+                                                <a class="dropdown-item" href="{% url 'comite:voto_contra' solicitud.id %}">En contra</a>
+                                            </div>
+                                        </div>
+                                {% endif %}
+                                <a type="button" class="btn btn-secondary" href="{% url 'comite:auditoria' solicitud.id %}">Auditoria</a>
                             {% else %}
                                 <a type="button" class="btn btn-secondary" href="#">Votado <i class="fa fa-check" aria-hidden="true"></i></a>
+                                <a type="button" class="btn btn-secondary" href="{% url 'comite:auditoria' solicitud.id %}">Auditoria</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -83,5 +89,17 @@
         <h2>No se encontraron solicitudes.</h2>
     {% endif %}
 <a type="button" class="btn btn-secondary" href="{% url 'comite:detail' comite.id %}">Regresar a Detalles del comit&eacute;</a> 
+<!-- <a type="button" class="btn btn-secondary" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Generar reporte de solicitudes</a> -->
+                <div class="dropdown" style="display: inline">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Generar reporte de solicitudes
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Todas las solicitudes</a>
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud_rango' comite.proyecto.id comite.id %}">Por periodo de tiempo</a>
+                            </div>
+                        </div>
  <!--    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>  -->
 {% endblock content %}

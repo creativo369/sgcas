@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.db.models import Q
 from apps.fase.models import Fase
 from django.contrib.auth.models import Group
 from apps.proyecto.models import Proyecto
@@ -6,6 +7,7 @@ from apps.usuario.models import User
 from apps.item.models import Item
 from apps.tipo_item.models import TipoItem
 from apps.rol.models import Rol
+from apps.linea_base.models import LineaBase
 
 class TestFaseSetUp(TestCase):
     def setUp(self):
@@ -83,6 +85,7 @@ class FaseTestEditar(TestFaseSetUp):
         except AssertionError as e:        
              print("Error de comparacion: {}".format(e))
 
+
     def test_agregar_item_fase(self):
         cant_item_de_fase = len(Item.objects.filter(fase=self.fase)) #inicialmente hay cero ítems
 
@@ -93,6 +96,7 @@ class FaseTestEditar(TestFaseSetUp):
             self.assertNotEqual(len(Item.objects.filter(fase=self.fase)),cant_item_de_fase)
         except AssertionError as e:        
              print("Error de comparacion: {}".format(e))
+
 
     def test_agregar_tipo_item_fase(self):
         cant_tipo_item_de_fase = len(TipoItem.objects.filter(fase=self.fase)) #inicialmente hay cero tipos de ítem
@@ -106,6 +110,7 @@ class FaseTestEditar(TestFaseSetUp):
         except AssertionError as e:        
              print("Error de comparacion: {}".format(e))
 
+
     def test_agregar_rol_fase(self):
         cant_rol_de_fase = len(Rol.objects.filter(fase=self.fase)) #inicialmente hay cero roles
 
@@ -115,7 +120,43 @@ class FaseTestEditar(TestFaseSetUp):
         try:
             self.assertNotEqual(len(Rol.objects.filter(fase=self.fase)), cant_rol_de_fase)
         except AssertionError as e:        
-             print("Error de comparacion: {}".format(e))         
+             print("Error de comparacion: {}".format(e))
+
+    def test_cerrar_fase(self):
+        Linea_base_prueba = LineaBase.objects.create(descripcion='descripcion_linea_base_prueba',fase=self.fase)
+
+        control_estado_items = 0
+
+        estado_inicial = self.fase.estado
+
+        for i in 'abc':
+            Linea_base_prueba.items.add(Item.objects.create(nombre='item'+ i, descripcion='descripcion item'+i, 
+                                                        costo=4))
+
+        for item in Linea_base_prueba.items.all():
+            item.padres.add(Item.objects.create(nombre='item_padre', descripcion='descripcion item_padre', 
+                                                        costo=8))
+            item.estado = 'Aprobado'
+
+            item.save()
+
+        for r in Linea_base_prueba.items.all():
+            if r.estado != 'Aprobado':
+                control_estado_items = 1
+            
+
+        if control_estado_items == 0:
+            Linea_base_prueba.estado= 'Cerrada'
+            Linea_base_prueba.save()
+            
+
+        if LineaBase.objects.filter(Q(fase=self.fase) & Q(estado='Cerrada')).exists():
+            self.fase.estado = 'Cerrada'  
+
+        try:
+            self.assertNotEqual(self.fase.estado,estado_inicial)
+        except AssertionError as e:        
+             print("Error de comparacion: {}".format(e))
 
 class FaseTestEliminar(TestFaseSetUp):
     def setUp(self):

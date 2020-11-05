@@ -1,0 +1,52 @@
+#!/usr/bin/bash
+echo -e "\n\n=== SCRIPT DE TESTS UNITARIOS DEL PROYECTO ==="
+cd /home/victor/SGCAS/venv
+
+source ./bin/activate
+PS1="(`basename \"$VIRTUAL_ENV\"`)\e[1;34m:/\W\033[00m$ "
+
+echo -e "\n1 > Ejectuar todos los tests unitarios del Proyecto:"
+echo -e "\n2 > Ejectutar test unitarios de la aplicación Comité"
+echo -e "\n3 > Ejectutar test unitarios de la aplicación Fase"
+echo -e "\n4 > Ejectutar test unitarios de la aplicación Item"
+echo -e "\n5 > Ejectutar test unitarios de la aplicación Linea Base"
+echo -e "\n6 > Ejectutar test unitarios de la aplicación Proyecto"
+echo -e "\n7 > Ejectutar test unitarios de la aplicación Rol"
+echo -e "\n8 > Ejectutar test unitarios de la aplicación Tipo de Item"
+echo -e "\n9 > Ejectutar test unitarios de la aplicación Usuario"
+
+echo "Seleccione una opción : "
+read VAR
+
+case $VAR in 
+	1)
+		cd /home/victor/SGCAS/
+		python manage.py test ;;
+	2)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/comite ;;
+	3)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/fase ;;
+	4)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/item;;
+	5)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/linea_base ;;
+	6)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/proyecto ;;
+	7)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/rol ;;
+	8)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/tipo_item ;;
+	9)
+		cd /home/victor/SGCAS/
+		python manage.py test apps/usuario ;;
+esac
+
+
+## RUTA PARA EJECUTAR EL SCRIPT: bash /home/victor/Projects/SGCAS/scripts/script-tests

@@ -60,23 +60,15 @@ def create_graph(id_fase):
     return G
 
 
-def create_graph_trazabilidad(path):
+def create_graph_trazabilidad(nodes, links):
     """
     Permite la creacion de la trazabilidad de un item.<br/>
     **:param path:** Recibe el path sobre el cual se desea realizar la trazabilidad.<br/>
     **:return:** Un grafo de tipo networkx.<br/>
     """
-
-    node_list = [item for item in path]
-    edge_list = []
-    for node in node_list:
-        if node_list.index(node) != (len(node_list) - 1):
-            edge_list.append((node, node_list[node_list.index(node) + 1], {'costo': str(node.costo) + ' horas.'}))
-        else:
-            break
     G = nx.Graph()
-    G.add_edges_from(edge_list)
-    G.add_nodes_from(node_list)
+    G.add_edges_from(links)
+    G.add_nodes_from(nodes)
 
     return G
 

@@ -1,5 +1,7 @@
 from django.test import TestCase
-from apps.tipo_item.models import TipoItem
+from apps.tipo_item.models import TipoItem, ItemImportado
+from apps.item.models import Item
+from apps.fase.models import Fase
 
 
 class TipoItemTest(TestCase):
@@ -30,6 +32,37 @@ class TipoItemTest(TestCase):
         except AssertionError as e:
             print("Error de comparacion: {}".format(e))
         
+    def test_importar_ti(self):
+        importado = ItemImportado.objects.create(id_item=TipoItem.objects.create(nombre='tipo1', descripcion='descripcion-tipo1',
+                                                 atributos=('Boolean', 'Boolean')))
+
+        tipo_inicial = TipoItem.objects.none()
+        
+        tipo_inicial = importado.id_item
+
+        tipo_inicial.save()
+
+        try:
+            self.assertEqual(tipo_inicial, importado.id_item)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+    def test_tipo_item_por_fase(self):
+        for i in 'abc':
+            TipoItem.objects.create(nombre='tipo'+i, descripcion='descripcion'+i, atributos=('Boolean', 'Boolean'))
+
+        fase1=Fase.objects.create(nombre='fase1', descripcion='descripcion fase1')    
+
+        for plantilla in TipoItem.objects.all():
+            plantilla.fase = fase1 
+            plantilla.save()
+
+        cantidad_plantilla_fase1= TipoItem.objects.filter(fase=fase1).all().count()
+
+        try:
+            self.assertEqual(cantidad_plantilla_fase1, TipoItem.objects.all().count())
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e)) 
 
     def test_eliminar_ti(self):
         self.tipo_item.delete()

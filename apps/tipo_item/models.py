@@ -1,5 +1,6 @@
 from django.db import models
 from apps.fase.models import Fase
+from apps.proyecto.models import Proyecto
 from multiselectfield import MultiSelectField
 
 # === Atributos de un tipo de item ===
@@ -20,6 +21,7 @@ class TipoItem(models.Model):
     descripcion = models.CharField(max_length=50)
     atributos = MultiSelectField(choices=ATTRIBUTES)
     fase = models.ForeignKey(Fase, on_delete=models.CASCADE, blank=True, null=True)
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, blank=True, null=True) # El proyecto origen que pertenece el tipo de item
 
     class Meta:
         default_permissions = ()  # se deshabilita la creacion de los permisos por defecto que  trae django
@@ -44,6 +46,13 @@ class TipoItem(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class ItemImportado(models.Model):
+    id_item = models.ForeignKey(TipoItem, on_delete=models.CASCADE, blank=True, null=True)
+    proyecto_destino = models.ForeignKey(Proyecto, on_delete=models.CASCADE, blank=True, null=True)
+
+
 # === Indice de la documentación de la Aplicación Comité  === <br/>
 # 1.apps    : [[apps.py]]<br/>
 # 2.forms   : [[forms.py]]<br/>

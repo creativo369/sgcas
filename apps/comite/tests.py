@@ -1,7 +1,11 @@
 from apps.usuario.models import User
 from django.test import TestCase
-from apps.comite.models import Comite
+from apps.comite.models import Comite, Solicitud
+from apps.comite.views import decision_comite
+
 from apps.proyecto.models import Proyecto
+from apps.item.models import Item
+from apps.linea_base.models import LineaBase
 
 class TestComiteSetUp(TestCase):
     def setUp(self):
@@ -54,8 +58,92 @@ class ComiteTestCrear(TestComiteSetUp):
             print("Error de comparacion: {}".format(e))
         
 
+    def test_agregar_solicitud(self):        
+        solicitud_prueba = Solicitud.objects.create(asunto='prueba de solicitud',descripcion='descripcion_solicitud_prueba',
+            solicitante=User.objects.create(username='solicitante',is_active=True,email='gimenezguillermo186@gmail.com'))
         
+        cant_votantes= solicitud_prueba.votantes.all().count()
 
+        for r in 'abc':
+            solicitud_prueba.votantes.add(User.objects.create(username='votante'+r, is_active=True))
+            solicitud_prueba.save() 
+
+
+        try:
+            self.assertNotEqual(solicitud_prueba.votantes.all().count(), cant_votantes)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+    def test_aprobar_solicitud(self):
+        item = Item.objects.create(nombre='item_de_prueba', descripcion='descripcion de item', costo=8, estado='Aprobado') 
+        linea= LineaBase.objects.create(descripcion='lb_de_prueba', estado='Abierta')
+
+        #Agregando ítem aprobado a linea base abierta
+        linea.items.add(item)
+        linea.save()
+
+        #Cerrando linea base
+        linea.estado='Cerrada'
+        linea.save()
+
+        solicitud_prueba = Solicitud.objects.create(asunto='prueba de solicitud',descripcion='descripcion_solicitud_prueba',
+            solicitante=User.objects.create(username='solicitante',is_active=True,email='gimenezguillermo186@gmail.com'), item=item)
+        
+        antes_de_votar= solicitud_prueba.votacion #inicialmente es cero por defecto
+
+        for r in 'abc':
+            solicitud_prueba.votantes.add(User.objects.create(username='votante'+r, is_active=True,email='gimenezguillermo186@gmail.com'))
+            solicitud_prueba.save() 
+
+        #para está prueba asignamos un valor arbitrariamente, para asegurar que la solicitud este aprobada.
+
+        solicitud_prueba.votacion=1 #se considera el caso en que 2 miembros votan a favor y uno en contra.
+        solicitud_prueba.save()
+
+        estado_inicial_item= item.estado
+        decision_comite(solicitud_prueba)        
+
+        try:
+            self.assertNotEqual(estado_inicial_item, item.estado)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
+
+    def test_rechazar_solicitud(self):
+        item = Item.objects.create(nombre='item_de_prueba', descripcion='descripcion de item', costo=8, estado='Aprobado') 
+        linea= LineaBase.objects.create(descripcion='lb_de_prueba', estado='Abierta')
+
+        #Agregando ítem aprobado a linea base abierta
+        linea.items.add(item)
+        linea.save()
+
+        #Cerrando linea base
+        linea.estado='Cerrada'
+        linea.save() 
+
+        solicitud_prueba = Solicitud.objects.create(asunto='prueba de solicitud',descripcion='descripcion_solicitud_prueba',
+            solicitante=User.objects.create(username='solicitante',is_active=True,email='gimenezguillermo186@gmail.com'), item=item)
+        
+        antes_de_votar= solicitud_prueba.votacion #inicialmente es cero por defecto
+
+        for r in 'abc':
+            solicitud_prueba.votantes.add(User.objects.create(username='votante'+r, is_active=True,email='gimenezguillermo186@gmail.com'))
+            solicitud_prueba.save() 
+
+        #para está prueba asignamos un valor arbitrariamente, para asegurar que la solicitud este rechazada.
+
+        solicitud_prueba.votacion=-1 #se considera el caso en que 2 miembros votan en contra y uno a favor.
+        solicitud_prueba.save()
+
+
+        estado_inicial_item= item.estado        
+
+        decision_comite(solicitud_prueba)
+                
+
+        try:
+            self.assertEqual(estado_inicial_item, item.estado)
+        except AssertionError as e:
+            print("Error de comparacion: {}".format(e))
 
 class ComiteTestEditar(TestComiteSetUp):
 

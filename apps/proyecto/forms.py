@@ -21,6 +21,10 @@ class FormularioProyecto(forms.ModelForm):
         """
         user_gerente = kwargs.pop('gerente') #se obtiene el username del gerente, que será excluido de los posibles miembros de su proyecto
         super(FormularioProyecto, self).__init__(*args, **kwargs)
+        
+        self.fields['miembros'].required = True
+        self.fields['miembros'].disabled = False
+
         self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True) & ~Q(is_active=False)).exclude(username='AnonymousUser').exclude(username=user_gerente).exclude(username='adminsgcas07')
         # queryset que excluye al AnonymousUser  y al superusuario del sistema, de los posibles miembros del proyecto.
 
@@ -70,6 +74,10 @@ class FormularioProyectoUpdate(FormularioProyecto):
         super(FormularioProyectoUpdate, self).__init__(*args, **kwargs)
         
         user_gerente = kwargs.pop('gerente')
+        
+        self.fields['miembros'].required = True
+        self.fields['miembros'].disabled = False
+
         self.fields['miembros'].queryset = User.objects.filter(~Q(is_superuser=True) & ~Q(is_active=False)).exclude(username='AnonymousUser').exclude(username=user_gerente).exclude(username='adminsgcas07')
         # fields representa los campos que no son editables de acuerdo al estado del proyecto<br/>
         fields = ['nombre', 'fecha_creacion', 'estado']

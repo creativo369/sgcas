@@ -28,12 +28,22 @@
         </tr>
         </tbody>
     </table>
-    <a type="button" class="btn btn-secondary" href="#" onclick="window.history.back()">Regresar al Proyecto</a>
+    <a type="button" class="btn btn-secondary" href="{% url 'proyecto:detail' comite.proyecto.id %}">Regresar al Proyecto</a>
     {% if request.user.id == comite.proyecto.gerente_id %}
     <a type=" button" class="btn btn-warning" href="{% url 'comite:update' comite.id %}">Modificar</a>
     <a type="button" class="btn btn-danger" href="{% url 'comite:delete' comite.id %}">Eliminar</a>
     {% endif %}
-    {% if request.user in comite.miembros.all %}
-           <a type="button" class="btn btn-secondary" href="{% url 'comite:solicitudes' comite.id %}">Solicitudes</a>
-    {% endif %}
+    {# {% if request.user in comite.miembros.all %} #}
+       <div class="dropdown" style="display: inline">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Solicitudes
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item"
+                   href="{% url 'comite:solicitudes' comite.id %}">Votacion</a>
+            </div>
+        </div>
+    {# {% endif %} #}
 {% endblock content %}

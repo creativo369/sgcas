@@ -3,7 +3,7 @@ from django import forms
 
 from apps.fase.models import Fase
 from apps.item.models import Item
-from apps.tipo_item.models import TipoItem
+from apps.tipo_item.models import TipoItem, ItemImportado
 
 
 # === Clase para abstraer en un formulario el registro de un item ===
@@ -77,6 +77,10 @@ class ItemImportarTipoItemForm(forms.ModelForm):
             ti_queryset = TipoItem.objects.none()
             for fase in Fase.objects.filter(proyecto=kwargs['instance'].fase.proyecto): #Queryset de los tipos de item del proyecto
                 ti_queryset |= TipoItem.objects.filter(fase=fase)
+
+            for importado in ItemImportado.objects.filter(proyecto_destino=kwargs['instance'].fase.proyecto): # queryset que trae a la plantilla todos los items importados
+                ti_queryset |= TipoItem.objects.filter(pk=importado.id_item.pk)
+
             self.fields['tipo_item'].queryset = ti_queryset
 
     # **Clase Meta para para el despliegue en una plantilla de los campos necesarios del modelo**
@@ -92,7 +96,7 @@ class ItemImportarTipoItemForm(forms.ModelForm):
             'tipo_item',
         ]
         labels = {
-            'tipo_item': 'Importar tipo de item',
+            'tipo_item': 'Plantilla de Tipo de ítem:',
         }
         widgets = {
             'tipo_item': forms.RadioSelect(),
@@ -190,8 +194,11 @@ class ItemUpdateForm(forms.ModelForm):
         # fields representa los campos que no son editables de acuerdo al estado del item
         fields = ['estado']
         if 'instance' in kwargs:
-            # No se permite la modificacion del nombre del item si su estado no es desarrollo
+            # No se permite la modificacion del nombre del item si su estado no es desarrollo.
             if kwargs['instance'].estado == 'Desarrollo':
+                fields.append('nombre')
+            #No se permite la modificacion del nombre del item si esta en revision.    
+            if kwargs['instance'].estado == 'Revision':
                 fields.append('nombre')
             for field in fields:
                 self.fields[field].required = False
@@ -217,18 +224,18 @@ class ItemCambiarEstado(forms.ModelForm):
                 ('Aprobado', 'Aprobado'),
             ]
             self.fields['estado'].choices = item_estado
-        # if kwargs['instance'].estado == 'Revision':
-        #     item_estado = [
-        #         ('Revision', 'Revision'),
-        #         ('Aprobado', 'Aprobado'),
-        #     ]
-        #     self.fields['estado'].choices = item_estado
-        # if kwargs['instance'].estado == 'Aprobado':
-        #     item_estado = [
-        #         ('Aprobado', 'Aprobado'),
-        #         ('Revision', 'Revision'),
-        #     ]
-        #     self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Revision':
+            item_estado = [
+                ('Revision', 'Revision'),
+                ('Aprobado', 'Aprobado'),
+             ]
+            self.fields['estado'].choices = item_estado
+        if kwargs['instance'].estado == 'Aprobado':
+            item_estado = [
+                ('Desarrollo', 'Desarrollo'),
+                ('Aprobado', 'Aprobado'),
+            ]
+            self.fields['estado'].choices = item_estado
         for field in fields_not_required:
             self.fields[field].required = False
             self.fields[field].disabled = True

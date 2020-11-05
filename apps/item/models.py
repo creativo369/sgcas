@@ -18,6 +18,7 @@ from apps.tipo_item.models import TipoItem
 item_estado = [
     ('Desarrollo', 'Desarrollo'),
     ('Aprobado', 'Aprobado'),
+    ('Revision', 'Revision'),
 ]
 
 
@@ -38,7 +39,7 @@ class Item(models.Model):
     # 13. **numerico**: atributo numerico.<br/>
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
-    fecha_creacion = models.DateField(default=datetime.date.today)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=30, choices=item_estado, default='Desarrollo')
     en_linea_base = models.BooleanField(default=False)
     costo = models.PositiveIntegerField()

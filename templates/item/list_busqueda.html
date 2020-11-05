@@ -31,7 +31,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in page_obj %}
+       {% for item in page_obj %}
             <tr>
                 <td>{{ item.nombre }}</td>
                 {#                <td>{{ item.descripcion }}</td>#}
@@ -53,10 +53,17 @@
                 <td>{{ item.tipo_item }}</td>
                 <td>{{ item.nro_version }}</td>
                 <td>
+                    {% if not item.en_linea_base and item.estado == 'Desarrollo'%}
                     <a type="button" class="btn btn-warning"
                        href="{% url 'item:item_modificar' item.id item.fase.id %}">Editar</a>
+
                     <a type="submit" class="btn btn-danger"
                        href="{% url 'item:item_eliminar' item.id item.fase.id %}">Eliminar</a>
+                    {% endif %}
+                    {% if not item.en_linea_base and item.estado == 'Revision'%}
+                    <a type="button" class="btn btn-warning"
+                       href="{% url 'item:item_modificar' item.id item.fase.id %}">Editar</a>        
+                    {% endif %}
                     <div class="dropdown" style="display: inline">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown"
@@ -67,11 +74,15 @@
                             <a class="dropdown-item" href="{% url 'item:item_detalles' item.id item.fase.id %}">Detalles</a>
                             <a class="dropdown-item" href="{% url 'item:item_cambiar_estado' item.id %}">Cambiar
                                 estado</a>
+                            {% if not item.en_linea_base and item.estado == 'Desarrollo'%}
                             <a class="dropdown-item" href="{% url 'item:fases_rel' item.id %}">Relaciones</a>
+                            {% endif %}
                             <a class="dropdown-item" href="{% url 'item:calculo_impacto' item.id %}">Cálculo de
                                 impacto</a>
                             <a class="dropdown-item" href="{% url 'item:trazabilidad' item.id %}">Trazabilidad</a>
+                            {% if not item.en_linea_base and item.estado == 'Desarrollo' %}
                             <a class="dropdown-item" href="{% url 'item:versiones' item.id item.fase.id%}">Versiones</a>
+                            {% endif %}
                         </div>
                     </div>
                 </td>

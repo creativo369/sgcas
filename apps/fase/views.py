@@ -9,7 +9,16 @@ from apps.fase.forms import FaseForm, FaseUpdateForm, FaseCambiarEstadoForm
 from apps.fase.models import Fase
 from django.db.models import Q
 from django.views.generic import CreateView
+
+from apps.linea_base.models import LineaBase
 from apps.proyecto.models import Proyecto
+from apps.item.models import Item
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+from apps.tipo_item.models import TipoItem, ItemImportado
 
 """
 Todas las vistas para la aplicación del Modulo Fase
@@ -228,6 +237,46 @@ def fase_modificar(request, id_fase, _id, *args, **kwargs):
         form.save()
         return redirect('fase:fase_lista', _id=_id)
     return render(request, 'fase/fase_modificar.html', {'form': form})
+
+
+def render_pdf_view(request, id_fase):
+    """
+       Permite generar un reporte en pdf de los componentes de una fase en particular<br/>
+       **:param request:**Recibe un request por parte de un usuario.<br/>
+       **:param pk:**Recibe el pk de la fase que se desea emitir el reporte.<br/>
+       **:return:** La vista preliminar de los estados de los componentes de una fase en formato de pdf para descargar el reporte.<br/>
+       """
+    template_path = 'fase/reporte.html'
+    items_fase = Item.objects.filter(fase=id_fase)
+    fase = get_object_or_404(Fase, id=id_fase)
+    proyecto = get_object_or_404(Proyecto, pk=fase.proyecto.id)
+    lineas_bases = LineaBase.objects.filter(fase=id_fase)
+
+    ti_queryset = TipoItem.objects.filter(fase=id_fase)  # todos los tipos items de esa fase en cuestion
+
+    for importado in ItemImportado.objects.filter(
+            proyecto_destino=fase.proyecto):  # queryset que trae a la plantilla todos los items importados
+        ti_queryset |= TipoItem.objects.filter(pk=importado.id_item.pk)
+
+    context = {'items': items_fase, 'fase': fase, 'proyecto': proyecto, 'lbs': lineas_bases, 'tipos': ti_queryset}
+    # context = {'myvar': 'this is your template context'}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    # if download :
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    # if view_pdf:
+    response['Content-Disposition'] = 'filename="report.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 # **Volver atras** : [[forms.py]]
 

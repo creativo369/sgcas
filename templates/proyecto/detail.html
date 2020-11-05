@@ -58,7 +58,11 @@
         {% if request.user == proyecto.gerente %}
 
             <a type="button" class="btn btn-warning" href="{% url 'proyecto:update' proyecto.id %}">Modificar</a>
-            <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
+
+            {% if proyecto.estado != 'Iniciado'%}
+                <a type="button" class="btn btn-danger" href="{% url 'proyecto:delete' proyecto.id %}">Eliminar</a>
+            {% endif %}            
+
         {% endif %}
         <a type="button" class="btn btn-info" href="{% url 'comite:create' _id=proyecto.id %}">Comité</a>
 
@@ -74,6 +78,9 @@
             <a class="dropdown-item" href="{% url 'fase:crear_fase' _id=proyecto.id %}">Crear fase</a>
             {% endif %}
             <a class="dropdown-item" href="{% url 'fase:fase_lista' proyecto.id %}">Lista de fases</a>
+            {% if proyecto.estado == 'Iniciado' %}
+            <a class="dropdown-item" href="{% url 'proyecto:reporte_items' proyecto.id %}">Reporte items</a>
+            {% endif %}
         </div>
     </div>
     

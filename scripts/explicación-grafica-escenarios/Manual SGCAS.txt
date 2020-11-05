@@ -1,0 +1,203 @@
+
+USUARIOS DEL SISTEMA 	USERNAME				  		 PASSWORD 	  Roles que posee 
+-----------------------------------------------------------------------------------------------------
+geekpy@fpuna.edu.py(victor_rodolfo) 				 qwertyvictor	  gerente;rol basico sgcas 
+frikipy94@gmail.com(geekpy123)   					 gonzalez1994vict rol basico sgcas,rol basico fase  
+chesspy123@gmail.com(victor)						 qwertyvictor	  rol basico sgcas,rol basico fase 
+usuario.prueba.is2.2020@gmail.com(Usuario_Prueba) 	 qwertyvictor	  rol basico sgcas,rol basico fase,QA	
+usuario2.prueba2.is2.2020@gmail.com(Usuario2_Prueba2)qwertyvictor     rol basico sgcas,rol basico fase,desarrolador
+adminsgcas07 is2.equipo7.sgcas@gmail.com			 is212345678	  administrador sgcas
+
+								<<Roles dinamicos establecidos>>
+
+ROLES DE SISTEMA 
+-----------------------------------------------------------------------------------------------------
+== Gerente ==
+*Todos los permisos con respecto a roles de sistema y roles de fase 
+*Todos los permisos con respecto al modelo fases 
+*Todos los permisos con respecto al modelo proyecto
+*Todos los permisos con respecto al modelo comite 
+
+== Administrador SGCAS === 	
+*Todos los permisos con respecto a mensajes 
+*Todos los permisos con respecto al modelo Usuario					
+*Todos los permisos con respecto al modelo roles de sistema
+
+== Rol Básico SGCAS === 
+* Todos los permisos con respecto a visualización y navegación en la sección de Gestión de Proyectos y Fases ( este rol de sistema tienen todos los clientes o usuarios normales del sistema )
+
+
+USUARIOS EN LOS COMITES DE LOS 4 ESCENARIOS 
+-----------------------------------------------------------------------------------------------------
+geekpy123
+victor
+usuarios_prueba
+
+	
+ESCENARIOS DE SIMULACIÓN DEL SISTEMA CON PROYECTOS 
+-----------------------------------------------------------------------------------------------------
+=== ESCENARIO 1 : Proyecto creado sin iniciar ===
+1.Crear el proyecto :nombre, descripcion, agregar miembros.
+2.Crear comite :nombre del comite, descripcion, miembros.
+3.Crear al menos 3 fases :nombre de la fase, descripción y miembros
+4.Crear roles por fases y asignar a los miembros de las fases.
+
+=== ESCENARIO 2 : Proyecto iniciado pero sin items === 
+1.Crear el proyecto :nombre, descripcion, agregar miembros.
+2.Crear comite :nombre del comite, descripcion, miembros.
+3.Crear al menos 3 fases :nombre de la fase, descripción y miembros
+4.Crear roles por fases y asignar a los miembros de las fases.
+5.Iniciar Proyecto
+
+=== ESCENARIO 3 : Proyecto avanzado con varios items, fases, linea bases, modificaciones, trazabilidad  ===
+1.Crear el proyecto :nombre, descripcion, agregar miembros.
+2.Crear comite :nombre del comite, descripcion, miembros.
+3.Crear al menos 3 fases :nombre de la fase, descripción y miembros
+4.Crear roles por fases y asignar a los miembros de las fases.
+5.Iniciar Proyecto
+6.Crear tipo de items 
+7.Creando items 			
+8.Relacionando items
+9.Historial de modificacion de un item -> Modificar algunos items y generar historial de versiones
+10.Creando lineas bases -> aprobar algunos items 
+11.Trazabilidad 
+
+=== ESCENARIO 4 : Proyecto avanzado listo para cerrar el proyecto y posteriormente recorrer el proyecto en modo visualización  ===
+1.Crear el proyecto :nombre, descripcion, agregar miembros.
+2.Crear comite :nombre del comite, descripcion, miembros.
+3.Crear al menos 3 fases :nombre de la fase, descripción y miembros
+4.Crear roles por fases y asignar a los miembros de las fases.
+5.Iniciar Proyecto
+6.Creando Tipos de items 
+7.Creando items 
+8.Relacionando items
+9.Historial de modificacion de un item -> Modificar algunos items y generar historial de versiones
+10.Creando lineas bases en cada fase  
+11.Fases aprobadas 
+12.Listo para finalizar el proyecto
+
+
+ROLES SOBRE EL CONTEXTO DE FASES 
+------------------------------------------------------------------------------------------------------
+
+=== ROL BÁSICO DE FASE  ===  Rol Básico FXEX
+Lista de usuarios que poseen ese permiso  [ geekpy123, victor, Usuario_Prueba, Usuario2_prueba2 ]
+
+Permisos agrupados:
+1.Puede ver solicitud 
+2.Puede ver los detalles de fase
+3.Puede ver gestión de fase
+4.Puede listar fase
+5.Puede listar item
+6.Puede ver item
+7.Puede ver trazabilizad item
+8.Puede listar item linea base
+9.Puede listar linea base
+10.Puede listar tipo item
+11.Puede ver tipo item
+
+== QA == QA FXEX
+Lista de usuarios que poseen ese permiso [Usuario_Prueba]
+
+Permisos agrupados:
+1.Puede cambiar estado item
+2.Puede agregar item linea base 
+3.Puede Crear linea base
+4.Puede editar linea base
+5.Puede eliminar linea base
+6.Puede cambiar estado linea base
+7.Puede listar item linea base
+8.Puede listar linea base
+9.Puede quitar item linea base 
+
+
+== Desarrollador ==  Desarrollador FXEX
+Lista de usuarios que poseen ese permiso [Usuario2_Prueba2 ]
+
+Permisos agrupados:
+1.Puede crear solicitud
+2.Puede Calcular impacto item
+3.Puede cambiar estado item
+4.Puede crear item
+5.Puede editar item
+6.Puede eliminar item
+7.Puede modificar atributos item
+8.Puede modificar atributos ti de item
+9.Puede modificar import ti de item
+10.Puede modificar ti de item
+11.Puede listar item
+12.Puede gestioanr relacion de item
+13.Puede restaurar version item
+14.Puede ver item
+15.Puede versionar item
+16.Puede ver trazabilidad item
+17.puede adjuntar tipo de item
+18.Puede crear tipo item
+19.Puede editar tipo item
+20.Puede eliminar tipo item
+21.Puede importar tipo item
+22.Puede listar tipo item
+23.Puede ver tipo item
+
+
+
+
+------------------------------------------------------------------------------------------------------
+=== PARA CREAR SCRIPT DE POBLACION ===
+python manage.py dumpdata --format=json --indent 4 --exclude auth.permission > fixtures/db.json
+
+=== PARA POBLAR BASE DE DATOS === 
+python manage.py loaddata fixtures/db.json
+
+
+OPCIONAL PERO INNCESARIO UTILIZAR EN ESTE CASO 
+=== PARA RESETEAR LOS REGISTROS DE LAS TABLAS DE LA BASE DE DATOS === 
+python manage.py flush --no-input 
+
+
+=== PARA GENERAR DOCUMENTACIÓN === 
+
+Fuente : https://realpython.com/generating-code-documentation-with-pycco/#project-setup
+
+
+para crear documentación de un codigo fuente : 
+									Ejemplo ir hasta SGCAS/apps/comite 
+pycco *.py -p 					--->cada directorio de las aplicaciónes para generar doc
+
+
+para actualizar los cambios hechos en el codigo fuente : 
+pycco *.py -p --watch		Ejemplo ir hasta SGCAS/apps/comite ( en cada directorio de las aplicaciones )
+
+
+=== TEST ===
+Para hacer correr todos los test del proyecto 		: python manage.py test
+Para hacer correr los test de una app  : python manage.py test apps/fase( cambiar por la app que se quiera) 
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+MI PLANTILLA DE AUTOMATIZACIÓN 
+
+
+Escenario X
+AQUI VA LO QUE IMPLICA 
+
+
+Comité del escenario X
+En este comité se aprobaran las solicitudes de modificación de un item que se encuentran en una linea base cerrada en particular de las fases del escenario X 
+
+
+Fase X del Escenario X
+Esta es la fase X de nuestro escenario X
+
+
+Tipo de Item X FXEX
+Este es un tipo de item X de prueba FXEX
+
+Item X FXEX
+Este es un item X del Proyecto FXEX
+
+
+Esta linea base es de la F1E3 con los Item I y Item II de F1E3
