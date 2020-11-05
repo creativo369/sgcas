@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %}
+{% block title %}Solicitudes{% endblock%}
+
+{% block content %}
+    <form method="POST" action="{% url 'comite:reporte_solicitud' id_proyecto id_proyecto %}">
+        {% csrf_token %}
+        <div class="card" style="padding-top: 50px; padding-left: 200px; padding-right: 200px">
+            <div class="card-header">
+                <strong>Generar reporte por rango de fecha</strong>
+            </div>
+            <div class="card-body card-block">
+                <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col col-md-3">Fecha de inicio</div>
+                        <div class="col-12 col-md-9"><input type="date" name="fecha_inicio" id="fecha_inicio"></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">Fecha de fin</div>
+                        <div class="col-12 col-md-9"><input type="date" name="fecha_fin" id="fecha_fin"></div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-secondary" onclick="return checkRange()">Generar reporte</button>
+                        <a class="btn btn-secondary" href="#" onclick="window.history.back()">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        function checkRange(){
+            var fecha_inicio = document.getElementById('fecha_inicio');
+            var fecha_fin = document.getElementById('fecha_fin');
+
+            console.log(fecha_inicio);
+            console.log(fecha_fin);
+
+            if (fecha_fin >= fecha_inicio){
+                return true;
+            }else{
+                alert('La fecha de inicio debe de ser menor o igual a la fecha de fin')
+                return false;    
+            }
+        }
+    </script>
+{% endblock content %}

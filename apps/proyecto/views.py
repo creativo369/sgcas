@@ -110,6 +110,12 @@ class CreateProject(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     template_name = 'proyecto/create.html'
     success_url = reverse_lazy('proyecto:success')
 
+    # def get(self, request, **kwargs):
+    #     ##revisar si existen usuarios en el sistema.
+    #     ##si no existen, redirigir a un template que diga que no existen usuarios en el sistema
+    #     ## si existen llamar get_form_kwargs(self, **kwargs)
+        
+
     def get_form_kwargs(self, **kwargs):
         kwargs = super(CreateProject, self).get_form_kwargs(**kwargs)
         kwargs['gerente'] = self.request.user  # se envia al formulario el username del gerente

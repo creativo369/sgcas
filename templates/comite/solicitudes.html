@@ -89,6 +89,17 @@
         <h2>No se encontraron solicitudes.</h2>
     {% endif %}
 <a type="button" class="btn btn-secondary" href="{% url 'comite:detail' comite.id %}">Regresar a Detalles del comit&eacute;</a> 
-<a type="button" class="btn btn-secondary" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Generar reporte de solicitudes</a>
+<!-- <a type="button" class="btn btn-secondary" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Generar reporte de solicitudes</a> -->
+                <div class="dropdown" style="display: inline">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Generar reporte de solicitudes
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud' comite.proyecto.id comite.id %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'comite:reporte_solicitud_rango' comite.proyecto.id comite.id %}">Por rango de fecha</a>
+                            </div>
+                        </div>
  <!--    <a type="button" class="btn btn-link" href="#" onclick="window.history.back()">Atrás</a>  -->
 {% endblock content %}
