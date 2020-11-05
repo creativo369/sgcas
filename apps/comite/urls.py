@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 # **2.UpdateComite :** Vista que despliega la modificación de un comité<br/>
 # **3.DeleteComite :** Vista que despliega eliminar un comité<br/>
 from apps.comite.views import CreateComite, UpdateComite, DeleteComite, success, lista_solicitudes, voto_favor, \
-    voto_contra, DetailComite, auditoria_solicitudes, solicitud_item, DetailComite,render_pdf_view
+    voto_contra, DetailComite, auditoria_solicitudes, solicitud_item, DetailComite,reporte_solicitud_rango, render_pdf_view
 
 app_name = 'comite'
 # ** Dirección de URL desplegar las vistas en la dirección de plantillas respectivamente. **
@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^voto_contra/(?P<pk>\d+)/$', login_required(voto_contra), name='voto_contra'),
     url(r'^auditoria-solicitudes/(?P<pk>\d+)/$', login_required(auditoria_solicitudes), name='auditoria'),
     url(r'^generar-reporte/(?P<id_proyecto>\d+)/(?P<id_comite>\d+)/$', login_required(render_pdf_view), name='reporte_solicitud'),
+    url(r'^generar-reporte-por-rango/(?P<id_proyecto>\d+)/(?P<id_comite>\d+)/$', login_required(reporte_solicitud_rango), name='reporte_solicitud_rango'),
 ]
 
 # **Atras** : [[tests.py]]

@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
 from SGCAS.settings import base
+from datetime import timedelta, datetime
 
 # === Importación de los codigos fuentes de la aplicación ===
 from .models import Comite, Solicitud
@@ -446,6 +447,10 @@ def send_notification(to, subject, message):
     )
 
 
+def reporte_solicitud_rango(request, id_proyecto, id_comite):
+    return render(request, 'comite/reporte_rango.html', context={'id_proyecto':id_proyecto,'id_comite': id_comite })
+
+
 def render_pdf_view(request, id_proyecto, id_comite):
     """
        Permite generar un reporte en pdf cantidad de solicitudes de cambio en un periodo de tiempo<br/>
@@ -453,8 +458,17 @@ def render_pdf_view(request, id_proyecto, id_comite):
        **:param pk:**Recibe el pk del comite que se desea emitir el reporte.<br/>
        **:return:** La vista preliminar de la cantidad de solicitudes de cambio en un periodo de tiempo en formato de pdf para descargar el reporte.<br/>
        """
+
     template_path = 'comite/reporte.html'
-    query_solicitud = Solicitud.objects.filter(proyecto=id_proyecto)
+    fecha_inicio = request.POST.get('fecha_inicio')
+    fecha_fin = request.POST.get('fecha_fin')
+
+    if fecha_inicio == None and fecha_fin == None:
+        query_solicitud = Solicitud.objects.filter(proyecto=id_proyecto)
+    else:
+        date = datetime.strptime(fecha_fin, "%Y-%m-%d")
+        modified_date = date + timedelta(days=1)
+        query_solicitud = Solicitud.objects.filter(Q(proyecto=id_proyecto) & Q(fecha_solicitada__range=[fecha_inicio, datetime.strftime(modified_date, "%Y-%m-%d")]))
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     comite = Comite.objects.get(pk=id_comite)
     context = {'solicitudes': query_solicitud, 'proyecto': proyecto, 'comite': comite}
