@@ -32,8 +32,8 @@
         </tr>
         </thead>
         <tbody>
-        {% if query_tipo_item %}
-            {% for TipoItem in query_tipo_item %}
+        {% if page_obj %}
+            {% for TipoItem in page_obj %}
                 <tr>
 {#                  <td>{{ TipoItem.id }}</td>#}
                     <td>{{ TipoItem.nombre }}</td>
@@ -62,24 +62,25 @@
         {% endif %}
         </tbody>
     </table>
-{#    <div class="text-center">#}
-{#        <div class="pagination">#}
-{#            <span class="step-links">#}
-{##}
-{#                <span class="current">#}
-{#                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>#}
-{#                </span>#}
-{#                {% if page_obj.has_previous %}#}
-{#                    <a href="?page=1">&laquo; Inicio</a>#}
-{#                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>#}
-{#                {% endif %}               #}
-{##}
-{#                {% if page_obj.has_next %}#}
-{#                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            #}
-{#                {% endif %}#}
-{#            </span>#}
-{#        </div>#}
-{#      </div>#}
+
+    <div class="text-center">
+        <div class="pagination">
+            <span class="step-links">
+
+                <span class="current">
+                      <li>Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.</li>
+                </span>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Inicio</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}               
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>            
+                {% endif %}
+            </span>
+        </div>
+      </div>
      <a type="button" class="btn btn-link" href="{% url 'fase:fase_lista' fase.proyecto.id %}">Volver a fases del
         proyecto</a>
 {% endblock content %}
