@@ -14,11 +14,10 @@ def requiere_permiso(permiso):
             if request.user.is_superuser:
                 return view_func(request, *args, **kwargs)
             query_rol = None
-            if 'pk' in kwargs:
-                query_rol = Rol.objects.filter(
-                    fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
-            else:
+            if 'id_fase' in kwargs:
                 query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=kwargs.get('id_fase')).id)
+            else:
+                query_rol = Rol.objects.filter(fase=get_object_or_404(Fase, pk=get_object_or_404(Item, pk=kwargs.get('pk')).fase.id))
             if query_rol.count():
                 usuario_esta = False
                 for rol_fase in query_rol:
