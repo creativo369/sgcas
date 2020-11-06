@@ -1,45 +1,46 @@
 
-USUARIOS DEL SISTEMA 	USERNAME				  		 PASSWORD 	  Roles que posee 
+USUARIOS DEL SISTEMA 	             USERNAME	    	    PASSWORD 	  Roles que posee 
 -----------------------------------------------------------------------------------------------------
-geekpy@fpuna.edu.py(victor_rodolfo) 				 qwertyvictor	  gerente;rol basico sgcas 
-frikipy94@gmail.com(geekpy123)   					 gonzalez1994vict rol basico sgcas,rol basico fase  
-chesspy123@gmail.com(victor)						 qwertyvictor	  rol basico sgcas,rol basico fase 
-usuario.prueba.is2.2020@gmail.com(Usuario_Prueba) 	 qwertyvictor	  rol basico sgcas,rol basico fase,QA	
-usuario2.prueba2.is2.2020@gmail.com(Usuario2_Prueba2)qwertyvictor     rol basico sgcas,rol basico fase,desarrolador
-adminsgcas07 is2.equipo7.sgcas@gmail.com			 is212345678	  administrador sgcas
+is2.equipo7.sgcas@gmail.com		     adminsgcas07 	        is212345678	  administrador sgcas
+usuario.prueba.is2.2020@gmail.com    (Usuario 1)			qwertyvictor  rol basico fase  , Gerente
+usuario2.prueba2.is2.2020@gmail.com  (Usuario 2)			qwertyvictor  rol basico sgcas , rol basico fase , Desarrollador
+usuario3.prueba3.is2.2020@gmail.com  (Usuario 3)			qwertyvictor  rol basico sgcas , rol basico fase , QA
+usuario4.prueba4.is2.2020@gmail.com  (Usuario 4)			qwertyvictor  rol basico sgcas , rol basico fase 
+usuario5.prueba5.is2.2020@gmail.com  (Usuario 5)			qwertyvictor  rol basico sgcas , rol basico fase
+chesspy123@gmail.com 				 (Usuario 6)			qwertyvictor  rol basico sgcas , rol basico fase
 
 								<<Roles dinamicos establecidos>>
 
 ROLES DE SISTEMA 
 -----------------------------------------------------------------------------------------------------
-== Gerente ==
-*Todos los permisos con respecto a roles de sistema y roles de fase 
-*Todos los permisos con respecto al modelo fases 
-*Todos los permisos con respecto al modelo proyecto
-*Todos los permisos con respecto al modelo comite 
 
 == Administrador SGCAS === 	
 *Todos los permisos con respecto a mensajes 
 *Todos los permisos con respecto al modelo Usuario					
 *Todos los permisos con respecto al modelo roles de sistema
 
+== Gerente ==
+*Todos los permisos con respecto a roles de sistema y roles de fase 
+*Todos los permisos con respecto al modelo fases 
+*Todos los permisos con respecto al modelo proyecto
+*Todos los permisos con respecto al modelo comite 
+
 == Rol Básico SGCAS === 
-* Todos los permisos con respecto a visualización y navegación en la sección de Gestión de Proyectos y Fases ( este rol de sistema tienen todos los clientes o usuarios normales del sistema )
+* Todos los permisos con respecto a visualización y navegación en la sección de Gestión de Proyectos , Fases y Comite  
 
-
-USUARIOS EN LOS COMITES DE LOS 4 ESCENARIOS 
+USUARIOS QUE ESTAN EN LOS COMITES DE LOS 4 ESCENARIOS 
 -----------------------------------------------------------------------------------------------------
-geekpy123
-victor
-usuarios_prueba
+Usuario 3
+Usuario 4
+Usuario 5 
 
-	
+
 ESCENARIOS DE SIMULACIÓN DEL SISTEMA CON PROYECTOS 
 -----------------------------------------------------------------------------------------------------
 === ESCENARIO 1 : Proyecto creado sin iniciar ===
-1.Crear el proyecto :nombre, descripcion, agregar miembros.
-2.Crear comite :nombre del comite, descripcion, miembros.
-3.Crear al menos 3 fases :nombre de la fase, descripción y miembros
+1.Crear el proyecto :nombre, descripcion, agregar miembros.  
+2.Crear comite :nombre del comite, descripcion, miembros.	
+3.Crear al menos 3 fases :nombre de la fase, descripción y miembros 
 4.Crear roles por fases y asignar a los miembros de las fases.
 
 === ESCENARIO 2 : Proyecto iniciado pero sin items === 
@@ -81,7 +82,7 @@ ROLES SOBRE EL CONTEXTO DE FASES
 ------------------------------------------------------------------------------------------------------
 
 === ROL BÁSICO DE FASE  ===  Rol Básico FXEX
-Lista de usuarios que poseen ese permiso  [ geekpy123, victor, Usuario_Prueba, Usuario2_prueba2 ]
+Lista de usuarios que poseen ese permiso  [ Usuario 2, Usuario3, Usuario 4 ,Usuario 5, Usuario 6 ]
 
 Permisos agrupados:
 1.Puede ver solicitud 
@@ -97,7 +98,7 @@ Permisos agrupados:
 11.Puede ver tipo item
 
 == QA == QA FXEX
-Lista de usuarios que poseen ese permiso [Usuario_Prueba]
+Lista de usuarios que poseen ese permiso [ Usuario 3]
 
 Permisos agrupados:
 1.Puede cambiar estado item
@@ -109,10 +110,11 @@ Permisos agrupados:
 7.Puede listar item linea base
 8.Puede listar linea base
 9.Puede quitar item linea base 
+10.Puede cambiar estado de fase
 
 
 == Desarrollador ==  Desarrollador FXEX
-Lista de usuarios que poseen ese permiso [Usuario2_Prueba2 ]
+Lista de usuarios que poseen ese permiso [ Usuario 2 ]
 
 Permisos agrupados:
 1.Puede crear solicitud
