@@ -21,9 +21,15 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Group</span>
 <span class="kn">from</span> <span class="nn">apps.proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
-<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
+<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span>
+<span class="kn">from</span> <span class="nn">apps.rol.models</span> <span class="kn">import</span> <span class="n">Rol</span>
+<span class="kn">from</span> <span class="nn">apps.linea_base.models</span> <span class="kn">import</span> <span class="n">LineaBase</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -242,7 +248,16 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">FaseTestEliminar</span><span class="p">(</span><span class="n">TestFaseSetUp</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_agregar_item_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cant_item_de_fase</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">))</span> <span class="c1">#inicialmente hay cero ítems</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item &#39;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;decripcion &#39;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fase</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)),</span><span class="n">cant_item_de_fase</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>        
+             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -254,9 +269,17 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FaseTestEliminar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">id_fase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">id</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_agregar_tipo_item_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cant_tipo_item_de_fase</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">))</span> <span class="c1">#inicialmente hay cero tipos de ítem</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo-item-test &#39;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-test&#39;</span><span class="p">,</span>
+                                                 <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Boolean&#39;</span><span class="p">,</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">),</span> <span class="n">fase</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)),</span><span class="n">cant_tipo_item_de_fase</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>        
+             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -268,8 +291,16 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_agregar_rol_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cant_rol_de_fase</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">))</span> <span class="c1">#inicialmente hay cero roles</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;rol &#39;</span><span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;grupo-fase &#39;</span><span class="o">+</span><span class="n">i</span><span class="p">),</span> <span class="n">fase</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)),</span> <span class="n">cant_rol_de_fase</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>        
+             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -281,8 +312,41 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_cerrar_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Linea_base_prueba</span> <span class="o">=</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion_linea_base_prueba&#39;</span><span class="p">,</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span>
+
+        <span class="n">control_estado_items</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">estado_inicial</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">estado</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">Linea_base_prueba</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item&#39;</span><span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> 
+                                                        <span class="n">costo</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">Linea_base_prueba</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item_padre&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item_padre&#39;</span><span class="p">,</span> 
+                                                        <span class="n">costo</span><span class="o">=</span><span class="mi">8</span><span class="p">))</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Aprobado&#39;</span>
+
+            <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">Linea_base_prueba</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">estado</span> <span class="o">!=</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">:</span>
+                <span class="n">control_estado_items</span> <span class="o">=</span> <span class="mi">1</span>
+            
+
+        <span class="k">if</span> <span class="n">control_estado_items</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">Linea_base_prueba</span><span class="o">.</span><span class="n">estado</span><span class="o">=</span> <span class="s1">&#39;Cerrada&#39;</span>
+            <span class="n">Linea_base_prueba</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            
+
+        <span class="k">if</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">estado</span><span class="o">=</span><span class="s1">&#39;Cerrada&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Cerrada&#39;</span>  
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">estado</span><span class="p">,</span><span class="n">estado_inicial</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>        
+             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -291,10 +355,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-19'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">FaseTestEliminar</span><span class="p">(</span><span class="n">TestFaseSetUp</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -303,10 +367,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-20'>#</a>
       </div>
-      <p><strong>Ir a la documentación de urls de la fase</strong> :  <a href="urls.html">urls.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FaseTestEliminar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_fase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">id</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -314,6 +380,56 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="forms.html">forms.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p><strong>Ir a la documentación de urls de la fase</strong> :  <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación fase  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -329,10 +445,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
+  <div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

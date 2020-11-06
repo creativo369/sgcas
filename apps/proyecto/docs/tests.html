@@ -22,7 +22,8 @@
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
 <span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
-<span class="kn">from</span> <span class="nn">apps.proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -228,7 +229,12 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ProyectoTestEliminar</span><span class="p">(</span><span class="n">TestProyectoSetUp</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_cerrar_proyecto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">estado_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span>
+
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;fase&#39;</span><span class="o">+</span><span class="n">r</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion&#39;</span><span class="o">+</span><span class="n">r</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="p">,</span>
+                                <span class="n">estado</span><span class="o">=</span><span class="s1">&#39;Cerrada&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -237,12 +243,24 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      
+      <p>se agregan las fases al proyecto</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ProyectoTestEliminar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">id_proyecto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">id</span></pre></div>
+      <div class="highlight"><pre>        <span class="n">fases_de_proyecto</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span>
+
+        <span class="n">no_cerrada</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">fase</span> <span class="ow">in</span> <span class="n">fases_de_proyecto</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fase</span><span class="o">.</span><span class="n">estado</span><span class="o">==</span><span class="s1">&#39;Cerrada&#39;</span><span class="p">:</span>
+                <span class="n">no_cerrada</span> <span class="o">+=</span><span class="mi">1</span>  <span class="c1">#se verifica si todas la fases del proyecto estan &#39;Cerradas&#39;</span>
+
+        <span class="k">if</span> <span class="n">no_cerrada</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Finalizado&#39;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">estado</span><span class="p">,</span><span class="n">estado_anterior</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -254,8 +272,7 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ProyectoTestEliminar</span><span class="p">(</span><span class="n">TestProyectoSetUp</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -267,8 +284,9 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_proyecto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ProyectoTestEliminar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_proyecto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">id</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -277,10 +295,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-18'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="models.html">models.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -289,10 +308,11 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-19'>#</a>
       </div>
-      <p><strong>Ir a la documentación de la URL de la Aplicación</strong> : <a href="urls.html">urls.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_proyecto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -300,6 +320,30 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="models.html">models.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p><strong>Ir a la documentación de la URL de la Aplicación</strong> : <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Proyecto  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -315,10 +359,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

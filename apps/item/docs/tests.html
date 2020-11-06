@@ -24,7 +24,10 @@
 <span class="kn">from</span> <span class="nn">apps.usuario.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
 <span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
-<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.item.views</span> <span class="kn">import</span> <span class="n">explore</span>
+<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span>
+<span class="kn">from</span> <span class="nn">apps.proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -48,15 +51,14 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">usarios_a_cargo</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;user-a-cargo-item&#39;</span><span class="p">)</span>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item-test&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-test&#39;</span><span class="p">,</span> <span class="n">estado</span><span class="o">=</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">,</span>
                                         <span class="n">costo</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">usuarios_a_cargo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usarios_a_cargo</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">usuarios_a_cargo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;usuario1&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
                                                  <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Boolean&#39;</span><span class="p">,</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></pre></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -105,21 +107,20 @@
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_modificar_padres_y_TI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">anterior_TI</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
-        <span class="n">anterior_TI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
+        <span class="n">anterior_TI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">tipo_item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">tipo_item</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
                                                  <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Char&#39;</span><span class="p">,</span> <span class="s1">&#39;Char&#39;</span><span class="p">))</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span><span class="p">,</span> <span class="n">anterior_TI</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">tipo_item</span><span class="p">,</span> <span class="n">anterior_TI</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-        <span class="n">anterior_padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
-        <span class="n">anterior_padres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">padres</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">padres</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item 1&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">cant_padres</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item 1&#39;</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">padres</span><span class="p">,</span> <span class="n">anterior_padres</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">()),</span> <span class="n">cant_padres</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
@@ -133,8 +134,16 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_aprobar_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">estado_anterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">estado</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">antecesores</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="o">+</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span><span class="s1">&#39;Aprobado&#39;</span> <span class="c1">#un ítem solo puede ser aprobado si al menos tiene una relación</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">estado</span><span class="p">,</span> <span class="n">estado_anterior</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -146,8 +155,14 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_establecer_relacion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cantidad_hijos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="c1">#inicialmente no tiene hijos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item_hijo&#39;</span><span class="p">,</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion_hijo&#39;</span><span class="p">,</span>
+                                                <span class="n">costo</span><span class="o">=</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">cantidad_hijos</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">()))</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -156,10 +171,18 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <p><strong>Volver atras</strong> :  <a href="models.html">models.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_modificar_relacion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">padre_nombre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">nombre</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span> <span class="n">padre_nombre</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item_prueba&#39;</span><span class="p">)</span>        
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">padre_nombre</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -168,10 +191,16 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p><strong>Ir a la documentación de URLS del modulo item</strong> :  <a href="urls.html">urls.py</a></p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_relacion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cant_padres</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">cant_padres</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()))</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -179,6 +208,213 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_historial_de_cambios</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prueba_item</span><span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item_prueba&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion_item&#39;</span><span class="p">,</span>
+                                         <span class="n">costo</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">nro_version_inicial</span><span class="o">=</span> <span class="n">prueba_item</span><span class="o">.</span><span class="n">nro_version</span>
+
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">prueba_item</span><span class="o">.</span><span class="n">costo</span> <span class="o">+=</span> <span class="n">r</span> <span class="c1">#si se modifica un atrubuto del item se genera una nueva versión</span>
+            <span class="n">prueba_item</span><span class="o">.</span><span class="n">nro_version</span><span class="o">=</span><span class="n">prueba_item</span><span class="o">.</span><span class="n">nro_version</span><span class="o">+</span><span class="mf">0.1</span>
+            <span class="n">prueba_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">nro_version_inicial</span><span class="p">,</span><span class="n">prueba_item</span><span class="o">.</span><span class="n">nro_version</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_calculo_impacto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>se crea el proyecto, las fases del proyecto y los items de las fases.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">proyecto_prueba</span> <span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">gerente</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;pepe&#39;</span><span class="p">),</span> <span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;proyecto_prueba&#39;</span><span class="p">,</span> 
+            <span class="n">descripcion</span><span class="o">=</span> <span class="s1">&#39;descripcion proyecto_prueba&#39;</span><span class="p">,</span><span class="n">estado</span> <span class="o">=</span><span class="s1">&#39;Iniciado&#39;</span><span class="p">)</span>
+        <span class="n">fase1</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span> <span class="o">=</span> <span class="s1">&#39;fase1&#39;</span><span class="p">,</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s1">&#39;descripcion fase1&#39;</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_prueba</span><span class="p">)</span>
+        <span class="n">fase2</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span> <span class="o">=</span> <span class="s1">&#39;fase2&#39;</span><span class="p">,</span><span class="n">descripcion</span> <span class="o">=</span> <span class="s1">&#39;descripcion fase2&#39;</span><span class="p">,</span> <span class="n">proyecto</span><span class="o">=</span> <span class="n">proyecto_prueba</span><span class="p">)</span>
+
+        <span class="n">item_padre</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;padre&#39;</span><span class="p">,</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion padre&#39;</span><span class="p">,</span><span class="n">fase</span><span class="o">=</span> <span class="n">fase1</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">hijo</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;hijo&#39;</span><span class="p">,</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion hijo&#39;</span><span class="p">,</span> <span class="n">fase</span><span class="o">=</span> <span class="n">fase2</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">sucesor</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;sucesor&#39;</span><span class="p">,</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion sucesor&#39;</span><span class="p">,</span> <span class="n">fase</span><span class="o">=</span> <span class="n">fase2</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>se calcula la complejidad del proyecto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">fases</span><span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto_prueba</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">complejidad_proyecto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fase</span> <span class="ow">in</span> <span class="n">fases</span><span class="p">:</span>
+            <span class="n">item_de_fase</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_de_fase</span><span class="p">:</span>
+                <span class="n">complejidad_proyecto</span><span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">costo</span>
+
+        <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">complejidad</span> <span class="o">=</span> <span class="n">complejidad_proyecto</span>
+        <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>se relacionan  los items de las distintas fases</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">item_padre</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hijo</span><span class="p">)</span>
+        <span class="n">item_padre</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">item_padre</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sucesor</span><span class="p">)</span>
+        <span class="n">item_padre</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">calculo</span> <span class="o">=</span> <span class="n">explore</span><span class="p">(</span><span class="n">item_padre</span><span class="p">,</span> <span class="n">impacto</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>se obtiene el impacto inicial del ítem</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">impacto_inicial</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">calculo</span> <span class="o">/</span> <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">complejidad</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>se agrega un nuevo ítem sucesor al item_padre        </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">item_padre</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;item&#39;</span><span class="p">,</span><span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion item&#39;</span><span class="p">,</span> <span class="n">fase</span><span class="o">=</span> <span class="n">fase2</span><span class="p">,</span> <span class="n">costo</span><span class="o">=</span><span class="mi">9</span><span class="p">))</span>
+        <span class="n">item_padre</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>se recalcula la complejidad del proyecto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">complejidad_proyecto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">fase</span> <span class="ow">in</span> <span class="n">fases</span><span class="p">:</span>
+            <span class="n">item_de_fase</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_de_fase</span><span class="p">:</span>
+                <span class="n">complejidad_proyecto</span><span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">costo</span>
+
+        <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">complejidad</span> <span class="o">=</span> <span class="n">complejidad_proyecto</span>
+        <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>se obtiene el nuevo impacto del proyecto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">impacto_final</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">calculo</span> <span class="o">/</span> <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">complejidad</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">calculo</span> <span class="o">=</span> <span class="n">explore</span><span class="p">(</span><span class="n">item_padre</span><span class="p">,</span> <span class="n">impacto</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">impacto_inicial</span><span class="p">,</span><span class="nb">round</span><span class="p">((</span><span class="n">calculo</span> <span class="o">/</span> <span class="n">proyecto_prueba</span><span class="o">.</span><span class="n">complejidad</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p><strong>Volver atras</strong> :  <a href="models.html">models.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p><strong>Ir a la documentación de URLS del modulo item</strong> :  <a href="urls.html">urls.py</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación item  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -194,10 +430,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
