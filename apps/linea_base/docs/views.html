@@ -60,10 +60,11 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      
+      <p>@requiere_permiso(&lsquo;crear_linea_base&rsquo;)
+=== crear línea base ===</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;crear_linea_base&#39;</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -71,18 +72,6 @@ Actualmente se despliega en las plantillas 7 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      <h3><span id="crear-línea-base" href="crear-línea-base"> crear línea base </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">crear_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-4'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <p>Permite la creación de una instancia de objeto línea base.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -96,10 +85,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-5'>
+  <div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
+        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <p>for item in query_item:
     if item.estado == &ldquo;Aprobado&rdquo; and item.padres.all().exists() and item.hijos.all().exists() and item.antecesores.all().exists() and item.sucesores.all().exists():
@@ -117,10 +106,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-6'>
+  <div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <p>elif flag and fase.proyecto.estado == &ldquo;Iniciado&rdquo;:</p>
     </div>
@@ -133,10 +122,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>return render(request, &lsquo;linea_base/linea_crear.html&rsquo;, {&lsquo;flag&rsquo;: flag, &lsquo;fase&rsquo;: fase})</p>
     </div>
@@ -146,10 +135,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <p>Permite conocer la cantidad de items libres en una fase.<br/>
 <strong>:param fase:</strong> Recibe la instancia de fase sobre el cual se desea se desea operar.<br/>
@@ -160,10 +149,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       
     </div>
@@ -176,34 +165,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-9'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;agregar_item_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-11'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
-      </div>
-      <h3><span id="agregar-ítems-lb" href="agregar-ítems-lb"> agregar ítems lb </span></h3>
+      <p>@requiere_permiso(&lsquo;agregar_item_linea_base&rsquo;)
+=== agregar ítems lb ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">agregar_items_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-12'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Permite agregar ítems a una línea base.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -225,34 +203,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-13'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-13'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;editar_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-14'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
-      </div>
-      <h3><span id="editar-lb" href="editar-lb"> editar lb </span></h3>
+      <p>@requiere_permiso(&lsquo;editar_linea_base&rsquo;)
+=== editar lb ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">editar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>Permite la modificación de una instancia de línea base.<br/>
   <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -271,34 +238,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;estado_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-17'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
-      </div>
-      <h3><span id="estado-lb" href="estado-lb"> estado lb </span></h3>
+      <p>@requiere_permiso(&lsquo;estado_linea_base&rsquo;)
+=== estado lb ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">estado_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-14'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-14'>#</a>
       </div>
       <p>Permite la modificación de una línea base.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -316,34 +272,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-15'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-20'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
-      </div>
-      <h3><span id="lista-de-líneas-base" href="lista-de-líneas-base"> lista de líneas base </span></h3>
+      <p>@requiere_permiso(&lsquo;listar_linea_base&rsquo;)
+=== lista de líneas base ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">lista_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>Permite visualizar la lista de líneas bases de una fase en particular.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -362,34 +307,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-23'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
-      </div>
-      <h3><span id="search" href="search"> search </span></h3>
+      <p>@requiere_permiso(&lsquo;listar_linea_base&rsquo;)
+=== search ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-24'>
+  <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>Permite realizar la búsqueda de líneas bases de una fase en particular.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -424,34 +358,23 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-25'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;listar_item_linea_base&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-26'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
-      </div>
-      <h3><span id="lista-ítems-lb" href="lista-ítems-lb"> lista ítems lb </span></h3>
+      <p>@requiere_permiso(&lsquo;listar_item_linea_base&rsquo;)
+=== lista ítems lb ===</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">lista_items_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>Permite visualizar la lista de ítems correspondientes a una línea base en particular.<br/>
 <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
@@ -480,29 +403,28 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>@requiere_permiso(&lsquo;eliminar_linea_base&rsquo;)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">eliminar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>Permite la eliminacion de una instancia de linea base.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
 <strong>:param pk:</strong> Recibe pk de una instancia de linea base,que se eliminara<br/>
 <strong>:param id_fase:</strong> Recibe pk de una instancia de fase, en donde se encuentra la linea base.<br/>
 <strong>:return:</strong> Retorna una instancia de linea base eliminada.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;eliminar_linea_base&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">eliminar_lb</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-29'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
-      </div>
-      
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
@@ -513,10 +435,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-30'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p><strong>Volver atras</strong> :  <a href="urls.html">urls.py</a></p>
     </div>
@@ -525,10 +447,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-31'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-31'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación linea base  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
@@ -543,10 +465,10 @@ flag = False</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-32'>
+  <div class='section' id='section-25'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-32'>#</a>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
