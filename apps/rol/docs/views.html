@@ -359,13 +359,12 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
       <h3>&lt;span id=&rdquo;asigna-rol-de-fase</h3>
 <p>@requiere_permiso(&lsquo;asignar_rol&rsquo;)&rdquo; href=&rdquo;asigna-rol-de-fase
 @requiere_permiso(&lsquo;asignar_rol&rsquo;)&rdquo;&gt; asigna rol de fase
-@requiere_permiso(&lsquo;asignar_rol&rsquo;)
-</span></p>
+@requiere_permiso(&lsquo;asignar_rol&rsquo;)</p>
+<p></span></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;rol.asignar_rol&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">asignar_rol_usuario</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span>
-    <span class="n">rol</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Rol</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span></pre></div>
+<span class="k">def</span> <span class="nf">asignar_rol_usuario</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">,</span> <span class="n">id_fase</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -373,6 +372,21 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>Permite la asignación de una instancia del modelo Rol a un usuario de la fase.<br/>
+ <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+ <strong>:param pk:</strong> Recibe el pk de la instancia del modelo Rol que se desea asignar al usuario.<br/>
+ <strong>:return:</strong> Redirige a la plantilla que despliega el formulario de asignación de roles.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">rol</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Rol</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>id_fase = rol.fase.id</p>
     </div>
@@ -390,10 +404,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <h3><span id="rol-por-sistema" href="rol-por-sistema"> ROL POR SISTEMA </span></h3>
     </div>
@@ -402,10 +416,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-23'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       
     </div>
@@ -415,10 +429,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-24'>
+  <div class='section' id='section-25'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <h3><span id="crear-rol-sistema" href="crear-rol-sistema"> crear rol sistema </span></h3>
     </div>
@@ -427,10 +441,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-25'>
+  <div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
+        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <p>Permite la visualizacion de la plantilla para la creacion de instancias del modelo Group.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -449,10 +463,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-26'>
+  <div class='section' id='section-27'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
+        <a class='octothorpe' href='#section-27'>#</a>
       </div>
       
     </div>
@@ -462,10 +476,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       <h3><span id="rol-opciones-sistema" href="rol-opciones-sistema"> rol opciones sistema </span></h3>
     </div>
@@ -474,10 +488,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <p>Permite la visualizacion de las opciones sobre el modelo Group.<br/>
 <strong>:param request:</strong> Recibe un request por parte un usuario.<br/>
@@ -488,10 +502,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-29'>
+  <div class='section' id='section-30'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
+        <a class='octothorpe' href='#section-30'>#</a>
       </div>
       <h3><span id="listar-roles-sistema" href="listar-roles-sistema"> listar roles sistema </span></h3>
     </div>
@@ -500,10 +514,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-30'>
+  <div class='section' id='section-31'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
+        <a class='octothorpe' href='#section-31'>#</a>
       </div>
       <p>Permite la visualizacion de todas las intancias del modelo Group.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
@@ -518,10 +532,10 @@ Actualmente se despliega en las plantillas 13 vistas:</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-31'>
+  <div class='section' id='section-32'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-31'>#</a>
+        <a class='octothorpe' href='#section-32'>#</a>
       </div>
       <p>La lista a mostrar estara por orden ascendente
 class Meta:
@@ -532,10 +546,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-32'>
+  <div class='section' id='section-33'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-32'>#</a>
+        <a class='octothorpe' href='#section-33'>#</a>
       </div>
       <p>Rol.objects.filter(fase=None)</p>
     </div>
@@ -544,10 +558,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-33'>
+  <div class='section' id='section-34'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-33'>#</a>
+        <a class='octothorpe' href='#section-34'>#</a>
       </div>
       
     </div>
@@ -556,10 +570,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-34'>
+  <div class='section' id='section-35'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-34'>#</a>
+        <a class='octothorpe' href='#section-35'>#</a>
       </div>
       <h3><span id="search-sistema" href="search-sistema"> search sistema </span></h3>
     </div>
@@ -568,10 +582,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-35'>
+  <div class='section' id='section-36'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-35'>#</a>
+        <a class='octothorpe' href='#section-36'>#</a>
       </div>
       <p>Permite la búsqueda de las intancias del modelo Group.<br/>
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -594,10 +608,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-36'>
+  <div class='section' id='section-37'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-36'>#</a>
+        <a class='octothorpe' href='#section-37'>#</a>
       </div>
       <h3><span id="editar-rol-sistema" href="editar-rol-sistema"> editar rol sistema </span></h3>
     </div>
@@ -606,10 +620,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-37'>
+  <div class='section' id='section-38'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-37'>#</a>
+        <a class='octothorpe' href='#section-38'>#</a>
       </div>
       <p>Permite la modificacion de una instancia del modelo Group.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
@@ -625,10 +639,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-38'>
+  <div class='section' id='section-39'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-38'>#</a>
+        <a class='octothorpe' href='#section-39'>#</a>
       </div>
       <h3><span id="eliminar-rol-sistema" href="eliminar-rol-sistema"> eliminar rol sistema </span></h3>
     </div>
@@ -637,10 +651,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-39'>
+  <div class='section' id='section-40'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-39'>#</a>
+        <a class='octothorpe' href='#section-40'>#</a>
       </div>
       <p>Permite la eliminacion de una instancia del modelo Rol.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Maneja multiple permisos, de la libreria django.contrib.auth.mixins.<br/>
@@ -655,33 +669,19 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-40'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-40'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">pk</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>  <span class="c1"># se obtiene el pk para eliminar</span>
-        <span class="n">rol</span> <span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">rol</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;rol/validate_delete.html&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-41'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-41'>#</a>
       </div>
-      <p>rol.delete()</p>
+      <p>Elimina una instancia del modelo rol dentro del sistema.<br/>
+<strong>:param request:</strong> recibe la petición del admistrador que solicita eliminar un rol.<br/>
+:param args:<br/>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo rol.<br/>
+<strong>:return:</strong> Redirige una plantilla que contiene la lista de todos los roles del sistema.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -690,10 +690,15 @@ ordering = [&lsquo;-id&rsquo;]</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-42'>#</a>
       </div>
-      <h3><span id="lista-rol-usuarios" href="lista-rol-usuarios"> lista rol usuarios </span></h3>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>        <span class="n">pk</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>  <span class="c1"># se obtiene el pk para eliminar</span>
+        <span class="n">rol</span> <span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">rol</span><span class="o">.</span><span class="n">usuarios</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;rol/validate_delete.html&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">rol</span><span class="o">.</span><span class="n">nombre</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -702,12 +707,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-43'>#</a>
       </div>
-      <p>Permite la visualizacion de todas las intancias del modelo Rol que posee un usuario.<br/>
-<strong>:param ListView:</strong> Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
-<strong>:return:</strong> Lista que contiene todas las instancias del modelo Rol que pertenecen a un usuario.<br/></p>
+      <p>rol.delete()</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Usuario_roles</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre>            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -716,11 +719,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-44'>#</a>
       </div>
-      
+      <h3><span id="lista-rol-usuarios" href="lista-rol-usuarios"> lista rol usuarios </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Rol</span>
-    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;rol/usuario_roles.html&#39;</span></pre></div>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Usuario_roles</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -729,15 +731,13 @@ ordering = [&lsquo;-id&rsquo;]</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-45'>#</a>
       </div>
-      
+      <p>Permite la visualizacion de todas las intancias del modelo Rol que posee un usuario.<br/>
+<strong>:param ListView:</strong> Recibe una vista generica de tipo ListView para vistas basadas en clases.<br/>
+<strong>:return:</strong> Lista que contiene todas las instancias del modelo Rol que pertenecen a un usuario.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">rol</span> <span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuarios__in</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">rol</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">rol</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rol&#39;</span><span class="p">:</span> <span class="n">rol</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rol&#39;</span><span class="p">:</span> <span class="n">rol</span><span class="p">})</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">model</span> <span class="o">=</span> <span class="n">Rol</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;rol/usuario_roles.html&#39;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -746,10 +746,14 @@ ordering = [&lsquo;-id&rsquo;]</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-46'>#</a>
       </div>
-      <h3><span id="fin" href="fin"> FIN </span></h3>
+      <p>Obtiene todos los roles asignados a un usuario dentro del sistema.<br/>
+<strong>:param request:</strong> recibe la petición del cliente que solicita ver todos sus roles en el sistema.<br/>
+:param args:<br/>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo rol.<br/>
+<strong>:return:</strong> Redirige una plantilla que despliega la lista de los roles que posee el usuario.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -757,6 +761,34 @@ ordering = [&lsquo;-id&rsquo;]</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-47'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">rol</span> <span class="o">=</span> <span class="n">Rol</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">usuarios__in</span><span class="o">=</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">rol</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rol&#39;</span><span class="p">:</span> <span class="n">rol</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;rol&#39;</span><span class="p">:</span> <span class="n">rol</span><span class="p">})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-48'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-48'>#</a>
+      </div>
+      <h3><span id="fin" href="fin"> FIN </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-49'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-49'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación rol  === <br/>
 1.apps     :  <a href="apps.html">apps.py</a><br/>
@@ -770,10 +802,10 @@ ordering = [&lsquo;-id&rsquo;]</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-48'>
+  <div class='section' id='section-50'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-48'>#</a>
+        <a class='octothorpe' href='#section-50'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

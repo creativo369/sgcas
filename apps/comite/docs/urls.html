@@ -59,9 +59,8 @@
 <strong>3.DeleteComite :</strong> Vista que despliega eliminar un comité<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">apps.comite.views</span> <span class="kn">import</span> <span class="n">CreateComite</span><span class="p">,</span> <span class="n">UpdateComite</span><span class="p">,</span> <span class="n">DeleteComite</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">lista_solicitudes</span><span class="p">,</span> <span class="n">voto_favor</span><span class="p">,</span> <span class="n">voto_contra</span><span class="p">,</span>\
-    <span class="n">solicitud_linea_base</span><span class="p">,</span> <span class="n">DetailComite</span>
-
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">apps.comite.views</span> <span class="kn">import</span> <span class="n">CreateComite</span><span class="p">,</span> <span class="n">UpdateComite</span><span class="p">,</span> <span class="n">DeleteComite</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">lista_solicitudes</span><span class="p">,</span> <span class="n">voto_favor</span><span class="p">,</span> \
+    <span class="n">voto_contra</span><span class="p">,</span> <span class="n">DetailComite</span><span class="p">,</span> <span class="n">auditoria_solicitudes</span><span class="p">,</span> <span class="n">solicitud_item</span><span class="p">,</span> <span class="n">DetailComite</span><span class="p">,</span><span class="n">reporte_solicitud_rango</span><span class="p">,</span> <span class="n">render_pdf_view</span>
 
 <span class="n">app_name</span> <span class="o">=</span> <span class="s1">&#39;comite&#39;</span></pre></div>
     </div>
@@ -77,11 +76,19 @@
     <div class='code'>
       <div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^crear-comite/(?P&lt;_id&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">CreateComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;create&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.editar_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">UpdateComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;update&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ver-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.ver_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.eliminar_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DeleteComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;delete&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^detalles-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.ver_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^operacion-exitosa/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">success</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">),</span></pre></div>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^editar-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span><span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.editar_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">UpdateComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;update&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^ver-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span><span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.ver_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^eliminar-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span><span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.eliminar_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DeleteComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;delete&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^detalles-comite/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span><span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;comite.ver_comite&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailComite</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^operacion-exitosa/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">success</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^solicitud-item/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">solicitud_item</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;solicitud_item&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista-solicitudes/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_solicitudes</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;solicitudes&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^voto_favor/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">voto_favor</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voto_favor&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^voto_contra/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">voto_contra</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voto_contra&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^auditoria-solicitudes/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">auditoria_solicitudes</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;auditoria&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^generar-reporte/(?P&lt;id_proyecto&gt;\d+)/(?P&lt;id_comite&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">render_pdf_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;reporte_solicitud&#39;</span><span class="p">),</span>
+    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^generar-reporte-por-rango/(?P&lt;id_proyecto&gt;\d+)/(?P&lt;id_comite&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">reporte_solicitud_rango</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;reporte_solicitud_rango&#39;</span><span class="p">),</span>
+<span class="p">]</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -90,14 +97,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>url(r&rsquo;^solicitud-item/(?P<pk>\d+)/$&rsquo;, login_required(solicitud_item), name=&rsquo;solicitud_item&rsquo;),</p>
+      <p><strong>Atras</strong> :  <a href="tests.html">tests.py</a></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^solicitud-linea-base/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">solicitud_linea_base</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;solicitud_linea_base&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^lista-solicitudes/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">lista_solicitudes</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;solicitudes&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^voto_favor/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">voto_favor</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voto_favor&#39;</span><span class="p">),</span>
-    <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^voto_contra/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">voto_contra</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;voto_contra&#39;</span><span class="p">),</span>
-<span class="p">]</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -106,7 +109,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
       </div>
-      <p><strong>Atras</strong> :  <a href="tests.html">tests.py</a></p>
+      <p><strong>Siguiente</strong> :  <a href="views.html">views.py</a></p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -117,18 +120,6 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
-      </div>
-      <p><strong>Siguiente</strong> :  <a href="views.html">views.py</a></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-8'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -144,10 +135,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-8'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

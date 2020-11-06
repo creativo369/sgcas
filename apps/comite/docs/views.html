@@ -24,12 +24,14 @@
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">guardian.mixins</span> <span class="kn">import</span> <span class="n">PermissionRequiredMixin</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
 <span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">,</span> <span class="n">DeleteView</span><span class="p">,</span> <span class="n">DetailView</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
 <span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
-<span class="kn">from</span> <span class="nn">SGCAS.settings</span> <span class="kn">import</span> <span class="n">base</span></pre></div>
+<span class="kn">from</span> <span class="nn">SGCAS.settings</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -42,11 +44,16 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Comite</span><span class="p">,</span> <span class="n">Solicitud</span>
+<span class="kn">from</span> <span class="nn">apps.comite.models.solicitud</span> <span class="kn">import</span> <span class="n">Voto</span>
 <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">FormularioComite</span><span class="p">,</span> <span class="n">FormularioComiteUpdate</span><span class="p">,</span> <span class="n">FormularioSolicitud</span>
 <span class="kn">from</span> <span class="nn">..proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span>
 <span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
 <span class="kn">from</span> <span class="nn">apps.linea_base.models</span> <span class="kn">import</span> <span class="n">LineaBase</span>
-<span class="kn">from</span> <span class="nn">apps.item.views</span> <span class="kn">import</span> <span class="n">get_lb</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.item.views</span> <span class="kn">import</span> <span class="n">get_lb</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.template.loader</span> <span class="kn">import</span> <span class="n">get_template</span>
+<span class="kn">from</span> <span class="nn">xhtml2pdf</span> <span class="kn">import</span> <span class="n">pisa</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -56,7 +63,7 @@
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
       <p>Todas las vistas para la aplicación del Modulo Comité
-Actualmente se despliega en las plantillas 12 vistas:</p>
+Actualmente se despliega en las plantillas 14 vistas:</p>
 <ol>
 <li><strong>success</strong> - operación exitosa para la creación de un comite (Ir a la sección:  <a href="views.html#success">views.py </a> )</li>
 <li><strong>CreateComite</strong> - definición de una instancia del modelo comité (Ir a la sección:  <a href="views.html#create comite">views.py </a> )</li>
@@ -72,8 +79,10 @@ Actualmente se despliega en las plantillas 12 vistas:</p>
 <li><strong>revision_votacion</strong> - determina que opción obtiene la mayoria de votos (Ir a la sección:  <a href="views.html#revision votacion">views.py </a> )</li>
 <li><strong>decision_comite</strong> - notifica al solicitante la decision del comité (Ir a la sección:  <a href="views.html#decision comite">views.py </a> )</li>
 <li><strong>lista_solicitudes</strong> - lista las solicitudes que deben ser votadas (Ir a la sección:  <a href="views.html#lista de solicitudes">views.py </a> )</li>
-<li><strong>solicitud_linea_base</strong> - remite la solicitud de rotura de la linea base al comité (Ir a la sección:  <a href="views.html#socilitud de linea base">views.py </a> )</li>
+<li><strong>solicitud_item</strong> - solicita el cambio de estado de un ítem aprobado que Permiteenece a una línea base cerrada (Ir a la sección:  <a href="views.html#socilitud de linea base">views.py </a> )</li>
 <li><strong>send_notification</strong> - se ecarga del envío de los correos al usuario solicitante (Ir a la sección:  <a href="views.html#enviar correo">views.py </a> )</li>
+<li><strong>reporte_solicitud_rango</strong> - se ecarga de establecer el periodo de tiempo en el que el usuario desea contar los reportes. (Ir a la sección:  <a href="views.html#reporte PDF rango">views.py </a> )</li>
+<li><strong>render_pdf_view</strong> - se ecarga de la generacion del reporte de las solicitudes (Ir a la sección:  <a href="views.html#reporte PDF">views.py </a> )</li>
 </ol>
     </div>
     <div class='code'>
@@ -308,8 +317,8 @@ debe poseer el permiso correspondiente de modificación de comites.<br/>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">comite</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Comite</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">))</span>        
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">comite</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>    
+      <div class="highlight"><pre>        <span class="n">comite</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Comite</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">comite</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_class</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">comite</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
                 <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -384,11 +393,26 @@ debe poseer el permiso correspondiente de eliminar comite.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-22'>#</a>
       </div>
+      <p>Elimina la instancia del modelo comité de la base de datos.<br/>
+<strong>:param request:</strong> La petición del cliente.<br/>
+<strong>:param args:</strong><br/>
+<strong>:param kwargs:</strong> Diccionario &lsquo;clave&rsquo;:valor que recibe la referencia de la instancia del modelo comite.<br/>
+<strong>:return:</strong> Redirige a la plantilla de proyectos del usuario.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">pk</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>  <span class="c1"># se obtiene el pk para eliminar</span>
+      <div class="highlight"><pre>        <span class="n">pk</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>  <span class="c1"># se obtiene el pk para eliminar</span>
         <span class="n">comite</span> <span class="o">=</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">comite</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/validate_editar_comite.html&#39;</span><span class="p">)</span>
@@ -398,10 +422,10 @@ debe poseer el permiso correspondiente de eliminar comite.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-23'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       <h3><span id="detail-comite" href="detail-comite"> detail comite </span></h3>
     </div>
@@ -410,10 +434,10 @@ debe poseer el permiso correspondiente de eliminar comite.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-24'>
+  <div class='section' id='section-25'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
+        <a class='octothorpe' href='#section-25'>#</a>
       </div>
       <p>Despliega los detalles de una instancia del modelo de Proyecto.<br/>
 <strong>:param PermissionRequiredMixin:</strong> Libreria que gestiona el permiso para la creación de proyectos.El usuario
@@ -430,10 +454,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-25'>
+  <div class='section' id='section-26'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-25'>#</a>
+        <a class='octothorpe' href='#section-26'>#</a>
       </div>
       <p>@permission_required(&lsquo;comite.ver_comite&rsquo;, raise_exception=True)
 === voto a favor ===</p>
@@ -443,10 +467,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-26'>
+  <div class='section' id='section-27'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
+        <a class='octothorpe' href='#section-27'>#</a>
       </div>
       <p>Realiza la votacion a favor de la aprobacion del artefacto.
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -454,9 +478,11 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
 <strong>:return:</strong> Retorna al template de solicitudes del comite.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">solicitud</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Solicitud</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+      <div class="highlight"><pre>    <span class="n">voto</span> <span class="o">=</span> <span class="n">Voto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">votante</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">decision</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">solicitud</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Solicitud</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">votacion</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">votantes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">solicitud</span><span class="o">.</span><span class="n">auditoria</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">voto</span><span class="p">)</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">revision_votacion</span><span class="p">(</span><span class="n">solicitud</span><span class="p">):</span>
         <span class="n">decision_comite</span><span class="p">(</span><span class="n">solicitud</span><span class="p">)</span>
@@ -464,10 +490,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       <p>@permission_required(&lsquo;comite.ver_comite&rsquo;, raise_exception=True)
 === voto en contra ===</p>
@@ -477,10 +503,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
       <p>Realiza la votacion en contra de la aprobacion del artefacto.
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -488,9 +514,11 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
 <strong>:return:</strong> Retorna al template de solicitudes del comite.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">solicitud</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Solicitud</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+      <div class="highlight"><pre>    <span class="n">voto</span> <span class="o">=</span> <span class="n">Voto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">votante</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">decision</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">solicitud</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Solicitud</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">votacion</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">votantes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">solicitud</span><span class="o">.</span><span class="n">auditoria</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">voto</span><span class="p">)</span>
     <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">revision_votacion</span><span class="p">(</span><span class="n">solicitud</span><span class="p">):</span>
         <span class="n">decision_comite</span><span class="p">(</span><span class="n">solicitud</span><span class="p">)</span>
@@ -498,10 +526,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-29'>
+  <div class='section' id='section-30'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
+        <a class='octothorpe' href='#section-30'>#</a>
       </div>
       <h1>Revisa la votacion para ver si ya votaron todos los miembros, si ya votaron todos</h1>
 <p>=== revision votacion ===</p>
@@ -511,28 +539,28 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-30'>
+  <div class='section' id='section-31'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
+        <a class='octothorpe' href='#section-31'>#</a>
       </div>
       <p>Realiza la revision de la votacion.
 <strong>:param solicitud:</strong> Recibe la instancia de solicitud sobre la cual se hara la revision de la votacion.<br/>
 <strong>:return:</strong> Retorna True si todos los miembros del comite ya votaron, en caso contrario retorna False.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">cant_miembros_comite</span><span class="o">=</span><span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-    <span class="n">cant_votantes_solicitud</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">votantes</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+      <div class="highlight"><pre>    <span class="n">cant_miembros_comite</span> <span class="o">=</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="n">cant_votantes_solicitud</span> <span class="o">=</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">votantes</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">cant_miembros_comite</span> <span class="o">&gt;</span> <span class="n">cant_votantes_solicitud</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-31'>
+  <div class='section' id='section-32'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-31'>#</a>
+        <a class='octothorpe' href='#section-32'>#</a>
       </div>
       <h3><span id="decision-comite" href="decision-comite"> decision comite </span></h3>
     </div>
@@ -541,10 +569,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-32'>
+  <div class='section' id='section-33'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-32'>#</a>
+        <a class='octothorpe' href='#section-33'>#</a>
       </div>
       <p>Realiza la decision sobre el artefacto de acuerdo al resultado de la votacion, notificando por correo al solicitante sobre el resultado.
 <strong>:param solicitud:</strong> Recibe una instancia de solicitud sobre el cual se hara la decision de aprobar o no.<br/>
@@ -554,32 +582,60 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
       <div class="highlight"><pre>    <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">if</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">votacion</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Solicitud aprobada.&#39;</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Solicitud aprobada&#39;</span>
+        <span class="n">solicitud</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Aprobada&#39;</span>
+        <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
             <span class="n">item</span> <span class="o">=</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span>
             <span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Desarrollo&#39;</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">en_linea_base</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente al item </span><span class="si">{}</span><span class="s1"> ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">lb</span> <span class="o">=</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">linea_base</span>
-            <span class="n">lb</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Rota&#39;</span>
-            <span class="n">lb</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente a la linea base </span><span class="si">{}</span><span class="s1"> ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">linea_base</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">lineas</span> <span class="ow">in</span> <span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">lineas</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">):</span>
+
+                    <span class="n">lineas</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Rota&#39;</span>  <span class="c1"># rompe la linea base a la que pertenece el ítem</span>
+                    <span class="n">lineas</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lineas</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="p">:</span>
+                            <span class="n">item</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Revision&#39;</span>  <span class="c1"># se pone en revisión los ítems que salen de la línea base cerrada</span>
+                            <span class="n">item</span><span class="o">.</span><span class="n">en_linea_base</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="n">item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente al item </span><span class="si">{}</span><span class="s1"> ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Solicitud no aprobada.&#39;</span>
-        <span class="k">if</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente al item </span><span class="si">{}</span><span class="s1"> no ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente a la linea base </span><span class="si">{}</span><span class="s1"> no ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">linea_base</span><span class="p">)</span>
-    <span class="n">send_notification</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">solicitante</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-    <span class="n">solicitud</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+        <span class="n">solicitud</span><span class="o">.</span><span class="n">estado</span> <span class="o">=</span> <span class="s1">&#39;Rechazada&#39;</span>
+        <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Solicitud no aprobada&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Su solicitud correspondiente al item </span><span class="si">{}</span><span class="s1"> no ha sido aprobada por el comité.</span><span class="se">\n\n</span><span class="s1">SGCAS.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="n">solicitud</span><span class="o">.</span><span class="n">en_proceso</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">send_notification</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">solicitante</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-33'>
+  <div class='section' id='section-34'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-33'>#</a>
+        <a class='octothorpe' href='#section-34'>#</a>
+      </div>
+      <p>solicitud.delete()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-35'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-35'>#</a>
       </div>
       <p>@permission_required(&lsquo;comite.ver_solicitud&rsquo;, raise_exception=True)
 === lista de solicitudes ===</p>
@@ -589,10 +645,10 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-34'>
+  <div class='section' id='section-36'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-34'>#</a>
+        <a class='octothorpe' href='#section-36'>#</a>
       </div>
       <p>Renderiza la lista de solicitudes que se encuentran en proceso de votacion.
 <strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
@@ -610,67 +666,21 @@ debe poseer el permiso correspondiente de eliminar proyectos.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-35'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-35'>#</a>
-      </div>
-      <p>&lsquo;solicitudes&rsquo;: Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="s1">&#39;miembro_comite&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
-        <span class="s1">&#39;comite&#39;</span><span class="p">:</span><span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span>
-        <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span>
-    <span class="p">}</span>
-
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/solicitudes.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-36'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-36'>#</a>
-      </div>
-      <p>@permission_required(&lsquo;comite.crear_solicitud&rsquo;, raise_exception=True)
-=== solicitud de ítem ===
-def solicitud_item(request, pk):</p>
-<p>Realiza la solicitud del usuario para la modificacion de un item.
-<strong>:param request:</strong> Recibe un request por parte del usuario que realiza la solicitud.<br/>
-<strong>:param pk:</strong> Recibe el pk de la instancia de item que el usuario desea modificar.<br/>
-<strong>:return:</strong> Retorna al template de lista de items.<br/></p>
-<p>Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase</p>
-<p>form = FormularioSolicitud(request.POST or None, pk=pk, request=request, tipo=0)
-if request.method == &lsquo;GET&rsquo;:
-    context = {
-        &lsquo;form&rsquo;:form,
-        &lsquo;solicitud_en_proceso&rsquo;: Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()
-    }
-    return render(request, &lsquo;comite/solicitud.html&rsquo;, context)
-else:
-    if form.is_valid():
-        solicitud = form.save(commit=False)
-        solicitud.proyecto = get_object_or_404(Item, pk=pk).fase.proyecto
-        solicitud.save()
-        for miembro_comite in Comite.objects.get(proyecto=solicitud.item.fase.proyecto).miembros.all():
-            message=&rsquo;{}:\n\nSe realizó una petición de aprobación para un item con el siguiente mensaje personalizado:\n{}\n\nSGCAS&rsquo;.format(miembro_comite, solicitud.descripcion)
-            send_notification(miembro_comite.email, solicitud.asunto, message)
-        return redirect(&lsquo;item:item_lista&rsquo;, id_fase=Item.objects.get(pk=pk).fase.pk)</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-37'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-37'>#</a>
       </div>
-      
+      <p>&lsquo;solicitudes&rsquo;: Solicitud.objects.filter(proyecto=Comite.objects.get(pk=pk).proyecto),</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;comite.crear_solicitud&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>        <span class="s1">&#39;miembro_comite&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+        <span class="s1">&#39;comite&#39;</span><span class="p">:</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">),</span>
+        <span class="s1">&#39;page_obj&#39;</span><span class="p">:</span> <span class="n">page_obj</span><span class="p">,</span>
+        <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span>
+    <span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Solicitud</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/solicitudes.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -679,10 +689,13 @@ else:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-38'>#</a>
       </div>
-      <h3><span id="socilitud-de-linea-base" href="socilitud-de-linea-base"> socilitud de linea base </span></h3>
+      <p>Renderiza una adutoria sobre un artefacto.
+<strong>:param request:</strong> Recibe un request por parte de un usuario.<br/>
+<strong>:param pk:</strong> Recibe el pk de la solicitud sobre la cual se desea realizar la auditoria.<br/>
+<strong>:return:</strong> Retorna el template sobre la auditoria de una solicitud.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">solicitud_linea_base</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">auditoria_solicitudes</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -691,29 +704,14 @@ else:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-39'>#</a>
       </div>
-      <p>Realiza la solicitud del usuario para la rotura de la linea base.
-<strong>:param request:</strong> Recibe un request por parte del usuario que realiza la solicitud.<br/>
-<strong>:param pk:</strong> Recibe el pk de la instancia de item donde se encuentra la linea base que se desea romper.<br/>
-<strong>:return:</strong> Retorna al template de lista de items.<br/></p>
-<p>Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase</p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">form</span> <span class="o">=</span> <span class="n">FormularioSolicitud</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;form&#39;</span><span class="p">:</span><span class="n">form</span><span class="p">,</span>
-            <span class="s1">&#39;solicitud_en_proceso&#39;</span><span class="p">:</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">linea_base</span><span class="o">=</span><span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/solicitud.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-            <span class="n">solicitud</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">solicitud</span><span class="o">.</span><span class="n">proyecto</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">LineaBase</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span>
-            <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">miembro_comite</span> <span class="ow">in</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">linea_base</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="se">\n\n</span><span class="s1">Se realizó una petición de aprobación para una línea base con el siguiente mensaje personalizado:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n\n</span><span class="s1">SGCAS&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">miembro_comite</span><span class="p">,</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">descripcion</span><span class="p">)</span>
-                <span class="n">send_notification</span><span class="p">(</span><span class="n">miembro_comite</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">asunto</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;linea_base:linea_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">LineaBase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;solicitud&#39;</span><span class="p">:</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Solicitud</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/auditoria.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -721,6 +719,137 @@ else:
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-40'>#</a>
+      </div>
+      <p>@permission_required(&lsquo;comite.crear_solicitud&rsquo;, raise_exception=True)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-41'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-41'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@permission_required</span><span class="p">(</span><span class="s1">&#39;comite.crear_solicitud&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-42'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-42'>#</a>
+      </div>
+      <h3><span id="solicitud-de-ítem" href="solicitud-de-ítem"> solicitud de ítem </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">solicitud_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-43'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-43'>#</a>
+      </div>
+      <p>Realiza la solicitud del usuario para la modificacion de un item.
+<strong>:param request:</strong> Recibe un request por parte del usuario que realiza la solicitud.<br/>
+<strong>:param pk:</strong> Recibe el pk de la instancia de item que el usuario desea modificar.<br/>
+<strong>:return:</strong> Retorna al template de lista de items.<br/></p>
+<p>Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">form</span> <span class="o">=</span> <span class="n">FormularioSolicitud</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-44'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-44'>#</a>
+      </div>
+      <p>&lsquo;solicitud_en_proceso&rsquo;: Solicitud.objects.filter(item=get_object_or_404(Item, pk=pk)).count()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="s1">&#39;solicitud_en_proceso&#39;</span><span class="p">:</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">))</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+                <span class="n">en_proceso</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">))</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">en_proceso</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/solicitud.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">solicitud</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">solicitud</span><span class="o">.</span><span class="n">proyecto</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span>
+            <span class="n">solicitud</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">miembro_comite</span> <span class="ow">in</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">solicitud</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">miembros</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="se">\n\n</span><span class="s1">Se realizó una petición de aprobación para un item con el siguiente mensaje personalizado:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n\n</span><span class="s1">SGCAS&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">miembro_comite</span><span class="p">,</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">descripcion</span><span class="p">)</span>
+                <span class="n">send_notification</span><span class="p">(</span><span class="n">miembro_comite</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">solicitud</span><span class="o">.</span><span class="n">asunto</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-45'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-45'>#</a>
+      </div>
+      <p>@permission_required(&lsquo;comite.crear_solicitud&rsquo;, raise_exception=True)
+=== socilitud de linea base ===
+def solicitud_linea_base(request, pk):</p>
+<p>Realiza la solicitud del usuario para la rotura de la linea base.
+<strong>:param request:</strong> Recibe un request por parte del usuario que realiza la solicitud.<br/>
+<strong>:param pk:</strong> Recibe el pk de la instancia de item donde se encuentra la linea base que se desea romper.<br/>
+<strong>:return:</strong> Retorna al template de lista de items.<br/></p>
+<p>Tipo solicitud: 0 para aprobacion de item, 1 para rotura de fase</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-46'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-46'>#</a>
+      </div>
+      <pre><code>form = FormularioSolicitud(request.POST or None, pk=pk, request=request)
+if request.method == 'GET':
+    context = {
+        'form':form,
+        'solicitud_en_proceso': Solicitud.objects.filter(linea_base=LineaBase.objects.get(pk=pk)).count()
+    }
+    return render(request, 'comite/solicitud.html', context)
+else:
+    if form.is_valid():
+        solicitud = form.save(commit=False)
+        solicitud.proyecto = get_object_or_404(LineaBase, pk=pk).fase.proyecto
+        solicitud.save()
+        for miembro_comite in Comite.objects.get(proyecto=solicitud.linea_base.fase.proyecto).miembros.all():
+            message='{}:Se realizó una petición de aprobación para una línea base con el siguiente mensaje personalizado:\n{}\n\nSGCAS'.format(miembro_comite, solicitud.descripcion)
+            send_notification(miembro_comite.email, solicitud.asunto, message)
+    return redirect('linea_base:linea_lista', id_fase=LineaBase.objects.get(pk=pk).fase.pk)
+</code></pre>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-47'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-47'>#</a>
       </div>
       <h1>Envia el correo</h1>
 <p>=== enviar correo ===</p>
@@ -730,10 +859,10 @@ else:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-41'>
+  <div class='section' id='section-48'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-41'>#</a>
+        <a class='octothorpe' href='#section-48'>#</a>
       </div>
       <p>Realiza el envio de correo electronico.
 <strong>:param to:</strong> Destinatario del correo.<br/>
@@ -751,10 +880,147 @@ else:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-42'>
+  <div class='section' id='section-49'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-42'>#</a>
+        <a class='octothorpe' href='#section-49'>#</a>
+      </div>
+      <h3><span id="reporte-pdf-rango" href="reporte-pdf-rango"> reporte PDF rango </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">reporte_solicitud_rango</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_proyecto</span><span class="p">,</span> <span class="n">id_comite</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-50'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-50'>#</a>
+      </div>
+      <p>Permite establecer un periodo de tiempo definido por el usuario para contar la cantidad de reportes.<br/>
+   <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
+   <strong>:param id_proyecto:</strong>Recibe el id del proyecto al que están asociadadas las solicitudes.<br/>
+   <strong>:param id_comite:</strong>Recibe el id del comite que se desea emitir el reporte.<br/>
+   <strong>:return:</strong> renderiza a un template donde se elige el periodo de tiempo.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;comite/reporte_rango.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id_proyecto&#39;</span><span class="p">:</span><span class="n">id_proyecto</span><span class="p">,</span><span class="s1">&#39;id_comite&#39;</span><span class="p">:</span> <span class="n">id_comite</span> <span class="p">,</span>
+                                                                  <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">),</span>
+                                                                  <span class="s1">&#39;comite&#39;</span><span class="p">:</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">id_comite</span><span class="p">)})</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-51'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-51'>#</a>
+      </div>
+      <h3><span id="reporte-pdf" href="reporte-pdf"> reporte PDF </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">render_pdf_view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">id_proyecto</span><span class="p">,</span> <span class="n">id_comite</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-52'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-52'>#</a>
+      </div>
+      <p>Permite generar un reporte en pdf cantidad de solicitudes de cambio en un periodo de tiempo<br/>
+   <strong>:param request:</strong>Recibe un request por parte de un usuario.<br/>
+   <strong>:param id_proyecto:</strong>Recibe el id del proyecto al que están asociadadas las solicitudes.<br/>
+   <strong>:param id_comite:</strong>Recibe el id del comite que se desea emitir el reporte.<br/>
+   <strong>:return:</strong> La vista preliminar de la cantidad de solicitudes de cambio en un periodo de tiempo en formato de pdf para descargar el reporte.<br/></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">template_path</span> <span class="o">=</span> <span class="s1">&#39;comite/reporte.html&#39;</span>
+    <span class="n">fecha_inicio</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fecha_inicio&#39;</span><span class="p">)</span>
+    <span class="n">fecha_fin</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fecha_fin&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fecha_inicio</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fecha_fin</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">query_solicitud</span> <span class="o">=</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">fecha_fin</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">modified_date</span> <span class="o">=</span> <span class="n">date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">query_solicitud</span> <span class="o">=</span> <span class="n">Solicitud</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">fecha_solicitada__range</span><span class="o">=</span><span class="p">[</span><span class="n">fecha_inicio</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">modified_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)]))</span>
+    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">Proyecto</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">id_proyecto</span><span class="p">)</span>
+    <span class="n">comite</span> <span class="o">=</span> <span class="n">Comite</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">id_comite</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;solicitudes&#39;</span><span class="p">:</span> <span class="n">query_solicitud</span><span class="p">,</span> <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">,</span> <span class="s1">&#39;comite&#39;</span><span class="p">:</span> <span class="n">comite</span><span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-53'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-53'>#</a>
+      </div>
+      <p>context = {&lsquo;myvar&rsquo;: &lsquo;this is your template context&rsquo;}
+Create a Django response object, and specify content_type as pdf</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;application/pdf&#39;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-54'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-54'>#</a>
+      </div>
+      <p>if download :
+response[&lsquo;Content-Disposition&rsquo;] = &lsquo;attachment; filename=&rdquo;report.pdf&rdquo;&rsquo;
+if view_pdf:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;filename=&quot;report.pdf&quot;&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-55'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-55'>#</a>
+      </div>
+      <p>find the template and render it.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">template</span> <span class="o">=</span> <span class="n">get_template</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-56'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-56'>#</a>
+      </div>
+      <p>create a pdf</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">pisa_status</span> <span class="o">=</span> <span class="n">pisa</span><span class="o">.</span><span class="n">CreatePDF</span><span class="p">(</span>
+        <span class="n">html</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="n">response</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-57'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-57'>#</a>
+      </div>
+      <p>if error then show some funy view</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">pisa_status</span><span class="o">.</span><span class="n">err</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s1">&#39;We had some errors &lt;pre&gt;&#39;</span> <span class="o">+</span> <span class="n">html</span> <span class="o">+</span> <span class="s1">&#39;&lt;/pre&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-58'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-58'>#</a>
       </div>
       <p><strong>Atras</strong> :  <a href="urls.html">urls.py</a></p>
     </div>
@@ -763,10 +1029,10 @@ else:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-43'>
+  <div class='section' id='section-59'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-43'>#</a>
+        <a class='octothorpe' href='#section-59'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -782,10 +1048,10 @@ else:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-44'>
+  <div class='section' id='section-60'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-44'>#</a>
+        <a class='octothorpe' href='#section-60'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

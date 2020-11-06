@@ -14,7 +14,7 @@ then
 	python3 produccion.py
 	cd /home/victor
 	# Baja el TAG IT5 o especificamente un tag  
-	git clone -b IT5 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
+	git clone -b IT6 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
 	cd /home/victor/Projects/SGCAS/scripts
 	python3 produccion.py
 else
@@ -23,7 +23,7 @@ else
 	echo -e "\n\n=== Accediendo a postgreSQL y creando la base de datos de produccion ==="
 	python3 produccion.py
 	cd /home/victor
-	git clone -b IT5 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
+	git clone -b IT6 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
 fi
 
 echo -e "\n=== CLONACIÓN CULMINADO SATISFACTORIAMENTE!!! ==="

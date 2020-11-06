@@ -24,7 +24,7 @@
 
 <span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span>
 <span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
-<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span><span class="p">,</span> <span class="n">ItemImportado</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -161,6 +161,10 @@ un item.<br/>
             <span class="n">ti_queryset</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">fase</span> <span class="ow">in</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">):</span> <span class="c1">#Queryset de los tipos de item del proyecto</span>
                 <span class="n">ti_queryset</span> <span class="o">|=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">importado</span> <span class="ow">in</span> <span class="n">ItemImportado</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto_destino</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">):</span> <span class="c1"># queryset que trae a la plantilla todos los items importados</span>
+                <span class="n">ti_queryset</span> <span class="o">|=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">importado</span><span class="o">.</span><span class="n">id_item</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;tipo_item&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">ti_queryset</span></pre></div>
     </div>
   </div>
@@ -185,7 +189,7 @@ un item.<br/>
             <span class="s1">&#39;tipo_item&#39;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="s1">&#39;Importar tipo de item&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="s1">&#39;Plantilla de Tipo de ítem:&#39;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">RadioSelect</span><span class="p">(),</span>
@@ -379,14 +383,11 @@ un item.<br/>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-19'>#</a>
       </div>
-      <p>No se permite la modificacion del nombre del item si su estado no es desarrollo</p>
+      <p>No se permite la modificacion del nombre del item si su estado no es desarrollo.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>            <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Desarrollo&#39;</span><span class="p">:</span>
-                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span></pre></div>
+                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -394,6 +395,22 @@ un item.<br/>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>No se permite la modificacion del nombre del item si esta en revision.    </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Revision&#39;</span><span class="p">:</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
       </div>
       
     </div>
@@ -403,10 +420,10 @@ un item.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-22'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <h3><span id="clase-para-abstraer-en-un-formulario-el-cambio-de-estado-de-un-item" href="clase-para-abstraer-en-un-formulario-el-cambio-de-estado-de-un-item"> Clase para abstraer en un formulario el cambio de estado de un item</span></h3>
     </div>
@@ -415,10 +432,10 @@ un item.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <p>Constructor que se encarga de filtrar solo los campos disponibles para cambiar los estados un item<br/>
 <strong>:param args:</strong><br/>
@@ -429,10 +446,10 @@ un item.<br/>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-23'>
+  <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
+        <a class='octothorpe' href='#section-24'>#</a>
       </div>
       
     </div>
@@ -444,30 +461,20 @@ un item.<br/>
                 <span class="p">(</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">,</span> <span class="s1">&#39;Desarrollo&#39;</span><span class="p">),</span>
                 <span class="p">(</span><span class="s1">&#39;Aprobado&#39;</span><span class="p">,</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">),</span>
             <span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;estado&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">item_estado</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-24'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-24'>#</a>
-      </div>
-      <p>if kwargs[&lsquo;instance&rsquo;].estado == &lsquo;Revision&rsquo;:
-    item_estado = [
-        (&lsquo;Revision&rsquo;, &lsquo;Revision&rsquo;),
-        (&lsquo;Aprobado&rsquo;, &lsquo;Aprobado&rsquo;),
-    ]
-    self.fields[&lsquo;estado&rsquo;].choices = item_estado
-if kwargs[&lsquo;instance&rsquo;].estado == &lsquo;Aprobado&rsquo;:
-    item_estado = [
-        (&lsquo;Aprobado&rsquo;, &lsquo;Aprobado&rsquo;),
-        (&lsquo;Revision&rsquo;, &lsquo;Revision&rsquo;),
-    ]
-    self.fields[&lsquo;estado&rsquo;].choices = item_estado</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields_not_required</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;estado&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">item_estado</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Revision&#39;</span><span class="p">:</span>
+            <span class="n">item_estado</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s1">&#39;Revision&#39;</span><span class="p">,</span> <span class="s1">&#39;Revision&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;Aprobado&#39;</span><span class="p">,</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">),</span>
+             <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;estado&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">item_estado</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estado</span> <span class="o">==</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">:</span>
+            <span class="n">item_estado</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s1">&#39;Desarrollo&#39;</span><span class="p">,</span> <span class="s1">&#39;Desarrollo&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;Aprobado&#39;</span><span class="p">,</span> <span class="s1">&#39;Aprobado&#39;</span><span class="p">),</span>
+            <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;estado&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">item_estado</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields_not_required</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span></pre></div>
     </div>

@@ -26,7 +26,7 @@
 
 <span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">permission_required</span>
 <span class="kn">from</span> <span class="nn">apps.proyecto.views</span> <span class="kn">import</span> <span class="n">manage_projects</span><span class="p">,</span> <span class="n">CreateProject</span><span class="p">,</span> <span class="n">ListProject</span><span class="p">,</span> <span class="n">UpdateProject</span><span class="p">,</span> <span class="n">DeleteProject</span><span class="p">,</span> \
-    <span class="n">success</span><span class="p">,</span> <span class="n">DetailProject</span><span class="p">,</span> <span class="n">change_state</span><span class="p">,</span> <span class="n">search</span>
+    <span class="n">success</span><span class="p">,</span> <span class="n">DetailProject</span><span class="p">,</span> <span class="n">change_state</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">render_pdf_view</span>
 
 <span class="n">app_name</span> <span class="o">=</span> <span class="s1">&#39;proyecto&#39;</span></pre></div>
     </div>
@@ -50,6 +50,7 @@
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^detalles-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">permission_required</span><span class="p">(</span><span class="s1">&#39;proyecto.detalles_proyecto&#39;</span><span class="p">,</span> <span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">DetailProject</span><span class="o">.</span><span class="n">as_view</span><span class="p">())),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;detail&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^operacion-exitosa/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">success</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;success&#39;</span><span class="p">),</span>
     <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^transicion-proyecto/(?P&lt;pk&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">change_state</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;change&#39;</span><span class="p">),</span>
+<span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^generar-reporte/(?P&lt;id_proyecto&gt;\d+)/$&#39;</span><span class="p">,</span> <span class="n">login_required</span><span class="p">(</span><span class="n">render_pdf_view</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;reporte_items&#39;</span><span class="p">),</span>
 <span class="p">]</span></pre></div>
     </div>
   </div>

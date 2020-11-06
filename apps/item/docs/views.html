@@ -213,12 +213,14 @@ Actualmente se despliega en las plantillas 19 vistas:
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">ItemImportarTipoItemForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">proyecto</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
         <span class="n">item</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:set_atributos&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_importar_tipo_item.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
                                                                  <span class="s1">&#39;tipo_item&#39;</span><span class="p">:</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span>
-                                                                 <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="p">})</span></pre></div>
+                                                                 <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="p">,</span>
+                                                                 <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">proyecto</span><span class="p">})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -453,7 +455,7 @@ Actualmente se despliega en las plantillas 19 vistas:
         <span class="n">item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;item:item_lista&#39;</span><span class="p">,</span> <span class="n">id_fase</span><span class="o">=</span><span class="n">id_fase</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -625,7 +627,7 @@ Actualmente se despliega en las plantillas 19 vistas:
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_modificar.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">,{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -862,7 +864,7 @@ Actualmente se despliega en las plantillas 19 vistas:
 
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_versiones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">,{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -1014,9 +1016,10 @@ Actualmente se despliega en las plantillas 19 vistas:
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span>
                           <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span> <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">),</span>
                            <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_cambiar_estado.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span> 
+                                                                <span class="s1">&#39;fase&#39;</span><span class="p">:</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">),</span><span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">})</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">,{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -1079,7 +1082,7 @@ Actualmente se despliega en las plantillas 19 vistas:
             <span class="p">}</span>
             <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_fases_relaciones.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">)</span></pre></div>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="s1">&#39;item/validate_en_lb_cerrada.html&#39;</span><span class="p">,{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span><span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)})</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -1386,7 +1389,22 @@ Actualmente se despliega en las plantillas 19 vistas:
 <strong>:return:</strong> El impacto de un item en el proyecto.<br/></p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">explore</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">impacto</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;ver_trazabilidad&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">trazabilidad</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Item</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span> <span class="o">=</span> <span class="n">explore_relations</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">nodes</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">links</span> <span class="o">=</span> <span class="p">[])</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">create_graph_trazabilidad</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
+    <span class="n">draw_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;image_name&#39;</span><span class="p">:</span> <span class="s1">&#39;item_trazabilidad.png&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+        <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">),</span>
+        <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_trazabilidad.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">explore_relations</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -1398,12 +1416,19 @@ Actualmente se despliega en las plantillas 19 vistas:
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">impacto</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">costo</span>
+      <div class="highlight"><pre>    <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">padre</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">padres</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">padre</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">padre</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">explore_relations</span><span class="p">(</span><span class="n">padre</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">hijo</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">hijos</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-        <span class="k">return</span> <span class="n">explore</span><span class="p">(</span><span class="n">hijo</span><span class="p">,</span> <span class="n">impacto</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hijo</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">hijo</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">explore_relations</span><span class="p">(</span><span class="n">hijo</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">sucesor</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">sucesores</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-        <span class="k">return</span> <span class="n">explore</span><span class="p">(</span><span class="n">sucesor</span><span class="p">,</span> <span class="n">impacto</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">impacto</span></pre></div>
+        <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">sucesor</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">explore_relations</span><span class="p">(</span><span class="n">sucesor</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">links</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -1412,63 +1437,6 @@ Actualmente se despliega en las plantillas 19 vistas:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-75'>#</a>
       </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="nd">@requiere_permiso</span><span class="p">(</span><span class="s1">&#39;ver_trazabilidad&#39;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-76'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-76'>#</a>
-      </div>
-      <h3><span id="trazabilidad-ítem" href="trazabilidad-ítem"> trazabilidad ítem </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">trazabilidad_item</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-77'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-77'>#</a>
-      </div>
-      <p>Permite obtener la trazabilidad de un item.<br/>
-<strong>:param request:</strong> Recibe un request por parte del usuario.<br/>
-<strong>:param pk:</strong> Recibe el pk de una instancia de item sobre el cual se realizara la trazabilidad.<br/>
-<strong>:return:</strong> La trazabilidad de un ítem (Si posee) en formato .png renderizado en el template.<br/></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">target</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="n">fase</span> <span class="o">=</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">proyecto</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-    <span class="n">source</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">earliest</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
-    <span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">item_has_path</span><span class="p">(</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="n">G</span> <span class="o">=</span> <span class="n">create_graph_trazabilidad</span><span class="p">(</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
-        <span class="n">draw_graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;image_name&#39;</span><span class="p">:</span> <span class="s1">&#39;item_trazabilidad.png&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
-            <span class="s1">&#39;fase&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">),</span>
-            <span class="s1">&#39;proyecto&#39;</span><span class="p">:</span> <span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">fase</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">proyecto</span><span class="p">,</span>
-            <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">nombre</span>
-        <span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;item_name&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">nombre</span>
-        <span class="p">}</span>
-    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;item/item_trazabilidad.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-78'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-78'>#</a>
-      </div>
       <p><strong>Atras</strong> :  <a href="urls.html">urls.py</a></p>
     </div>
     <div class='code'>
@@ -1476,10 +1444,10 @@ Actualmente se despliega en las plantillas 19 vistas:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-79'>
+  <div class='section' id='section-76'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-79'>#</a>
+        <a class='octothorpe' href='#section-76'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación item  === <br/>
 1.admin   :  <a href="admin.html">admin.py</a><br/>
@@ -1495,10 +1463,10 @@ Actualmente se despliega en las plantillas 19 vistas:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-80'>
+  <div class='section' id='section-77'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-80'>#</a>
+        <a class='octothorpe' href='#section-77'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>

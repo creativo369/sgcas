@@ -21,7 +21,9 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
-<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span></pre></div>
+<span class="kn">from</span> <span class="nn">apps.tipo_item.models</span> <span class="kn">import</span> <span class="n">TipoItem</span><span class="p">,</span> <span class="n">ItemImportado</span>
+<span class="kn">from</span> <span class="nn">apps.item.models</span> <span class="kn">import</span> <span class="n">Item</span>
+<span class="kn">from</span> <span class="nn">apps.fase.models</span> <span class="kn">import</span> <span class="n">Fase</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -101,8 +103,20 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_ti</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_importar_ti</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">importado</span> <span class="o">=</span> <span class="n">ItemImportado</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">id_item</span><span class="o">=</span><span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion-tipo1&#39;</span><span class="p">,</span>
+                                                 <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Boolean&#39;</span><span class="p">,</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">)))</span>
+
+        <span class="n">tipo_inicial</span> <span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        
+        <span class="n">tipo_inicial</span> <span class="o">=</span> <span class="n">importado</span><span class="o">.</span><span class="n">id_item</span>
+
+        <span class="n">tipo_inicial</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">tipo_inicial</span><span class="p">,</span> <span class="n">importado</span><span class="o">.</span><span class="n">id_item</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -114,8 +128,22 @@
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></pre></div>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_tipo_item_por_fase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;tipo&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">atributos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Boolean&#39;</span><span class="p">,</span> <span class="s1">&#39;Boolean&#39;</span><span class="p">))</span>
+
+        <span class="n">fase1</span><span class="o">=</span><span class="n">Fase</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;fase1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;descripcion fase1&#39;</span><span class="p">)</span>    
+
+        <span class="k">for</span> <span class="n">plantilla</span> <span class="ow">in</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">plantilla</span><span class="o">.</span><span class="n">fase</span> <span class="o">=</span> <span class="n">fase1</span> 
+            <span class="n">plantilla</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">cantidad_plantilla_fase1</span><span class="o">=</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">fase</span><span class="o">=</span><span class="n">fase1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">cantidad_plantilla_fase1</span><span class="p">,</span> <span class="n">TipoItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error de comparacion: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -123,6 +151,32 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_eliminar_ti</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tipo_item</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p>=== Indice de la documentación de la Aplicación Comité  === <br/>
 1.apps    :  <a href="apps.html">apps.py</a><br/>
@@ -137,10 +191,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Regresar al menu principal : <a href="../../docs-index/index.html">Menú Principal</a></p>
     </div>
