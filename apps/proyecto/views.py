@@ -257,8 +257,9 @@ def render_pdf_view(request, id_proyecto):
     template_path = 'proyecto/reporte.html'
     item_queryset = Item.objects.none()
     for fase in Fase.objects.filter(proyecto=id_proyecto):  # Queryset de los item del proyecto
-        item_queryset |= Item.objects.filter(fase=fase).filter(estado='Desarrollo')
+        item_queryset |= Item.objects.filter(fase=fase.pk).exclude(estado='Aprobado')
 
+    print(item_queryset)
     proyecto = Proyecto.objects.get(pk=id_proyecto)
     context = {'items': item_queryset, 'proyecto': proyecto, }
     # context = {'myvar': 'this is your template context'}

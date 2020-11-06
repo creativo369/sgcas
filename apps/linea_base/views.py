@@ -23,7 +23,7 @@ Actualmente se despliega en las plantillas 7 vistas:
 """
 
 
-@requiere_permiso('crear_linea_base')
+# @requiere_permiso('crear_linea_base')
 # === crear línea base ===
 def crear_linea_base(request, id_fase):
     """
@@ -70,7 +70,7 @@ def cant_item_libres(fase):
     return items_en_lb-Item.objects.filter(fase=fase).count()
 
 
-@requiere_permiso('agregar_item_linea_base')
+# @requiere_permiso('agregar_item_linea_base')
 # === agregar ítems lb ===
 def agregar_items_lb(request, pk, id_fase):
     """
@@ -92,7 +92,7 @@ def agregar_items_lb(request, pk, id_fase):
                                                                        'items_aprobados': items_aprobados})
 
 
-@requiere_permiso('editar_linea_base')
+# @requiere_permiso('editar_linea_base')
 # === editar lb ===
 def editar_lb(request, pk, id_fase):
     """
@@ -111,7 +111,7 @@ def editar_lb(request, pk, id_fase):
         return render(request, 'linea_base/linea_crear.html', {'form': form})
 
 
-@requiere_permiso('estado_linea_base')
+# @requiere_permiso('estado_linea_base')
 # === estado lb ===
 def estado_lb(request, pk, id_fase):
     """
@@ -129,7 +129,7 @@ def estado_lb(request, pk, id_fase):
     return render(request, 'linea_base/linea_base_estado.html', {'form': form})
 
 
-@requiere_permiso('listar_linea_base')
+# @requiere_permiso('listar_linea_base')
 # === lista de líneas base ===
 def lista_linea_base(request, id_fase):
     """
@@ -148,7 +148,7 @@ def lista_linea_base(request, id_fase):
                    'fase': Fase.objects.get(id=id_fase),'proyecto': Fase.objects.get(id=id_fase).proyecto, 'page_obj': page_obj})
 
 
-@requiere_permiso('listar_linea_base')
+# @requiere_permiso('listar_linea_base')
 # === search ===
 def search(request, id_fase):
     """
@@ -183,7 +183,7 @@ def search(request, id_fase):
     return render(request, template, context)
 
 
-@requiere_permiso('listar_item_linea_base')
+# @requiere_permiso('listar_item_linea_base')
 # === lista ítems lb ===
 def lista_items_linea_base(request, pk, id_fase):
     """
@@ -212,7 +212,7 @@ def lista_items_linea_base(request, pk, id_fase):
     return render(request, 'linea_base/linea_items_lista.html',context)
 
 
-@requiere_permiso('eliminar_linea_base')
+# @requiere_permiso('eliminar_linea_base')
 def eliminar_lb(request, pk, id_fase):
     """
     Permite la eliminacion de una instancia de linea base.<br/>
