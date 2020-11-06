@@ -5,7 +5,8 @@
 
 {% block content %}
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=comite.proyecto.pk %}"></a>Proyecto {{ comite.proyecto }}</li>
+      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=comite.proyecto.pk %}">
+      Proyecto {{ comite.proyecto }}</a></li>
       <li class="breadcrumb-item active">Comité {{ comite }}</li>
     </ol>
     <table class="table table-hover">

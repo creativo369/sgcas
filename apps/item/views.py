@@ -535,7 +535,8 @@ def item_cambiar_estado(request, pk):
             return render(request, 'item/item_cambiar_estado.html',
                           {'form': form, 'item': item, 'fase': Fase.objects.get(id=item.fase.pk),
                            'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
-        return render(request, 'item/item_cambiar_estado.html', {'item': item})
+        return render(request, 'item/item_cambiar_estado.html', {'item': item, 
+                                                                'fase':Fase.objects.get(id=item.fase.pk),'proyecto': Fase.objects.get(id=item.fase.pk).proyecto})
     else:
         return render(request,'item/validate_en_lb_cerrada.html',{'item':Item.objects.get(pk=pk)}) 
 

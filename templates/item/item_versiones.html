@@ -3,8 +3,9 @@
 
 {% block content %}
     <ol class="breadcrumb">
-      <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>  
-      <li class="breadcrumb-item">Fase {{ fase }} </li>
+      <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=proyecto.pk %}">
+      Proyecto {{ proyecto }}</a></li>  
+      <li class="breadcrumb-item"><a href="#" onclick="window.history.back()">Fase {{ fase }}</a></li>
       <li class="breadcrumb-item active">Item {{ item }} </li>   
     </ol>
 

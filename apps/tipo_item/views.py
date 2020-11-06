@@ -159,9 +159,10 @@ def listar_importar_item(request, id_fase):
         to_be_deleted_2.append(ti_import.proyecto_destino.pk)
         to_be_deleted.append(ti_import.id_item)
 
-    # paginator = Paginator(tipo_item, 3)
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
+    paginator = Paginator(query_tipo_item, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     proyecto = Fase.objects.get(id=id_fase).proyecto
     fase = Fase.objects.get(id=id_fase)
     return render(request, 'tipo_item/listar_importacion.html', {'query_tipo_item': query_tipo_item,
@@ -171,7 +172,8 @@ def listar_importar_item(request, id_fase):
                                                                  'to_be_deleted_2': to_be_deleted_2,
                                                                  'proyecto_actual_pk': proyecto_actual_pk,
                                                                  'proyecto': proyecto,
-                                                                 'fase': fase})
+                                                                 'fase': fase,
+                                                                 'page_obj': page_obj})
 
 
 def tipo_item_importar(request, id_proyecto, id_item, id_fase):

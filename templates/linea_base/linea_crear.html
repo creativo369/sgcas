@@ -3,7 +3,7 @@
 
 {% block content %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">Proyecto {{ proyecto }}</li>     
+        <li class="breadcrumb-item"><a href="{% url 'proyecto:detail' pk=proyecto.pk %}">Proyecto {{ proyecto }}</a></li>     
       <li class="breadcrumb-item active">Fase {{ fase }} </li>
     </ol>
       {% if error or fase.proyecto.estado == "Pendiente"  %}
