@@ -7,22 +7,22 @@ echo -e "\n=== Accediendo a clonar el proyecto del repositorio remoto Github ===
 echo -e "\n=== Creando directorio del proyecto en maquina local... ==="
 sleep 5
 
-if [ -d "/home/victor/SGCAS" ]
+if [ -d "/home/guillermo/SGCAS" ]
 then
 	rm -rf SGCAS
-	cd /home/victor/Projects/SGCAS/scripts
+	cd /home/guillermo/Escritorio/SGCAS/scripts
 	python3 produccion.py
-	cd /home/victor
+	cd /home/guillermo
 	# Baja el TAG IT5 o especificamente un tag  
-	git clone -b IT5 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
-	cd /home/victor/Projects/SGCAS/scripts
+	git clone -b IT6 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
+	cd /home/guillermo/Escritorio/SGCAS/scripts
 	python3 produccion.py
 else
    	# Baja el TAG IT5 o especificamente un tag  
-	cd /home/victor/Projects/SGCAS/scripts
+	cd /home/guillermo/Escritorio/SGCAS/scripts
 	echo -e "\n\n=== Accediendo a postgreSQL y creando la base de datos de produccion ==="
 	python3 produccion.py
-	cd /home/victor
+	cd /home/guillermo
 	git clone -b IT5 --single-branch git://github.com/geekpy03/IS2-Equipo07.git SGCAS
 fi
 
@@ -39,10 +39,10 @@ else
 	echo -e "\nError! no se ha podido completar la acción!!!"
 fi
 
-cd /home/victor/SGCAS/deployment
+cd /home/guillermo/SGCAS/deployment
 mkdir media
 
-cd /home/victor/SGCAS/apps
+cd /home/guillermo/SGCAS/apps
 
 # # Creando las carpetas para " makemigrations y migrate"
 mkdir comite/migrations
@@ -62,7 +62,7 @@ touch tipo_item/migrations/__init__.py
 mkdir usuario/migrations
 touch usuario/migrations/__init__.py
 
-cd /home/victor/SGCAS/venv
+cd /home/guillermo/SGCAS/venv
 
 source ./bin/activate
 PS1="(`basename \"$VIRTUAL_ENV\"`)\e[1;34m:/\W\033[00m$ "
@@ -70,7 +70,7 @@ sleep 2
 
 echo -e "\n=== Entorno virtual activado ==="
 
-cd /home/victor/SGCAS/
+cd /home/guillermo/SGCAS/
 echo -e "\n=== Preparando instalación de dependencias...porfavor aguarde! ==="
 sleep 6
 pip install -r requirements.txt
@@ -78,7 +78,7 @@ pip install -r requirements.txt
 echo -e "\n=== Realizando las migraciones a la base de datos...Aguarde un momento! ==="
 sleep 6
 # # migrate
-cd /home/victor/SGCAS/
+cd /home/guillermo/SGCAS/
 python manage.py makemigrations
 python manage.py migrate
 
@@ -90,32 +90,32 @@ python manage.py loaddata fixtures/db.json
 
 cd /etc/apache2/sites-available
 sudo rm 000-default.conf
-cd /home/victor/Projects/SGCAS/scripts
+cd /home/guillermo/Projects/SGCAS/scripts
 sudo cp 000-default.conf /etc/apache2/sites-available
 sudo sudo service apache2 start
 sudo sudo service apache2 restart
 echo -e "\n=== Generando documentación ==="
-cd /home/victor/SGCAS/apps/comite
+cd /home/guillermo/SGCAS/apps/comite
 pycco *.py -p
-cd /home/victor/SGCAS/apps/fase
+cd /home/guillermo/SGCAS/apps/fase
 pycco *.py -p
-cd /home/victor/SGCAS/apps/item
+cd /home/guillermo/SGCAS/apps/item
 pycco *.py -p
-cd /home/victor/SGCAS/apps/linea_base
+cd /home/guillermo/SGCAS/apps/linea_base
 pycco *.py -p
-cd /home/victor/SGCAS/apps/mensajes
+cd /home/guillermo/SGCAS/apps/mensajes
 pycco *.py -p
-cd /home/victor/SGCAS/apps/proyecto
+cd /home/guillermo/SGCAS/apps/proyecto
 pycco *.py -p
-cd /home/victor/SGCAS/apps/rol
+cd /home/guillermo/SGCAS/apps/rol
 pycco *.py -p
-cd /home/victor/SGCAS/apps/tipo_item
+cd /home/guillermo/SGCAS/apps/tipo_item
 pycco *.py -p
-cd /home/victor/SGCAS/apps/usuario
+cd /home/guillermo/SGCAS/apps/usuario
 pycco *.py -p
 
 echo -e "\n=== Documentación Generada! Abriendo en el navegador ==="
-cd /home/victor/Projects/SGCAS/scripts
+cd /home/guillermo/Escritorio/SGCAS/scripts
 python open_doc.py
 
 echo -e "\n\n=== Felicidades!!! El proyecto ya ha sido desplegado en producción de Apache. ==="
@@ -123,4 +123,4 @@ echo -e "\n\n=== Abriendo el navegador en la siguiente dirección : localhost ==
 sleep 3
 xdg-open http://localhost
 
-## RUTA PARA EJECUTAR EL SCRIPT: bash /home/victor/Projects/SGCAS/scripts/script-produccion
+## RUTA PARA EJECUTAR EL SCRIPT: bash /home/guillermo/Escritorio/SGCAS/scripts/script-produccion

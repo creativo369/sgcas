@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 echo -e "\n\n=== SCRIPT DE TESTS UNITARIOS DEL PROYECTO ==="
-cd /home/victor/SGCAS/venv
+cd /home/guillermo/SGCAS/venv
 
 source ./bin/activate
 PS1="(`basename \"$VIRTUAL_ENV\"`)\e[1;34m:/\W\033[00m$ "
@@ -20,33 +20,33 @@ read VAR
 
 case $VAR in 
 	1)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test ;;
 	2)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/comite ;;
 	3)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/fase ;;
 	4)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/item;;
 	5)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/linea_base ;;
 	6)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/proyecto ;;
 	7)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/rol ;;
 	8)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/tipo_item ;;
 	9)
-		cd /home/victor/SGCAS/
+		cd /home/guillermo/SGCAS/
 		python manage.py test apps/usuario ;;
 esac
 
 
-## RUTA PARA EJECUTAR EL SCRIPT: bash /home/victor/Projects/SGCAS/scripts/script-tests
+## RUTA PARA EJECUTAR EL SCRIPT: bash /home/guillermo/Escritorio/SGCAS/scripts/script-tests
