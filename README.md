@@ -1,6 +1,4 @@
 # Sistema de Gestión de Configuración de artefactos de Software
-[TOC]
-
 
 
 #### Descripción
@@ -77,41 +75,34 @@ Proyecto desarrollado en Python con el Framework de Django que implementa un sis
 
 #### ¿Cómo utilizar? 
 
-**Crear base de datos, tablas y relaciones**
-
-Crear una base de datos  con el nombre de `desarrollo`
+**Crear la base de datos de desarrollo con el nombre de** `desarrollo`
 
 **Construir el proyecto**
 
-En PyCharm click en get from VCS  y insertar : https://github.com/geekpy03/sgcas.git
+ Abrir PyCharm click en get from VCS y insertar : https://github.com/geekpy03/sgcas.git
 
 **Ir en la siguiente ruta:  ~/sgcas/deployment** y crear una carpeta llamada media  :  `mkdir media`
 
-**Luego a la ruta**  ~/sgcas/apps **crear las carpetas migrations y archivo __init_**_.py
+**Luego a la ruta**  ~/sgcas/apps 
 
-mkdir comite/migrations
-touch comite/migrations/**__init_**_.py
-mkdir fase/migrations
-touch fase/migrations/__init__.py
-mkdir item/migrations
-touch item/migrations/__init__.py
-mkdir linea_base/migrations
-touch linea_base/migrations/__init__.py
-mkdir proyecto/migrations
-touch proyecto/migrations/__init__.py
-mkdir rol/migrations
-touch rol/migrations/__init__.py
-mkdir tipo_item/migrations
-touch tipo_item/migrations/__init__.py
-mkdir usuario/migrations
-touch usuario/migrations/__init__.py
+| Crear las carpetas migrations y archivo __init_**_.py        |
+| ------------------------------------------------------------ |
+| mkdir comite/migrations luego touch comite/migrations/\__init__.py |
+| mkdir fase/migrations  luego  touch fase/migrations/\__init__.py |
+| mkdir item/migrations  luego touch item/migrations/\__init__.py |
+| mkdir linea_base/migrations luego touch linea_base/migrations/\__init__.py |
+| mkdir proyecto/migrations luego touch proyecto/migrations/\__init__.py |
+| mkdir rol/migrations luego touch rol/migrations/\__init__.py |
+| mkdir tipo_item/migrations  luego touch tipo_item/migrations/\__init__.py |
+| mkdir usuario/migrations luego touch usuario/migrations/\__init__.py |
 
 **Crear un entorno virtual  :** PyCharm ya lo crea por defecto.
-Levantar un entorno virtual : PyCharm ya lo levanta por defecto.
+
+**Levantar un entorno virtual :** PyCharm ya lo levanta por defecto.
+
 **Iniciar el entorno virtual :** PyCharm ya lo inicia por defecto.
 
-
-Instalar las dependencias `pip install -r requirements.txt`
+**Instalar las dependencias** `pip install -r requirements.txt`
 
 Estando en la ruta ~/sgcas, realizar las migraciones en la base de datos 
 
@@ -120,9 +111,10 @@ Estando en la ruta ~/sgcas, realizar las migraciones en la base de datos
 `python manage.py migrate`
 
 
-Ya por defecto el proyecto crea un superusuario de la pagina de administración de django con los siguientes datos: 
+Ya por defecto el proyecto crea un superUsuario de la pagina de administración de django con los siguientes datos: 
 
 **usuario		:** AdminDjango
+
 **password	:** qwertydjango 
 
 **El proyecto se levantara en el servidor de desarrollo :** http://127.0.0.1:8000/
