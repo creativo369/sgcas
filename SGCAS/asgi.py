@@ -13,7 +13,7 @@ from django.core.asgi import get_asgi_application
 
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SGCAS.settings') # colocar .desarrollo  o .produccion
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SGCAS.settings')
 
 
 application = get_asgi_application()
