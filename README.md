@@ -137,12 +137,10 @@ Ir al apartado **social application  / agregar nuevo**  y colocar los siguientes
 
 y elegir el sites **example.com**
 
-![](/home/geekpy/Desktop/1.png)
-
-
+![](readmeJPG/1.png)
 
 Luego editar el example.com en el apartado **sites** , dejandolo de esta manera. 
 
-![](/home/geekpy/Desktop/2.png) 
+![](readmeJPG/2.png)
 
 Y el sistema ya esta listo para ser usado. 
