@@ -121,3 +121,28 @@ Ya por defecto el proyecto crea un superUsuario de la pagina de administración 
 
 **Para acceder a la administración de Django:**  http://127.0.0.1:8000/admin
 
+
+
+***Configurar las Google SSO***
+
+Ir al apartado **social application  / agregar nuevo**  y colocar los siguientes datos: 
+
+**Provider** : Google 
+
+**Name :** Google AOuth
+
+**Cliente id:** 54345317012-sv5e5ven89le1n0utndt2p4a0auqrehp.apps.googleusercontent.com
+
+**Secret Key:** rgghbb_OwjNd539Q6ZMCcAGq
+
+y elegir el sites **example.com**
+
+![](/home/geekpy/Desktop/1.png)
+
+
+
+Luego editar el example.com en el apartado **sites** , dejandolo de esta manera. 
+
+![](/home/geekpy/Desktop/2.png) 
+
+Y el sistema ya esta listo para ser usado. 
