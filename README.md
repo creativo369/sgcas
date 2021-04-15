@@ -123,7 +123,7 @@ Ya por defecto el proyecto crea un superUsuario de la pagina de administración 
 
 
 
-***Configurar las Google SSO***
+***Configurar Google SSO***
 
 Ir al apartado **social application  / agregar nuevo**  y colocar los siguientes datos: 
 
