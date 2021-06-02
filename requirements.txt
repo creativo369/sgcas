@@ -67,7 +67,7 @@ smartypants==2.0.1
 sqlparse==0.3.1
 static3==0.7.0
 tablib==2.0.0
-urllib3==1.25.9
+urllib3==1.26.5
 watchdog==0.10.3
 webencodings==0.5.1
 xhtml2pdf==0.2.5
